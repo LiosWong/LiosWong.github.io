@@ -1011,7 +1011,7 @@
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 52.0
 	},
 	"find_in_files":
 	{
@@ -1025,6 +1025,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"comp",
+			"copyright",
+			"pace",
+			"rel=\"tag\">#",
+			"lice",
+			"post_",
+			"post",
+			"post_co",
 			"posts",
 			"archive",
 			"tags",
@@ -1318,7 +1326,7 @@
 		[
 			[
 				"",
-				"~/LiosWang/sublimetext/sublimetext.sublime-project"
+				"~/dev/hexo/hexo.sublime-project"
 			]
 		],
 		"width": 380.0
