@@ -7,6 +7,8 @@ tags:
 - 爬虫
 - python
 - ECharts
+top: 100 #文章置顶 越大越靠前
+
 ---
 最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:
 ![https://note.youdao.com/yws/api/personal/file/WEB4ca739a6d1f980eb0abd34b663486565?method=download&shareKey=bc493e1e2c90cbb1199cf42326cd1aea](https://note.youdao.com/yws/api/personal/file/WEB4ca739a6d1f980eb0abd34b663486565?method=download&shareKey=bc493e1e2c90cbb1199cf42326cd1aea)
