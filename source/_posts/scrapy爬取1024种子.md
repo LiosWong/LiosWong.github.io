@@ -8,7 +8,7 @@ tags:
 categories:
 - python   
 copyright: true #版权声明开启 
-top: 5010 
+# top: 5010 
 ---
 1024不必多说,老司机都懂,本文介绍scrapy爬取1024种子,代码不到50行!*Scrapy，Python开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据。Scrapy用途广泛，可以用于数据挖掘、监测和自动化测试。* 关于scrapy用下图来说明即可(图片来自[https://cuiqingcai.com/3472.html](https://cuiqingcai.com/3472.html)  )
 

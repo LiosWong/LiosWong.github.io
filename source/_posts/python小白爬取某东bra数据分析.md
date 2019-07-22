@@ -7,7 +7,7 @@ tags:
 - 爬虫
 - python
 - ECharts
-top: 5000 #文章置顶 越大越靠前
+# top: 5000 #文章置顶 越大越靠前
 
 ---
 最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:
