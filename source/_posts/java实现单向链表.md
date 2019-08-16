@@ -38,7 +38,7 @@ public class MyNodeList {
         }
     }
 
-    // 增加节点
+    // 增加节点,链尾插入
     public Node addNode(int data) {
         Node node = new Node(data);
         if (head == null) {
