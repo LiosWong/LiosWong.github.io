@@ -8,7 +8,6 @@ tags:
 categories:
 - Sublime Text3   
 copyright: true #版权声明开启
-top: 888         
 ---
 工作中会接触到管理后台的页面开发,之前用的IDE工具是IntelliJ IDEA,虽然功能强大,本身却很沉重,今天介绍使用sublimetext3搭建Nodejs运行环境.
 ##### 安装插件SublimeText-Nodejs及配置

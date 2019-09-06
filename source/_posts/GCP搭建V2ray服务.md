@@ -8,7 +8,6 @@ tags:
 categories:
 - 科学上网
 copyright: true #版权声明开启
-top: 4999    
 ---
 由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:
 ```
