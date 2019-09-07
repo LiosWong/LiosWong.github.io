@@ -8,7 +8,6 @@ tags:
 categories:
 - spring   
 copyright: true #版权声明开启        
-top: 200
 ---
 mybatis提供了拦截器插件用来处理被拦截的方法的某些逻辑.下面会通过创建8张表,当用户注册时,根据对手机号取余数数据入不同的库.
 #### 建表

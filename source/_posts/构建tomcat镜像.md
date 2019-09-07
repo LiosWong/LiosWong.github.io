@@ -17,7 +17,9 @@ copyright: true #版权声明开启
 3. 根据容器生成镜像  
 4. 根据新镜像运行容器  
 5. 把新镜像push到远程仓库中  
+
 #### 说明
+
 ``步骤1``中根据镜像生成容器，很简单:``docker run -i -t --name ubuntu e64071ee23c7``,  
 得到容器之后,进入容器，使用``exec``命令进入:
 ``docker exec -it d6b7d20148aa bash``,   

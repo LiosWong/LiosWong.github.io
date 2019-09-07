@@ -5,6 +5,7 @@ tags:
 - docker
 - 镜像
 - 容器
+- 仓库
 categories:
 - docker   
 copyright: true #版权声明开启    

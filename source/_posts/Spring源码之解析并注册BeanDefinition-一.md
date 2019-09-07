@@ -8,7 +8,6 @@ tags:
 categories:
 - spring   
 copyright: true #版权声明开启        
-top: 86
 ---
 最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程:
 ```
