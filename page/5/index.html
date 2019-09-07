@@ -381,7 +381,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/bean懒加载/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/javaConfig整合spring、redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -401,7 +401,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/bean懒加载/" class="post-title-link" itemprop="url">bean懒加载</a>
+                <a href="/2019/02/16/javaConfig整合spring、redis/" class="post-title-link" itemprop="url">javaConfig整合spring、redis</a>
               
             
           </h1>
@@ -498,13 +498,13 @@
         
           
             <p>
-              Indicates whether or not this bean is to be lazily initialized.If false, it will be instantiated on startup by bean factoriesthat perform eager initia
+              使用spring-data-redis的模版,客户端使用jedis,下面配置bean:@Configurationpublic class RedisConfig &#123;    @Autowired    @Qualifier(&quot;jedisPoolConfig&quot;)    J
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/bean懒加载/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/javaConfig整合spring、redis/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -566,7 +566,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/python初试/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/springboot、redis整合/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -586,7 +586,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/python初试/" class="post-title-link" itemprop="url">python初试</a>
+                <a href="/2019/02/16/springboot、redis整合/" class="post-title-link" itemprop="url">springboot、redis整合</a>
               
             
           </h1>
@@ -645,7 +645,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
 
                 
                 
@@ -683,13 +683,206 @@
         
           
             <p>
-              最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码:# -*- coding: UTF-8 -*-import timeimport jsonimport requ
+              redis安装
+下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz
+
+解压 sudo tar -zxvf redis-3.2.6.tar.gz
+安装gcc sudo apt-get install gcc
+编译、安装 s
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/python初试/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/springboot、redis整合/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/回调函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong">
+      <meta itemprop="description" content="Less is more">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/16/回调函数/" class="post-title-link" itemprop="url">回调函数</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              
+回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科–  
+
+什么是回
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/16/回调函数/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -882,191 +1075,6 @@
           
             <div class="post-button text-center">
               <a class="btn" href="/2019/02/16/并行执行任务/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-<div>
-      
-</div>
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/spring、mybatis整合源码简单分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LiosWong">
-      <meta itemprop="description" content="Less is more">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="后端沉思录">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/16/spring、mybatis整合源码简单分析/" class="post-title-link" itemprop="url">spring、mybatis整合源码简单分析</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-            
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mybatis/" itemprop="url" rel="index"><span itemprop="name">mybatis</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              配置&lt;bean id=&quot;localDataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;c
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/spring、mybatis整合源码简单分析/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1500,7 +1508,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/回调函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/简话bean加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -1520,7 +1528,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/回调函数/" class="post-title-link" itemprop="url">回调函数</a>
+                <a href="/2019/02/16/简话bean加载/" class="post-title-link" itemprop="url">简话bean加载</a>
               
             
           </h1>
@@ -1562,7 +1570,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
+                <time title="Modified: 2019-09-07 23:54:50" itemprop="dateModified" datetime="2019-09-07T23:54:50+08:00">2019-09-07</time>
               
             
           </span>
@@ -1579,7 +1587,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
 
                 
                 
@@ -1617,16 +1625,13 @@
         
           
             <p>
-              
-回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科–  
-
-什么是回
+              首先看示例代码:&lt;!--no-lazy-init   scope=singleton--&gt;&lt;bean class=&quot;com.lios.service.test.LiosTestA&quot; id=&quot;liosTestA&quot;/&gt;&lt;bean cl
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/回调函数/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/简话bean加载/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1688,7 +1693,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/springboot、redis整合/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/python初试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -1708,7 +1713,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/springboot、redis整合/" class="post-title-link" itemprop="url">springboot、redis整合</a>
+                <a href="/2019/02/16/python初试/" class="post-title-link" itemprop="url">python初试</a>
               
             
           </h1>
@@ -1767,7 +1772,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
 
                 
                 
@@ -1805,18 +1810,13 @@
         
           
             <p>
-              redis安装
-下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz
-
-解压 sudo tar -zxvf redis-3.2.6.tar.gz
-安装gcc sudo apt-get install gcc
-编译、安装 s
+              最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码:# -*- coding: UTF-8 -*-import timeimport jsonimport requ
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/springboot、redis整合/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/python初试/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1878,7 +1878,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/javaConfig整合spring、redis/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/spring、mybatis整合源码简单分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -1898,7 +1898,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/javaConfig整合spring、redis/" class="post-title-link" itemprop="url">javaConfig整合spring、redis</a>
+                <a href="/2019/02/16/spring、mybatis整合源码简单分析/" class="post-title-link" itemprop="url">spring、mybatis整合源码简单分析</a>
               
             
           </h1>
@@ -1957,7 +1957,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mybatis/" itemprop="url" rel="index"><span itemprop="name">mybatis</span></a></span>
 
                 
                 
@@ -1995,13 +1995,13 @@
         
           
             <p>
-              使用spring-data-redis的模版,客户端使用jedis,下面配置bean:@Configurationpublic class RedisConfig &#123;    @Autowired    @Qualifier(&quot;jedisPoolConfig&quot;)    J
+              配置&lt;bean id=&quot;localDataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;c
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/javaConfig整合spring、redis/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/spring、mybatis整合源码简单分析/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
