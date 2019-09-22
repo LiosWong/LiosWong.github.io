@@ -410,7 +410,7 @@ bumblebee -> {Class@1569} "class org.apache.dubbo.demo.provider.Bumblebee"
 通过``ExtensionLoader#getExtension``获取扩展点的实现,并不能体现自适应特性,和java SPI 并没有多大的差别,下面介绍``ExtensionLoader#getAdaptiveExtension`` 的实现.
 
 #### ExtensionLoader#getAdaptiveExtension的实现
-下面的分析需要注册中心 ``zookeeper`` ,关于安装和配置就不多分析.首先在 ``org.apache.dubbo.config.ServiceConfig#protocol` 处打上断点:
+下面的分析需要注册中心 ``zookeeper`` ,关于安装和配置就不多分析.首先在 ``org.apache.dubbo.config.ServiceConfig#protocol`` 处打上断点:
 ```
 private static final Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
 ```
