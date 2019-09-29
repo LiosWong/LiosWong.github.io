@@ -265,6 +265,14 @@ private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader cl
         }
     }
 ```
+上面注意 ``org.apache.dubbo.common.extension.ExtensionLoader#isWrapperClass`` 方法,判断是否为包装类,是的话就缓存,判断依据就是扩展接口为该类的构造器参数,例如 ``Protocol`` 的两个子类 ``org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper`` 、``org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper`` ,它们的构造函数都有以 ``Protocol`` 为参数,所以为包装类,在 ``org.apache.dubbo.common.extension.ExtensionLoader#createExtension`` 中会判断是否有包装类,有的的话会循环注入,例如在获取对象 ``org.apache.dubbo.rpc.Protocol`` 时,通过自适应扩展获取到的对象会被包装类包裹,例如:
+```
+org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper
+     org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper
+          org.apache.dubbo.registry.integration.RegistryProtocol
+
+```
+这样的好处就是在调用前可以添加额外的处理逻辑.  
 到这里扩展类已经加载完了,并且保存,回到 ``org.apache.dubbo.common.extension.ExtensionLoader#getAdaptiveExtensionClass``方法中,调用完 ``getExtensionClasses`` 后，会判断 ``cachedAdaptiveClass`` 是否为空,如果不为空直接返回,也就是如果类上有 ``Adaptive``注解,此时会直接返回,注意结合 ``org.apache.dubbo.common.extension.ExtensionLoader#loadClass`` 方法中的判断分析,否则继续执行调用 ``createAdaptiveExtensionClass`` ,但是此时 ``cachedAdaptiveClass`` 是不为空的,所以直接返回.为什么不为空呢,由于 ``ExtensionFactory`` 的实现类 ``org.apache.dubbo.common.extension.factory.AdaptiveExtensionFactory`` 加上了 ``Adaptive`` 注解,在 ``org.apache.dubbo.common.extension.ExtensionLoader#loadClass`` 方法中,初始化了 ``cachedAdaptiveClass`` ,dubbo中的类上被 ``Adaptive`` 修饰的非常少,仅有两个: ``AdaptiveCompiler`` 、``AdaptiveExtensionFactory``.  
 回到 ``org.apache.dubbo.common.extension.ExtensionLoader#createAdaptiveExtension`` 方法中, ``getAdaptiveExtensionClass`` 获取到扩展类后,通过反射创建对象,然后再调用 ``injectExtension`` ,断点进入:  
 ```
@@ -410,7 +418,7 @@ bumblebee -> {Class@1569} "class org.apache.dubbo.demo.provider.Bumblebee"
 通过``ExtensionLoader#getExtension``获取扩展点的实现,并不能体现自适应特性,和java SPI 并没有多大的差别,下面介绍``ExtensionLoader#getAdaptiveExtension`` 的实现.
 
 #### ExtensionLoader#getAdaptiveExtension的实现
-下面的分析需要注册中心 ``zookeeper`` ,关于安装和配置就不多分析.首先在 ``org.apache.dubbo.config.ServiceConfig#protocol`` 处打上断点:
+下面的分析需要注册中心 ``zookeeper`` ,关于安装和配置就不多分析.首先在 ``org.apache.dubbo.config.ServiceConfig#protocol` 处打上断点:
 ```
 private static final Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
 ```

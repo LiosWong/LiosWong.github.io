@@ -5,6 +5,18 @@
 		[
 		]
 	},
+	"buffers":
+	[
+		{
+			"file": "source/_posts/Dubbo-SPI实现原理.md",
+			"settings":
+			{
+				"buffer_size": 30467,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
 	"build_system": "",
 	"build_system_choices":
 	[
@@ -119,6 +131,12 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/Users/lioswong/LiosWong/hexo",
+		"/Users/lioswong/LiosWong/hexo/source",
+		"/Users/lioswong/LiosWong/hexo/source/_posts"
+	],
 	"file_history":
 	[
 		"/Users/lioswong/Desktop/Wrapper.class",
@@ -180,6 +198,55 @@
 		"whole_word": false,
 		"wrap": true
 	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "source/_posts/Dubbo-SPI实现原理.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 30467,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								974,
+								974
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 3,
+								"count": 1064,
+								"modified": false,
+								"selection": false,
+								"status": -1,
+								"syntax": "plain text"
+							},
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7092.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
 	"incremental_find":
 	{
 		"height": 38.0
@@ -216,6 +283,7 @@
 		"height": 0.0
 	},
 	"pinned_build_system": "",
+	"project": "hexo.sublime-project",
 	"replace":
 	{
 		"height": 72.0
@@ -338,7 +406,7 @@
 		[
 			[
 				"",
-				"~/LiosWong/hexo/hexo.sublime-project"
+				"~/LiosWong/sublimetext/sublimetext.sublime-project"
 			]
 		],
 		"width": 380.0
@@ -352,6 +420,7 @@
 		],
 		"width": 0.0
 	},
+	"selected_group": 0,
 	"settings":
 	{
 	},
