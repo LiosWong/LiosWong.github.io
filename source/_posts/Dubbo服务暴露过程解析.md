@@ -1,5 +1,5 @@
 ---
-title: Dubbo服务暴露过程解析.md
+title: Dubbo服务暴露过程解析
 date: 2019-09-29 13:25:21
 tags:
 - java
@@ -595,7 +595,7 @@ public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
                         .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)));
     }
 ```
-如果协议为registry,直接暴露,否则会先暴露,然后获取监听器列表,构建ListenerExporterWrapper对象返回.由于本地暴露,所以直接导出到本地, 进入到 ```org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol#export``:
+如果协议为registry,直接暴露,否则会先暴露,然后获取监听器列表,构建ListenerExporterWrapper对象返回.由于本地暴露,所以直接导出到本地, 进入到 ``org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol#export``:
 ```
 public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
         return new InjvmExporter<T>(invoker, invoker.getUrl().getServiceKey(), exporterMap);
@@ -606,7 +606,7 @@ public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
 ExtensionLoader.getExtensionLoader(ExporterListener.class)
                         .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)
 ```
-自适应扩展获取监听器列表,该过程不再分析,然后进入到 ```org.apache.dubbo.rpc.listener.ListenerExporterWrapper#ListenerExporterWrapper``` 中:
+自适应扩展获取监听器列表,该过程不再分析,然后进入到 ``org.apache.dubbo.rpc.listener.ListenerExporterWrapper#ListenerExporterWrapper`` 中:
 ```
     public ListenerExporterWrapper(Exporter<T> exporter, List<ExporterListener> listeners) {
         // 如果exporter为空则抛异常

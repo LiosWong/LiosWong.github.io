@@ -15,6 +15,15 @@
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "source/_posts/Dubbo服务暴露过程解析.md",
+			"settings":
+			{
+				"buffer_size": 54524,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -28,6 +37,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"file re",
+				"Rename File"
+			],
 			[
 				"side",
 				"View: Toggle Side Bar"
@@ -201,7 +214,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -217,15 +230,15 @@
 						"selection":
 						[
 							[
-								974,
-								974
+								131,
+								57
 							]
 						],
 						"settings":
 						{
 							"WordCount":
 							{
-								"changes": 3,
+								"changes": 0,
 								"count": 1064,
 								"modified": false,
 								"selection": false,
@@ -238,7 +251,47 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 7092.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "source/_posts/Dubbo服务暴露过程解析.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 54524,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								828,
+								828
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 2,
+								"count": 2008,
+								"modified": false,
+								"selection": false,
+								"status": -1,
+								"syntax": "plain text"
+							},
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
