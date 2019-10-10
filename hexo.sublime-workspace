@@ -7,24 +7,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "source/_posts/Dubbo-SPI实现原理.md",
-			"settings":
-			{
-				"buffer_size": 30467,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "source/_posts/Dubbo服务暴露过程解析.md",
-			"settings":
-			{
-				"buffer_size": 54524,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -38,12 +20,12 @@
 		"selected_items":
 		[
 			[
-				"file re",
-				"Rename File"
-			],
-			[
 				"side",
 				"View: Toggle Side Bar"
+			],
+			[
+				"file re",
+				"Rename File"
 			],
 			[
 				"remo",
@@ -152,6 +134,9 @@
 	],
 	"file_history":
 	[
+		"/Users/lioswong/LiosWong/hexo/source/_posts/Dubbo-SPI实现原理.md",
+		"/Users/lioswong/LiosWong/hexo/source/_posts/Dubbo服务暴露过程解析.md",
+		"/Users/lioswong/LiosWong/hexo/source/_posts/Dubbo服务引入.md",
 		"/Users/lioswong/Desktop/Wrapper.class",
 		"/Users/lioswong/Desktop/c.class",
 		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo暴露服务过程解析.md",
@@ -214,89 +199,8 @@
 	"groups":
 	[
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "source/_posts/Dubbo-SPI实现原理.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 30467,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								131,
-								57
-							]
-						],
-						"settings":
-						{
-							"WordCount":
-							{
-								"changes": 0,
-								"count": 1064,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "source/_posts/Dubbo服务暴露过程解析.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 54524,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								828,
-								828
-							]
-						],
-						"settings":
-						{
-							"WordCount":
-							{
-								"changes": 2,
-								"count": 2008,
-								"modified": false,
-								"selection": false,
-								"status": -1,
-								"syntax": "plain text"
-							},
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -480,7 +384,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 466.0,
 	"status_bar_visible": true,
 	"template_settings":
