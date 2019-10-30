@@ -150,7 +150,112 @@ org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper
         ProviderConsumerRegTable.registerConsumer(invoker, url, subscribeUrl, directory);
         return invoker;
 ```
-上面注释也很清楚,具体看:
+进入服务目录订阅节点信息方法org.apache.dubbo.registry.integration.RegistryDirectory#subscribe:
+```
+public void subscribe(URL url) {
+        setConsumerUrl(url);
+        CONSUMER_CONFIGURATION_LISTENER.addNotifyListener(this);
+        serviceConfigurationListener = new ReferenceConfigurationListener(this, url);
+        registry.subscribe(url, this);
+    }
+```
+继续进入org.apache.dubbo.registry.support.FailbackRegistry#subscribe:
+```
+public void subscribe(URL url, NotifyListener listener) {
+        super.subscribe(url, listener);
+        removeFailedSubscribed(url, listener);
+        // Sending a subscription request to the server side
+        doSubscribe(url, listener);
+        ...
+        ...
+}
+```
+继续进入org.apache.dubbo.registry.zookeeper.ZookeeperRegistry#doSubscribe:
+```
+...
+...
+notify(url, listener, urls);
+```
+以上代码很多都省略了,主要看notify方法,进入:
+```
+protected void notify(URL url, NotifyListener listener, List<URL> urls) {
+        if (url == null) {
+            throw new IllegalArgumentException("notify url == null");
+        }
+        if (listener == null) {
+            throw new IllegalArgumentException("notify listener == null");
+        }
+        try {
+            doNotify(url, listener, urls);
+        } catch (Exception t) {
+            // Record a failed registration request to a failed list, retry regularly
+            addFailedNotified(url, listener, urls);
+            logger.error("Failed to notify for subscribe " + url + ", waiting for retry, cause: " + t.getMessage(), t);
+        }
+    }
+```
+主要看org.apache.dubbo.registry.support.FailbackRegistry#doNotify方法:
+```
+ protected void doNotify(URL url, NotifyListener listener, List<URL> urls) {
+        super.notify(url, listener, urls);
+    }
+```
+继续进入org.apache.dubbo.registry.support.AbstractRegistry#notify(org.apache.dubbo.common.URL, org.apache.dubbo.registry.NotifyListener, java.util.List<org.apache.dubbo.common.URL>):
+```
+...
+...
+for (Map.Entry<String, List<URL>> entry : result.entrySet()) {
+            String category = entry.getKey();
+            List<URL> categoryList = entry.getValue();
+            categoryNotified.put(category, categoryList);
+            listener.notify(categoryList);
+            // We will update our cache file after each notification.
+            // When our Registry has a subscribe failure due to network jitter, we can return at least the existing cache URL.
+            saveProperties(url);
+        }
+```
+这里会遍历routers、configurators、providers节点,示范:
+```
+routers=[empty://192.168.1.220/org.apache.dubbo.demo.DemoService?application=dubbo-demo-api-consumer&category=routers&dubbo=2.0.2&interface=org.apache.dubbo.demo.DemoService&lazy=false&methods=sayHello&pid=77530&retries=0&sent=true&side=consumer&sticky=false&timeout=3600&timestamp=1572419547454]
+
+configurators=[empty://192.168.1.220/org.apache.dubbo.demo.DemoService?application=dubbo-demo-api-consumer&category=configurators&dubbo=2.0.2&interface=org.apache.dubbo.demo.DemoService&lazy=false&methods=sayHello&pid=77530&retries=0&sent=true&side=consumer&sticky=false&timeout=3600&timestamp=1572419547454]
+
+providers=[dubbo://192.168.1.220:20880/org.apache.dubbo.demo.DemoService?anyhost=true&application=dubbo-demo-api-provider&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&interface=org.apache.dubbo.demo.DemoService&methods=sayHello&pid=73959&release=&side=provider&timeout=3600&timestamp=1572403767806]
+```
+如果是providers节点时,则方法调用链入下:
+```
+org.apache.dubbo.registry.integration.RegistryDirectory#notify
+   -->  org.apache.dubbo.registry.integration.RegistryDirectory#refreshOverrideAndInvoker
+   -->  org.apache.dubbo.registry.integration.RegistryDirectory#refreshInvoker
+   -->  org.apache.dubbo.registry.integration.RegistryDirectory#toInvokers
+```
+org.apache.dubbo.registry.integration.RegistryDirectory#toInvokers中会重新引用远程服务:
+```
+ ...
+ ...
+ ...
+ // Cache key is url that does not merge with consumer side parameters, regardless of how the consumer combines parameters, if the server url changes, then refer again
+            Map<String, Invoker<T>> localUrlInvokerMap = this.urlInvokerMap; // local reference
+            Invoker<T> invoker = localUrlInvokerMap == null ? null : localUrlInvokerMap.get(key);
+            if (invoker == null) { // Not in the cache, refer again
+                try {
+                    boolean enabled = true;
+                    if (url.hasParameter(DISABLED_KEY)) {
+                        enabled = !url.getParameter(DISABLED_KEY, false);
+                    } else {
+                        enabled = url.getParameter(ENABLED_KEY, true);
+                    }
+                    if (enabled) {
+                        invoker = new InvokerDelegate<>(protocol.refer(serviceType, url), url, providerUrl);
+                    }
+                } catch (Throwable t) {
+                    logger.error("Failed to refer invoker for interface:" + serviceType + ",url:(" + url + ")" + t.getMessage(), t);
+                }
+...
+...
+...
+```
+回到org.apache.dubbo.registry.integration.RegistryProtocol#doRefer中,上面注释也很清楚,具体看:
 ```
 Invoker invoker = cluster.join(directory);
 ```

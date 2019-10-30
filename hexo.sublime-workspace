@@ -213,7 +213,7 @@
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 184.0
 	},
 	"find_in_files":
 	{
@@ -381,8 +381,8 @@
 						"selection":
 						[
 							[
-								405,
-								405
+								961,
+								961
 							]
 						],
 						"settings":
@@ -620,7 +620,7 @@
 		[
 			[
 				"",
-				"~/LiosWong/sublimetext/sublimetext.sublime-project"
+				"~/Library/Application Support/Sublime Text 3/Packages/User/sublime-config.sublime-project"
 			]
 		],
 		"width": 380.0
