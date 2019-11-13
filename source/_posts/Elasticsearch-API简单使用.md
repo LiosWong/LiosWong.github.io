@@ -4,7 +4,7 @@ tags:
 - Elasticsearch
 - elk    
 categories:
-- Elasticsearch    
+- elk    
 copyright: true #版权声明开启
 ---
 笔者喜欢做一些小工具，给PM或者组内同学使用，不仅仅可以提高工作效率，而且也可以学一些前端方面的知识。之前使用Elasticsearch API做过管理后台的小工具，一直没有总结，最近给PM哥们又做了一个小工具，而且也使用到了Elasticsearch API，正好做个简单分享。
