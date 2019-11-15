@@ -103,30 +103,28 @@
 
 
 
-  <meta name="description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向123456789101112131415@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET)@ResponseBodypublic String redirect(HttpServletRe">
-<meta name="keywords" content="java,重定向">
+  <meta name="description" content="环境 mac pro elk、filebeat版本6.5.4    问题本地在本地搭建elk+filebeat环境,elasticsearch启动报错如下：1234567891011121314java.lang.IllegalArgumentException: Rejecting mapping update to [driver_trace_2019.11.15] as the final">
+<meta name="keywords" content="Elasticsearch,elk,Logstash,Kibana,Filebeat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="转发与重定向">
-<meta property="og:url" content="http://yoursite.com/2019/02/16/转发与重定向/index.html">
+<meta property="og:title" content="elasticsearch(6.5.4)踩坑">
+<meta property="og:url" content="http://yoursite.com/2019/11/15/elasticsearch-6-5-4-踩坑/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向123456789101112131415@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET)@ResponseBodypublic String redirect(HttpServletRe">
+<meta property="og:description" content="环境 mac pro elk、filebeat版本6.5.4    问题本地在本地搭建elk+filebeat环境,elasticsearch启动报错如下：1234567891011121314java.lang.IllegalArgumentException: Rejecting mapping update to [driver_trace_2019.11.15] as the final">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&shareKey=1f513ac73dc70b3fb7b8e09467f6cb01">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&shareKey=44f35b431fdf7057b8e43aa9effc3af3">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB44f6b42a07762f378110c0beea29d9ad?method=download&shareKey=49a69ce218418fdf3daa423cf4ade336">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB540a6c2c5faa49d3c420eb66ccdc250e?method=download&shareKey=f6b2cbff4c4bba0ea214e9a02f9df38b">
-<meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB1b3ebfdc85a39f18fc7d6a3e39fe084d?method=download&shareKey=228b42ff8a6f4f6bf3fbd9c9f973e5ca">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB931f74297293eb06e5ae7be70f8271d2?method=download&shareKey=ed8e634e35bc7a8101af35970c4858c9">
+<meta property="og:updated_time" content="2019-11-15T09:06:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="转发与重定向">
-<meta name="twitter:description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向123456789101112131415@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET)@ResponseBodypublic String redirect(HttpServletRe">
-<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&shareKey=1f513ac73dc70b3fb7b8e09467f6cb01">
+<meta name="twitter:title" content="elasticsearch(6.5.4)踩坑">
+<meta name="twitter:description" content="环境 mac pro elk、filebeat版本6.5.4    问题本地在本地搭建elk+filebeat环境,elasticsearch启动报错如下：1234567891011121314java.lang.IllegalArgumentException: Rejecting mapping update to [driver_trace_2019.11.15] as the final">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB1b3ebfdc85a39f18fc7d6a3e39fe084d?method=download&shareKey=228b42ff8a6f4f6bf3fbd9c9f973e5ca">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/16/转发与重定向/">
+  <link rel="canonical" href="http://yoursite.com/2019/11/15/elasticsearch-6-5-4-踩坑/">
 
 
 
@@ -136,7 +134,7 @@
   };
 </script>
 
-  <title>转发与重定向 | 后端沉思录</title>
+  <title>elasticsearch(6.5.4)踩坑 | 后端沉思录</title>
   
 
 
@@ -387,7 +385,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/转发与重定向/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/15/elasticsearch-6-5-4-踩坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -404,7 +402,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">转发与重定向
+          <h1 class="post-title" itemprop="name headline">elasticsearch(6.5.4)踩坑
 
               
             
@@ -430,24 +428,12 @@
                 
               
 
-              <time title="Created: 2019-02-16 01:42:40" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:40+08:00">2019-02-16</time>
+              <time title="Created: 2019-11-15 17:05:45 / Modified: 17:06:57" itemprop="dateCreated datePublished" datetime="2019-11-15T17:05:45+08:00">2019-11-15</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
               
             
           </span>
@@ -464,7 +450,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/elk/" itemprop="url" rel="index"><span itemprop="name">elk</span></a></span>
 
                 
                 
@@ -506,24 +492,14 @@
       
 
       
-        <p><img src="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&amp;shareKey=1f513ac73dc70b3fb7b8e09467f6cb01" alt="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&amp;shareKey=1f513ac73dc70b3fb7b8e09467f6cb01"><br>平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。</p>
-<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/redirect&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String redirect(HttpServletResponse response)&#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        response.sendRedirect(&quot;http://127.0.0.1:8080/api/redirect/test&quot;);</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return &quot;redirect&quot;;</span><br><span class="line">&#125;</span><br><span class="line">@RequestMapping(value = &quot;/redirect/test&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String redirectTest(HttpServletRequest request, HttpServletResponse response)&#123;</span><br><span class="line">    return &quot;redirect success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>项目启动成功后,在浏览器输入<code>http://127.0.0.1:8080/api/redirect</code>,在chrome检查Network栏目下，可以看到:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&amp;shareKey=44f35b431fdf7057b8e43aa9effc3af3" alt="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&amp;shareKey=44f35b431fdf7057b8e43aa9effc3af3"><br>客户端发生了两次接口请求,第一次是<code>http://127.0.0.1:8080/api/redirect</code>,第二次是<code>http://127.0.0.1:8080/api/redirect/test</code>;且第一次接口请求的响应状态码为302(重定向),从其请求、响应头中可以清晰交互流程：<br><img src="https://note.youdao.com/yws/api/personal/file/WEB44f6b42a07762f378110c0beea29d9ad?method=download&amp;shareKey=49a69ce218418fdf3daa423cf4ade336" alt="https://note.youdao.com/yws/api/personal/file/WEB44f6b42a07762f378110c0beea29d9ad?method=download&amp;shareKey=49a69ce218418fdf3daa423cf4ade336"><br>从上面分析，重定向时，进行了两次接口请求;过程简单理解为浏览器首先请求接口A,接口A进行了重定向到B,接口A给浏览器的响应状态码为302,并且返回了目的接口地址B，然后浏览器再次发起请求，请求接口地址B.</p>
-<h3 id="转发"><a href="#转发" class="headerlink" title="转发"></a>转发</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/forward&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String forward(HttpServletRequest request, HttpServletResponse response)&#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        request.getRequestDispatcher(&quot;/api/forward/test&quot;).forward(request,response);</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; catch (ServletException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return &quot;index&quot;;</span><br><span class="line">&#125;</span><br><span class="line">@RequestMapping(value = &quot;/forward/test&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String forwardTest(HttpServletRequest request, HttpServletResponse response)&#123;</span><br><span class="line">    return &quot;forward success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在浏览器中访问<code>http://localhost:8080/api/forward</code>,会返回<code>forward success</code>,在chrome检查Network栏目下：<br><img src="https://note.youdao.com/yws/api/personal/file/WEB540a6c2c5faa49d3c420eb66ccdc250e?method=download&amp;shareKey=f6b2cbff4c4bba0ea214e9a02f9df38b" alt="https://note.youdao.com/yws/api/personal/file/WEB540a6c2c5faa49d3c420eb66ccdc250e?method=download&amp;shareKey=f6b2cbff4c4bba0ea214e9a02f9df38b"><br>浏览器只请求了一次接口,请求地址没有发生变化;而且只能转发给当前的WEB应用资源。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li>重定向是客户端行为,转发是服务器行为</li>
-<li>转发只发生一次请求;且只能转发到当前应用资源;请求地址不会发生变化</li>
-<li>重定向发生两次请求;且能重定向到任何资源;地址栏会发生变化</li>
-<li>转发速度快于重定向</li>
+        <h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><ol>
+<li>mac pro</li>
+<li>elk、filebeat版本6.5.4  </li>
 </ol>
-<blockquote>
-<p>参考文章</p>
-</blockquote>
-<ol>
-<li><a href="https://blog.csdn.net/daochuwenziyao/article/details/54233496" target="_blank" rel="noopener">https://blog.csdn.net/daochuwenziyao/article/details/54233496</a></li>
-<li><a href="https://blog.csdn.net/webzhuce/article/details/54564608" target="_blank" rel="noopener">https://blog.csdn.net/webzhuce/article/details/54564608</a></li>
-</ol>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>本地在本地搭建elk+filebeat环境,elasticsearch启动报错如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalArgumentException: Rejecting mapping update to [driver_trace_2019.11.15] as the final mapping would have more than 1 type: [driver_trace, doc]</span><br><span class="line">    at org.elasticsearch.index.mapper.MapperService.internalMerge(MapperService.java:451) ~[elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.index.mapper.MapperService.internalMerge(MapperService.java:399) ~[elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.index.mapper.MapperService.merge(MapperService.java:331) ~[elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.metadata.MetaDataMappingService$PutMappingExecutor.applyRequest(MetaDataMappingService.java:313) ~[elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.metadata.MetaDataMappingService$PutMappingExecutor.execute(MetaDataMappingService.java:229) ~[elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.service.MasterService.executeTasks(MasterService.java:639) ~[elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.service.MasterService.calculateTaskOutputs(MasterService.java:268) ~[elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.service.MasterService.runTasks(MasterService.java:198) [elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.service.MasterService$Batcher.run(MasterService.java:133) [elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.service.TaskBatcher.runIfNotProcessed(TaskBatcher.java:150) [elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.cluster.service.TaskBatcher$BatchedTask.run(TaskBatcher.java:188) [elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.common.util.concurrent.ThreadContext$ContextPreservingRunnable.run(ThreadContext.java:624) [elasticsearch-6.5.4.jar:6.5.4]</span><br><span class="line">    at org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.runAndClean(PrioritizedEsThreadPoolExecutor.java:244) [elasticsearch-6.5.4.jar:6.5.4]</span><br></pre></td></tr></table></figure></p>
+<p>原因是elastic search在6.x版本调整了,一个index只能存储一种type导致,即Logstash启动的时候会看到它使用的template是默认的,然后这样导入的数据后,自动创建了索引,默认的_type是doc,即:logstash在同步的时候会自动创建一个doc类型的index. </p>
+<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>参考<a href="https://blog.csdn.net/q18810146167/article/details/89339380" target="_blank" rel="noopener">https://blog.csdn.net/q18810146167/article/details/89339380</a>这篇文章:<br><strong>1.删除原有的Elasticsearch indices</strong><br><img src="https://note.youdao.com/yws/api/personal/file/WEB1b3ebfdc85a39f18fc7d6a3e39fe084d?method=download&amp;shareKey=228b42ff8a6f4f6bf3fbd9c9f973e5ca" alt="https://note.youdao.com/yws/api/personal/file/WEB1b3ebfdc85a39f18fc7d6a3e39fe084d?method=download&amp;shareKey=228b42ff8a6f4f6bf3fbd9c9f973e5ca"><br><strong>2.新建Elasticsearch indices</strong><br><img src="https://note.youdao.com/yws/api/personal/file/WEB931f74297293eb06e5ae7be70f8271d2?method=download&amp;shareKey=ed8e634e35bc7a8101af35970c4858c9" alt="https://note.youdao.com/yws/api/personal/file/WEB931f74297293eb06e5ae7be70f8271d2?method=download&amp;shareKey=ed8e634e35bc7a8101af35970c4858c9"><br>创建的索引里默认mapping里面的type是doc,上面操作的含义可以理解为把所有的类型都映射为string,里面type为text 分词为ik_max_word.<br>具体创建的脚本如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;:&#123;</span><br><span class="line">    &quot;doc&quot;:&#123;</span><br><span class="line">      &quot;dynamic_templates&quot;:[</span><br><span class="line">       &#123;</span><br><span class="line">        &quot;named_analyzers&quot;:&#123;</span><br><span class="line">         &quot;match_mapping_type&quot;:&quot;string&quot;,</span><br><span class="line">         &quot;match&quot;:&quot;*&quot;,</span><br><span class="line">         &quot;mapping&quot;:&#123;</span><br><span class="line">          &quot;type&quot;:&quot;text&quot;,</span><br><span class="line">          &quot;analyzer&quot;:&quot;ik_max_word&quot;</span><br><span class="line">         &#125;</span><br><span class="line">        &#125;</span><br><span class="line">       &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>重新创建后,不再报错了.</p>
 
       
     </div>
@@ -544,12 +520,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>转发与重定向</p>
+  <p><span>本文标题:</span>elasticsearch(6.5.4)踩坑</p>
   <p><span>文章作者:</span>LiosWong</p>
-  <p><span>发布时间:</span>2019年02月16日 - 01:42:40</p>
-  <p><span>最后更新:</span>2019年09月01日 - 16:38:57</p>
-  <p><span>原始链接:</span><a href="/2019/02/16/转发与重定向/" title="转发与重定向">http://yoursite.com/2019/02/16/转发与重定向/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/02/16/转发与重定向/" aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年11月15日 - 17:05:45</p>
+  <p><span>最后更新:</span>2019年11月15日 - 17:06:57</p>
+  <p><span>原始链接:</span><a href="/2019/11/15/elasticsearch-6-5-4-踩坑/" title="elasticsearch(6.5.4)踩坑">http://yoursite.com/2019/11/15/elasticsearch-6-5-4-踩坑/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/11/15/elasticsearch-6-5-4-踩坑/" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -584,9 +560,15 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+            <a href="/tags/Elasticsearch/" rel="tag"><i class="fa fa-tag"></i> Elasticsearch</a>
           
-            <a href="/tags/重定向/" rel="tag"><i class="fa fa-tag"></i> 重定向</a>
+            <a href="/tags/elk/" rel="tag"><i class="fa fa-tag"></i> elk</a>
+          
+            <a href="/tags/Logstash/" rel="tag"><i class="fa fa-tag"></i> Logstash</a>
+          
+            <a href="/tags/Kibana/" rel="tag"><i class="fa fa-tag"></i> Kibana</a>
+          
+            <a href="/tags/Filebeat/" rel="tag"><i class="fa fa-tag"></i> Filebeat</a>
           
         </div>
       
@@ -599,8 +581,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/ThreadLocal/" rel="next" title="ThreadLocal">
-                <i class="fa fa-chevron-left"></i> ThreadLocal
+              <a href="/2019/11/11/charles踩坑记录/" rel="next" title="charles踩坑记录">
+                <i class="fa fa-chevron-left"></i> charles踩坑记录
               </a>
             
           </div>
@@ -608,10 +590,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/16/JWT/" rel="prev" title="JWT">
-                JWT <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
