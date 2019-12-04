@@ -56,7 +56,7 @@
 			"file": "source/_posts/NoClassDefFoundError.md",
 			"settings":
 			{
-				"buffer_size": 1539,
+				"buffer_size": 1596,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -513,22 +513,22 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1539,
+						"buffer_size": 1596,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								136,
-								136
+								1009,
+								1009
 							]
 						],
 						"settings":
 						{
 							"WordCount":
 							{
-								"changes": 9,
+								"changes": 2,
 								"count": 23,
 								"modified": false,
 								"selection": false,
