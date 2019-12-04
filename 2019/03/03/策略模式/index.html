@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–维基百科在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,首先定义支付接口:123456public interfac">
+  <meta name="description" content="策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–维基百科在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,首先定义支付接口: public interface Pay">
 <meta name="keywords" content="设计模式,策略模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="策略模式">
 <meta property="og:url" content="http://yoursite.com/2019/03/03/策略模式/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–维基百科在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,首先定义支付接口:123456public interfac">
+<meta property="og:description" content="策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–维基百科在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,首先定义支付接口: public interface Pay">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="策略模式">
-<meta name="twitter:description" content="策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–维基百科在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,首先定义支付接口:123456public interfac">
+<meta name="twitter:description" content="策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–维基百科在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,首先定义支付接口: public interface Pay">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,20 +502,89 @@
       
 
       
-        <p>策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–<a href="https://zh.wikipedia.org/wiki/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">维基百科</a><br>在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,<br>首先定义支付接口:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public interface Pay&#123;</span><br><span class="line">    // 具体支付业务逻辑</span><br><span class="line">    public void toPay();</span><br><span class="line">    // 支付类型</span><br><span class="line">    public Integer payType();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>AliPay:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class AliPay implements Pay&#123;</span><br><span class="line">    public void toPay()&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    public Integer payType()&#123;</span><br><span class="line">        // 返回支付类型枚举</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>WxPay:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class WxPay implements Pay&#123;</span><br><span class="line">    public void toPay()&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    public Integer payType()&#123;</span><br><span class="line">        // 返回支付类型枚举</span><br><span class="line">        return 2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>不同的实现已经好了,需要在上层业务中传入不同的支付类型,调用具体的实现,结合在Spring项目中使用方式:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class PayTypeUtil implements InitializingBean&#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private List&lt;Pay&gt; payList;</span><br><span class="line">    private static final Map&lt;Integer,Pay&gt; payMap = Maps.newHashMap();</span><br><span class="line">    @Override</span><br><span class="line">    public void afterPropertiesSet() throws Exception &#123;</span><br><span class="line">        for (Pay pay : payList) &#123;</span><br><span class="line">            payMap.put(pay.payType(),pay);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public Pay getPayService(Integer payType)&#123;</span><br><span class="line">        return payMap.get(payType);</span><br><span class="line">    &#125;</span><br><span class="line">    public static void putService(Pay pay)&#123;</span><br><span class="line">        payMap.put(pay.payType(),pay);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>直接使用<code>PayTypeUtil</code>的getPayService方法传入不同的支付类型便可得到具体的实现,上面借助了Spring中的<code>InitializingBean</code>接口实现了在bean初始化时,加载<code>Pay</code>所有的实现类(InitializingBean可参考文章<a href="https://blog.csdn.net/BAT_os/article/details/81844985" target="_blank" rel="noopener">https://blog.csdn.net/BAT_os/article/details/81844985</a>),难道只有这种方法才可以实现么,当然不是,下面再介绍两种方法:  </p>
+        <p>策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。比如每个人都要“交个人所得税”，但是“在美国交个人所得税”和“在中国交个人所得税”就有不同的算税方法。–<a href="https://zh.wikipedia.org/wiki/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">维基百科</a><br>在项目中时常会用到策略模式的场景,比如业务中需要支付,但是有多个支付渠道,那如何对上层业务暴露”统一口径”(接口)呢,下面结合代码说明,<br>首先定义支付接口:</p>
+<pre><code>public interface Pay{
+    // 具体支付业务逻辑
+    public void toPay();
+    // 支付类型
+    public Integer payType();
+}
+</code></pre><p>AliPay:</p>
+<pre><code>public class AliPay implements Pay{
+    public void toPay(){
+        ...
+    }
+    public Integer payType(){
+        // 返回支付类型枚举
+        return 1;
+    }
+}
+</code></pre><p>WxPay:</p>
+<pre><code>public class WxPay implements Pay{
+    public void toPay(){
+        ...
+    }
+    public Integer payType(){
+        // 返回支付类型枚举
+        return 2;
+    }
+}
+</code></pre><p>不同的实现已经好了,需要在上层业务中传入不同的支付类型,调用具体的实现,结合在Spring项目中使用方式:</p>
+<pre><code>@Component
+public class PayTypeUtil implements InitializingBean{
+    @Autowired
+    private List&lt;Pay&gt; payList;
+    private static final Map&lt;Integer,Pay&gt; payMap = Maps.newHashMap();
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        for (Pay pay : payList) {
+            payMap.put(pay.payType(),pay);
+        }
+    }
+    public Pay getPayService(Integer payType){
+        return payMap.get(payType);
+    }
+    public static void putService(Pay pay){
+        payMap.put(pay.payType(),pay);
+    }
+}
+</code></pre><p>直接使用<code>PayTypeUtil</code>的getPayService方法传入不同的支付类型便可得到具体的实现,上面借助了Spring中的<code>InitializingBean</code>接口实现了在bean初始化时,加载<code>Pay</code>所有的实现类(InitializingBean可参考文章<a href="https://blog.csdn.net/BAT_os/article/details/81844985" target="_blank" rel="noopener">https://blog.csdn.net/BAT_os/article/details/81844985</a>),难道只有这种方法才可以实现么,当然不是,下面再介绍两种方法:  </p>
 <ul>
-<li><p>SPI<br>SPI的用法参考文章<a href="https://blog.csdn.net/BAT_os/article/details/83042569" target="_blank" rel="noopener">https://blog.csdn.net/BAT_os/article/details/83042569</a>,下面用代码说明:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 在META-INF/services中添加文件com.xxx.BaseApplication,并写入com.xxx.AliPay,com.xxx.WxPay</span><br><span class="line">2. 获取Pay所有实现,并注册</span><br><span class="line">ServiceLoader&lt;Pay&gt; payLoader = ServiceLoader.load(Pay.class);</span><br><span class="line">for(Pay pay:payLoader)&#123;</span><br><span class="line">    PayTypeUtil.putService(pay);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>@PostConstruct<br>Java EE5引入了<code>@PostConstruct</code>(与之对应的是@PreDestroy),作用于Servlet生命周期的注解,实现Bean初始化之前的自定义操作,关于<code>@PostConstruct</code>可参考<a href="https://docs.oracle.com/javaee/5/api/javax/annotation/PostConstruct.html" target="_blank" rel="noopener">https://docs.oracle.com/javaee/5/api/javax/annotation/PostConstruct.html</a>,具体代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class AliPay implements Pay&#123;</span><br><span class="line">    @PostConstruct</span><br><span class="line">    public void init()&#123;</span><br><span class="line">       PayTypeUtil.putService(this); </span><br><span class="line">    &#125;</span><br><span class="line">    public void toPay()&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    public Integer payType()&#123;</span><br><span class="line">        // 返回支付类型枚举</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public class WxPay implements Pay&#123;</span><br><span class="line">    @PostConstruct</span><br><span class="line">    public void init()&#123;</span><br><span class="line">       PayTypeUtil.putService(this); </span><br><span class="line">    &#125;</span><br><span class="line">    public void toPay()&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    public Integer payType()&#123;</span><br><span class="line">        // 返回支付类型枚举</span><br><span class="line">        return 2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>SPI<br>SPI的用法参考文章<a href="https://blog.csdn.net/BAT_os/article/details/83042569" target="_blank" rel="noopener">https://blog.csdn.net/BAT_os/article/details/83042569</a>,下面用代码说明:<br><code>`</code></li>
 </ul>
-<p>以上简单说明策略模式的用法,根据实际的业务场景结合使用.</p>
+<ol>
+<li>在META-INF/services中添加文件com.xxx.BaseApplication,并写入com.xxx.AliPay,com.xxx.WxPay</li>
+<li>获取Pay所有实现,并注册<br>ServiceLoader<pay> payLoader = ServiceLoader.load(Pay.class);<br>for(Pay pay:payLoader){<br> PayTypeUtil.putService(pay);<br>}<br><code>`</code></pay></li>
+</ol>
+<ul>
+<li>@PostConstruct<br>Java EE5引入了<code>@PostConstruct</code>(与之对应的是@PreDestroy),作用于Servlet生命周期的注解,实现Bean初始化之前的自定义操作,关于<code>@PostConstruct</code>可参考<a href="https://docs.oracle.com/javaee/5/api/javax/annotation/PostConstruct.html" target="_blank" rel="noopener">https://docs.oracle.com/javaee/5/api/javax/annotation/PostConstruct.html</a>,具体代码:<pre><code>public class AliPay implements Pay{
+  @PostConstruct
+  public void init(){
+     PayTypeUtil.putService(this); 
+  }
+  public void toPay(){
+      ...
+  }
+  public Integer payType(){
+      // 返回支付类型枚举
+      return 1;
+  }
+}
+public class WxPay implements Pay{
+  @PostConstruct
+  public void init(){
+     PayTypeUtil.putService(this); 
+  }
+  public void toPay(){
+      ...
+  }
+  public Integer payType(){
+      // 返回支付类型枚举
+      return 2;
+  }
+}
+</code></pre>以上简单说明策略模式的用法,根据实际的业务场景结合使用.</li>
+</ul>
 
       
     </div>

@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -511,21 +512,167 @@
 zoo.cfg配置文件如下:
 </code></pre></li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># The number of milliseconds of each tick</span><br><span class="line">tickTime=2000</span><br><span class="line"># The number of ticks that the initial </span><br><span class="line"># synchronization phase can take</span><br><span class="line">initLimit=10</span><br><span class="line"># The number of ticks that can pass between </span><br><span class="line"># sending a request and getting an acknowledgement</span><br><span class="line">syncLimit=5</span><br><span class="line"># the directory where the snapshot is stored.</span><br><span class="line">dataDir=/Users/wenchao.wang/dev/zookeeper/data</span><br><span class="line">dataLogDir=/Users/wenchao.wang/dev/zookeeper/logs</span><br><span class="line"></span><br><span class="line"># the port at which the clients will connect</span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
+<pre><code>        # The number of milliseconds of each tick
+        tickTime=2000
+        # The number of ticks that the initial 
+        # synchronization phase can take
+        initLimit=10
+        # The number of ticks that can pass between 
+        # sending a request and getting an acknowledgement
+        syncLimit=5
+        # the directory where the snapshot is stored.
+        dataDir=/Users/wenchao.wang/dev/zookeeper/data
+        dataLogDir=/Users/wenchao.wang/dev/zookeeper/logs
+
+        # the port at which the clients will connect
+        clientPort=2181
+</code></pre><ul>
+<li><p>集群配置<br>一般zookeeper集群由三台及以上机器组成,只要集群中存在超过一半的机器能够正常工作，那么整个集群就能够正常对外服务.下面将安装三个节点的zookeeper集群,即一个leader、两个follower. </p>
 <ul>
-<li>集群配置<br>一般zookeeper集群由三台及以上机器组成,只要集群中存在超过一半的机器能够正常工作，那么整个集群就能够正常对外服务.下面将安装三个节点的zookeeper集群,即一个leader、两个follower. <ul>
 <li>下载安装包、解压(同上)  </li>
 <li>把解压包copy三份,分别命名为zookeeper-node-1、zookeeper-node-2、zookeeper-node-3  </li>
 <li>分别copy三个节点下conf/zoo_sample.cfg文件重命名为zoo.cfg,并修改配置  </li>
 <li>然后在zookeeper-node-1、zookeeper-node-2、zookeeper-node-3同级目录下创建目录zookeeper-data/8001/data、zookeeper-data/8002/data、zookeeper-data/8003/data、zookeeper-data/8001/logs、zookeeper-data/8002/logs、zookeeper-data/8003/logs  </li>
 <li>在zookeeper-data/8001/data、zookeeper-data/8002/data、zookeeper-data/8003/data目录下分别创建文件myid,分别在myid中写入1,2,3</li>
-<li>/bin/zkServer.sh start 分别启动三台服务<br>zoo.cfg配置如下:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># The number of milliseconds of each tick</span><br><span class="line"># The number of milliseconds of each tick</span><br><span class="line">tickTime=2000</span><br><span class="line"># The number of ticks that the initial</span><br><span class="line"># synchronization phase can take</span><br><span class="line">initLimit=10</span><br><span class="line"># The number of ticks that can pass between</span><br><span class="line"># sending a request and getting an acknowledgement</span><br><span class="line">syncLimit=5</span><br><span class="line"># the directory where the snapshot is stored.</span><br><span class="line">dataDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8002/data</span><br><span class="line"># dataDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8001/data</span><br><span class="line"># dataDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8003/data</span><br><span class="line">dataLogDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8002/logs</span><br><span class="line"># dataLogDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8001/logs</span><br><span class="line"># dataLogDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8003/logs</span><br><span class="line"></span><br><span class="line"># the port at which the clients will connect</span><br><span class="line">clientPort=2182</span><br><span class="line"># clientPort=2181</span><br><span class="line"># clientPort=2183</span><br><span class="line"></span><br><span class="line"># server.number (number是1、2、3)分别对应myid中的内容，</span><br><span class="line"># zookeeper也是通过server后面的数字以及dataDir下的myid内容来判断zookeeper集群的关系的（哪个server对应哪个地址），然后后面两个端</span><br><span class="line"># 口号，一个是跟服务器发送链接的端口，另一个是接受服务器链接的端口</span><br><span class="line">server.1=127.0.0.1:8001:9001</span><br><span class="line">server.2=127.0.0.1:8002:9002</span><br><span class="line">server.3=127.0.0.1:8003:9003</span><br></pre></td></tr></table></figure>
-</li>
+<li><p>/bin/zkServer.sh start 分别启动三台服务<br>zoo.cfg配置如下:</p>
+<pre><code>  # The number of milliseconds of each tick
+  # The number of milliseconds of each tick
+  tickTime=2000
+  # The number of ticks that the initial
+  # synchronization phase can take
+  initLimit=10
+  # The number of ticks that can pass between
+  # sending a request and getting an acknowledgement
+  syncLimit=5
+  # the directory where the snapshot is stored.
+  dataDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8002/data
+  # dataDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8001/data
+  # dataDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8003/data
+  dataLogDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8002/logs
+  # dataLogDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8001/logs
+  # dataLogDir=/Users/wenchao.wang/dev/zookeeper-cluster/zookeeper-data/8003/logs
+
+  # the port at which the clients will connect
+  clientPort=2182
+  # clientPort=2181
+  # clientPort=2183
+
+  # server.number (number是1、2、3)分别对应myid中的内容，
+  # zookeeper也是通过server后面的数字以及dataDir下的myid内容来判断zookeeper集群的关系的（哪个server对应哪个地址），然后后面两个端
+  # 口号，一个是跟服务器发送链接的端口，另一个是接受服务器链接的端口
+  server.1=127.0.0.1:8001:9001
+  server.2=127.0.0.1:8002:9002
+  server.3=127.0.0.1:8003:9003
+</code></pre></li>
 </ul>
 </li>
 </ul>
-<p>下面是在本地机器上配置的zookeeper集群三级目录树状图:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">/Users/wenchao.wang/dev/zookeeper-cluster</span><br><span class="line">├── zookeeper-data</span><br><span class="line">│   ├── 8001</span><br><span class="line">│   │   ├── data</span><br><span class="line">│   │   └── logs</span><br><span class="line">│   ├── 8002</span><br><span class="line">│   │   ├── data</span><br><span class="line">│   │   └── logs</span><br><span class="line">│   └── 8003</span><br><span class="line">│       ├── data</span><br><span class="line">│       └── logs</span><br><span class="line">├── zookeeper-node-1</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── conf</span><br><span class="line">│   ├── contrib</span><br><span class="line">│   │   ├── ZooInspector</span><br><span class="line">│   │   ├── bookkeeper</span><br><span class="line">│   │   ├── fatjar</span><br><span class="line">│   │   ├── rest</span><br><span class="line">│   │   ├── zkfuse</span><br><span class="line">│   │   ├── zkperl</span><br><span class="line">│   │   ├── zkpython</span><br><span class="line">│   │   └── zktreeutil</span><br><span class="line">│   ├── data</span><br><span class="line">│   ├── dist-maven</span><br><span class="line">│   ├── docs</span><br><span class="line">│   │   ├── api</span><br><span class="line">│   │   ├── images</span><br><span class="line">│   │   ├── jdiff</span><br><span class="line">│   │   └── skin</span><br><span class="line">│   ├── lib</span><br><span class="line">│   │   ├── cobertura</span><br><span class="line">│   │   └── jdiff</span><br><span class="line">│   ├── recipes</span><br><span class="line">│   │   ├── lock</span><br><span class="line">│   │   └── queue</span><br><span class="line">│   └── src</span><br><span class="line">│       ├── c</span><br><span class="line">│       ├── contrib</span><br><span class="line">│       ├── docs</span><br><span class="line">│       ├── java</span><br><span class="line">│       └── recipes</span><br><span class="line">├── zookeeper-node-2</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── conf</span><br><span class="line">│   ├── contrib</span><br><span class="line">│   │   ├── ZooInspector</span><br><span class="line">│   │   ├── bookkeeper</span><br><span class="line">│   │   ├── fatjar</span><br><span class="line">│   │   ├── rest</span><br><span class="line">│   │   ├── zkfuse</span><br><span class="line">│   │   ├── zkperl</span><br><span class="line">│   │   ├── zkpython</span><br><span class="line">│   │   └── zktreeutil</span><br><span class="line">│   ├── data</span><br><span class="line">│   ├── dist-maven</span><br><span class="line">│   ├── docs</span><br><span class="line">│   │   ├── api</span><br><span class="line">│   │   ├── images</span><br><span class="line">│   │   ├── jdiff</span><br><span class="line">│   │   └── skin</span><br><span class="line">│   ├── lib</span><br><span class="line">│   │   ├── cobertura</span><br><span class="line">│   │   └── jdiff</span><br><span class="line">│   ├── recipes</span><br><span class="line">│   │   ├── lock</span><br><span class="line">│   │   └── queue</span><br><span class="line">│   └── src</span><br><span class="line">│       ├── c</span><br><span class="line">│       ├── contrib</span><br><span class="line">│       ├── docs</span><br><span class="line">│       ├── java</span><br><span class="line">│       └── recipes</span><br><span class="line">└── zookeeper-node-3</span><br><span class="line">    ├── bin</span><br><span class="line">    ├── conf</span><br><span class="line">    ├── contrib</span><br><span class="line">    │   ├── ZooInspector</span><br><span class="line">    │   ├── bookkeeper</span><br><span class="line">    │   ├── fatjar</span><br><span class="line">    │   ├── rest</span><br><span class="line">    │   ├── zkfuse</span><br><span class="line">    │   ├── zkperl</span><br><span class="line">    │   ├── zkpython</span><br><span class="line">    │   └── zktreeutil</span><br><span class="line">    ├── data</span><br><span class="line">    ├── dist-maven</span><br><span class="line">    ├── docs</span><br><span class="line">    │   ├── api</span><br><span class="line">    │   ├── images</span><br><span class="line">    │   ├── jdiff</span><br><span class="line">    │   └── skin</span><br><span class="line">    ├── lib</span><br><span class="line">    │   ├── cobertura</span><br><span class="line">    │   └── jdiff</span><br><span class="line">    ├── recipes</span><br><span class="line">    │   ├── lock</span><br><span class="line">    │   └── queue</span><br><span class="line">    └── src</span><br><span class="line">        ├── c</span><br><span class="line">        ├── contrib</span><br><span class="line">        ├── docs</span><br><span class="line">        ├── java</span><br><span class="line">        └── recipes</span><br></pre></td></tr></table></figure></p>
-<h4 id="客户端命令"><a href="#客户端命令" class="headerlink" title="客户端命令"></a>客户端命令</h4><p>在bin/目录下执行<code>./zkCli.sh</code>,登录客户端,输入任意字符回车,会看见命令提示,下面简单的介绍一些常用的命令:</p>
+<p>下面是在本地机器上配置的zookeeper集群三级目录树状图:</p>
+<pre><code>        /Users/wenchao.wang/dev/zookeeper-cluster
+        ├── zookeeper-data
+        │   ├── 8001
+        │   │   ├── data
+        │   │   └── logs
+        │   ├── 8002
+        │   │   ├── data
+        │   │   └── logs
+        │   └── 8003
+        │       ├── data
+        │       └── logs
+        ├── zookeeper-node-1
+        │   ├── bin
+        │   ├── conf
+        │   ├── contrib
+        │   │   ├── ZooInspector
+        │   │   ├── bookkeeper
+        │   │   ├── fatjar
+        │   │   ├── rest
+        │   │   ├── zkfuse
+        │   │   ├── zkperl
+        │   │   ├── zkpython
+        │   │   └── zktreeutil
+        │   ├── data
+        │   ├── dist-maven
+        │   ├── docs
+        │   │   ├── api
+        │   │   ├── images
+        │   │   ├── jdiff
+        │   │   └── skin
+        │   ├── lib
+        │   │   ├── cobertura
+        │   │   └── jdiff
+        │   ├── recipes
+        │   │   ├── lock
+        │   │   └── queue
+        │   └── src
+        │       ├── c
+        │       ├── contrib
+        │       ├── docs
+        │       ├── java
+        │       └── recipes
+        ├── zookeeper-node-2
+        │   ├── bin
+        │   ├── conf
+        │   ├── contrib
+        │   │   ├── ZooInspector
+        │   │   ├── bookkeeper
+        │   │   ├── fatjar
+        │   │   ├── rest
+        │   │   ├── zkfuse
+        │   │   ├── zkperl
+        │   │   ├── zkpython
+        │   │   └── zktreeutil
+        │   ├── data
+        │   ├── dist-maven
+        │   ├── docs
+        │   │   ├── api
+        │   │   ├── images
+        │   │   ├── jdiff
+        │   │   └── skin
+        │   ├── lib
+        │   │   ├── cobertura
+        │   │   └── jdiff
+        │   ├── recipes
+        │   │   ├── lock
+        │   │   └── queue
+        │   └── src
+        │       ├── c
+        │       ├── contrib
+        │       ├── docs
+        │       ├── java
+        │       └── recipes
+        └── zookeeper-node-3
+            ├── bin
+            ├── conf
+            ├── contrib
+            │   ├── ZooInspector
+            │   ├── bookkeeper
+            │   ├── fatjar
+            │   ├── rest
+            │   ├── zkfuse
+            │   ├── zkperl
+            │   ├── zkpython
+            │   └── zktreeutil
+            ├── data
+            ├── dist-maven
+            ├── docs
+            │   ├── api
+            │   ├── images
+            │   ├── jdiff
+            │   └── skin
+            ├── lib
+            │   ├── cobertura
+            │   └── jdiff
+            ├── recipes
+            │   ├── lock
+            │   └── queue
+            └── src
+                ├── c
+                ├── contrib
+                ├── docs
+                ├── java
+                └── recipes
+</code></pre><h4 id="客户端命令"><a href="#客户端命令" class="headerlink" title="客户端命令"></a>客户端命令</h4><p>在bin/目录下执行<code>./zkCli.sh</code>,登录客户端,输入任意字符回车,会看见命令提示,下面简单的介绍一些常用的命令:</p>
 <table>
 <thead>
 <tr>
@@ -568,10 +715,147 @@ zoo.cfg配置文件如下:
 </tr>
 </tbody>
 </table>
-<h4 id="Java客户端"><a href="#Java客户端" class="headerlink" title="Java客户端"></a>Java客户端</h4><p>下面通过Java代码简单说明,服务端往zookeeper中添加节点信息,客户端订阅该节点,当节点发生变化时,刷新节点数据,首先添加依赖包:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;org.apache.zookeeper&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;zookeeper&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;3.4.8&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
-<p>ZookeeperServer:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description</span><br><span class="line"> * @date 2019/4/18 下午4:39</span><br><span class="line"> */</span><br><span class="line">public class ZookeeperServer extends AbstractZoo &#123;</span><br><span class="line"></span><br><span class="line">    // 创建链接</span><br><span class="line">    @Override</span><br><span class="line">    protected ZooKeeper connect() &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            zooKeeper = new ZooKeeper(connectString, sessionTimeout, new Watcher() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void process(WatchedEvent event) &#123;</span><br><span class="line">                    // 当连接状态时,处理逻辑.关于状态参考org.apache.zookeeper.Watcher.Event.KeeperState</span><br><span class="line">                    if (Event.KeeperState.SyncConnected.equals(event.getState())) &#123;</span><br><span class="line">                        System.out.println(&quot;====&gt;&quot; + event.getPath() + &quot;;&quot; + event.getType());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return zooKeeper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 创建节点</span><br><span class="line">    public ZooKeeper serverRegister(Integer type, String data) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Stat stat = connect().exists(CREATE_SERVER_NODE, true);</span><br><span class="line">            switch (type) &#123;</span><br><span class="line">                case 1:</span><br><span class="line">                    // 同步创建节点</span><br><span class="line">                    if (Objects.isNull(stat)) &#123;</span><br><span class="line">                        zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">//                        zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);  顺序节点</span><br><span class="line">                    &#125;</span><br><span class="line">                    break;</span><br><span class="line">                case 2:</span><br><span class="line">                    // 异步创建节点</span><br><span class="line">                    zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT, new CallBack(), &quot;异步创建节点&quot;);</span><br><span class="line">//                    zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL, new CallBack(), &quot;异步创建节点&quot;);  顺序节点</span><br><span class="line">                    break;</span><br><span class="line">                default:</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (KeeperException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return zooKeeper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        ZookeeperServer zoo = new ZookeeperServer();</span><br><span class="line">        zoo.serverRegister(2, &quot;d,&quot;);</span><br><span class="line">        Thread.sleep(999999);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static class CallBack implements AsyncCallback.StringCallback &#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void processResult(int rc, String path, Object ctx, String name) &#123;</span><br><span class="line">            System.out.println(&quot;rc=&quot; + rc + &quot;;&quot; + &quot;path=&quot; + path + &quot;;&quot; + &quot;ctx=&quot; + ctx + &quot;;&quot; + &quot;name=&quot; + name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public abstract class AbstractZoo &#123;</span><br><span class="line">    protected static final String connectString = &quot;127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183&quot;;</span><br><span class="line">    protected static final int sessionTimeout = 10000;</span><br><span class="line">    protected static final String CREATE_SERVER_NODE = &quot;/lios/server/g&quot;;</span><br><span class="line">    protected static final String GET_SERVER_NODE = &quot;/lios/server&quot;;</span><br><span class="line">    protected static ZooKeeper zooKeeper = null;</span><br><span class="line"></span><br><span class="line">    // 创建链接</span><br><span class="line">    protected abstract ZooKeeper connect();</span><br><span class="line"></span><br><span class="line">    // 获取节点</span><br><span class="line">    protected void getNodeData() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>ZookeeperClient:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">public class ZookeeperClient extends AbstractZoo &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected ZooKeeper connect() &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            zooKeeper = new ZooKeeper(connectString, sessionTimeout, new Watcher() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void process(WatchedEvent event) &#123;</span><br><span class="line">                    if (Event.KeeperState.SyncConnected.equals(event.getState())) &#123;</span><br><span class="line">                        // 刷新节点</span><br><span class="line">                        getNodeData();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return zooKeeper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void getNodeData() &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            List&lt;String&gt; childList = zooKeeper.getChildren(GET_SERVER_NODE, true);</span><br><span class="line">            for (String addr : childList) &#123;</span><br><span class="line">                byte[] data = zooKeeper.getData(GET_SERVER_NODE + &quot;/&quot; + addr, false, null);</span><br><span class="line">                System.out.println(&quot;=======&gt;节点addr:&quot; + addr + &quot;;&quot; + &quot;data:&quot; + new String(data));</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(&quot;==================&gt;刷新完成&quot;);</span><br><span class="line">        &#125; catch (KeeperException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AbstractZoo client = new ZookeeperClient();</span><br><span class="line">        client.connect();</span><br><span class="line">        client.getNodeData();</span><br><span class="line">        try &#123;</span><br><span class="line">            Thread.sleep(99999999);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>发现ZookeeperServer中只要在<code>/lios/server</code>下新增或删除,ZookeeperClient中都会刷新该节点下的列表,实际中可通过<code>./zkCli.sh</code>在命令下操作节点,观察ZookeeperClient下刷新状态.</p>
+<h4 id="Java客户端"><a href="#Java客户端" class="headerlink" title="Java客户端"></a>Java客户端</h4><p>下面通过Java代码简单说明,服务端往zookeeper中添加节点信息,客户端订阅该节点,当节点发生变化时,刷新节点数据,首先添加依赖包:</p>
+<pre><code>&lt;dependency&gt;
+     &lt;groupId&gt;org.apache.zookeeper&lt;/groupId&gt;
+     &lt;artifactId&gt;zookeeper&lt;/artifactId&gt;
+     &lt;version&gt;3.4.8&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><p>ZookeeperServer:</p>
+<pre><code>/**
+ * @author LiosWong
+ * @description
+ * @date 2019/4/18 下午4:39
+ */
+public class ZookeeperServer extends AbstractZoo {
+
+    // 创建链接
+    @Override
+    protected ZooKeeper connect() {
+        try {
+            zooKeeper = new ZooKeeper(connectString, sessionTimeout, new Watcher() {
+                @Override
+                public void process(WatchedEvent event) {
+                    // 当连接状态时,处理逻辑.关于状态参考org.apache.zookeeper.Watcher.Event.KeeperState
+                    if (Event.KeeperState.SyncConnected.equals(event.getState())) {
+                        System.out.println(&quot;====&gt;&quot; + event.getPath() + &quot;;&quot; + event.getType());
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return zooKeeper;
+    }
+
+    // 创建节点
+    public ZooKeeper serverRegister(Integer type, String data) {
+        try {
+            Stat stat = connect().exists(CREATE_SERVER_NODE, true);
+            switch (type) {
+                case 1:
+                    // 同步创建节点
+                    if (Objects.isNull(stat)) {
+                        zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+//                        zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);  顺序节点
+                    }
+                    break;
+                case 2:
+                    // 异步创建节点
+                    zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT, new CallBack(), &quot;异步创建节点&quot;);
+//                    zooKeeper.create(CREATE_SERVER_NODE, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL, new CallBack(), &quot;异步创建节点&quot;);  顺序节点
+                    break;
+                default:
+                    break;
+            }
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return zooKeeper;
+    }
+
+
+    public static void main(String[] args) throws InterruptedException {
+        ZookeeperServer zoo = new ZookeeperServer();
+        zoo.serverRegister(2, &quot;d,&quot;);
+        Thread.sleep(999999);
+    }
+
+    private static class CallBack implements AsyncCallback.StringCallback {
+
+        @Override
+        public void processResult(int rc, String path, Object ctx, String name) {
+            System.out.println(&quot;rc=&quot; + rc + &quot;;&quot; + &quot;path=&quot; + path + &quot;;&quot; + &quot;ctx=&quot; + ctx + &quot;;&quot; + &quot;name=&quot; + name);
+        }
+    }
+}
+
+public abstract class AbstractZoo {
+    protected static final String connectString = &quot;127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183&quot;;
+    protected static final int sessionTimeout = 10000;
+    protected static final String CREATE_SERVER_NODE = &quot;/lios/server/g&quot;;
+    protected static final String GET_SERVER_NODE = &quot;/lios/server&quot;;
+    protected static ZooKeeper zooKeeper = null;
+
+    // 创建链接
+    protected abstract ZooKeeper connect();
+
+    // 获取节点
+    protected void getNodeData() {
+
+    }
+}
+
+</code></pre><p>ZookeeperClient:</p>
+<pre><code>public class ZookeeperClient extends AbstractZoo {
+    @Override
+    protected ZooKeeper connect() {
+        try {
+            zooKeeper = new ZooKeeper(connectString, sessionTimeout, new Watcher() {
+                @Override
+                public void process(WatchedEvent event) {
+                    if (Event.KeeperState.SyncConnected.equals(event.getState())) {
+                        // 刷新节点
+                        getNodeData();
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return zooKeeper;
+    }
+
+    @Override
+    protected void getNodeData() {
+        try {
+            List&lt;String&gt; childList = zooKeeper.getChildren(GET_SERVER_NODE, true);
+            for (String addr : childList) {
+                byte[] data = zooKeeper.getData(GET_SERVER_NODE + &quot;/&quot; + addr, false, null);
+                System.out.println(&quot;=======&gt;节点addr:&quot; + addr + &quot;;&quot; + &quot;data:&quot; + new String(data));
+            }
+            System.out.println(&quot;==================&gt;刷新完成&quot;);
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        AbstractZoo client = new ZookeeperClient();
+        client.connect();
+        client.getNodeData();
+        try {
+            Thread.sleep(99999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre><p>发现ZookeeperServer中只要在<code>/lios/server</code>下新增或删除,ZookeeperClient中都会刷新该节点下的列表,实际中可通过<code>./zkCli.sh</code>在命令下操作节点,观察ZookeeperClient下刷新状态.</p>
 
       
     </div>

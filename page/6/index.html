@@ -168,7 +168,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -499,7 +500,9 @@
           
             <p>
               平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。
-重定向@RequestMapping(value = &quot;/redirect&quot;,method = RequestMethod.GET)@ResponseBodypublic 
+重定向@RequestMapping(value = &quot;/redirect&quot;,method = RequestMethod.GET)
+@ResponseBody
+publi
               ...
             </p>
           <!--noindex-->
@@ -684,7 +687,8 @@
         
           
             <p>
-              ThreadLocal是什么* This class provides thread-local variables.  These variables differ from * their normal counterparts in that each thread that accesses
+              ThreadLocal是什么* This class provides thread-local variables.  These variables differ from
+ * their normal counterparts in that each thread that accesse
               ...
             </p>
           <!--noindex-->
@@ -752,7 +756,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/回调函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/springboot、redis整合/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -772,7 +776,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/回调函数/" class="post-title-link" itemprop="url">回调函数</a>
+                <a href="/2019/02/16/springboot、redis整合/" class="post-title-link" itemprop="url">springboot、redis整合</a>
               
             
           </h1>
@@ -831,7 +835,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
 
                 
                 
@@ -869,16 +873,17 @@
         
           
             <p>
-              
-回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科–  
-
-什么是回
+              redis安装
+下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz
+解压 sudo tar -zxvf redis-3.2.6.tar.gz
+安装gcc sudo apt-get install gcc
+编译、安装 su
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/回调函数/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/springboot、redis整合/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1057,13 +1062,581 @@
         
           
             <p>
-              使用spring-data-redis的模版,客户端使用jedis,下面配置bean:@Configurationpublic class RedisConfig &#123;    @Autowired    @Qualifier(&quot;jedisPoolConfig&quot;)    J
+              使用spring-data-redis的模版,客户端使用jedis,下面配置bean:
+@Configuration
+public class RedisConfig {
+    @Autowired
+    @Qualifier(&quot;jedisPoolConfig&quot;)
+    J
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
               <a class="btn" href="/2019/02/16/javaConfig整合spring、redis/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/Spring源码之解析并注册BeanDefinition-一/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong">
+      <meta itemprop="description" content="Less is more">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" class="post-title-link" itemprop="url">Spring源码之解析并注册BeanDefinition(一)</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-07 23:55:05" itemprop="dateModified" datetime="2019-09-07T23:55:05+08:00">2019-09-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程:
+ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/并行执行任务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong">
+      <meta itemprop="description" content="Less is more">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/16/并行执行任务/" class="post-title-link" itemprop="url">并行执行任务</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              
+需求
+在app列表首页,展示多个item,并有分页;而每个item里后台都会调用一个http请求,判断当前item的状态
+
+分析
+为了更好的用体验,无疑需要使用多线程并行处理http请求,而且还需要拿到每个线程的执行结果.上面的分析,有两个问题需要解决:  
+1. 如何创建线程池  
+2. 如何拿
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/16/并行执行任务/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/spring、mybatis整合源码简单分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong">
+      <meta itemprop="description" content="Less is more">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/16/spring、mybatis整合源码简单分析/" class="post-title-link" itemprop="url">spring、mybatis整合源码简单分析</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mybatis/" itemprop="url" rel="index"><span itemprop="name">mybatis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              配置&lt;bean id=&quot;localDataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;c
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/16/spring、mybatis整合源码简单分析/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1242,7 +1815,9 @@
         
           
             <p>
-              Indicates whether or not this bean is to be lazily initialized.If false, it will be instantiated on startup by bean factoriesthat perform eager initia
+              Indicates whether or not this bean is to be lazily initialized.
+If false, it will be instantiated on startup by bean factories
+that perform eager init
               ...
             </p>
           <!--noindex-->
@@ -1496,7 +2071,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/spring、mybatis整合源码简单分析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/简话bean加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -1516,7 +2091,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/spring、mybatis整合源码简单分析/" class="post-title-link" itemprop="url">spring、mybatis整合源码简单分析</a>
+                <a href="/2019/02/16/简话bean加载/" class="post-title-link" itemprop="url">简话bean加载</a>
               
             
           </h1>
@@ -1558,192 +2133,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mybatis/" itemprop="url" rel="index"><span itemprop="name">mybatis</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              配置&lt;bean id=&quot;localDataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;c
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/spring、mybatis整合源码简单分析/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-<div>
-      
-</div>
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/Spring源码之解析并注册BeanDefinition-一/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LiosWong">
-      <meta itemprop="description" content="Less is more">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="后端沉思录">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" class="post-title-link" itemprop="url">Spring源码之解析并注册BeanDefinition(一)</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-            
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-07 23:55:05" itemprop="dateModified" datetime="2019-09-07T23:55:05+08:00">2019-09-07</time>
+                <time title="Modified: 2019-09-07 23:54:50" itemprop="dateModified" datetime="2019-09-07T23:54:50+08:00">2019-09-07</time>
               
             
           </span>
@@ -1798,395 +2188,16 @@
         
           
             <p>
-              最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程:ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCont
+              首先看示例代码:
+&lt;!--no-lazy-init   scope=singleton--&gt;
+&lt;bean class=&quot;com.lios.service.test.LiosTestA&quot; id=&quot;liosTestA&quot;/&gt;
+&lt;bean
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-<div>
-      
-</div>
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/springboot、redis整合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LiosWong">
-      <meta itemprop="description" content="Less is more">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="后端沉思录">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/16/springboot、redis整合/" class="post-title-link" itemprop="url">springboot、redis整合</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-            
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              redis安装
-下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz
-
-解压 sudo tar -zxvf redis-3.2.6.tar.gz
-安装gcc sudo apt-get install gcc
-编译、安装 s
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/springboot、redis整合/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-<div>
-      
-</div>
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/并行执行任务/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LiosWong">
-      <meta itemprop="description" content="Less is more">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="后端沉思录">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/02/16/并行执行任务/" class="post-title-link" itemprop="url">并行执行任务</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-            
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              
-需求
-在app列表首页,展示多个item,并有分页;而每个item里后台都会调用一个http请求,判断当前item的状态
-
-分析
-为了更好的用体验,无疑需要使用多线程并行处理http请求,而且还需要拿到每个线程的执行结果.上面的分析,有两个问题需要解决:  
-1. 如何创建线程池  
-2. 如何拿
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/并行执行任务/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/简话bean加载/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

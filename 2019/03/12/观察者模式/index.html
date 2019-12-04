@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,15 +502,138 @@
       
 
       
-        <p>观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。<a href="https://zh.wikipedia.org/wiki/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">–维基百科</a><br>生活中,顾客(Customer)去商店购买电器,但是由于缺货,顾客留下手机号码,告知店主(Manager)有货时及时通知;即顾客(观察者)订阅了店主(被订阅者)的到货的服务,当有货时,店家立即通知顾客.<br>下面通过demo说明,观察者抽象类Observer:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public abstract class Observer &#123;</span><br><span class="line">    abstract void notice();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>观察者A、B:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class CustomerA extends Observer&#123;</span><br><span class="line">    @Override</span><br><span class="line">    void notice() &#123;</span><br><span class="line">        System.out.println(&quot;CustomerA已经收到到货通知&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public class CustomerB extends Observer&#123;</span><br><span class="line">    @Override</span><br><span class="line">    void notice() &#123;</span><br><span class="line">        System.out.println(&quot;CustomerB已经收到到货通知&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>被观察者抽象类Observable:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public abstract class Observable &#123;</span><br><span class="line">    List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();</span><br><span class="line">    // 添加观察者(注册观察者;观察者订阅通知)</span><br><span class="line">    protected Observable addObserver(Observer observer)&#123;</span><br><span class="line">        observers.add(observer);</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line">    // 删除观察者</span><br><span class="line">    protected Observable delObserver(Observer observer)&#123;</span><br><span class="line">        observers.remove(observer);</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line">    // 通知</span><br><span class="line">    protected void notice()&#123;</span><br><span class="line">        observers.forEach(p-&gt;&#123;</span><br><span class="line">            p.notice();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>被观察者:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Manager extends Observable&#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void notice() &#123;</span><br><span class="line">        observers.forEach(p-&gt;&#123;</span><br><span class="line">            p.notice();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>测试:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Observer observerA = new CustomerA();</span><br><span class="line">        Observer observerB = new CustomerB();</span><br><span class="line">        Observable observable = new Manager();</span><br><span class="line">        // 观察者订阅通知</span><br><span class="line">        observable.addObserver(observerA)</span><br><span class="line">                .addObserver(observerB);</span><br><span class="line">        observable.notice();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>java.util包下的<code>Observer</code>、<code>Observable</code>,是java为观察者模式提供的支持类,上面的demo完全可以通过这两个类去完成:<br>观察者Customer:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   public class Customer implements Observer &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void update(Observable o, Object arg) &#123;</span><br><span class="line">        System.out.println(&quot;Customer已经收到消息&quot;);</span><br><span class="line">        // 删除当前订阅者</span><br><span class="line">        o.deleteObserver(this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>被观察者Manager:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public class Manager extends Observable&#123;</span><br><span class="line">    public Manager() &#123;</span><br><span class="line">        super();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 添加观察者</span><br><span class="line">    @Override</span><br><span class="line">    public synchronized void addObserver(Observer o) &#123;</span><br><span class="line">        super.addObserver(o);</span><br><span class="line">        // 标记被订阅者已改变,否则无法通知到观察者</span><br><span class="line">        super.setChanged();</span><br><span class="line">    &#125;</span><br><span class="line">    // 删除观察者</span><br><span class="line">    @Override</span><br><span class="line">    public synchronized void deleteObserver(Observer o) &#123;</span><br><span class="line">        super.deleteObserver(o);</span><br><span class="line">    &#125;</span><br><span class="line">    // 发送通知</span><br><span class="line">    @Override</span><br><span class="line">    public void notifyObservers() &#123;</span><br><span class="line">        super.notifyObservers();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void notifyObservers(Object arg) &#123;</span><br><span class="line">        super.notifyObservers(arg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public synchronized void deleteObservers() &#123;</span><br><span class="line">        super.deleteObservers();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected synchronized void setChanged() &#123;</span><br><span class="line">        super.setChanged();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected synchronized void clearChanged() &#123;</span><br><span class="line">        super.clearChanged();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public synchronized boolean hasChanged() &#123;</span><br><span class="line">        return super.hasChanged();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public synchronized int countObservers() &#123;</span><br><span class="line">        return super.countObservers();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>测试:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Observer observer = new Customer();</span><br><span class="line">        Observable observable = new Manager();</span><br><span class="line">        observable.addObserver(observer);</span><br><span class="line">        observable.notifyObservers();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。<a href="https://zh.wikipedia.org/wiki/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">–维基百科</a><br>生活中,顾客(Customer)去商店购买电器,但是由于缺货,顾客留下手机号码,告知店主(Manager)有货时及时通知;即顾客(观察者)订阅了店主(被订阅者)的到货的服务,当有货时,店家立即通知顾客.<br>下面通过demo说明,观察者抽象类Observer:</p>
+<pre><code>public abstract class Observer {
+    abstract void notice();
+}
+</code></pre><p>观察者A、B:</p>
+<pre><code>public class CustomerA extends Observer{
+    @Override
+    void notice() {
+        System.out.println(&quot;CustomerA已经收到到货通知&quot;);
+    }
+}
+public class CustomerB extends Observer{
+    @Override
+    void notice() {
+        System.out.println(&quot;CustomerB已经收到到货通知&quot;);
+    }
+}
+</code></pre><p>被观察者抽象类Observable:</p>
+<pre><code>public abstract class Observable {
+    List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();
+    // 添加观察者(注册观察者;观察者订阅通知)
+    protected Observable addObserver(Observer observer){
+        observers.add(observer);
+        return this;
+    }
+    // 删除观察者
+    protected Observable delObserver(Observer observer){
+        observers.remove(observer);
+        return this;
+    }
+    // 通知
+    protected void notice(){
+        observers.forEach(p-&gt;{
+            p.notice();
+        });
+    }
 
+}
+</code></pre><p>被观察者:</p>
+<pre><code>public class Manager extends Observable{
+    @Override
+    protected void notice() {
+        observers.forEach(p-&gt;{
+            p.notice();
+        });
+    }
+}
+</code></pre><p>测试:</p>
+<pre><code>public class Test {
+    public static void main(String[] args) {
+        Observer observerA = new CustomerA();
+        Observer observerB = new CustomerB();
+        Observable observable = new Manager();
+        // 观察者订阅通知
+        observable.addObserver(observerA)
+                .addObserver(observerB);
+        observable.notice();
+    }
+}
+</code></pre><p>java.util包下的<code>Observer</code>、<code>Observable</code>,是java为观察者模式提供的支持类,上面的demo完全可以通过这两个类去完成:<br>观察者Customer:</p>
+<pre><code>   public class Customer implements Observer {
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println(&quot;Customer已经收到消息&quot;);
+        // 删除当前订阅者
+        o.deleteObserver(this);
+    }
+}
+</code></pre><p>被观察者Manager:</p>
+<pre><code>public class Manager extends Observable{
+    public Manager() {
+        super();
+    }
+
+    // 添加观察者
+    @Override
+    public synchronized void addObserver(Observer o) {
+        super.addObserver(o);
+        // 标记被订阅者已改变,否则无法通知到观察者
+        super.setChanged();
+    }
+    // 删除观察者
+    @Override
+    public synchronized void deleteObserver(Observer o) {
+        super.deleteObserver(o);
+    }
+    // 发送通知
+    @Override
+    public void notifyObservers() {
+        super.notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        super.notifyObservers(arg);
+    }
+
+    @Override
+    public synchronized void deleteObservers() {
+        super.deleteObservers();
+    }
+
+    @Override
+    protected synchronized void setChanged() {
+        super.setChanged();
+    }
+
+    @Override
+    protected synchronized void clearChanged() {
+        super.clearChanged();
+    }
+
+    @Override
+    public synchronized boolean hasChanged() {
+        return super.hasChanged();
+    }
+
+    @Override
+    public synchronized int countObservers() {
+        return super.countObservers();
+    }
+}
+</code></pre><p>测试:</p>
+<pre><code>public class Test {
+    public static void main(String[] args) {
+        Observer observer = new Customer();
+        Observable observable = new Manager();
+        observable.addObserver(observer);
+        observable.notifyObservers();
+    }
+}
+</code></pre>
       
     </div>
 

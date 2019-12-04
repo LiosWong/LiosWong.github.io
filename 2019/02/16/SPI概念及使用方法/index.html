@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -503,15 +504,129 @@
       
 
       
-        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>SPI全称Service Provider Interfaces,用于发现接口的实现。在jdbc、日志、dubbo的设计中都使用SPI用于服务的发现。简单的以jdbc为例:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBbb7de4288a145ced6178308fe32d133b?method=download&amp;shareKey=228a0e1b38725147810291fd9e72ba5a" alt="https://note.youdao.com/yws/api/personal/file/WEBbb7de4288a145ced6178308fe32d133b?method=download&amp;shareKey=228a0e1b38725147810291fd9e72ba5a"><br>jdbc Driver实现了java.sql.Driver接口，实现具体的功能,也就是Java SQL framework定义了用于数据库连接接口规范,不同的数据库厂商要想使用Java连接数据库必须实现该接口才可以，当厂商实现后，如何使用呢？也就是上图中的在<code>META-INF/services/</code>下,配置以接口<code>java.sql.Driver</code>为名称的文件，文件里加上具体的实现<code>com.mysql.jdbc.Driver</code>即可,在程序中注册注册驱动即可使用,如在使用jdbc时:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Register JDBC driver</span><br><span class="line">Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span><br></pre></td></tr></table></figure></p>
-<p>加载该jdbc驱动时,会执行静态块,并使用SPI机制在<code>java.sql.DriverManager</code>中加载<code>java.sql.Driver</code>的实现类:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">// Register ourselves with the DriverManager</span><br><span class="line">static &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        java.sql.DriverManager.registerDriver(new Driver());</span><br><span class="line">    &#125; catch (SQLException E) &#123;</span><br><span class="line">        throw new RuntimeException(&quot;Can&apos;t register driver!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">static &#123;</span><br><span class="line">    loadInitialDrivers();</span><br><span class="line">    println(&quot;JDBC DriverManager initialized&quot;);</span><br><span class="line">&#125;</span><br><span class="line">private static void loadInitialDrivers() &#123;</span><br><span class="line">    String drivers;</span><br><span class="line">    try &#123;</span><br><span class="line">        drivers = AccessController.doPrivileged(new PrivilegedAction&lt;String&gt;() &#123;</span><br><span class="line">            public String run() &#123;</span><br><span class="line">                return System.getProperty(&quot;jdbc.drivers&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; catch (Exception ex) &#123;</span><br><span class="line">        drivers = null;</span><br><span class="line">    &#125;</span><br><span class="line">    AccessController.doPrivileged(new PrivilegedAction&lt;Void&gt;() &#123;</span><br><span class="line">        public Void run() &#123;</span><br><span class="line">            try&#123;</span><br><span class="line">                while(driversIterator.hasNext()) &#123;</span><br><span class="line">                    driversIterator.next();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; catch(Throwable t) &#123;</span><br><span class="line">            // Do nothing</span><br><span class="line">            &#125;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    println(&quot;DriverManager.initialize: jdbc.drivers = &quot; + drivers);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="项目中使用"><a href="#项目中使用" class="headerlink" title="项目中使用"></a>项目中使用</h3><p>在项目中我们会对外提供接口,为了在controller内内减少接口数量,使用SPI机制去实现相应的功能。</p>
-<h5 id="首先定义接口"><a href="#首先定义接口" class="headerlink" title="首先定义接口"></a>首先定义接口</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @author wenchao.wang</span><br><span class="line"> * @description</span><br><span class="line"> * @date 2018/1/20 下午10:53</span><br><span class="line"> */</span><br><span class="line">public interface BaseApplication &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="接口实现"><a href="#接口实现" class="headerlink" title="接口实现"></a>接口实现</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class OpenOrderApplication implements BaseApplication &#123;</span><br><span class="line"></span><br><span class="line">    @MethodMapping(&quot;com.lios.test1&quot;)</span><br><span class="line">    public ApiResponse filter(OpenApiJsonObject openApiJsonObject, String appId) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    @MethodMapping(&quot;com.lios.test2&quot;)</span><br><span class="line">    @CheckField(value = CheckEnum.JSON_OBJECT)</span><br><span class="line">    public ApiResponse&lt;DataVO&gt; orderPush(OpenApiJsonObject openApiJsonObject, String appId) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @MethodMapping(&quot;com.lios.test3&quot;)</span><br><span class="line">    public ApiResponse&lt;DataVO&gt; orderfeedback(OpenApiJsonObject openApiJsonObject, String appId) &#123;</span><br><span class="line">      return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="使用SPI机制获取接口实现-并把注解值与方法绑定注册"><a href="#使用SPI机制获取接口实现-并把注解值与方法绑定注册" class="headerlink" title="使用SPI机制获取接口实现,并把注解值与方法绑定注册"></a>使用SPI机制获取接口实现,并把注解值与方法绑定注册</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public class MappingFactory &#123;</span><br><span class="line">private static ConcurrentHashMap&lt;String, MethodApplication&gt; methodMappings = new ConcurrentHashMap&lt;String, MethodApplication&gt;();</span><br><span class="line">private volatile static boolean init = false;</span><br><span class="line">private MappingFactory() &#123;</span><br><span class="line">&#125;</span><br><span class="line">private static void initHandlerMethod() &#123;</span><br><span class="line">    ServiceLoader&lt;BaseApplication&gt; applications = ServiceLoader.load(BaseApplication.class);</span><br><span class="line">    for (BaseApplication application : applications) &#123;</span><br><span class="line">        Method[] methods = application.getClass().getDeclaredMethods();</span><br><span class="line">        for (Method method : methods) &#123;</span><br><span class="line">            MethodMapping methodMapping = method.getAnnotation(MethodMapping.class);</span><br><span class="line">            if (methodMapping != null &amp;&amp; methodMapping.value() != null) &#123;</span><br><span class="line"></span><br><span class="line">                String mapping = methodMapping.value();</span><br><span class="line">                addMethodMapping(mapping, new MethodApplication(StringUtils.uncapitalize(application.getClass().getSimpleName()), method));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">private static void addMethodMapping(String mapping, MethodApplication methodApplication) &#123;</span><br><span class="line">    methodMappings.put(mapping, methodApplication);</span><br><span class="line">&#125;</span><br><span class="line">public static MethodApplication getMethodMapping(String url) &#123;</span><br><span class="line">    if (!init) &#123;</span><br><span class="line">        initHandlerMethod();</span><br><span class="line">        init = true;</span><br><span class="line">    &#125;</span><br><span class="line">    return methodMappings.get(url);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h5><p>在META-INF/services中添加文件com.lios.base.application.BaseApplication,写入:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.lios.api.application.OpenApplication</span><br></pre></td></tr></table></figure></p>
-<h5 id="controller中调用"><a href="#controller中调用" class="headerlink" title="controller中调用"></a>controller中调用</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class OpenController &#123;</span><br><span class="line">    private static final Logger LOGGER = LoggerFactory.getLogger(OpenController.class);</span><br><span class="line">    @Autowired</span><br><span class="line">    private Map&lt;String, BaseApplication&gt; baseApplications;</span><br><span class="line">    @RequestMapping(value = &quot;/open/gateway/&#123;method:.+&#125;&quot;, method = RequestMethod.POST)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public OpenApiResponse dispatcher(@PathVariable String method, @RequestBody OpenApiJsonObject openApiJsonObject) &#123;</span><br><span class="line">        ...</span><br><span class="line">        MethodApplication methodApplication = MappingFactory.getMethodMapping(method);</span><br><span class="line">        if (methodApplication != null &amp;&amp; baseApplications.get(methodApplication.getApplicationName()) != null) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                return (OpenApiResponse) methodApplication.getMethod().invoke(baseApplications.get(methodApplication.getApplicationName()), openApiJsonObject, appId);</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">               LOGGER.error(e.getMessage(), e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>SPI全称Service Provider Interfaces,用于发现接口的实现。在jdbc、日志、dubbo的设计中都使用SPI用于服务的发现。简单的以jdbc为例:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBbb7de4288a145ced6178308fe32d133b?method=download&amp;shareKey=228a0e1b38725147810291fd9e72ba5a" alt="https://note.youdao.com/yws/api/personal/file/WEBbb7de4288a145ced6178308fe32d133b?method=download&amp;shareKey=228a0e1b38725147810291fd9e72ba5a"><br>jdbc Driver实现了java.sql.Driver接口，实现具体的功能,也就是Java SQL framework定义了用于数据库连接接口规范,不同的数据库厂商要想使用Java连接数据库必须实现该接口才可以，当厂商实现后，如何使用呢？也就是上图中的在<code>META-INF/services/</code>下,配置以接口<code>java.sql.Driver</code>为名称的文件，文件里加上具体的实现<code>com.mysql.jdbc.Driver</code>即可,在程序中注册注册驱动即可使用,如在使用jdbc时:</p>
+<pre><code>// Register JDBC driver
+Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+</code></pre><p>加载该jdbc驱动时,会执行静态块,并使用SPI机制在<code>java.sql.DriverManager</code>中加载<code>java.sql.Driver</code>的实现类:</p>
+<pre><code>// Register ourselves with the DriverManager
+static {
+    try {
+        java.sql.DriverManager.registerDriver(new Driver());
+    } catch (SQLException E) {
+        throw new RuntimeException(&quot;Can&#39;t register driver!&quot;);
+    }
+}
+static {
+    loadInitialDrivers();
+    println(&quot;JDBC DriverManager initialized&quot;);
+}
+private static void loadInitialDrivers() {
+    String drivers;
+    try {
+        drivers = AccessController.doPrivileged(new PrivilegedAction&lt;String&gt;() {
+            public String run() {
+                return System.getProperty(&quot;jdbc.drivers&quot;);
+            }
+        });
+    } catch (Exception ex) {
+        drivers = null;
+    }
+    AccessController.doPrivileged(new PrivilegedAction&lt;Void&gt;() {
+        public Void run() {
+            try{
+                while(driversIterator.hasNext()) {
+                    driversIterator.next();
+                }
+            } catch(Throwable t) {
+            // Do nothing
+            }
+            return null;
+        }
+    });
 
+    println(&quot;DriverManager.initialize: jdbc.drivers = &quot; + drivers);
+    ...
+}
+</code></pre><h3 id="项目中使用"><a href="#项目中使用" class="headerlink" title="项目中使用"></a>项目中使用</h3><p>在项目中我们会对外提供接口,为了在controller内内减少接口数量,使用SPI机制去实现相应的功能。</p>
+<h5 id="首先定义接口"><a href="#首先定义接口" class="headerlink" title="首先定义接口"></a>首先定义接口</h5><pre><code>/**
+ * @author wenchao.wang
+ * @description
+ * @date 2018/1/20 下午10:53
+ */
+public interface BaseApplication {
+}
+</code></pre><h5 id="接口实现"><a href="#接口实现" class="headerlink" title="接口实现"></a>接口实现</h5><pre><code>@Component
+public class OpenOrderApplication implements BaseApplication {
+
+    @MethodMapping(&quot;com.lios.test1&quot;)
+    public ApiResponse filter(OpenApiJsonObject openApiJsonObject, String appId) {
+        return null;
+    }
+    @MethodMapping(&quot;com.lios.test2&quot;)
+    @CheckField(value = CheckEnum.JSON_OBJECT)
+    public ApiResponse&lt;DataVO&gt; orderPush(OpenApiJsonObject openApiJsonObject, String appId) {
+        return null;
+    }
+
+    @MethodMapping(&quot;com.lios.test3&quot;)
+    public ApiResponse&lt;DataVO&gt; orderfeedback(OpenApiJsonObject openApiJsonObject, String appId) {
+      return null;
+    }
+
+}
+</code></pre><h5 id="使用SPI机制获取接口实现-并把注解值与方法绑定注册"><a href="#使用SPI机制获取接口实现-并把注解值与方法绑定注册" class="headerlink" title="使用SPI机制获取接口实现,并把注解值与方法绑定注册"></a>使用SPI机制获取接口实现,并把注解值与方法绑定注册</h5><pre><code>public class MappingFactory {
+private static ConcurrentHashMap&lt;String, MethodApplication&gt; methodMappings = new ConcurrentHashMap&lt;String, MethodApplication&gt;();
+private volatile static boolean init = false;
+private MappingFactory() {
+}
+private static void initHandlerMethod() {
+    ServiceLoader&lt;BaseApplication&gt; applications = ServiceLoader.load(BaseApplication.class);
+    for (BaseApplication application : applications) {
+        Method[] methods = application.getClass().getDeclaredMethods();
+        for (Method method : methods) {
+            MethodMapping methodMapping = method.getAnnotation(MethodMapping.class);
+            if (methodMapping != null &amp;&amp; methodMapping.value() != null) {
+
+                String mapping = methodMapping.value();
+                addMethodMapping(mapping, new MethodApplication(StringUtils.uncapitalize(application.getClass().getSimpleName()), method));
+            }
+        }
+    }
+}
+private static void addMethodMapping(String mapping, MethodApplication methodApplication) {
+    methodMappings.put(mapping, methodApplication);
+}
+public static MethodApplication getMethodMapping(String url) {
+    if (!init) {
+        initHandlerMethod();
+        init = true;
+    }
+    return methodMappings.get(url);
+ }
+}
+</code></pre><h5 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h5><p>在META-INF/services中添加文件com.lios.base.application.BaseApplication,写入:</p>
+<pre><code>com.lios.api.application.OpenApplication
+</code></pre><h5 id="controller中调用"><a href="#controller中调用" class="headerlink" title="controller中调用"></a>controller中调用</h5><pre><code>@RestController
+public class OpenController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpenController.class);
+    @Autowired
+    private Map&lt;String, BaseApplication&gt; baseApplications;
+    @RequestMapping(value = &quot;/open/gateway/{method:.+}&quot;, method = RequestMethod.POST)
+    @ResponseBody
+    public OpenApiResponse dispatcher(@PathVariable String method, @RequestBody OpenApiJsonObject openApiJsonObject) {
+        ...
+        MethodApplication methodApplication = MappingFactory.getMethodMapping(method);
+        if (methodApplication != null &amp;&amp; baseApplications.get(methodApplication.getApplicationName()) != null) {
+            try {
+                return (OpenApiResponse) methodApplication.getMethod().invoke(baseApplications.get(methodApplication.getApplicationName()), openApiJsonObject, appId);
+            } catch (Exception e) {
+               LOGGER.error(e.getMessage(), e);
+            }
+        }
+        ...
+    }
+}
+</code></pre>
       
     </div>
 

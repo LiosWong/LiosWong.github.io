@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="首先看示例代码:123456789&amp;lt;!--no-lazy-init   scope=singleton--&amp;gt;&amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestA&amp;quot; id=&amp;quot;liosTestA&amp;quot;/&amp;gt;&amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestB">
+  <meta name="description" content="首先看示例代码: &amp;lt;!--no-lazy-init   scope=singleton--&amp;gt; &amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestA&amp;quot; id=&amp;quot;liosTestA&amp;quot;/&amp;gt; &amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestB&amp;quot;">
 <meta name="keywords" content="java,spring,bean">
 <meta property="og:type" content="article">
 <meta property="og:title" content="简话bean加载">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/简话bean加载/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="首先看示例代码:123456789&amp;lt;!--no-lazy-init   scope=singleton--&amp;gt;&amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestA&amp;quot; id=&amp;quot;liosTestA&amp;quot;/&amp;gt;&amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestB">
+<meta property="og:description" content="首先看示例代码: &amp;lt;!--no-lazy-init   scope=singleton--&amp;gt; &amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestA&amp;quot; id=&amp;quot;liosTestA&amp;quot;/&amp;gt; &amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestB&amp;quot;">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-07T15:54:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="简话bean加载">
-<meta name="twitter:description" content="首先看示例代码:123456789&amp;lt;!--no-lazy-init   scope=singleton--&amp;gt;&amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestA&amp;quot; id=&amp;quot;liosTestA&amp;quot;/&amp;gt;&amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestB">
+<meta name="twitter:description" content="首先看示例代码: &amp;lt;!--no-lazy-init   scope=singleton--&amp;gt; &amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestA&amp;quot; id=&amp;quot;liosTestA&amp;quot;/&amp;gt; &amp;lt;bean class=&amp;quot;com.lios.service.test.LiosTestB&amp;quot;">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,27 +502,135 @@
       
 
       
-        <p>首先看示例代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--no-lazy-init   scope=singleton--&gt;</span><br><span class="line">&lt;bean class=&quot;com.lios.service.test.LiosTestA&quot; id=&quot;liosTestA&quot;/&gt;</span><br><span class="line">&lt;bean class=&quot;com.lios.service.test.LiosTestB&quot; id=&quot;liosTestB&quot;/&gt;</span><br><span class="line">&lt;bean class=&quot;com.lios.service.test.LiosServiceServiceImpl&quot; id=&quot;liosServiceService&quot;/&gt;</span><br><span class="line"></span><br><span class="line">ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&quot;app.xml&quot;);</span><br><span class="line">BeanFactory beanFactory = resource.getBeanFactory();</span><br><span class="line">LiosServiceServiceImpl liosServiceService = (LiosServiceServiceImpl) beanFactory.getBean(&quot;liosServiceService&quot;);</span><br><span class="line">liosServiceService.t();</span><br></pre></td></tr></table></figure></p>
-<p>LiosServiceServiceImpl:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class LiosServiceServiceImpl &#123;</span><br><span class="line">    private int i = 1;</span><br><span class="line">    @Autowired</span><br><span class="line">    LiosTestA liosTestA;</span><br><span class="line">    public void t()&#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            liosTestA.testA();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;===========&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>LiosTestA:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class LiosTestA &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    LiosTestB liosTestB;</span><br><span class="line">    public void testA()&#123;</span><br><span class="line">        liosTestB.testB();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>以上代码就是LiosServiceServiceImpl类中引用了LiosTestA,LiosTestA类中引用了LiosTestB,今天的问题是LiosServiceServiceImpl如何引用LiosTestA,LiosTestA如何引用LiosTestB?<br>看过源码的同学肯定知道,<code>org.springframework.context.support.AbstractApplicationContext#refresh</code>是spring解析xml、初始化bean的入口,该方法里会调用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Instantiate all remaining (non-lazy-init) singletons.</span><br><span class="line">finishBeanFactoryInitialization(beanFactory);</span><br></pre></td></tr></table></figure></p>
-<p>这个方法会实例化所有的non-lazy-init单例的bean,毫无疑问,这个方法是分析问题的入口,紧跟进去:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Instantiate all remaining (non-lazy-init) singletons.</span><br><span class="line">beanFactory.preInstantiateSingletons();</span><br></pre></td></tr></table></figure></p>
-<p>再跟进去,调用了<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons</code>方法,再跟进去<code>getBean(beanName);</code>方法,调用了<br><code>org.springframework.beans.factory.support.AbstractBeanFactory#getBean(java.lang.String)</code>方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public Object getBean(String name) throws BeansException &#123;</span><br><span class="line">    return doGetBean(name, null, null, false);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>进入doGetBean方法中,绕了那么多,这个方法才是会真正干事:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//获取beanName</span><br><span class="line">final String beanName = transformedBeanName(name);</span><br><span class="line">//从缓存里获取bean,第一次时毫无疑问,sharedInstance为null</span><br><span class="line">Object sharedInstance = getSingleton(beanName);</span><br><span class="line">//获取RootBeanDefinition,其实用BeanDefinition初始化</span><br><span class="line">final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);</span><br><span class="line">创建bean</span><br><span class="line">createBean(beanName, mbd, args)</span><br></pre></td></tr></table></figure></p>
-<p>下面分析<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(java.lang.Class&lt;T&gt;)</code>方法,明显这是把具体实现委托给子类实现了,继续跟:<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.Object[])</code>,该方法里有一段这样的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">instanceWrapper = createBeanInstance(beanName, mbd, args);</span><br></pre></td></tr></table></figure></p>
-<p>继续跟:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// Make sure bean class is actually resolved at this point.</span><br><span class="line">Class&lt;?&gt; beanClass = resolveBeanClass(mbd, beanName);</span><br><span class="line">//.... 后面省略</span><br></pre></td></tr></table></figure></p>
-<p>继续跟<code>resolveBeanClass()</code>方法,其实该方法里利用反射创建了bean实例,createBeanInstance()方法主要是返回BeanWrapper对象,该对象用bean实例初始化,getWrappedInstance()即可返回bean对象:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Return the bean instance wrapped by this object, if any.</span><br><span class="line"> * @return the bean instance, or &#123;@code null&#125; if none set</span><br><span class="line"> */</span><br><span class="line">Object getWrappedInstance();</span><br></pre></td></tr></table></figure></p>
-<p>所以上面的LiosServiceServiceImpl、LiosTestA、LiosTestB都是通过resolveBeanClass()方法创建实例,但是里面的引用的属性如何创建呢,那回到<code>doCreateBean()</code>方法,继续看下面的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// Initialize the bean instance.</span><br><span class="line">Object exposedObject = bean;</span><br><span class="line">try &#123;</span><br><span class="line">    //初始化bean属性的值</span><br><span class="line">    populateBean(beanName, mbd, instanceWrapper);</span><br><span class="line">    if (exposedObject != null) &#123;</span><br><span class="line">        exposedObject = initializeBean(beanName, exposedObject, mbd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先分析<code>populateBean(beanName, mbd, instanceWrapper)</code>,为了直接点,直接看后置处理器BeanPostProcessor:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for (BeanPostProcessor bp : getBeanPostProcessors()) &#123;</span><br><span class="line">if (bp instanceof InstantiationAwareBeanPostProcessor) &#123;</span><br><span class="line">    InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;</span><br><span class="line">    pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);</span><br><span class="line">    if (pvs == null) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>再看InstantiationAwareBeanPostProcessor的实现类,<code>org.springframework.context.annotation.CommonAnnotationBeanPostProcessor#postProcessPropertyValues</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">InjectionMetadata metadata = findResourceMetadata(beanName, bean.getClass(), pvs);</span><br><span class="line">metadata.inject(bean, beanName, pvs);</span><br></pre></td></tr></table></figure></p>
-<p>一直跟进去到<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);</span><br></pre></td></tr></table></figure></p>
-<p>再跟进去:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = doResolveDependency(descriptor, beanName, autowiredBeanNames, typeConverter);</span><br></pre></td></tr></table></figure></p>
-<p>继续跟进去:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);</span><br></pre></td></tr></table></figure></p>
-<p>doResolveDependency方法会根据属性的属性类型去获取引用,继续跟,可以看到<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates</code>方法里的这段代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result.put(candidateName, getBean(candidateName));</span><br></pre></td></tr></table></figure></p>
-<p>getBean(candidateName)这个不是调用<code>org.springframework.beans.factory.support.AbstractBeanFactory#getBean(java.lang.String)</code>么,没错,是的!<br>回到<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject</code>中:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (value != null) &#123;</span><br><span class="line">ReflectionUtils.makeAccessible(field);</span><br><span class="line">field.set(bean, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这段代码会设置bean中的属性的值,一个真正的bean已经完成了.<br>再回到<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</code>方法中,看这句代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">initializeBean(beanName, exposedObject, mbd);</span><br></pre></td></tr></table></figure></p>
-<p>跟进后再进入<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#invokeInitMethods</code>方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">boolean isInitializingBean = (bean instanceof InitializingBean);</span><br><span class="line">        if (isInitializingBean &amp;&amp; (mbd == null || !mbd.isExternallyManagedInitMethod(&quot;afterPropertiesSet&quot;))) &#123;</span><br><span class="line">            if (logger.isDebugEnabled()) &#123;</span><br><span class="line">                logger.debug(&quot;Invoking afterPropertiesSet() on bean with name &apos;&quot; + beanName + &quot;&apos;&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            if (System.getSecurityManager() != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    AccessController.doPrivileged(new PrivilegedExceptionAction&lt;Object&gt;() &#123;</span><br><span class="line">                        @Override</span><br><span class="line">                        public Object run() throws Exception &#123;</span><br><span class="line">                            ((InitializingBean) bean).afterPropertiesSet();</span><br><span class="line">                            return null;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;, getAccessControlContext());</span><br><span class="line">                &#125;</span><br><span class="line">                catch (PrivilegedActionException pae) &#123;</span><br><span class="line">                    throw pae.getException();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            else &#123;</span><br><span class="line">                ((InitializingBean) bean).afterPropertiesSet();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>看到InitializingBean、afterPropertiesSet()是否会想起什么呢,如果一个bean实现了InitializingBean接口后,在bean被容器加载时,自动调用afterPropertiesSet()方法,现在明白是咋回事了吧.<br>说了那么多,总结下LiosServiceServiceImpl类的加载过程,首先容器会加载LiosServiceServiceImpl或者LiosTestA或者LiosTestB,默认是没有明确顺序之分,如果按照先加载LiosTestA的话,会先创建LiosTestA实例,里面的属性LiosTestB值还是为空,然后设置其属性的值,其实就是调用getBean方法,完成LiosTestA的实例创建后,创建LiosServiceServiceImpl套路完全一样,其属性LiosTestA已经在缓存有了,直接获取即可.<br>最后,bean的加载远远不止这么复杂,文中有错误之处,麻烦指正!</p>
+        <p>首先看示例代码:</p>
+<pre><code>&lt;!--no-lazy-init   scope=singleton--&gt;
+&lt;bean class=&quot;com.lios.service.test.LiosTestA&quot; id=&quot;liosTestA&quot;/&gt;
+&lt;bean class=&quot;com.lios.service.test.LiosTestB&quot; id=&quot;liosTestB&quot;/&gt;
+&lt;bean class=&quot;com.lios.service.test.LiosServiceServiceImpl&quot; id=&quot;liosServiceService&quot;/&gt;
+
+ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&quot;app.xml&quot;);
+BeanFactory beanFactory = resource.getBeanFactory();
+LiosServiceServiceImpl liosServiceService = (LiosServiceServiceImpl) beanFactory.getBean(&quot;liosServiceService&quot;);
+liosServiceService.t();
+</code></pre><p>LiosServiceServiceImpl:</p>
+<pre><code>@Service
+public class LiosServiceServiceImpl {
+    private int i = 1;
+    @Autowired
+    LiosTestA liosTestA;
+    public void t(){
+        try {
+            liosTestA.testA();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(&quot;===========&gt;&quot;);
+    }
+}
+</code></pre><p>LiosTestA:</p>
+<pre><code>@Service
+public class LiosTestA {
+    @Autowired
+    LiosTestB liosTestB;
+    public void testA(){
+        liosTestB.testB();
+    }
+}
+</code></pre><p>以上代码就是LiosServiceServiceImpl类中引用了LiosTestA,LiosTestA类中引用了LiosTestB,今天的问题是LiosServiceServiceImpl如何引用LiosTestA,LiosTestA如何引用LiosTestB?<br>看过源码的同学肯定知道,<code>org.springframework.context.support.AbstractApplicationContext#refresh</code>是spring解析xml、初始化bean的入口,该方法里会调用:</p>
+<pre><code>// Instantiate all remaining (non-lazy-init) singletons.
+finishBeanFactoryInitialization(beanFactory);
+</code></pre><p>这个方法会实例化所有的non-lazy-init单例的bean,毫无疑问,这个方法是分析问题的入口,紧跟进去:</p>
+<pre><code>// Instantiate all remaining (non-lazy-init) singletons.
+beanFactory.preInstantiateSingletons();
+</code></pre><p>再跟进去,调用了<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons</code>方法,再跟进去<code>getBean(beanName);</code>方法,调用了<br><code>org.springframework.beans.factory.support.AbstractBeanFactory#getBean(java.lang.String)</code>方法:</p>
+<pre><code>@Override
+public Object getBean(String name) throws BeansException {
+    return doGetBean(name, null, null, false);
+}
+</code></pre><p>进入doGetBean方法中,绕了那么多,这个方法才是会真正干事:</p>
+<pre><code>//获取beanName
+final String beanName = transformedBeanName(name);
+//从缓存里获取bean,第一次时毫无疑问,sharedInstance为null
+Object sharedInstance = getSingleton(beanName);
+//获取RootBeanDefinition,其实用BeanDefinition初始化
+final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+创建bean
+createBean(beanName, mbd, args)
+</code></pre><p>下面分析<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(java.lang.Class&lt;T&gt;)</code>方法,明显这是把具体实现委托给子类实现了,继续跟:<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.Object[])</code>,该方法里有一段这样的代码:</p>
+<pre><code>instanceWrapper = createBeanInstance(beanName, mbd, args);
+</code></pre><p>继续跟:</p>
+<pre><code>// Make sure bean class is actually resolved at this point.
+Class&lt;?&gt; beanClass = resolveBeanClass(mbd, beanName);
+//.... 后面省略
+</code></pre><p>继续跟<code>resolveBeanClass()</code>方法,其实该方法里利用反射创建了bean实例,createBeanInstance()方法主要是返回BeanWrapper对象,该对象用bean实例初始化,getWrappedInstance()即可返回bean对象:</p>
+<pre><code>/**
+ * Return the bean instance wrapped by this object, if any.
+ * @return the bean instance, or {@code null} if none set
+ */
+Object getWrappedInstance();
+</code></pre><p>所以上面的LiosServiceServiceImpl、LiosTestA、LiosTestB都是通过resolveBeanClass()方法创建实例,但是里面的引用的属性如何创建呢,那回到<code>doCreateBean()</code>方法,继续看下面的代码:</p>
+<pre><code>// Initialize the bean instance.
+Object exposedObject = bean;
+try {
+    //初始化bean属性的值
+    populateBean(beanName, mbd, instanceWrapper);
+    if (exposedObject != null) {
+        exposedObject = initializeBean(beanName, exposedObject, mbd);
+    }
+}
+</code></pre><p>首先分析<code>populateBean(beanName, mbd, instanceWrapper)</code>,为了直接点,直接看后置处理器BeanPostProcessor:</p>
+<pre><code>for (BeanPostProcessor bp : getBeanPostProcessors()) {
+if (bp instanceof InstantiationAwareBeanPostProcessor) {
+    InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+    pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+    if (pvs == null) {
+        return;
+    }
+  }
+}
+</code></pre><p>再看InstantiationAwareBeanPostProcessor的实现类,<code>org.springframework.context.annotation.CommonAnnotationBeanPostProcessor#postProcessPropertyValues</code>:</p>
+<pre><code>InjectionMetadata metadata = findResourceMetadata(beanName, bean.getClass(), pvs);
+metadata.inject(bean, beanName, pvs);
+</code></pre><p>一直跟进去到<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject</code>:</p>
+<pre><code>value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);
+</code></pre><p>再跟进去:</p>
+<pre><code>result = doResolveDependency(descriptor, beanName, autowiredBeanNames, typeConverter);
+</code></pre><p>继续跟进去:</p>
+<pre><code>Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);
+</code></pre><p>doResolveDependency方法会根据属性的属性类型去获取引用,继续跟,可以看到<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates</code>方法里的这段代码:</p>
+<pre><code>result.put(candidateName, getBean(candidateName));
+</code></pre><p>getBean(candidateName)这个不是调用<code>org.springframework.beans.factory.support.AbstractBeanFactory#getBean(java.lang.String)</code>么,没错,是的!<br>回到<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject</code>中:</p>
+<pre><code>if (value != null) {
+ReflectionUtils.makeAccessible(field);
+field.set(bean, value);
+}
+</code></pre><p>这段代码会设置bean中的属性的值,一个真正的bean已经完成了.<br>再回到<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</code>方法中,看这句代码:</p>
+<pre><code>initializeBean(beanName, exposedObject, mbd);
+</code></pre><p>跟进后再进入<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#invokeInitMethods</code>方法:</p>
+<pre><code>boolean isInitializingBean = (bean instanceof InitializingBean);
+        if (isInitializingBean &amp;&amp; (mbd == null || !mbd.isExternallyManagedInitMethod(&quot;afterPropertiesSet&quot;))) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(&quot;Invoking afterPropertiesSet() on bean with name &#39;&quot; + beanName + &quot;&#39;&quot;);
+            }
+            if (System.getSecurityManager() != null) {
+                try {
+                    AccessController.doPrivileged(new PrivilegedExceptionAction&lt;Object&gt;() {
+                        @Override
+                        public Object run() throws Exception {
+                            ((InitializingBean) bean).afterPropertiesSet();
+                            return null;
+                        }
+                    }, getAccessControlContext());
+                }
+                catch (PrivilegedActionException pae) {
+                    throw pae.getException();
+                }
+            }
+            else {
+                ((InitializingBean) bean).afterPropertiesSet();
+            }
+        }
+</code></pre><p>看到InitializingBean、afterPropertiesSet()是否会想起什么呢,如果一个bean实现了InitializingBean接口后,在bean被容器加载时,自动调用afterPropertiesSet()方法,现在明白是咋回事了吧.<br>说了那么多,总结下LiosServiceServiceImpl类的加载过程,首先容器会加载LiosServiceServiceImpl或者LiosTestA或者LiosTestB,默认是没有明确顺序之分,如果按照先加载LiosTestA的话,会先创建LiosTestA实例,里面的属性LiosTestB值还是为空,然后设置其属性的值,其实就是调用getBean方法,完成LiosTestA的实例创建后,创建LiosServiceServiceImpl套路完全一样,其属性LiosTestA已经在缓存有了,直接获取即可.<br>最后,bean的加载远远不止这么复杂,文中有错误之处,麻烦指正!</p>
 
       
     </div>
@@ -599,8 +708,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/interface注入及报错分析/" rel="next" title="interface注入及报错分析">
-                <i class="fa fa-chevron-left"></i> interface注入及报错分析
+              <a href="/2019/02/16/python初试/" rel="next" title="python初试">
+                <i class="fa fa-chevron-left"></i> python初试
               </a>
             
           </div>
@@ -609,8 +718,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/javaConfig整合spring、redis/" rel="prev" title="javaConfig整合spring、redis">
-                javaConfig整合spring、redis <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="prev" title="Spring源码之解析并注册BeanDefinition(一)">
+                Spring源码之解析并注册BeanDefinition(一) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

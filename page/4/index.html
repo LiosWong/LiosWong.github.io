@@ -168,7 +168,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -1442,7 +1443,11 @@ java
         
           
             <p>
-              在阅读dubbo源码时,很多类似如下代码:Object instance = holder.get();if (instance == null) &#123;    synchronized (holder) &#123;        instance = holder.get();      
+              在阅读dubbo源码时,很多类似如下代码:
+        Object instance = holder.get();
+        if (instance == null) {
+            synchronized (holder) {
+                inst
               ...
             </p>
           <!--noindex-->
@@ -2186,7 +2191,12 @@ Component(基类)它是被装饰者和抽象装饰类的共同父类，声明了
         
           
             <p>
-              由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:•   512MB RAM•   20GB Disk•   500GB Bandwidth @ 1 Gbps•   Shared Intel HT CPU 2 Cores @ 1.5GHz•   1x IPv4 Addres
+              由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:
+•   512MB RAM
+•   20GB Disk
+•   500GB Bandwidth @ 1 Gbps
+•   Shared Intel HT CPU 2 Cores @ 1.5GHz
+•   1x IPv4 A
               ...
             </p>
           <!--noindex-->

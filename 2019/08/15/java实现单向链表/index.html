@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,8 +502,158 @@
       
 
       
-        <p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。<br>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。<br>在计算机科学中，链表作为一种基础的数据结构可以用来生成其它类型的数据结构。链表通常由一连串节点组成，每个节点包含任意的实例数据（data fields）和一或两个用来指向上一个/或下一个节点的位置的链接（”links”）。链表最明显的好处就是，常规数组排列关联项目的方式可能不同于这些数据项目在记忆体或磁盘上顺序，数据的访问往往要在不同的排列顺序中转换。而链表是一种自我指示数据类型，因为它包含指向另一个相同类型的数据的指针（链接）。链表允许插入和移除表上任意位置上的节点，但是不允许随机存取。链表有很多种不同的类型：单向链表，双向链表以及循环链表。–<a href="https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8" target="_blank" rel="noopener">维基百科</a><br>下面是关于单向链表的操作代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line">package com.lios.algorithm;</span><br><span class="line">import java.util.Objects;</span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description</span><br><span class="line"> * @date 2019-08-15 10:55</span><br><span class="line"> */</span><br><span class="line">public class MyNodeList &#123;</span><br><span class="line"></span><br><span class="line">    // 头节点</span><br><span class="line">    private Node head = null;</span><br><span class="line"></span><br><span class="line">    class Node &#123;</span><br><span class="line">        // 节点数据</span><br><span class="line">        private int data;</span><br><span class="line">        // 下一个节点的引用地址</span><br><span class="line">        private Node next = null;</span><br><span class="line"></span><br><span class="line">        public Node(int data) &#123;</span><br><span class="line">            this.data = data;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 增加节点,链尾插入</span><br><span class="line">    public Node addNode(int data) &#123;</span><br><span class="line">        Node node = new Node(data);</span><br><span class="line">        if (head == null) &#123;</span><br><span class="line">            head = node;</span><br><span class="line">            return node;</span><br><span class="line">        &#125;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        while (temp.next != null) &#123;</span><br><span class="line">            temp = temp.next;</span><br><span class="line">        &#125;</span><br><span class="line">        temp.next = node;</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 删除链表中第几个节点</span><br><span class="line">    public void deleteNodeByIndex(int index) &#123;</span><br><span class="line">        int lenght = getNodeListLenght();</span><br><span class="line">        if (index &lt; 1 || index &gt; lenght) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Node temp = head;</span><br><span class="line">        Node preNode = null;</span><br><span class="line">        int flag = 1;</span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            if (Objects.equals(flag, index)) &#123;</span><br><span class="line">                // 若删除的头节点</span><br><span class="line">                if (index == 1) &#123;</span><br><span class="line">                    head = temp.next;</span><br><span class="line">                    temp = null;</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                if (temp.next != null) &#123;</span><br><span class="line">                    preNode.next = temp.next;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    // 删除的尾节点</span><br><span class="line">                    preNode.next = null;</span><br><span class="line">                &#125;</span><br><span class="line">                temp = null;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            if (temp != null) &#123;</span><br><span class="line">                preNode = temp;</span><br><span class="line">                temp = temp.next;</span><br><span class="line">            &#125;</span><br><span class="line">            flag++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 删除指定节点</span><br><span class="line">    public void deleteNodeByNode(Node node) &#123;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        // 若删除头元素</span><br><span class="line">        if ((temp.next == null) &amp;&amp; node.next == null) &#123;</span><br><span class="line">            head = null;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Node preNode = null;</span><br><span class="line"></span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            if (temp.next == head.next) &#123;</span><br><span class="line">                head = temp.next;</span><br><span class="line">                temp = null;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            if ((temp.next == node.next)) &#123;</span><br><span class="line">                preNode.next = temp.next;</span><br><span class="line">                temp = null;</span><br><span class="line">            &#125;</span><br><span class="line">            if (temp != null) &#123;</span><br><span class="line">                preNode = temp;</span><br><span class="line">                temp = temp.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 打印所有节点</span><br><span class="line">    public void printNodeList() &#123;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            System.out.println(&quot;节点数据:&quot; + temp.data);</span><br><span class="line">            temp = temp.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 获取链表长度</span><br><span class="line">    public int getNodeListLenght() &#123;</span><br><span class="line">        int length = 0;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            ++length;</span><br><span class="line">            temp = temp.next;</span><br><span class="line">        &#125;</span><br><span class="line">        return length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        MyNodeList myNodeList = new MyNodeList();</span><br><span class="line">        Node node = myNodeList.addNode(1);</span><br><span class="line">        myNodeList.addNode(2);</span><br><span class="line">        myNodeList.addNode(3);</span><br><span class="line">        myNodeList.addNode(4);</span><br><span class="line">        myNodeList.addNode(5);</span><br><span class="line"></span><br><span class="line">        myNodeList.printNodeList();</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;链表长度:&quot; + myNodeList.getNodeListLenght());</span><br><span class="line"></span><br><span class="line">        myNodeList.deleteNodeByIndex(4);</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;链表长度:&quot; + myNodeList.getNodeListLenght());</span><br><span class="line"></span><br><span class="line">        myNodeList.printNodeList();</span><br><span class="line"></span><br><span class="line">        myNodeList.deleteNodeByNode(node);</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;链表长度:&quot; + myNodeList.getNodeListLenght());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        myNodeList.printNodeList();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)。由于不必须按顺序存储，链表在插入的时候可以达到O(1)的复杂度，比另一种线性表顺序表快得多，但是查找一个节点或者访问特定编号的节点则需要O(n)的时间，而顺序表相应的时间复杂度分别是O(logn)和O(1)。<br>使用链表结构可以克服数组链表需要预先知道数据大小的缺点，链表结构可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。<br>在计算机科学中，链表作为一种基础的数据结构可以用来生成其它类型的数据结构。链表通常由一连串节点组成，每个节点包含任意的实例数据（data fields）和一或两个用来指向上一个/或下一个节点的位置的链接（”links”）。链表最明显的好处就是，常规数组排列关联项目的方式可能不同于这些数据项目在记忆体或磁盘上顺序，数据的访问往往要在不同的排列顺序中转换。而链表是一种自我指示数据类型，因为它包含指向另一个相同类型的数据的指针（链接）。链表允许插入和移除表上任意位置上的节点，但是不允许随机存取。链表有很多种不同的类型：单向链表，双向链表以及循环链表。–<a href="https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8" target="_blank" rel="noopener">维基百科</a><br>下面是关于单向链表的操作代码:</p>
+<pre><code>package com.lios.algorithm;
+import java.util.Objects;
+/**
+ * @author LiosWong
+ * @description
+ * @date 2019-08-15 10:55
+ */
+public class MyNodeList {
 
+    // 头节点
+    private Node head = null;
+
+    class Node {
+        // 节点数据
+        private int data;
+        // 下一个节点的引用地址
+        private Node next = null;
+
+        public Node(int data) {
+            this.data = data;
+        }
+    }
+
+    // 增加节点,链尾插入
+    public Node addNode(int data) {
+        Node node = new Node(data);
+        if (head == null) {
+            head = node;
+            return node;
+        }
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = node;
+        return node;
+    }
+
+    // 删除链表中第几个节点
+    public void deleteNodeByIndex(int index) {
+        int lenght = getNodeListLenght();
+        if (index &lt; 1 || index &gt; lenght) {
+            return;
+        }
+
+        Node temp = head;
+        Node preNode = null;
+        int flag = 1;
+        while (temp != null) {
+            if (Objects.equals(flag, index)) {
+                // 若删除的头节点
+                if (index == 1) {
+                    head = temp.next;
+                    temp = null;
+                    return;
+                }
+
+                if (temp.next != null) {
+                    preNode.next = temp.next;
+                } else {
+                    // 删除的尾节点
+                    preNode.next = null;
+                }
+                temp = null;
+
+            }
+            if (temp != null) {
+                preNode = temp;
+                temp = temp.next;
+            }
+            flag++;
+        }
+    }
+
+    // 删除指定节点
+    public void deleteNodeByNode(Node node) {
+        Node temp = head;
+        // 若删除头元素
+        if ((temp.next == null) &amp;&amp; node.next == null) {
+            head = null;
+            return;
+        }
+
+        Node preNode = null;
+
+        while (temp != null) {
+            if (temp.next == head.next) {
+                head = temp.next;
+                temp = null;
+                return;
+            }
+            if ((temp.next == node.next)) {
+                preNode.next = temp.next;
+                temp = null;
+            }
+            if (temp != null) {
+                preNode = temp;
+                temp = temp.next;
+            }
+        }
+    }
+
+
+    // 打印所有节点
+    public void printNodeList() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.println(&quot;节点数据:&quot; + temp.data);
+            temp = temp.next;
+        }
+    }
+
+    // 获取链表长度
+    public int getNodeListLenght() {
+        int length = 0;
+        Node temp = head;
+        while (temp != null) {
+            ++length;
+            temp = temp.next;
+        }
+        return length;
+    }
+
+    public static void main(String[] args) {
+        MyNodeList myNodeList = new MyNodeList();
+        Node node = myNodeList.addNode(1);
+        myNodeList.addNode(2);
+        myNodeList.addNode(3);
+        myNodeList.addNode(4);
+        myNodeList.addNode(5);
+
+        myNodeList.printNodeList();
+
+        System.out.println(&quot;链表长度:&quot; + myNodeList.getNodeListLenght());
+
+        myNodeList.deleteNodeByIndex(4);
+
+        System.out.println(&quot;链表长度:&quot; + myNodeList.getNodeListLenght());
+
+        myNodeList.printNodeList();
+
+        myNodeList.deleteNodeByNode(node);
+
+        System.out.println(&quot;链表长度:&quot; + myNodeList.getNodeListLenght());
+
+
+        myNodeList.printNodeList();
+    }
+
+}
+</code></pre>
       
     </div>
 

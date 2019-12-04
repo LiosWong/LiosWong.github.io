@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="问题这篇文章由之前的并行执行任务发展而来,如何生成task,在之前的文章中,生成task方式如下:12345678910111213141516171819202122232425262728293031323334353637Abstract Task: public abstract class BasicUserFilter implements Callable&amp;lt;UserFilter">
+  <meta name="description" content="问题这篇文章由之前的并行执行任务发展而来,如何生成task,在之前的文章中,生成task方式如下: Abstract Task:  public abstract class BasicUserFilter implements Callable&amp;lt;UserFilterDto&amp;gt; { private static final Log logger = LogFactory.getLog(B">
 <meta name="keywords" content="java,hashCode,equals">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hashCode、equals的使用">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/hashCode、equals的使用/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="问题这篇文章由之前的并行执行任务发展而来,如何生成task,在之前的文章中,生成task方式如下:12345678910111213141516171819202122232425262728293031323334353637Abstract Task: public abstract class BasicUserFilter implements Callable&amp;lt;UserFilter">
+<meta property="og:description" content="问题这篇文章由之前的并行执行任务发展而来,如何生成task,在之前的文章中,生成task方式如下: Abstract Task:  public abstract class BasicUserFilter implements Callable&amp;lt;UserFilterDto&amp;gt; { private static final Log logger = LogFactory.getLog(B">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hashCode、equals的使用">
-<meta name="twitter:description" content="问题这篇文章由之前的并行执行任务发展而来,如何生成task,在之前的文章中,生成task方式如下:12345678910111213141516171819202122232425262728293031323334353637Abstract Task: public abstract class BasicUserFilter implements Callable&amp;lt;UserFilter">
+<meta name="twitter:description" content="问题这篇文章由之前的并行执行任务发展而来,如何生成task,在之前的文章中,生成task方式如下: Abstract Task:  public abstract class BasicUserFilter implements Callable&amp;lt;UserFilterDto&amp;gt; { private static final Log logger = LogFactory.getLog(B">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,13 +502,171 @@
       
 
       
-        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>这篇文章由之前的<a href>并行执行任务</a>发展而来,如何生成task,在之前的文章中,生成task方式如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Abstract Task: </span><br><span class="line">public abstract class BasicUserFilter implements Callable&lt;UserFilterDto&gt; &#123;</span><br><span class="line">private static final Log logger = LogFactory.getLog(BasicUserFilter.class);</span><br><span class="line">@Autowired</span><br><span class="line">UserService userService;</span><br><span class="line">public Long companyId;</span><br><span class="line">public Long userId;</span><br><span class="line">@Override</span><br><span class="line">public UserFilterDto call() throws Exception &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        //每个执行任务调用同一个方法,只是入参不同</span><br><span class="line">        Response&lt;Boolean&gt; response = userService.filter(getUserId(), getCompanyId());</span><br><span class="line">        if (response.isSuccess() &amp;&amp; response.getResult()) &#123;</span><br><span class="line">            return new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.TRUE);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        logger.error(e.getMessage(), e);</span><br><span class="line">    &#125;</span><br><span class="line">    return new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.FALSE);</span><br><span class="line">&#125;</span><br><span class="line">@PostConstruct</span><br><span class="line">abstract void init();</span><br><span class="line">// ... 篇幅关系,省略属性setter、getter方法</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Task1:</span><br><span class="line">public class Task1 extends BasicUserFilter&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void init() &#123;</span><br><span class="line">        FilterConfigManager.register(CompanyAppIdEnum.GEI_NI_HUA.getCompanyId(),this);</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public UserFilterDto call() throws Exception &#123;</span><br><span class="line">        return super.call();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面生成任务类时，使用了策略模式,添加每一个任务都必须新增一个实体类,且实现BasicUserFilter或者重写自己的<code>call</code>方法,有木有比较好的方法解决这种繁琐的任务类构建呢。</p>
-<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>解决切入点，就是所有的任务类都执行了相同的逻辑，且调用了入参不同的方法而已，无疑使用代理模式去动态生成任务类,思路有了，代码实现也边的简单起来。下面使用java InvocationHandler创建动态代理类.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">ProxyHandler：</span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description</span><br><span class="line"> * @date 2018/10/27 上午1:10</span><br><span class="line"> */</span><br><span class="line">public class ProxyHandler&lt;T&gt; implements InvocationHandler, Serializable &#123;</span><br><span class="line">    private static final long serialVersionUID = -6424540398559729838L;</span><br><span class="line">    private final ProxyInterface&lt;T&gt; proxyInterface;</span><br><span class="line"></span><br><span class="line">    public ProxyHandler(ProxyInterface&lt;T&gt; proxyInterface) &#123;</span><br><span class="line">        this.proxyInterface = proxyInterface;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;</span><br><span class="line">        // 根据方法名,执行不同逻辑</span><br><span class="line">        if (&quot;call&quot;.equals(method.getName())) &#123;</span><br><span class="line">            return proxyInterface.call();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">ProxyInterface：为了使代理模版通用,添加接口约束</span><br><span class="line">/** </span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description 可扩展代理接入点</span><br><span class="line"> * @date 2018/10/27 上午1:11</span><br><span class="line"> */</span><br><span class="line">public interface ProxyInterface&lt;T&gt; extends Callable&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">ProxyFactory：代理工厂</span><br><span class="line">public class ProxyFactory&lt;T&gt; &#123;</span><br><span class="line">private final Class&lt;T&gt; mapperInterface;</span><br><span class="line"></span><br><span class="line">public ProxyFactory(Class&lt;T&gt; mapperInterface) &#123;</span><br><span class="line">    this.mapperInterface = mapperInterface;</span><br><span class="line">&#125;</span><br><span class="line">public Class&lt;T&gt; getMapperInterface() &#123;</span><br><span class="line">    return mapperInterface;</span><br><span class="line">&#125;</span><br><span class="line">@SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">protected T newInstance(ProxyHandler&lt;T&gt; mapperProxy) &#123;</span><br><span class="line">    return (T) java.lang.reflect.Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]&#123;mapperInterface&#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line">public T newInstance(ProxyInterface proxyInterface) &#123;</span><br><span class="line">    final ProxyHandler&lt;T&gt; mapperProxy = new ProxyHandler&lt;T&gt;(proxyInterface);</span><br><span class="line">    return newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>完成了上面的动态代理类构建，下面就是在业务代码中使用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ProxyFactory proxyFactory = new ProxyFactory&lt;Callable&gt;(Callable.class);</span><br><span class="line">       List&lt;Callable&lt;UserFilterDto&gt;&gt; callableList = new ArrayList&lt;&gt;();</span><br><span class="line">       List&lt;UserFilterDto&gt; filterDtosResult = new ArrayList&lt;&gt;();</span><br><span class="line">       // 动态生成代理类</span><br><span class="line">       list.forEach(p -&gt; &#123;</span><br><span class="line">           Callable&lt;UserFilterDto&gt; callable = null;</span><br><span class="line">           // 复用代理模版</span><br><span class="line">           switch (concurrencyType) &#123;</span><br><span class="line">               case FILTER:</span><br><span class="line">                   callable = (Callable&lt;UserFilterDto&gt;) proxyFactory.newInstance(new ProxyFilterCallable(xjUserService, userId, p.getCompanyId()));</span><br><span class="line">                   break;</span><br><span class="line">               case SATISFY:</span><br><span class="line">                   callable = (Callable&lt;UserFilterDto&gt;) proxyFactory.newInstance(new ProxySatisfyCallable(companyUserGroupService, userId, p.getCompanyId()));</span><br><span class="line">                   break;</span><br><span class="line">               default:</span><br><span class="line">                   break;</span><br><span class="line">           &#125;</span><br><span class="line">           callableList.add(callable);</span><br><span class="line">       &#125;);</span><br></pre></td></tr></table></figure></p>
-<p>ProxyFilterCallable:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class ProxyFilterCallable&lt;T&gt; implements ProxyInterface&lt;T&gt; &#123;</span><br><span class="line">    private static final Log logger = LogFactory.getLog(ProxyFilterCallable.class);</span><br><span class="line">    private UserService userService;</span><br><span class="line">    private Long userId;</span><br><span class="line">    private Long companyId;</span><br><span class="line"></span><br><span class="line">    public ProxyFilterCallable(XjUserService xjUserService, Long userId, Long companyId) &#123;</span><br><span class="line">        this.xjUserService = xjUserService;</span><br><span class="line">        this.userId = userId;</span><br><span class="line">        this.companyId = companyId;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public T call() throws Exception &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Response&lt;Boolean&gt; response = userService.filter(getUserId(), getCompanyId());</span><br><span class="line">            if (response.isSuccess() &amp;&amp; response.getResult()) &#123;</span><br><span class="line">                return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.TRUE);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            logger.error(e.getMessage(), e);</span><br><span class="line">        &#125;</span><br><span class="line">        return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>ProxySatisfyCallable：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class ProxySatisfyCallable&lt;T&gt; implements ProxyInterface&lt;T&gt; &#123;</span><br><span class="line">    private static final Log logger = LogFactory.getLog(ProxyFilterCallable.class);</span><br><span class="line">    private CompanyUserGroupService companyUserGroupService;</span><br><span class="line">    private Long userId;</span><br><span class="line">    private Long companyId;</span><br><span class="line"></span><br><span class="line">    public ProxySatisfyCallable(CompanyUserGroupService companyUserGroupService, Long userId, Long companyId) &#123;</span><br><span class="line">        this.companyUserGroupService = companyUserGroupService;</span><br><span class="line">        this.userId = userId;</span><br><span class="line">        this.companyId = companyId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public T call() throws Exception &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            XjFilterUserResultVo xjFilterUserResultVo = companyUserGroupService.checkUserInfoIsSatisfyCompany(getUserId(), getCompanyId());</span><br><span class="line">            if (Objects.nonNull(xjFilterUserResultVo) &amp;&amp; xjFilterUserResultVo.getResult()) &#123;</span><br><span class="line">                return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.TRUE);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            logger.error(e.getMessage(), e);</span><br><span class="line">        &#125;</span><br><span class="line">        return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>这篇文章由之前的<a href>并行执行任务</a>发展而来,如何生成task,在之前的文章中,生成task方式如下:</p>
+<pre><code>Abstract Task: 
+public abstract class BasicUserFilter implements Callable&lt;UserFilterDto&gt; {
+private static final Log logger = LogFactory.getLog(BasicUserFilter.class);
+@Autowired
+UserService userService;
+public Long companyId;
+public Long userId;
+@Override
+public UserFilterDto call() throws Exception {
+    try {
+        //每个执行任务调用同一个方法,只是入参不同
+        Response&lt;Boolean&gt; response = userService.filter(getUserId(), getCompanyId());
+        if (response.isSuccess() &amp;&amp; response.getResult()) {
+            return new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.TRUE);
+        }
+    } catch (Exception e) {
+        logger.error(e.getMessage(), e);
+    }
+    return new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.FALSE);
+}
+@PostConstruct
+abstract void init();
+// ... 篇幅关系,省略属性setter、getter方法
+}
+}
 
+Task1:
+public class Task1 extends BasicUserFilter{
+    @Override
+    public void init() {
+        FilterConfigManager.register(CompanyAppIdEnum.GEI_NI_HUA.getCompanyId(),this);
+    }
+    @Override
+    public UserFilterDto call() throws Exception {
+        return super.call();
+    }
+}
+</code></pre><p>上面生成任务类时，使用了策略模式,添加每一个任务都必须新增一个实体类,且实现BasicUserFilter或者重写自己的<code>call</code>方法,有木有比较好的方法解决这种繁琐的任务类构建呢。</p>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>解决切入点，就是所有的任务类都执行了相同的逻辑，且调用了入参不同的方法而已，无疑使用代理模式去动态生成任务类,思路有了，代码实现也边的简单起来。下面使用java InvocationHandler创建动态代理类.</p>
+<pre><code>ProxyHandler：
+/**
+ * @author LiosWong
+ * @description
+ * @date 2018/10/27 上午1:10
+ */
+public class ProxyHandler&lt;T&gt; implements InvocationHandler, Serializable {
+    private static final long serialVersionUID = -6424540398559729838L;
+    private final ProxyInterface&lt;T&gt; proxyInterface;
+
+    public ProxyHandler(ProxyInterface&lt;T&gt; proxyInterface) {
+        this.proxyInterface = proxyInterface;
+    }
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        // 根据方法名,执行不同逻辑
+        if (&quot;call&quot;.equals(method.getName())) {
+            return proxyInterface.call();
+        }
+        return null;
+    }
+}
+ProxyInterface：为了使代理模版通用,添加接口约束
+/** 
+ * @author LiosWong
+ * @description 可扩展代理接入点
+ * @date 2018/10/27 上午1:11
+ */
+public interface ProxyInterface&lt;T&gt; extends Callable&lt;T&gt; {
+
+}
+ProxyFactory：代理工厂
+public class ProxyFactory&lt;T&gt; {
+private final Class&lt;T&gt; mapperInterface;
+
+public ProxyFactory(Class&lt;T&gt; mapperInterface) {
+    this.mapperInterface = mapperInterface;
+}
+public Class&lt;T&gt; getMapperInterface() {
+    return mapperInterface;
+}
+@SuppressWarnings(&quot;unchecked&quot;)
+protected T newInstance(ProxyHandler&lt;T&gt; mapperProxy) {
+    return (T) java.lang.reflect.Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, mapperProxy);
+}
+public T newInstance(ProxyInterface proxyInterface) {
+    final ProxyHandler&lt;T&gt; mapperProxy = new ProxyHandler&lt;T&gt;(proxyInterface);
+    return newInstance(mapperProxy);
+}
+}
+</code></pre><p>完成了上面的动态代理类构建，下面就是在业务代码中使用:</p>
+<pre><code> ProxyFactory proxyFactory = new ProxyFactory&lt;Callable&gt;(Callable.class);
+        List&lt;Callable&lt;UserFilterDto&gt;&gt; callableList = new ArrayList&lt;&gt;();
+        List&lt;UserFilterDto&gt; filterDtosResult = new ArrayList&lt;&gt;();
+        // 动态生成代理类
+        list.forEach(p -&gt; {
+            Callable&lt;UserFilterDto&gt; callable = null;
+            // 复用代理模版
+            switch (concurrencyType) {
+                case FILTER:
+                    callable = (Callable&lt;UserFilterDto&gt;) proxyFactory.newInstance(new ProxyFilterCallable(xjUserService, userId, p.getCompanyId()));
+                    break;
+                case SATISFY:
+                    callable = (Callable&lt;UserFilterDto&gt;) proxyFactory.newInstance(new ProxySatisfyCallable(companyUserGroupService, userId, p.getCompanyId()));
+                    break;
+                default:
+                    break;
+            }
+            callableList.add(callable);
+        });
+</code></pre><p>ProxyFilterCallable:</p>
+<pre><code>public class ProxyFilterCallable&lt;T&gt; implements ProxyInterface&lt;T&gt; {
+    private static final Log logger = LogFactory.getLog(ProxyFilterCallable.class);
+    private UserService userService;
+    private Long userId;
+    private Long companyId;
+
+    public ProxyFilterCallable(XjUserService xjUserService, Long userId, Long companyId) {
+        this.xjUserService = xjUserService;
+        this.userId = userId;
+        this.companyId = companyId;
+    }
+    @Override
+    public T call() throws Exception {
+        try {
+            Response&lt;Boolean&gt; response = userService.filter(getUserId(), getCompanyId());
+            if (response.isSuccess() &amp;&amp; response.getResult()) {
+                return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.TRUE);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.FALSE);
+    }
+    // ...
+}
+</code></pre><p>ProxySatisfyCallable：</p>
+<pre><code>public class ProxySatisfyCallable&lt;T&gt; implements ProxyInterface&lt;T&gt; {
+    private static final Log logger = LogFactory.getLog(ProxyFilterCallable.class);
+    private CompanyUserGroupService companyUserGroupService;
+    private Long userId;
+    private Long companyId;
+
+    public ProxySatisfyCallable(CompanyUserGroupService companyUserGroupService, Long userId, Long companyId) {
+        this.companyUserGroupService = companyUserGroupService;
+        this.userId = userId;
+        this.companyId = companyId;
+    }
+
+    @Override
+    public T call() throws Exception {
+        try {
+            XjFilterUserResultVo xjFilterUserResultVo = companyUserGroupService.checkUserInfoIsSatisfyCompany(getUserId(), getCompanyId());
+            if (Objects.nonNull(xjFilterUserResultVo) &amp;&amp; xjFilterUserResultVo.getResult()) {
+                return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.TRUE);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return (T) new UserFilterDto().setCompanyId(getCompanyId()).setUserId(getUserId()).setFilterResultEnum(FilterResultEnum.FALSE);
+    }
+    // ...
+}
+
+</code></pre>
       
     </div>
 

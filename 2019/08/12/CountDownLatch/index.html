@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法:12345678// 当前线程在计数值减到0之前一直等待,除非当前线程被中断void await()// 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间boolean">
+  <meta name="description" content="CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法: // 当前线程在计数值减到0之前一直等待,除非当前线程被中断 void await() // 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间 boolean awa">
 <meta name="keywords" content="java,并发包">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CountDownLatch">
 <meta property="og:url" content="http://yoursite.com/2019/08/12/CountDownLatch/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法:12345678// 当前线程在计数值减到0之前一直等待,除非当前线程被中断void await()// 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间boolean">
+<meta property="og:description" content="CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法: // 当前线程在计数值减到0之前一直等待,除非当前线程被中断 void await() // 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间 boolean awa">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CountDownLatch">
-<meta name="twitter:description" content="CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法:12345678// 当前线程在计数值减到0之前一直等待,除非当前线程被中断void await()// 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间boolean">
+<meta name="twitter:description" content="CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法: // 当前线程在计数值减到0之前一直等待,除非当前线程被中断 void await() // 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间 boolean awa">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,11 +502,91 @@
       
 
       
-        <p>CountDownLatch是<code>java.util.concurrent</code>包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.<br>该类涉及到的主要方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 当前线程在计数值减到0之前一直等待,除非当前线程被中断</span><br><span class="line">void await()</span><br><span class="line">// 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间</span><br><span class="line">boolean await(long timeout, TimeUnit unit)</span><br><span class="line">// 减少计数值,当计数值减到0时,释放所有的等待线程</span><br><span class="line">void countDown()</span><br><span class="line">// 返回当前计数值</span><br><span class="line">long getCount()</span><br></pre></td></tr></table></figure></p>
-<p>示例:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">CountDownLatch countDownLatch = new CountDownLatch(3);</span><br><span class="line">ExecutorService executorService = Executors.newFixedThreadPool(3);</span><br><span class="line">for (int i = 0; i &lt; 3; i++) &#123;</span><br><span class="line">    int finalI = i;</span><br><span class="line">    executorService.execute(new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(&quot;任务执行结束啦,i:&quot; + finalI + &quot;,&quot; + &quot;时间t&quot; + finalI + &quot;:&quot; + System.currentTimeMillis());</span><br><span class="line">            countDownLatch.countDown();</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    countDownLatch.await();</span><br><span class="line">&#125; catch (InterruptedException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过控制台可发现,输出时间几乎一致,把上面的代码改动如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">CountDownLatch countDownLatch = new CountDownLatch(3);</span><br><span class="line">       ExecutorService executorService = Executors.newFixedThreadPool(3);</span><br><span class="line">       for (int i = 0; i &lt; 3; i++) &#123;</span><br><span class="line">           int finalI = i;</span><br><span class="line">           executorService.execute(new Runnable() &#123;</span><br><span class="line">               @Override</span><br><span class="line">               public void run() &#123;</span><br><span class="line">                   if (finalI == 0 || finalI == 1) &#123;</span><br><span class="line">                       try &#123;</span><br><span class="line">                           Thread.sleep(1000);</span><br><span class="line">                       &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                           e.printStackTrace();</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;</span><br><span class="line">                   System.out.println(&quot;任务执行结束啦,i:&quot; + finalI + &quot;,&quot; + &quot;时间t&quot; + finalI + &quot;:&quot; + System.currentTimeMillis());</span><br><span class="line">                   countDownLatch.countDown();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;);</span><br><span class="line">       &#125;</span><br><span class="line">       try &#123;</span><br><span class="line">           System.out.println(&quot;==========start,时间t3:&quot; + System.currentTimeMillis());</span><br><span class="line">           countDownLatch.await();</span><br><span class="line">           System.out.println(&quot;==========end,,时间t4:&quot; + System.currentTimeMillis());</span><br><span class="line">       &#125; catch (InterruptedException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure></p>
-<p>当i=0或1时,线程休眠1mis,打印出来的时间 <code>t3&lt;t2&lt;t0&lt;=t1&lt;=t4</code>,t2小于t0、t1很好理解,由于t0、t1所在线程休眠导致值变大,而t2、t1、t0为何处于(t3,t4]之间呢,原来由于子线程中任务完成时计数值减1操作,但是线程0、1休眠了1mis才完成任务并计数值减1,所以主线程一致等到线程0、1完成后才继续执行.将上面代码改动如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">CountDownLatch countDownLatch = new CountDownLatch(3);</span><br><span class="line">ExecutorService executorService = Executors.newFixedThreadPool(3);</span><br><span class="line">for (int i = 0; i &lt; 3; i++) &#123;</span><br><span class="line">    int finalI = i;</span><br><span class="line">    executorService.execute(new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            if (finalI == 0 || finalI == 1) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;任务执行结束啦,i:&quot; + finalI + &quot;,&quot; + &quot;时间t&quot; + finalI + &quot;:&quot; + System.currentTimeMillis());</span><br><span class="line">            countDownLatch.countDown();</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    System.out.println(&quot;==========start,时间t3:&quot; + System.currentTimeMillis());</span><br><span class="line">    countDownLatch.await(100,TimeUnit.MILLISECONDS);</span><br><span class="line">    System.out.println(&quot;==========end,,时间t4:&quot; + System.currentTimeMillis());</span><br><span class="line">&#125; catch (InterruptedException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行后发现,<code>t3&lt;t2&lt;t4&lt;t0&lt;=t1</code>,t2、t3的大小不能确定,这个很好理解,但是t4肯定是小于t0、t1的,因为使用了带超时时间的<code>await</code>,由于主线程等待的超时阈值是100毫秒,而线程t0、t1的休眠时间大于超时时间,所以主线程不会继续等待,超时后主线程继续执行.</p>
+        <p>CountDownLatch是<code>java.util.concurrent</code>包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.<br>该类涉及到的主要方法:</p>
+<pre><code>// 当前线程在计数值减到0之前一直等待,除非当前线程被中断
+void await()
+// 当前线程在计数值减到0之前一直等待,除非当前线程被中断或者超过了指定的等待时间
+boolean await(long timeout, TimeUnit unit)
+// 减少计数值,当计数值减到0时,释放所有的等待线程
+void countDown()
+// 返回当前计数值
+long getCount()
+</code></pre><p>示例:</p>
+<pre><code>        CountDownLatch countDownLatch = new CountDownLatch(3);
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        for (int i = 0; i &lt; 3; i++) {
+            int finalI = i;
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(&quot;任务执行结束啦,i:&quot; + finalI + &quot;,&quot; + &quot;时间t&quot; + finalI + &quot;:&quot; + System.currentTimeMillis());
+                    countDownLatch.countDown();
+
+                }
+            });
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+</code></pre><p>通过控制台可发现,输出时间几乎一致,把上面的代码改动如下:</p>
+<pre><code> CountDownLatch countDownLatch = new CountDownLatch(3);
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        for (int i = 0; i &lt; 3; i++) {
+            int finalI = i;
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (finalI == 0 || finalI == 1) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println(&quot;任务执行结束啦,i:&quot; + finalI + &quot;,&quot; + &quot;时间t&quot; + finalI + &quot;:&quot; + System.currentTimeMillis());
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        try {
+            System.out.println(&quot;==========start,时间t3:&quot; + System.currentTimeMillis());
+            countDownLatch.await();
+            System.out.println(&quot;==========end,,时间t4:&quot; + System.currentTimeMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+</code></pre><p>当i=0或1时,线程休眠1mis,打印出来的时间 <code>t3&lt;t2&lt;t0&lt;=t1&lt;=t4</code>,t2小于t0、t1很好理解,由于t0、t1所在线程休眠导致值变大,而t2、t1、t0为何处于(t3,t4]之间呢,原来由于子线程中任务完成时计数值减1操作,但是线程0、1休眠了1mis才完成任务并计数值减1,所以主线程一致等到线程0、1完成后才继续执行.将上面代码改动如下:</p>
+<pre><code>        CountDownLatch countDownLatch = new CountDownLatch(3);
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        for (int i = 0; i &lt; 3; i++) {
+            int finalI = i;
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (finalI == 0 || finalI == 1) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    System.out.println(&quot;任务执行结束啦,i:&quot; + finalI + &quot;,&quot; + &quot;时间t&quot; + finalI + &quot;:&quot; + System.currentTimeMillis());
+                    countDownLatch.countDown();
+
+                }
+            });
+        }
+        try {
+            System.out.println(&quot;==========start,时间t3:&quot; + System.currentTimeMillis());
+            countDownLatch.await(100,TimeUnit.MILLISECONDS);
+            System.out.println(&quot;==========end,,时间t4:&quot; + System.currentTimeMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+</code></pre><p>执行后发现,<code>t3&lt;t2&lt;t4&lt;t0&lt;=t1</code>,t2、t3的大小不能确定,这个很好理解,但是t4肯定是小于t0、t1的,因为使用了带超时时间的<code>await</code>,由于主线程等待的超时阈值是100毫秒,而线程t0、t1的休眠时间大于超时时间,所以主线程不会继续等待,超时后主线程继续执行.</p>
 <blockquote>
 <p>本文参考</p>
 </blockquote>

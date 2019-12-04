@@ -103,19 +103,19 @@
 
 
 
-  <meta name="description" content="ThreadLocal是什么123456* This class provides thread-local variables.  These variables differ from * their normal counterparts in that each thread that accesses one (via its * &amp;#123;@code get&amp;#125; or &amp;#1">
+  <meta name="description" content="ThreadLocal是什么* This class provides thread-local variables.  These variables differ from  * their normal counterparts in that each thread that accesses one (via its  * {@code get} or {@code set} metho">
 <meta name="keywords" content="java,ThreadLocal">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ThreadLocal">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/ThreadLocal/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="ThreadLocal是什么123456* This class provides thread-local variables.  These variables differ from * their normal counterparts in that each thread that accesses one (via its * &amp;#123;@code get&amp;#125; or &amp;#1">
+<meta property="og:description" content="ThreadLocal是什么* This class provides thread-local variables.  These variables differ from  * their normal counterparts in that each thread that accesses one (via its  * {@code get} or {@code set} metho">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&shareKey=aa0a0cee764a2090798d2bbffc76e2d1">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal">
-<meta name="twitter:description" content="ThreadLocal是什么123456* This class provides thread-local variables.  These variables differ from * their normal counterparts in that each thread that accesses one (via its * &amp;#123;@code get&amp;#125; or &amp;#1">
+<meta name="twitter:description" content="ThreadLocal是什么* This class provides thread-local variables.  These variables differ from  * their normal counterparts in that each thread that accesses one (via its  * {@code get} or {@code set} metho">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&shareKey=aa0a0cee764a2090798d2bbffc76e2d1">
 
 
@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -503,26 +504,97 @@
       
 
       
-        <h4 id="ThreadLocal是什么"><a href="#ThreadLocal是什么" class="headerlink" title="ThreadLocal是什么"></a>ThreadLocal是什么</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">* This class provides thread-local variables.  These variables differ from</span><br><span class="line"> * their normal counterparts in that each thread that accesses one (via its</span><br><span class="line"> * &#123;@code get&#125; or &#123;@code set&#125; method) has its own, independently initialized</span><br><span class="line"> * copy of the variable.  &#123;@code ThreadLocal&#125; instances are typically private</span><br><span class="line"> * static fields in classes that wish to associate state with a thread (e.g.,</span><br><span class="line"> * a user ID or Transaction ID).</span><br></pre></td></tr></table></figure>
-<p>简单的说ThreadLocal是本地线程副本变量工具类</p>
+        <h4 id="ThreadLocal是什么"><a href="#ThreadLocal是什么" class="headerlink" title="ThreadLocal是什么"></a>ThreadLocal是什么</h4><pre><code>* This class provides thread-local variables.  These variables differ from
+ * their normal counterparts in that each thread that accesses one (via its
+ * {@code get} or {@code set} method) has its own, independently initialized
+ * copy of the variable.  {@code ThreadLocal} instances are typically private
+ * static fields in classes that wish to associate state with a thread (e.g.,
+ * a user ID or Transaction ID).
+</code></pre><p>简单的说ThreadLocal是本地线程副本变量工具类</p>
 <h4 id="ThreadLocal类图"><a href="#ThreadLocal类图" class="headerlink" title="ThreadLocal类图"></a>ThreadLocal类图</h4><p><img src="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&amp;shareKey=aa0a0cee764a2090798d2bbffc76e2d1" alt="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&amp;shareKey=aa0a0cee764a2090798d2bbffc76e2d1"><br>上图可以看出ThreadLocal类中通过ThreadLocalMap去存储,ThreadLocalMap中的存储结构为Entry数组.</p>
 <h4 id="ThreadLocal核心方法"><a href="#ThreadLocal核心方法" class="headerlink" title="ThreadLocal核心方法"></a>ThreadLocal核心方法</h4><ol>
-<li>set(T value)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void set(T value) &#123;</span><br><span class="line">Thread t = Thread.currentThread();</span><br><span class="line">ThreadLocalMap map = getMap(t);</span><br><span class="line">if (map != null)</span><br><span class="line">    map.set(this, value);</span><br><span class="line">else</span><br><span class="line">    createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li><p>set(T value)</p>
+<pre><code>public void set(T value) {
+Thread t = Thread.currentThread();
+ThreadLocalMap map = getMap(t);
+if (map != null)
+ map.set(this, value);
+else
+ createMap(t, value);
+}
+</code></pre><p>该方法用来保存当前线程的副本所对应的变量值;首先通过<code>Thread.currentThread()</code>获取当前线程,然后获取ThreadLocalMap,调用ThreadLocalMap的set方法,把值存进去,key为ThreadLocal,再看ThreadLocalMap的set方法的代码:</p>
+<pre><code>private void set(ThreadLocal&lt;?&gt; key, Object value) {
+
+ // We don&#39;t use a fast path as with get() because it is at
+ // least as common to use set() to create new entries as
+ // it is to replace existing ones, in which case, a fast
+ // path would fail more often than not.
+
+ Entry[] tab = table;
+ int len = tab.length;
+ int i = key.threadLocalHashCode &amp; (len-1);
+
+ for (Entry e = tab[i];
+      e != null;
+      e = tab[i = nextIndex(i, len)]) {
+     ThreadLocal&lt;?&gt; k = e.get();
+
+     if (k == key) {
+         e.value = value;
+         return;
+     }
+
+     if (k == null) {
+         replaceStaleEntry(key, value, i);
+         return;
+     }
+ }
+
+ tab[i] = new Entry(key, value);
+ int sz = ++size;
+ if (!cleanSomeSlots(i, sz) &amp;&amp; sz &gt;= threshold)
+     rehash();
+}
+</code></pre><p>通过传入的ThreadLocal获取hashCode,用作数组Entry的下标,<code>tab[i]!=null</code>时,则获取数组下一个位置也比较简单,就是下i+1:</p>
+<pre><code>private static int nextIndex(int i, int len) {
+ return ((i + 1 &lt; len) ? i + 1 : 0);
+}
+</code></pre></li>
+<li>get()<pre><code>public T get() {
+Thread t = Thread.currentThread();
+ThreadLocalMap map = getMap(t);
+if (map != null) {
+ ThreadLocalMap.Entry e = map.getEntry(this);
+ if (e != null) {
+     @SuppressWarnings(&quot;unchecked&quot;)
+     T result = (T)e.value;
+     return result;
+ }
+}
+return setInitialValue();
+}
+</code></pre>get方法获取比较简单,通过当前线程获取到ThreadLocalMap,然后再获取Entry,就可以获取到变量了.</li>
+<li>remove()<pre><code>public void remove() {
+ThreadLocalMap m = getMap(Thread.currentThread());
+if (m != null)
+  m.remove(this);
+}
+</code></pre>remove方法用于移除当前线程的副本所对应的变量值,remove方法源码:<pre><code>private void remove(ThreadLocal&lt;?&gt; key) {
+ Entry[] tab = table;
+ int len = tab.length;
+ int i = key.threadLocalHashCode &amp; (len-1);
+ for (Entry e = tab[i];
+      e != null;
+      e = tab[i = nextIndex(i, len)]) {
+     if (e.get() == key) {
+         e.clear();
+         expungeStaleEntry(i);
+         return;
+     }
+ }
+}
+</code></pre>Entry调用了clear方法,用于清除该对象,继续跟进去,发现调用的clear方法是Reference的方法,Entry实现了WeakReference.关于ThreadLocal内存泄漏的问题指Entry是弱引用,当ThreadLocal没有被外部对象引用时,发生GC时会回收Entry,但是Entry中保存的值不会被回收,这个值随着该ThreadLocal线程一直存活着,占用内存,导致内存泄漏,解决的方法就是使用完ThreadLocal调用remove方法,清除变量值.</li>
 </ol>
-<p>该方法用来保存当前线程的副本所对应的变量值;首先通过<code>Thread.currentThread()</code>获取当前线程,然后获取ThreadLocalMap,调用ThreadLocalMap的set方法,把值存进去,key为ThreadLocal,再看ThreadLocalMap的set方法的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private void set(ThreadLocal&lt;?&gt; key, Object value) &#123;</span><br><span class="line"></span><br><span class="line">    // We don&apos;t use a fast path as with get() because it is at</span><br><span class="line">    // least as common to use set() to create new entries as</span><br><span class="line">    // it is to replace existing ones, in which case, a fast</span><br><span class="line">    // path would fail more often than not.</span><br><span class="line"></span><br><span class="line">    Entry[] tab = table;</span><br><span class="line">    int len = tab.length;</span><br><span class="line">    int i = key.threadLocalHashCode &amp; (len-1);</span><br><span class="line"></span><br><span class="line">    for (Entry e = tab[i];</span><br><span class="line">         e != null;</span><br><span class="line">         e = tab[i = nextIndex(i, len)]) &#123;</span><br><span class="line">        ThreadLocal&lt;?&gt; k = e.get();</span><br><span class="line"></span><br><span class="line">        if (k == key) &#123;</span><br><span class="line">            e.value = value;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (k == null) &#123;</span><br><span class="line">            replaceStaleEntry(key, value, i);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    tab[i] = new Entry(key, value);</span><br><span class="line">    int sz = ++size;</span><br><span class="line">    if (!cleanSomeSlots(i, sz) &amp;&amp; sz &gt;= threshold)</span><br><span class="line">        rehash();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过传入的ThreadLocal获取hashCode,用作数组Entry的下标,<code>tab[i]!=null</code>时,则获取数组下一个位置也比较简单,就是下i+1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private static int nextIndex(int i, int len) &#123;</span><br><span class="line">    return ((i + 1 &lt; len) ? i + 1 : 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<ol start="2">
-<li>get()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public T get() &#123;</span><br><span class="line">Thread t = Thread.currentThread();</span><br><span class="line">ThreadLocalMap map = getMap(t);</span><br><span class="line">if (map != null) &#123;</span><br><span class="line">    ThreadLocalMap.Entry e = map.getEntry(this);</span><br><span class="line">    if (e != null) &#123;</span><br><span class="line">        @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">        T result = (T)e.value;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">return setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>get方法获取比较简单,通过当前线程获取到ThreadLocalMap,然后再获取Entry,就可以获取到变量了.</p>
-<ol start="3">
-<li>remove()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void remove() &#123;</span><br><span class="line"> ThreadLocalMap m = getMap(Thread.currentThread());</span><br><span class="line"> if (m != null)</span><br><span class="line">     m.remove(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>remove方法用于移除当前线程的副本所对应的变量值,remove方法源码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">private void remove(ThreadLocal&lt;?&gt; key) &#123;</span><br><span class="line">    Entry[] tab = table;</span><br><span class="line">    int len = tab.length;</span><br><span class="line">    int i = key.threadLocalHashCode &amp; (len-1);</span><br><span class="line">    for (Entry e = tab[i];</span><br><span class="line">         e != null;</span><br><span class="line">         e = tab[i = nextIndex(i, len)]) &#123;</span><br><span class="line">        if (e.get() == key) &#123;</span><br><span class="line">            e.clear();</span><br><span class="line">            expungeStaleEntry(i);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Entry调用了clear方法,用于清除该对象,继续跟进去,发现调用的clear方法是Reference的方法,Entry实现了WeakReference.关于ThreadLocal内存泄漏的问题指Entry是弱引用,当ThreadLocal没有被外部对象引用时,发生GC时会回收Entry,但是Entry中保存的值不会被回收,这个值随着该ThreadLocal线程一直存活着,占用内存,导致内存泄漏,解决的方法就是使用完ThreadLocal调用remove方法,清除变量值.</p>
 <p>参考:<br><a href="https://www.jianshu.com/p/98b68c97df9b" target="_blank" rel="noopener">https://www.jianshu.com/p/98b68c97df9b</a></p>
 
       
@@ -599,8 +671,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/python初试/" rel="next" title="python初试">
-                <i class="fa fa-chevron-left"></i> python初试
+              <a href="/2019/02/16/史上最全国家统计局划分代码爬取/" rel="next" title="史上最全国家统计局划分代码爬取">
+                <i class="fa fa-chevron-left"></i> 史上最全国家统计局划分代码爬取
               </a>
             
           </div>

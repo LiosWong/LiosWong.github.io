@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在5.6.4之前是不保存毫秒数的,在5.6.4之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在5.6.4之后:123select version();`version()`5.7.2">
+  <meta name="description" content="开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在5.6.4之前是不保存毫秒数的,在5.6.4之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在5.6.4之后: select version(); `version()` 5.7.2">
 <meta name="keywords" content="mysql,毫秒数丢失">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql毫秒数丢失问题">
 <meta property="og:url" content="http://yoursite.com/2019/10/17/mysql毫秒数丢失问题/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在5.6.4之前是不保存毫秒数的,在5.6.4之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在5.6.4之后:123select version();`version()`5.7.2">
+<meta property="og:description" content="开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在5.6.4之前是不保存毫秒数的,在5.6.4之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在5.6.4之后: select version(); `version()` 5.7.2">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-10-17T03:11:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql毫秒数丢失问题">
-<meta name="twitter:description" content="开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在5.6.4之前是不保存毫秒数的,在5.6.4之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在5.6.4之后:123select version();`version()`5.7.2">
+<meta name="twitter:description" content="开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在5.6.4之前是不保存毫秒数的,在5.6.4之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在5.6.4之后: select version(); `version()` 5.7.2">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -489,9 +490,22 @@
       
 
       
-        <p>开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在<code>5.6.4</code>之前是不保存毫秒数的,在<code>5.6.4</code>之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在<code>5.6.4</code>之后:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select version();</span><br><span class="line">`version()`</span><br><span class="line">5.7.20-log</span><br></pre></td></tr></table></figure></p>
-<p>所以解决的方法就是设置日期的毫秒数,避免进位:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static Date getDateInDay(Date date, int hour, int minute, int second)&#123;</span><br><span class="line">        Calendar c = Calendar.getInstance();</span><br><span class="line">        c.setTime(date);</span><br><span class="line">        c.set(Calendar.HOUR_OF_DAY, hour);</span><br><span class="line">        c.set(Calendar.MINUTE, minute);</span><br><span class="line">        c.set(Calendar.SECOND, second);</span><br><span class="line">        //设置毫秒数，避免产生进位</span><br><span class="line">        c.set(Calendar.MILLISECOND,0);</span><br><span class="line">        return c.getTime();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
+        <p>开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在<code>5.6.4</code>之前是不保存毫秒数的,在<code>5.6.4</code>之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的数据库版本在<code>5.6.4</code>之后:</p>
+<pre><code>select version();
+`version()`
+5.7.20-log
+</code></pre><p>所以解决的方法就是设置日期的毫秒数,避免进位:</p>
+<pre><code>public static Date getDateInDay(Date date, int hour, int minute, int second){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, second);
+        //设置毫秒数，避免产生进位
+        c.set(Calendar.MILLISECOND,0);
+        return c.getTime();
+    }
+</code></pre><blockquote>
 <p>参考文章</p>
 </blockquote>
 <ol>

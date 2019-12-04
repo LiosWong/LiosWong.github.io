@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,31 +502,271 @@
       
 
       
-        <p>关于Dubbo的SPI机制、服务暴露已有文章介绍,该文介绍Dubbo的服务引入.在Dubbo中,我们可以通过两种方式引用远程服务。第一种是使用服务直连的方式引用服务,第二种方式是基于注册中心进行引用.服务直连的方式仅适合在调试或测试服务的场景下使用,不适合在线上环境使用.因此,本文我将重点分析通过注册中心引用服务的过程.<br>运行 <code>demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-consumer</code> 中 <code>Application</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class ApplicationConsumer &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ReferenceConfig&lt;DemoService&gt; reference = new ReferenceConfig&lt;&gt;();</span><br><span class="line">        reference.setApplication(new ApplicationConfig(&quot;dubbo-demo-api-consumer&quot;));</span><br><span class="line">        reference.setRegistry(new RegistryConfig(&quot;zookeeper://127.0.0.1:2181&quot;));</span><br><span class="line">        reference.setInterface(DemoService.class);</span><br><span class="line">        DemoService service = reference.get();</span><br><span class="line">        String message = service.sayHello(&quot;dubbo&quot;);</span><br><span class="line">        System.out.println(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>断点进入org.apache.dubbo.config.ReferenceConfig#get:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public synchronized T get() &#123;</span><br><span class="line">        checkAndUpdateSubConfigs();</span><br><span class="line"></span><br><span class="line">        if (destroyed) &#123;</span><br><span class="line">            throw new IllegalStateException(&quot;The invoker of ReferenceConfig(&quot; + url + &quot;) has already destroyed!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (ref == null) &#123;</span><br><span class="line">            init();</span><br><span class="line">        &#125;</span><br><span class="line">        return ref;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>该方法中会判断接口的代理对象是否为空,如果为空,则初始化,进入org.apache.dubbo.config.ReferenceConfig#init,该方法中大部分代码是对属性检查、获取,最关键的是看代理对象的创建,进入方法org.apache.dubbo.config.ReferenceConfig#createProxy:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">private T createProxy(Map&lt;String, String&gt; map) &#123;</span><br><span class="line">    if (shouldJvmRefer(map)) &#123;  //本地引用</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">    &#125; else &#123;  // 远程引用</span><br><span class="line">        urls.clear(); // reference retry init will add url to urls, lead to OOM</span><br><span class="line">        // url 不为空，表明用户可能想进行点对点调用</span><br><span class="line">        if (url != null &amp;&amp; url.length() &gt; 0) &#123; // user specified URL, could be peer-to-peer address, or register center&apos;s address.</span><br><span class="line">            // 当需要配置多个 url 时，可用分号进行分割，这里会进行切分</span><br><span class="line">            String[] us = SEMICOLON_SPLIT_PATTERN.split(url);</span><br><span class="line">            if (us != null &amp;&amp; us.length &gt; 0) &#123;</span><br><span class="line">                ...</span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123; // assemble URL from register center&apos;s configuration</span><br><span class="line">            // if protocols not injvm checkRegistry</span><br><span class="line">            if (!LOCAL_PROTOCOL.equalsIgnoreCase(getProtocol()))&#123;</span><br><span class="line">                checkRegistry();</span><br><span class="line">                // 加载注册中心 url</span><br><span class="line">                List&lt;URL&gt; us = loadRegistries(false);</span><br><span class="line">                ...</span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 单个注册中心或服务提供者(服务直连，下同)</span><br><span class="line">        if (urls.size() == 1) &#123;</span><br><span class="line">            invoker = REF_PROTOCOL.refer(interfaceClass, urls.get(0));</span><br><span class="line">        &#125; else &#123; // 多个注册中心或多个服务提供者，或者两者混合</span><br><span class="line">            List&lt;Invoker&lt;?&gt;&gt; invokers = new ArrayList&lt;Invoker&lt;?&gt;&gt;();</span><br><span class="line">            URL registryURL = null;</span><br><span class="line">            for (URL url : urls) &#123;</span><br><span class="line">                invokers.add(REF_PROTOCOL.refer(interfaceClass, url));</span><br><span class="line">                if (REGISTRY_PROTOCOL.equals(url.getProtocol())) &#123;</span><br><span class="line">                    registryURL = url; // use last registry url</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (registryURL != null) &#123; // registry url is available</span><br><span class="line">                // use RegistryAwareCluster only when register&apos;s CLUSTER is available</span><br><span class="line">                URL u = registryURL.addParameter(CLUSTER_KEY, RegistryAwareCluster.NAME);</span><br><span class="line">                // The invoker wrap relation would be: RegistryAwareClusterInvoker(StaticDirectory) -&gt; FailoverClusterInvoker(RegistryDirectory, will execute route) -&gt; Invoker</span><br><span class="line">                invoker = CLUSTER.join(new StaticDirectory(u, invokers));</span><br><span class="line">            &#125; else &#123; // not a registry url, must be direct invoke.</span><br><span class="line">                invoker = CLUSTER.join(new StaticDirectory(invokers));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    // create service proxy</span><br><span class="line">    return (T) PROXY_FACTORY.getProxy(invoker);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="创建Invoker"><a href="#创建Invoker" class="headerlink" title="创建Invoker"></a>创建Invoker</h4><p>该方法首先判断是否为本地引用服务,否则远程,这里走的是远程引用服务,如果单个注册中心,则直接获取Invoker:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invoker = REF_PROTOCOL.refer(interfaceClass, urls.get(0));</span><br></pre></td></tr></table></figure></p>
-<p>REF_PROTOCOL对象是在运行时由Dubbo SPI机制创建的,这里会根据自适应扩展创建对象包装对象,结构如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper</span><br><span class="line">   org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper</span><br><span class="line">       org.apache.dubbo.registry.integration.RegistryProtocol</span><br></pre></td></tr></table></figure></p>
-<p>前面文章也分析过,这里直接看RegistryProtocol中的refer:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 修改协议为dubbo</span><br><span class="line">url = URLBuilder.from(url)</span><br><span class="line">               .setProtocol(url.getParameter(REGISTRY_KEY, DEFAULT_REGISTRY))</span><br><span class="line">               .removeParameter(REGISTRY_KEY)</span><br><span class="line">               .build();</span><br><span class="line">       Registry registry = registryFactory.getRegistry(url);</span><br><span class="line">       if (RegistryService.class.equals(type)) &#123;</span><br><span class="line">           return proxyFactory.getInvoker((T) registry, type, url);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // group=&quot;a,b&quot; or group=&quot;*&quot;</span><br><span class="line">       Map&lt;String, String&gt; qs = StringUtils.parseQueryString(url.getParameterAndDecoded(REFER_KEY));</span><br><span class="line">       String group = qs.get(GROUP_KEY);</span><br><span class="line">       if (group != null &amp;&amp; group.length() &gt; 0) &#123;</span><br><span class="line">           if ((COMMA_SPLIT_PATTERN.split(group)).length &gt; 1 || &quot;*&quot;.equals(group)) &#123;</span><br><span class="line">               return doRefer(getMergeableCluster(), registry, type, url);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       return doRefer(cluster, registry, type, url);</span><br></pre></td></tr></table></figure></p>
-<p>继续看doRefer方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 创建服务目录 RegistryDirectory 实例</span><br><span class="line">RegistryDirectory&lt;T&gt; directory = new RegistryDirectory&lt;T&gt;(type, url);</span><br><span class="line">directory.setRegistry(registry);</span><br><span class="line">directory.setProtocol(protocol);</span><br><span class="line">// all attributes of REFER_KEY</span><br><span class="line">Map&lt;String, String&gt; parameters = new HashMap&lt;String, String&gt;(directory.getUrl().getParameters());</span><br><span class="line">// 生成服务消费者链接</span><br><span class="line">URL subscribeUrl = new URL(CONSUMER_PROTOCOL, parameters.remove(REGISTER_IP_KEY), 0, type.getName(), parameters);</span><br><span class="line">if (!ANY_VALUE.equals(url.getServiceInterface()) &amp;&amp; url.getParameter(REGISTER_KEY, true)) &#123;</span><br><span class="line">    directory.setRegisteredConsumerUrl(getRegisteredConsumerUrl(subscribeUrl, url));</span><br><span class="line">    // 注册服务消费者，在 consumers 目录下新节点</span><br><span class="line">    registry.register(directory.getRegisteredConsumerUrl());</span><br><span class="line">&#125;</span><br><span class="line">directory.buildRouterChain(subscribeUrl);</span><br><span class="line">// 订阅 providers、configurators、routers 等节点数据</span><br><span class="line">directory.subscribe(subscribeUrl.addParameter(CATEGORY_KEY,</span><br><span class="line">        PROVIDERS_CATEGORY + &quot;,&quot; + CONFIGURATORS_CATEGORY + &quot;,&quot; + ROUTERS_CATEGORY));</span><br><span class="line"></span><br><span class="line">// 一个注册中心可能有多个服务提供者，因此这里需要将多个服务提供者合并为一个</span><br><span class="line">Invoker invoker = cluster.join(directory);</span><br><span class="line">ProviderConsumerRegTable.registerConsumer(invoker, url, subscribeUrl, directory);</span><br><span class="line">return invoker;</span><br></pre></td></tr></table></figure></p>
-<p>进入服务目录订阅节点信息方法org.apache.dubbo.registry.integration.RegistryDirectory#subscribe:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void subscribe(URL url) &#123;</span><br><span class="line">        setConsumerUrl(url);</span><br><span class="line">        CONSUMER_CONFIGURATION_LISTENER.addNotifyListener(this);</span><br><span class="line">        serviceConfigurationListener = new ReferenceConfigurationListener(this, url);</span><br><span class="line">        registry.subscribe(url, this);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>继续进入org.apache.dubbo.registry.support.FailbackRegistry#subscribe:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void subscribe(URL url, NotifyListener listener) &#123;</span><br><span class="line">        super.subscribe(url, listener);</span><br><span class="line">        removeFailedSubscribed(url, listener);</span><br><span class="line">        // Sending a subscription request to the server side</span><br><span class="line">        doSubscribe(url, listener);</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>继续进入org.apache.dubbo.registry.zookeeper.ZookeeperRegistry#doSubscribe:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">...</span><br><span class="line">notify(url, listener, urls);</span><br></pre></td></tr></table></figure></p>
-<p>以上代码很多都省略了,主要看notify方法,进入:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">protected void notify(URL url, NotifyListener listener, List&lt;URL&gt; urls) &#123;</span><br><span class="line">        if (url == null) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;notify url == null&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (listener == null) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;notify listener == null&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        try &#123;</span><br><span class="line">            doNotify(url, listener, urls);</span><br><span class="line">        &#125; catch (Exception t) &#123;</span><br><span class="line">            // Record a failed registration request to a failed list, retry regularly</span><br><span class="line">            addFailedNotified(url, listener, urls);</span><br><span class="line">            logger.error(&quot;Failed to notify for subscribe &quot; + url + &quot;, waiting for retry, cause: &quot; + t.getMessage(), t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>主要看org.apache.dubbo.registry.support.FailbackRegistry#doNotify方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">protected void doNotify(URL url, NotifyListener listener, List&lt;URL&gt; urls) &#123;</span><br><span class="line">       super.notify(url, listener, urls);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>继续进入org.apache.dubbo.registry.support.AbstractRegistry#notify(org.apache.dubbo.common.URL, org.apache.dubbo.registry.NotifyListener, java.util.List&lt;org.apache.dubbo.common.URL&gt;):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">...</span><br><span class="line">for (Map.Entry&lt;String, List&lt;URL&gt;&gt; entry : result.entrySet()) &#123;</span><br><span class="line">            String category = entry.getKey();</span><br><span class="line">            List&lt;URL&gt; categoryList = entry.getValue();</span><br><span class="line">            categoryNotified.put(category, categoryList);</span><br><span class="line">            listener.notify(categoryList);</span><br><span class="line">            // We will update our cache file after each notification.</span><br><span class="line">            // When our Registry has a subscribe failure due to network jitter, we can return at least the existing cache URL.</span><br><span class="line">            saveProperties(url);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>这里会遍历routers、configurators、providers节点,示范:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">routers=[empty://192.168.1.220/org.apache.dubbo.demo.DemoService?application=dubbo-demo-api-consumer&amp;category=routers&amp;dubbo=2.0.2&amp;interface=org.apache.dubbo.demo.DemoService&amp;lazy=false&amp;methods=sayHello&amp;pid=77530&amp;retries=0&amp;sent=true&amp;side=consumer&amp;sticky=false&amp;timeout=3600&amp;timestamp=1572419547454]</span><br><span class="line"></span><br><span class="line">configurators=[empty://192.168.1.220/org.apache.dubbo.demo.DemoService?application=dubbo-demo-api-consumer&amp;category=configurators&amp;dubbo=2.0.2&amp;interface=org.apache.dubbo.demo.DemoService&amp;lazy=false&amp;methods=sayHello&amp;pid=77530&amp;retries=0&amp;sent=true&amp;side=consumer&amp;sticky=false&amp;timeout=3600&amp;timestamp=1572419547454]</span><br><span class="line"></span><br><span class="line">providers=[dubbo://192.168.1.220:20880/org.apache.dubbo.demo.DemoService?anyhost=true&amp;application=dubbo-demo-api-provider&amp;deprecated=false&amp;dubbo=2.0.2&amp;dynamic=true&amp;generic=false&amp;interface=org.apache.dubbo.demo.DemoService&amp;methods=sayHello&amp;pid=73959&amp;release=&amp;side=provider&amp;timeout=3600&amp;timestamp=1572403767806]</span><br></pre></td></tr></table></figure></p>
-<p>如果是providers节点时,则方法调用链入下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">org.apache.dubbo.registry.integration.RegistryDirectory#notify</span><br><span class="line">   --&gt;  org.apache.dubbo.registry.integration.RegistryDirectory#refreshOverrideAndInvoker</span><br><span class="line">   --&gt;  org.apache.dubbo.registry.integration.RegistryDirectory#refreshInvoker</span><br><span class="line">   --&gt;  org.apache.dubbo.registry.integration.RegistryDirectory#toInvokers</span><br></pre></td></tr></table></figure></p>
-<p>org.apache.dubbo.registry.integration.RegistryDirectory#toInvokers中会重新引用远程服务:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> ...</span><br><span class="line"> ...</span><br><span class="line"> ...</span><br><span class="line"> // Cache key is url that does not merge with consumer side parameters, regardless of how the consumer combines parameters, if the server url changes, then refer again</span><br><span class="line">            Map&lt;String, Invoker&lt;T&gt;&gt; localUrlInvokerMap = this.urlInvokerMap; // local reference</span><br><span class="line">            Invoker&lt;T&gt; invoker = localUrlInvokerMap == null ? null : localUrlInvokerMap.get(key);</span><br><span class="line">            if (invoker == null) &#123; // Not in the cache, refer again</span><br><span class="line">                try &#123;</span><br><span class="line">                    boolean enabled = true;</span><br><span class="line">                    if (url.hasParameter(DISABLED_KEY)) &#123;</span><br><span class="line">                        enabled = !url.getParameter(DISABLED_KEY, false);</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        enabled = url.getParameter(ENABLED_KEY, true);</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (enabled) &#123;</span><br><span class="line">                        invoker = new InvokerDelegate&lt;&gt;(protocol.refer(serviceType, url), url, providerUrl);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; catch (Throwable t) &#123;</span><br><span class="line">                    logger.error(&quot;Failed to refer invoker for interface:&quot; + serviceType + &quot;,url:(&quot; + url + &quot;)&quot; + t.getMessage(), t);</span><br><span class="line">                &#125;</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
-<p>回到org.apache.dubbo.registry.integration.RegistryProtocol#doRefer中,上面注释也很清楚,具体看:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invoker invoker = cluster.join(directory);</span><br></pre></td></tr></table></figure></p>
-<p>如果一个注册中心有多个服务提供者,这里需要将多个服务提供者合并为一个,cluster对象也是在运行时由Dubbo SPI生成的对象,会根据自适应创建包装类org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterWrapper,结构如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterWrapper</span><br><span class="line">  org.apache.dubbo.rpc.cluster.support.FailbackCluster</span><br></pre></td></tr></table></figure></p>
-<p>Dubbo提供了Failover Cluster(失败自动切换)、Failfast Cluster(快速失败)、Failsafe Cluster(失败安全)、Failback Cluster(失败自动恢复)、Forking Cluster(并行调用多个服务提供者)五种集群容错机制,默认为Failover,关于集群的这里不多作介绍,<br>继续进入MockClusterWrapper的join方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException &#123;</span><br><span class="line">        return new MockClusterInvoker&lt;T&gt;(directory,</span><br><span class="line">                this.cluster.join(directory));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>在创建MockClusterInvoker对象之前,会调用org.apache.dubbo.rpc.cluster.support.FailbackCluster#join:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException &#123;</span><br><span class="line">       return new FailbackClusterInvoker&lt;T&gt;(directory);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>会直接创建对象FailbackClusterInvoker,然后返回,到这里Invoker的对象创建已经完成.</p>
-<h4 id="创建代理对象"><a href="#创建代理对象" class="headerlink" title="创建代理对象"></a>创建代理对象</h4><p>回到org.apache.dubbo.config.ReferenceConfig#createProxy方法中,最后一段代码用于创建代理对象,同理PROXY_FACTORY对象也是通过Dubbo SPI创建,根据自适应实现,创建对象StubProxyFactoryWrapper,进入org.apache.dubbo.rpc.proxy.wrapper.StubProxyFactoryWrapper#getProxy:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T proxy = proxyFactory.getProxy(invoker);</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
-<p>进入org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory#getProxy:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; T getProxy(Invoker&lt;T&gt; invoker, Class&lt;?&gt;[] interfaces) &#123;</span><br><span class="line">       return (T) Proxy.getProxy(interfaces).newInstance(new InvokerInvocationHandler(invoker));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面使用了jdk的动态代理实现代理对象的创建,具体看InvokerInvocationHandler的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class InvokerInvocationHandler implements InvocationHandler &#123;</span><br><span class="line">    private static final Logger logger = LoggerFactory.getLogger(InvokerInvocationHandler.class);</span><br><span class="line">    private final Invoker&lt;?&gt; invoker;</span><br><span class="line"></span><br><span class="line">    public InvokerInvocationHandler(Invoker&lt;?&gt; handler) &#123;</span><br><span class="line">        this.invoker = handler;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;</span><br><span class="line">        String methodName = method.getName();</span><br><span class="line">        Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();</span><br><span class="line">        if (method.getDeclaringClass() == Object.class) &#123;</span><br><span class="line">            return method.invoke(invoker, args);</span><br><span class="line">        &#125;</span><br><span class="line">        if (&quot;toString&quot;.equals(methodName) &amp;&amp; parameterTypes.length == 0) &#123;</span><br><span class="line">            return invoker.toString();</span><br><span class="line">        &#125;</span><br><span class="line">        if (&quot;hashCode&quot;.equals(methodName) &amp;&amp; parameterTypes.length == 0) &#123;</span><br><span class="line">            return invoker.hashCode();</span><br><span class="line">        &#125;</span><br><span class="line">        if (&quot;equals&quot;.equals(methodName) &amp;&amp; parameterTypes.length == 1) &#123;</span><br><span class="line">            return invoker.equals(args[0]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return invoker.invoke(new RpcInvocation(method, args)).recreate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>invoke方法里会实现Invoker的invoke方法调用.到这里代理对象的创建已经完成.</p>
+        <p>关于Dubbo的SPI机制、服务暴露已有文章介绍,该文介绍Dubbo的服务引入.在Dubbo中,我们可以通过两种方式引用远程服务。第一种是使用服务直连的方式引用服务,第二种方式是基于注册中心进行引用.服务直连的方式仅适合在调试或测试服务的场景下使用,不适合在线上环境使用.因此,本文我将重点分析通过注册中心引用服务的过程.<br>运行 <code>demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-consumer</code> 中 <code>Application</code>:</p>
+<pre><code>public class ApplicationConsumer {
+    public static void main(String[] args) {
+        ReferenceConfig&lt;DemoService&gt; reference = new ReferenceConfig&lt;&gt;();
+        reference.setApplication(new ApplicationConfig(&quot;dubbo-demo-api-consumer&quot;));
+        reference.setRegistry(new RegistryConfig(&quot;zookeeper://127.0.0.1:2181&quot;));
+        reference.setInterface(DemoService.class);
+        DemoService service = reference.get();
+        String message = service.sayHello(&quot;dubbo&quot;);
+        System.out.println(message);
+    }
+}
+</code></pre><p>断点进入org.apache.dubbo.config.ReferenceConfig#get:</p>
+<pre><code>public synchronized T get() {
+        checkAndUpdateSubConfigs();
+
+        if (destroyed) {
+            throw new IllegalStateException(&quot;The invoker of ReferenceConfig(&quot; + url + &quot;) has already destroyed!&quot;);
+        }
+        if (ref == null) {
+            init();
+        }
+        return ref;
+    }
+</code></pre><p>该方法中会判断接口的代理对象是否为空,如果为空,则初始化,进入org.apache.dubbo.config.ReferenceConfig#init,该方法中大部分代码是对属性检查、获取,最关键的是看代理对象的创建,进入方法org.apache.dubbo.config.ReferenceConfig#createProxy:</p>
+<pre><code>    private T createProxy(Map&lt;String, String&gt; map) {
+        if (shouldJvmRefer(map)) {  //本地引用
+            ...
+            ...
+        } else {  // 远程引用
+            urls.clear(); // reference retry init will add url to urls, lead to OOM
+            // url 不为空，表明用户可能想进行点对点调用
+            if (url != null &amp;&amp; url.length() &gt; 0) { // user specified URL, could be peer-to-peer address, or register center&#39;s address.
+                // 当需要配置多个 url 时，可用分号进行分割，这里会进行切分
+                String[] us = SEMICOLON_SPLIT_PATTERN.split(url);
+                if (us != null &amp;&amp; us.length &gt; 0) {
+                    ...
+                    ...
+                }
+            } else { // assemble URL from register center&#39;s configuration
+                // if protocols not injvm checkRegistry
+                if (!LOCAL_PROTOCOL.equalsIgnoreCase(getProtocol())){
+                    checkRegistry();
+                    // 加载注册中心 url
+                    List&lt;URL&gt; us = loadRegistries(false);
+                    ...
+                    ...
+                }
+            }
+            // 单个注册中心或服务提供者(服务直连，下同)
+            if (urls.size() == 1) {
+                invoker = REF_PROTOCOL.refer(interfaceClass, urls.get(0));
+            } else { // 多个注册中心或多个服务提供者，或者两者混合
+                List&lt;Invoker&lt;?&gt;&gt; invokers = new ArrayList&lt;Invoker&lt;?&gt;&gt;();
+                URL registryURL = null;
+                for (URL url : urls) {
+                    invokers.add(REF_PROTOCOL.refer(interfaceClass, url));
+                    if (REGISTRY_PROTOCOL.equals(url.getProtocol())) {
+                        registryURL = url; // use last registry url
+                    }
+                }
+                if (registryURL != null) { // registry url is available
+                    // use RegistryAwareCluster only when register&#39;s CLUSTER is available
+                    URL u = registryURL.addParameter(CLUSTER_KEY, RegistryAwareCluster.NAME);
+                    // The invoker wrap relation would be: RegistryAwareClusterInvoker(StaticDirectory) -&gt; FailoverClusterInvoker(RegistryDirectory, will execute route) -&gt; Invoker
+                    invoker = CLUSTER.join(new StaticDirectory(u, invokers));
+                } else { // not a registry url, must be direct invoke.
+                    invoker = CLUSTER.join(new StaticDirectory(invokers));
+                }
+            }
+        }
+        ...
+        ...
+        // create service proxy
+        return (T) PROXY_FACTORY.getProxy(invoker);
+    }
+</code></pre><h4 id="创建Invoker"><a href="#创建Invoker" class="headerlink" title="创建Invoker"></a>创建Invoker</h4><p>该方法首先判断是否为本地引用服务,否则远程,这里走的是远程引用服务,如果单个注册中心,则直接获取Invoker:</p>
+<pre><code>invoker = REF_PROTOCOL.refer(interfaceClass, urls.get(0));
+</code></pre><p>REF_PROTOCOL对象是在运行时由Dubbo SPI机制创建的,这里会根据自适应扩展创建对象包装对象,结构如下:</p>
+<pre><code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper
+   org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper
+       org.apache.dubbo.registry.integration.RegistryProtocol
+</code></pre><p>前面文章也分析过,这里直接看RegistryProtocol中的refer:</p>
+<pre><code> // 修改协议为dubbo
+ url = URLBuilder.from(url)
+                .setProtocol(url.getParameter(REGISTRY_KEY, DEFAULT_REGISTRY))
+                .removeParameter(REGISTRY_KEY)
+                .build();
+        Registry registry = registryFactory.getRegistry(url);
+        if (RegistryService.class.equals(type)) {
+            return proxyFactory.getInvoker((T) registry, type, url);
+        }
+
+        // group=&quot;a,b&quot; or group=&quot;*&quot;
+        Map&lt;String, String&gt; qs = StringUtils.parseQueryString(url.getParameterAndDecoded(REFER_KEY));
+        String group = qs.get(GROUP_KEY);
+        if (group != null &amp;&amp; group.length() &gt; 0) {
+            if ((COMMA_SPLIT_PATTERN.split(group)).length &gt; 1 || &quot;*&quot;.equals(group)) {
+                return doRefer(getMergeableCluster(), registry, type, url);
+            }
+        }
+        return doRefer(cluster, registry, type, url);
+</code></pre><p>继续看doRefer方法:</p>
+<pre><code>        // 创建服务目录 RegistryDirectory 实例
+        RegistryDirectory&lt;T&gt; directory = new RegistryDirectory&lt;T&gt;(type, url);
+        directory.setRegistry(registry);
+        directory.setProtocol(protocol);
+        // all attributes of REFER_KEY
+        Map&lt;String, String&gt; parameters = new HashMap&lt;String, String&gt;(directory.getUrl().getParameters());
+        // 生成服务消费者链接
+        URL subscribeUrl = new URL(CONSUMER_PROTOCOL, parameters.remove(REGISTER_IP_KEY), 0, type.getName(), parameters);
+        if (!ANY_VALUE.equals(url.getServiceInterface()) &amp;&amp; url.getParameter(REGISTER_KEY, true)) {
+            directory.setRegisteredConsumerUrl(getRegisteredConsumerUrl(subscribeUrl, url));
+            // 注册服务消费者，在 consumers 目录下新节点
+            registry.register(directory.getRegisteredConsumerUrl());
+        }
+        directory.buildRouterChain(subscribeUrl);
+        // 订阅 providers、configurators、routers 等节点数据
+        directory.subscribe(subscribeUrl.addParameter(CATEGORY_KEY,
+                PROVIDERS_CATEGORY + &quot;,&quot; + CONFIGURATORS_CATEGORY + &quot;,&quot; + ROUTERS_CATEGORY));
+
+        // 一个注册中心可能有多个服务提供者，因此这里需要将多个服务提供者合并为一个
+        Invoker invoker = cluster.join(directory);
+        ProviderConsumerRegTable.registerConsumer(invoker, url, subscribeUrl, directory);
+        return invoker;
+</code></pre><p>进入服务目录订阅节点信息方法org.apache.dubbo.registry.integration.RegistryDirectory#subscribe:</p>
+<pre><code>public void subscribe(URL url) {
+        setConsumerUrl(url);
+        CONSUMER_CONFIGURATION_LISTENER.addNotifyListener(this);
+        serviceConfigurationListener = new ReferenceConfigurationListener(this, url);
+        registry.subscribe(url, this);
+    }
+</code></pre><p>继续进入org.apache.dubbo.registry.support.FailbackRegistry#subscribe:</p>
+<pre><code>public void subscribe(URL url, NotifyListener listener) {
+        super.subscribe(url, listener);
+        removeFailedSubscribed(url, listener);
+        // Sending a subscription request to the server side
+        doSubscribe(url, listener);
+        ...
+        ...
+}
+</code></pre><p>继续进入org.apache.dubbo.registry.zookeeper.ZookeeperRegistry#doSubscribe:</p>
+<pre><code>...
+...
+notify(url, listener, urls);
+</code></pre><p>以上代码很多都省略了,主要看notify方法,进入:</p>
+<pre><code>protected void notify(URL url, NotifyListener listener, List&lt;URL&gt; urls) {
+        if (url == null) {
+            throw new IllegalArgumentException(&quot;notify url == null&quot;);
+        }
+        if (listener == null) {
+            throw new IllegalArgumentException(&quot;notify listener == null&quot;);
+        }
+        try {
+            doNotify(url, listener, urls);
+        } catch (Exception t) {
+            // Record a failed registration request to a failed list, retry regularly
+            addFailedNotified(url, listener, urls);
+            logger.error(&quot;Failed to notify for subscribe &quot; + url + &quot;, waiting for retry, cause: &quot; + t.getMessage(), t);
+        }
+    }
+</code></pre><p>主要看org.apache.dubbo.registry.support.FailbackRegistry#doNotify方法:</p>
+<pre><code> protected void doNotify(URL url, NotifyListener listener, List&lt;URL&gt; urls) {
+        super.notify(url, listener, urls);
+    }
+</code></pre><p>继续进入org.apache.dubbo.registry.support.AbstractRegistry#notify(org.apache.dubbo.common.URL, org.apache.dubbo.registry.NotifyListener, java.util.List&lt;org.apache.dubbo.common.URL&gt;):</p>
+<pre><code>...
+...
+for (Map.Entry&lt;String, List&lt;URL&gt;&gt; entry : result.entrySet()) {
+            String category = entry.getKey();
+            List&lt;URL&gt; categoryList = entry.getValue();
+            categoryNotified.put(category, categoryList);
+            listener.notify(categoryList);
+            // We will update our cache file after each notification.
+            // When our Registry has a subscribe failure due to network jitter, we can return at least the existing cache URL.
+            saveProperties(url);
+        }
+</code></pre><p>这里会遍历routers、configurators、providers节点,示范:</p>
+<pre><code>routers=[empty://192.168.1.220/org.apache.dubbo.demo.DemoService?application=dubbo-demo-api-consumer&amp;category=routers&amp;dubbo=2.0.2&amp;interface=org.apache.dubbo.demo.DemoService&amp;lazy=false&amp;methods=sayHello&amp;pid=77530&amp;retries=0&amp;sent=true&amp;side=consumer&amp;sticky=false&amp;timeout=3600&amp;timestamp=1572419547454]
+
+configurators=[empty://192.168.1.220/org.apache.dubbo.demo.DemoService?application=dubbo-demo-api-consumer&amp;category=configurators&amp;dubbo=2.0.2&amp;interface=org.apache.dubbo.demo.DemoService&amp;lazy=false&amp;methods=sayHello&amp;pid=77530&amp;retries=0&amp;sent=true&amp;side=consumer&amp;sticky=false&amp;timeout=3600&amp;timestamp=1572419547454]
+
+providers=[dubbo://192.168.1.220:20880/org.apache.dubbo.demo.DemoService?anyhost=true&amp;application=dubbo-demo-api-provider&amp;deprecated=false&amp;dubbo=2.0.2&amp;dynamic=true&amp;generic=false&amp;interface=org.apache.dubbo.demo.DemoService&amp;methods=sayHello&amp;pid=73959&amp;release=&amp;side=provider&amp;timeout=3600&amp;timestamp=1572403767806]
+</code></pre><p>如果是providers节点时,则方法调用链入下:</p>
+<pre><code>org.apache.dubbo.registry.integration.RegistryDirectory#notify
+   --&gt;  org.apache.dubbo.registry.integration.RegistryDirectory#refreshOverrideAndInvoker
+   --&gt;  org.apache.dubbo.registry.integration.RegistryDirectory#refreshInvoker
+   --&gt;  org.apache.dubbo.registry.integration.RegistryDirectory#toInvokers
+</code></pre><p>org.apache.dubbo.registry.integration.RegistryDirectory#toInvokers中会重新引用远程服务:</p>
+<pre><code> ...
+ ...
+ ...
+ // Cache key is url that does not merge with consumer side parameters, regardless of how the consumer combines parameters, if the server url changes, then refer again
+            Map&lt;String, Invoker&lt;T&gt;&gt; localUrlInvokerMap = this.urlInvokerMap; // local reference
+            Invoker&lt;T&gt; invoker = localUrlInvokerMap == null ? null : localUrlInvokerMap.get(key);
+            if (invoker == null) { // Not in the cache, refer again
+                try {
+                    boolean enabled = true;
+                    if (url.hasParameter(DISABLED_KEY)) {
+                        enabled = !url.getParameter(DISABLED_KEY, false);
+                    } else {
+                        enabled = url.getParameter(ENABLED_KEY, true);
+                    }
+                    if (enabled) {
+                        invoker = new InvokerDelegate&lt;&gt;(protocol.refer(serviceType, url), url, providerUrl);
+                    }
+                } catch (Throwable t) {
+                    logger.error(&quot;Failed to refer invoker for interface:&quot; + serviceType + &quot;,url:(&quot; + url + &quot;)&quot; + t.getMessage(), t);
+                }
+...
+...
+...
+</code></pre><p>回到org.apache.dubbo.registry.integration.RegistryProtocol#doRefer中,上面注释也很清楚,具体看:</p>
+<pre><code>Invoker invoker = cluster.join(directory);
+</code></pre><p>如果一个注册中心有多个服务提供者,这里需要将多个服务提供者合并为一个,cluster对象也是在运行时由Dubbo SPI生成的对象,会根据自适应创建包装类org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterWrapper,结构如下:</p>
+<pre><code>org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterWrapper
+  org.apache.dubbo.rpc.cluster.support.FailbackCluster
+</code></pre><p>Dubbo提供了Failover Cluster(失败自动切换)、Failfast Cluster(快速失败)、Failsafe Cluster(失败安全)、Failback Cluster(失败自动恢复)、Forking Cluster(并行调用多个服务提供者)五种集群容错机制,默认为Failover,关于集群的这里不多作介绍,<br>继续进入MockClusterWrapper的join方法:</p>
+<pre><code>public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+        return new MockClusterInvoker&lt;T&gt;(directory,
+                this.cluster.join(directory));
+    }
+</code></pre><p>在创建MockClusterInvoker对象之前,会调用org.apache.dubbo.rpc.cluster.support.FailbackCluster#join:</p>
+<pre><code> public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+        return new FailbackClusterInvoker&lt;T&gt;(directory);
+    }
+</code></pre><p>会直接创建对象FailbackClusterInvoker,然后返回,到这里Invoker的对象创建已经完成.</p>
+<h4 id="创建代理对象"><a href="#创建代理对象" class="headerlink" title="创建代理对象"></a>创建代理对象</h4><p>回到org.apache.dubbo.config.ReferenceConfig#createProxy方法中,最后一段代码用于创建代理对象,同理PROXY_FACTORY对象也是通过Dubbo SPI创建,根据自适应实现,创建对象StubProxyFactoryWrapper,进入org.apache.dubbo.rpc.proxy.wrapper.StubProxyFactoryWrapper#getProxy:</p>
+<pre><code>T proxy = proxyFactory.getProxy(invoker);
+...
+...
+</code></pre><p>进入org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory#getProxy:</p>
+<pre><code> public &lt;T&gt; T getProxy(Invoker&lt;T&gt; invoker, Class&lt;?&gt;[] interfaces) {
+        return (T) Proxy.getProxy(interfaces).newInstance(new InvokerInvocationHandler(invoker));
+    }
+</code></pre><p>上面使用了jdk的动态代理实现代理对象的创建,具体看InvokerInvocationHandler的代码:</p>
+<pre><code>public class InvokerInvocationHandler implements InvocationHandler {
+    private static final Logger logger = LoggerFactory.getLogger(InvokerInvocationHandler.class);
+    private final Invoker&lt;?&gt; invoker;
+
+    public InvokerInvocationHandler(Invoker&lt;?&gt; handler) {
+        this.invoker = handler;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        String methodName = method.getName();
+        Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();
+        if (method.getDeclaringClass() == Object.class) {
+            return method.invoke(invoker, args);
+        }
+        if (&quot;toString&quot;.equals(methodName) &amp;&amp; parameterTypes.length == 0) {
+            return invoker.toString();
+        }
+        if (&quot;hashCode&quot;.equals(methodName) &amp;&amp; parameterTypes.length == 0) {
+            return invoker.hashCode();
+        }
+        if (&quot;equals&quot;.equals(methodName) &amp;&amp; parameterTypes.length == 1) {
+            return invoker.equals(args[0]);
+        }
+
+        return invoker.invoke(new RpcInvocation(method, args)).recreate();
+    }
+}
+</code></pre><p>invoke方法里会实现Invoker的invoke方法调用.到这里代理对象的创建已经完成.</p>
 <blockquote>
 <p>参考文章</p>
 </blockquote>

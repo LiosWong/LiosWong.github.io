@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下:123456789101112131415161718192021222324252627接口:public interface ProxyUserService&amp;#123;    String getUserMobile(String name);&amp;#125;pub">
+  <meta name="description" content="代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下: 接口: public interface ProxyUserService{     String getUserMobile(String name); } public class ProxyUserServiceImpl implements ProxyUse">
 <meta name="keywords" content="java,动态代理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="动态代理">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/动态代理/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下:123456789101112131415161718192021222324252627接口:public interface ProxyUserService&amp;#123;    String getUserMobile(String name);&amp;#125;pub">
+<meta property="og:description" content="代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下: 接口: public interface ProxyUserService{     String getUserMobile(String name); } public class ProxyUserServiceImpl implements ProxyUse">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="动态代理">
-<meta name="twitter:description" content="代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下:123456789101112131415161718192021222324252627接口:public interface ProxyUserService&amp;#123;    String getUserMobile(String name);&amp;#125;pub">
+<meta name="twitter:description" content="代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下: 接口: public interface ProxyUserService{     String getUserMobile(String name); } public class ProxyUserServiceImpl implements ProxyUse">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,12 +502,94 @@
       
 
       
-        <p>代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">接口:</span><br><span class="line">public interface ProxyUserService&#123;</span><br><span class="line">    String getUserMobile(String name);</span><br><span class="line">&#125;</span><br><span class="line">public class ProxyUserServiceImpl implements ProxyUserService&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String getUserMobile(String name) &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">public class ProxyUserServiceStaticImpl implements ProxyUserService&#123;</span><br><span class="line">    private ProxyUserService proxyUserService;</span><br><span class="line"></span><br><span class="line">    public ProxyUserServiceStaticImpl(ProxyUserService proxyUserService) &#123;</span><br><span class="line">        this.proxyUserService = proxyUserService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getUserMobile(String name) &#123;</span><br><span class="line">        //before</span><br><span class="line">        String result = roxyUserService.getUserMobile(name);</span><br><span class="line">        //after</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面可以看出,ProxyUserServiceStaticImpl实现了ProxyUserService接口,构造方法中用ProxyUserService子类初始化,在创建ProxyUserServiceStaticImpl对象时,构造方法中传入ProxyUserServiceImpl实例即可,它的getUserMobile方法其实是对ProxyUserServiceImpl类的一种功能增强.Java中有木有其他方法来帮助我们实现这一功能呢?下面就来谈谈jdk动态代理、cglib动态代理.</p>
-<h4 id="jdk动态代理"><a href="#jdk动态代理" class="headerlink" title="jdk动态代理"></a>jdk动态代理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class ProxyUserServiceProxy implements InvocationHandler&#123;</span><br><span class="line">    /**</span><br><span class="line">     * 被代理对象</span><br><span class="line">     */</span><br><span class="line">    private Object target;</span><br><span class="line">    private static final Logger logger = LoggerFactory.getLogger(ProxyUserServiceProxy.class);</span><br><span class="line"></span><br><span class="line">    public ProxyUserServiceProxy(Object target) &#123;</span><br><span class="line">        this.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *</span><br><span class="line">     * @param proxy 代理对象</span><br><span class="line">     * @param method 被调用的方法</span><br><span class="line">     * @param args 方法的参数</span><br><span class="line">     * @return</span><br><span class="line">     * @throws Throwable</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;</span><br><span class="line">        //执行前预处理</span><br><span class="line">        Object result = method.invoke(target,args);//调用被代理类中的方法</span><br><span class="line">        //执行后处理</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ProxyUserServiceImpl  proxyUserServiceImpl= new ProxyUserServiceImpl();</span><br><span class="line">        ProxyUserServiceProxy proxyUserServiceProxy = new ProxyUserServiceProxy(proxyUserServiceImpl);</span><br><span class="line">        ProxyUserService proxyUserService = (ProxyUserService)Proxy.newProxyInstance(proxyUserServiceImpl.getClass().getClassLoader(),proxyUserServiceImpl.getClass().getInterfaces(),proxyUserServiceProxy);</span><br><span class="line">        logger.info(proxyUserService.getUserMobile(&quot;18883845677&quot;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>ProxyUserServiceProxy代理类实现了InvocationHandler接口,重写invoke方法,在调用被代理类方法前后可以实现需要的逻辑.</p>
-<h4 id="cglib动态代理"><a href="#cglib动态代理" class="headerlink" title="cglib动态代理"></a>cglib动态代理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class ProxyUserServiceCgLib implements MethodInterceptor&#123;</span><br><span class="line">    private static final Logger logger = LoggerFactory.getLogger(ProxyUserServiceCgLib.class);</span><br><span class="line">    //回调方法</span><br><span class="line">    @Override</span><br><span class="line">    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable &#123;</span><br><span class="line">        //执行前预处理</span><br><span class="line">        Object returnObj = methodProxy.invokeSuper(o,objects);</span><br><span class="line">        //执行完处理</span><br><span class="line">        return returnObj;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ProxyUserServiceCgLib proxyUserServiceCgLib = new ProxyUserServiceCgLib();</span><br><span class="line">        Enhancer enhancer = new Enhancer();</span><br><span class="line">        //对目标对象创建子类对象</span><br><span class="line">        enhancer.setSuperclass(ProxyUserServiceImpl.class);</span><br><span class="line">        //设置回调</span><br><span class="line">        enhancer.setCallback(proxyUserServiceCgLib);</span><br><span class="line">        ProxyUserService proxyUserService = (ProxyUserService) enhancer.create();</span><br><span class="line">       logger.info(proxyUserService.getUserMobile(&quot;18888488585&quot;));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>ProxyUserServiceCgLib实现了MethodInterceptor接口,重写intercept方法,在其中实现具体逻辑.</p>
+        <p>代理模式是Java的一种设计模式,开发中可能会有一种场景,某个类的方法需要补充,但是由于不想在原有的类基础上改动,该如何做呢,如下:</p>
+<pre><code>接口:
+public interface ProxyUserService{
+    String getUserMobile(String name);
+}
+public class ProxyUserServiceImpl implements ProxyUserService{
+    @Override
+    public String getUserMobile(String name) {
+        return name;
+    }
+
+}
+public class ProxyUserServiceStaticImpl implements ProxyUserService{
+    private ProxyUserService proxyUserService;
+
+    public ProxyUserServiceStaticImpl(ProxyUserService proxyUserService) {
+        this.proxyUserService = proxyUserService;
+    }
+
+    @Override
+    public String getUserMobile(String name) {
+        //before
+        String result = roxyUserService.getUserMobile(name);
+        //after
+        return result;
+    }
+
+}
+</code></pre><p>上面可以看出,ProxyUserServiceStaticImpl实现了ProxyUserService接口,构造方法中用ProxyUserService子类初始化,在创建ProxyUserServiceStaticImpl对象时,构造方法中传入ProxyUserServiceImpl实例即可,它的getUserMobile方法其实是对ProxyUserServiceImpl类的一种功能增强.Java中有木有其他方法来帮助我们实现这一功能呢?下面就来谈谈jdk动态代理、cglib动态代理.</p>
+<h4 id="jdk动态代理"><a href="#jdk动态代理" class="headerlink" title="jdk动态代理"></a>jdk动态代理</h4><pre><code>public class ProxyUserServiceProxy implements InvocationHandler{
+    /**
+     * 被代理对象
+     */
+    private Object target;
+    private static final Logger logger = LoggerFactory.getLogger(ProxyUserServiceProxy.class);
+
+    public ProxyUserServiceProxy(Object target) {
+        this.target = target;
+    }
+
+    /**
+     *
+     * @param proxy 代理对象
+     * @param method 被调用的方法
+     * @param args 方法的参数
+     * @return
+     * @throws Throwable
+     */
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        //执行前预处理
+        Object result = method.invoke(target,args);//调用被代理类中的方法
+        //执行后处理
+        return result;
+    }
+
+    public static void main(String[] args) {
+        ProxyUserServiceImpl  proxyUserServiceImpl= new ProxyUserServiceImpl();
+        ProxyUserServiceProxy proxyUserServiceProxy = new ProxyUserServiceProxy(proxyUserServiceImpl);
+        ProxyUserService proxyUserService = (ProxyUserService)Proxy.newProxyInstance(proxyUserServiceImpl.getClass().getClassLoader(),proxyUserServiceImpl.getClass().getInterfaces(),proxyUserServiceProxy);
+        logger.info(proxyUserService.getUserMobile(&quot;18883845677&quot;));
+    }
+}
+</code></pre><p>ProxyUserServiceProxy代理类实现了InvocationHandler接口,重写invoke方法,在调用被代理类方法前后可以实现需要的逻辑.</p>
+<h4 id="cglib动态代理"><a href="#cglib动态代理" class="headerlink" title="cglib动态代理"></a>cglib动态代理</h4><pre><code>public class ProxyUserServiceCgLib implements MethodInterceptor{
+    private static final Logger logger = LoggerFactory.getLogger(ProxyUserServiceCgLib.class);
+    //回调方法
+    @Override
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+        //执行前预处理
+        Object returnObj = methodProxy.invokeSuper(o,objects);
+        //执行完处理
+        return returnObj;
+    }
+
+    public static void main(String[] args) {
+        ProxyUserServiceCgLib proxyUserServiceCgLib = new ProxyUserServiceCgLib();
+        Enhancer enhancer = new Enhancer();
+        //对目标对象创建子类对象
+        enhancer.setSuperclass(ProxyUserServiceImpl.class);
+        //设置回调
+        enhancer.setCallback(proxyUserServiceCgLib);
+        ProxyUserService proxyUserService = (ProxyUserService) enhancer.create();
+       logger.info(proxyUserService.getUserMobile(&quot;18888488585&quot;));
+
+    }
+}
+</code></pre><p>ProxyUserServiceCgLib实现了MethodInterceptor接口,重写intercept方法,在其中实现具体逻辑.</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ol>
 <li>jdk代理的目标对象必须实现接口</li>
 <li>cglib代理的目标对象可以不实现接口</li>

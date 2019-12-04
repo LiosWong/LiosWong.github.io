@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档点击123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687">
+  <meta name="description" content="为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档点击 public interface AlarmService {      Response&amp;lt;Boolean&amp;gt; orderSuccessAlarm(CompanyAppIdEnum companyAppIdEnum, String orderNo, OrderStatusEnum orderStatusEnum);">
 <meta name="keywords" content="java,钉钉报警">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义钉钉机器人报警">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/自定义钉钉机器人报警/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档点击123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687">
+<meta property="og:description" content="为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档点击 public interface AlarmService {      Response&amp;lt;Boolean&amp;gt; orderSuccessAlarm(CompanyAppIdEnum companyAppIdEnum, String orderNo, OrderStatusEnum orderStatusEnum);">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义钉钉机器人报警">
-<meta name="twitter:description" content="为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档点击123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687">
+<meta name="twitter:description" content="为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档点击 public interface AlarmService {      Response&amp;lt;Boolean&amp;gt; orderSuccessAlarm(CompanyAppIdEnum companyAppIdEnum, String orderNo, OrderStatusEnum orderStatusEnum);">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,8 +502,208 @@
       
 
       
-        <p>为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档<a href="https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.karFPe&amp;treeId=257&amp;articleId=105735&amp;docType=1" target="_blank" rel="noopener">点击</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br></pre></td><td class="code"><pre><span class="line">public interface AlarmService &#123;</span><br><span class="line">  </span><br><span class="line">    Response&lt;Boolean&gt; orderSuccessAlarm(CompanyAppIdEnum companyAppIdEnum, String orderNo, OrderStatusEnum orderStatusEnum);</span><br><span class="line">    </span><br><span class="line">    Response&lt;Boolean&gt; orderFilterAlarm(CompanyAppIdEnum companyAppIdEnum,Long userId);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class AlarmServcieImpl implements AlarmService &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    RedisClient RedisClient;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    ConfigUtil configUtil;</span><br><span class="line"></span><br><span class="line">    private static final Log logger = LogFactory.getLog(AlarmServcieImpl.class);</span><br><span class="line"></span><br><span class="line">    private static final Long expireTime = 24 * 60 * 60L;</span><br><span class="line">    </span><br><span class="line">    //创建机器人可获取</span><br><span class="line">    private static final String requestUrl = &quot;https://oapi.dingtalk.com/robot/send?access_token=xxxx&quot;;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Response&lt;Boolean&gt; orderSuccessAlarm(CompanyAppIdEnum companyAppIdEnum, String orderNo, OrderStatusEnum orderStatusEnum) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            if (configUtil.isServerTest()) &#123;</span><br><span class="line">                return new Response&lt;&gt;(Boolean.FALSE);</span><br><span class="line">            &#125;</span><br><span class="line">            String count = RedisClient.getString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));</span><br><span class="line">            if (Objects.isNull(count)) &#123;</span><br><span class="line">                RedisClient.setString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, &quot;0&quot;, expireTime, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));</span><br><span class="line">            &#125;</span><br><span class="line">            dispatcher(companyAppIdEnum, Number.getNumber(Long.valueOf(RedisClient.getString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date())))), AlarmTypeEnum.ORDER_ALARM);</span><br><span class="line">            RedisClient.incrBy(SystemConstants.ORDER_STATUS_ALARM_ROBOT, 1L, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            logger.error(e.getMessage(), e);</span><br><span class="line">        &#125;</span><br><span class="line">        return new Response&lt;&gt;(Boolean.TRUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Response&lt;Boolean&gt; orderFilterAlarm(CompanyAppIdEnum companyAppIdEnum,Long userId) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            if (configUtil.isServerTest()) &#123;</span><br><span class="line">                return new Response&lt;&gt;(Boolean.FALSE);</span><br><span class="line">            &#125;</span><br><span class="line">            String count = RedisClient.getString(SystemConstants.ORDER_FILTER_USER_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));</span><br><span class="line">            if (Objects.isNull(count)) &#123;</span><br><span class="line">                RedisClient.setString(SystemConstants.ORDER_FILTER_USER_ALARM_ROBOT, &quot;0&quot;, expireTime, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));</span><br><span class="line">            &#125;</span><br><span class="line">            dispatcher(companyAppIdEnum, Number.getNumber(Long.valueOf(RedisClient.getString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date())))), AlarmTypeEnum.ORDER_USER_FILTER);</span><br><span class="line">            RedisClient.incrBy(SystemConstants.ORDER_STATUS_ALARM_ROBOT, 1L, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            logger.error(e.getMessage(), e);</span><br><span class="line">        &#125;</span><br><span class="line">        return new Response&lt;&gt;(Boolean.TRUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected void dispatcher(CompanyAppIdEnum companyAppIdEnum, Number number, AlarmTypeEnum alarmTypeEnum) &#123;</span><br><span class="line">        Arrays.asList(Number.values()).forEach(</span><br><span class="line">                p -&gt; &#123;</span><br><span class="line">                    if (p.equals(number) &amp;&amp; !Number.INIT_NUMBER.equals(number)) &#123;</span><br><span class="line">                        try &#123;</span><br><span class="line">                            sendNotice(companyAppIdEnum, number, alarmTypeEnum);</span><br><span class="line">                        &#125; catch (IOException e) &#123;</span><br><span class="line">                            e.printStackTrace();</span><br><span class="line">                            logger.error(e.getMessage(), e);</span><br><span class="line">                        &#125;</span><br><span class="line">                        return;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        sendNotice(CompanyAppIdEnum.WAN_KA, Number.PRELIMINARY_WARNING, AlarmTypeEnum.ORDER_ALARM);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void sendNotice(CompanyAppIdEnum companyAppIdEnum, Number number, AlarmTypeEnum alarmTypeEnum) throws IOException &#123;</span><br><span class="line">        HttpClient httpclient = HttpClients.createDefault();</span><br><span class="line">        HttpPost httppost = new HttpPost(requestUrl);</span><br><span class="line">        httppost.addHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;);</span><br><span class="line">        String textMsg = getNotice(number, companyAppIdEnum, alarmTypeEnum);</span><br><span class="line">        StringEntity se = new StringEntity(textMsg, &quot;utf-8&quot;);</span><br><span class="line">        httppost.setEntity(se);</span><br><span class="line">        HttpResponse response = httpclient.execute(httppost);</span><br><span class="line">        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) &#123;</span><br><span class="line">            String result = EntityUtils.toString(response.getEntity(), &quot;utf-8&quot;);</span><br><span class="line">            logger.info(&quot;报警已经成功发送,机构为:&#123;&#125;,响应消息为:&#123;&#125;&quot;, companyAppIdEnum.getDesc(), result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static String getNotice(Number number, CompanyAppIdEnum companyAppIdEnum, AlarmTypeEnum alarmTypeEnum) &#123;</span><br><span class="line">        switch (alarmTypeEnum) &#123;</span><br><span class="line">            case ORDER_ALARM:</span><br><span class="line">                return &quot;&#123;\n&quot; +</span><br><span class="line">                        &quot;     \&quot;msgtype\&quot;: \&quot;markdown\&quot;,\n&quot; +</span><br><span class="line">                        &quot;     \&quot;markdown\&quot;: &#123;\&quot;title\&quot;:\&quot;推单失败报警\&quot;,\n&quot; +</span><br><span class="line">                        &quot;\&quot;text\&quot;:\&quot;#### 推单失败报警  \\n &quot; + companyAppIdEnum.getDesc() + &quot;推单失败已超过&quot; + number.getCount() + &quot;单&quot; + &quot;\\n &gt; ![screenshot](https://note.youdao.com/yws/api/personal/file/WEB77f35c865dbd286c3baed15670e8892f?method=download&amp;shareKey=dfdd0302d114373146480ae3d4330af1)\\n  &gt; ######&quot; + new Date() + &quot;发布 [警告]() \&quot;\n&quot; +</span><br><span class="line">                        &quot;     &#125;,\n&quot; +</span><br><span class="line">                        &quot;    \&quot;at\&quot;: &#123;\n&quot; +</span><br><span class="line">                        &quot;        \&quot;atMobiles\&quot;: [\n&quot; +</span><br><span class="line">                        &quot;            \&quot;15168426462\&quot;&quot; +</span><br><span class="line">                        &quot;        ], \n&quot; +</span><br><span class="line">                        &quot;        \&quot;isAtAll\&quot;: false\n&quot; +</span><br><span class="line">                        &quot;    &#125;\n&quot; +</span><br><span class="line">                        &quot; &#125;&quot;;</span><br><span class="line">            case ORDER_USER_FILTER:</span><br><span class="line">                return &quot;&#123;\n&quot; +</span><br><span class="line">                        &quot;     \&quot;msgtype\&quot;: \&quot;markdown\&quot;,\n&quot; +</span><br><span class="line">                        &quot;     \&quot;markdown\&quot;: &#123;\&quot;title\&quot;:\&quot;机构过滤报警\&quot;,\n&quot; +</span><br><span class="line">                        &quot;\&quot;text\&quot;:\&quot;#### 机构过滤报警  \\n &quot; + companyAppIdEnum.getDesc() + &quot;过滤失败已超过&quot; + number.getCount() + &quot;单&quot; + &quot;\\n &gt; ![screenshot](https://note.youdao.com/yws/api/personal/file/WEB77f35c865dbd286c3baed15670e8892f?method=download&amp;shareKey=dfdd0302d114373146480ae3d4330af1)\\n  &gt; ######&quot; + new Date() + &quot;发布 [警告]() \&quot;\n&quot; +</span><br><span class="line">                        &quot;     &#125;,\n&quot; +</span><br><span class="line">                        &quot;    \&quot;at\&quot;: &#123;\n&quot; +</span><br><span class="line">                        &quot;        \&quot;atMobiles\&quot;: [\n&quot; +</span><br><span class="line">                        &quot;            \&quot;15168426462\&quot;&quot; +</span><br><span class="line">                        &quot;        ], \n&quot; +</span><br><span class="line">                        &quot;        \&quot;isAtAll\&quot;: false\n&quot; +</span><br><span class="line">                        &quot;    &#125;\n&quot; +</span><br><span class="line">                        &quot; &#125;&quot;;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public enum Number &#123;</span><br><span class="line"></span><br><span class="line">        INIT_NUMBER(0L, &quot;初始&quot;),</span><br><span class="line"></span><br><span class="line">        PRELIMINARY_WARNING(50L, &quot;初步警告&quot;),</span><br><span class="line"></span><br><span class="line">        PRELIMINARY_WARNING_PLUS(55L, &quot;初步警告&quot;),</span><br><span class="line"></span><br><span class="line">        INTERMEDIATE_WARNING(100L, &quot;中级警告&quot;),</span><br><span class="line"></span><br><span class="line">        INTERMEDIATE_WARNING_PLUS(105L, &quot;中级警告&quot;),</span><br><span class="line"></span><br><span class="line">        INTERMEDIATE_WARNING_PLUS_PLUS(200L, &quot;中级++警告&quot;),</span><br><span class="line"></span><br><span class="line">        INTERMEDIATE_WARNING_PLUS_PLUS_PLUS(205L, &quot;中级++警告&quot;),</span><br><span class="line"></span><br><span class="line">        SERIOUS_WARNING(300L, &quot;严重警告&quot;),</span><br><span class="line"></span><br><span class="line">        SERIOUS_WARNING_PLUS(305L, &quot;严重警告&quot;),</span><br><span class="line"></span><br><span class="line">        SERIOUS_WARNING_PLUS_PLUS(350L, &quot;严重警告&quot;),</span><br><span class="line"></span><br><span class="line">        SERIOUS_WARNING_PLUS_PLUS_PLUS(400L, &quot;严重警告&quot;),</span><br><span class="line"></span><br><span class="line">        SERIOUS_WARNING_PLUS_PLUS_PLUS_PLUS(500L, &quot;严重警告&quot;);</span><br><span class="line"></span><br><span class="line">        private Long count;</span><br><span class="line"></span><br><span class="line">        private String desc;</span><br><span class="line"></span><br><span class="line">        Number(Long count, String desc) &#123;</span><br><span class="line">            this.count = count;</span><br><span class="line">            this.desc = desc;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Long getCount() &#123;</span><br><span class="line">            return count;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Number setCount(Long count) &#123;</span><br><span class="line">            this.count = count;</span><br><span class="line">            return this;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getDesc() &#123;</span><br><span class="line">            return desc;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Number setDesc(String desc) &#123;</span><br><span class="line">            this.desc = desc;</span><br><span class="line">            return this;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static Number getNumber(Long count) &#123;</span><br><span class="line">            Number[] number = &#123;INIT_NUMBER&#125;;</span><br><span class="line">            Arrays.asList(Number.values()).forEach(</span><br><span class="line">                    p -&gt; &#123;</span><br><span class="line">                        if (p.getCount().equals(count)) &#123;</span><br><span class="line">                            number[0] = p;</span><br><span class="line">                            return;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">            );</span><br><span class="line">            return number[0];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public enum AlarmTypeEnum &#123;</span><br><span class="line">        ORDER_ALARM,</span><br><span class="line">        ORDER_USER_FILTER;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>按照钉钉的文档来开发,创建机器人后,即可获取Webhook地址,整个过程还是很简单的,以上只是提供了一个思路.</p>
+        <p>为了埋点实时监控业务,简单的实现了钉钉机器人报警,钉钉开发官方文档<a href="https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.karFPe&amp;treeId=257&amp;articleId=105735&amp;docType=1" target="_blank" rel="noopener">点击</a></p>
+<pre><code>public interface AlarmService {
+
+    Response&lt;Boolean&gt; orderSuccessAlarm(CompanyAppIdEnum companyAppIdEnum, String orderNo, OrderStatusEnum orderStatusEnum);
+
+    Response&lt;Boolean&gt; orderFilterAlarm(CompanyAppIdEnum companyAppIdEnum,Long userId);
+
+}
+
+public class AlarmServcieImpl implements AlarmService {
+    @Autowired
+    RedisClient RedisClient;
+
+    @Autowired
+    ConfigUtil configUtil;
+
+    private static final Log logger = LogFactory.getLog(AlarmServcieImpl.class);
+
+    private static final Long expireTime = 24 * 60 * 60L;
+
+    //创建机器人可获取
+    private static final String requestUrl = &quot;https://oapi.dingtalk.com/robot/send?access_token=xxxx&quot;;
+
+    @Override
+    public Response&lt;Boolean&gt; orderSuccessAlarm(CompanyAppIdEnum companyAppIdEnum, String orderNo, OrderStatusEnum orderStatusEnum) {
+        try {
+            if (configUtil.isServerTest()) {
+                return new Response&lt;&gt;(Boolean.FALSE);
+            }
+            String count = RedisClient.getString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));
+            if (Objects.isNull(count)) {
+                RedisClient.setString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, &quot;0&quot;, expireTime, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));
+            }
+            dispatcher(companyAppIdEnum, Number.getNumber(Long.valueOf(RedisClient.getString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date())))), AlarmTypeEnum.ORDER_ALARM);
+            RedisClient.incrBy(SystemConstants.ORDER_STATUS_ALARM_ROBOT, 1L, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage(), e);
+        }
+        return new Response&lt;&gt;(Boolean.TRUE);
+    }
+
+    @Override
+    public Response&lt;Boolean&gt; orderFilterAlarm(CompanyAppIdEnum companyAppIdEnum,Long userId) {
+        try {
+            if (configUtil.isServerTest()) {
+                return new Response&lt;&gt;(Boolean.FALSE);
+            }
+            String count = RedisClient.getString(SystemConstants.ORDER_FILTER_USER_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));
+            if (Objects.isNull(count)) {
+                RedisClient.setString(SystemConstants.ORDER_FILTER_USER_ALARM_ROBOT, &quot;0&quot;, expireTime, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));
+            }
+            dispatcher(companyAppIdEnum, Number.getNumber(Long.valueOf(RedisClient.getString(SystemConstants.ORDER_STATUS_ALARM_ROBOT, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date())))), AlarmTypeEnum.ORDER_USER_FILTER);
+            RedisClient.incrBy(SystemConstants.ORDER_STATUS_ALARM_ROBOT, 1L, companyAppIdEnum.getCompanyId().toString(), DateUtils.getDateStr(new Date()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage(), e);
+        }
+        return new Response&lt;&gt;(Boolean.TRUE);
+    }
+
+    protected void dispatcher(CompanyAppIdEnum companyAppIdEnum, Number number, AlarmTypeEnum alarmTypeEnum) {
+        Arrays.asList(Number.values()).forEach(
+                p -&gt; {
+                    if (p.equals(number) &amp;&amp; !Number.INIT_NUMBER.equals(number)) {
+                        try {
+                            sendNotice(companyAppIdEnum, number, alarmTypeEnum);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            logger.error(e.getMessage(), e);
+                        }
+                        return;
+                    }
+                }
+        );
+    }
+
+    public static void main(String[] args) throws IOException {
+        sendNotice(CompanyAppIdEnum.WAN_KA, Number.PRELIMINARY_WARNING, AlarmTypeEnum.ORDER_ALARM);
+    }
+
+    private static void sendNotice(CompanyAppIdEnum companyAppIdEnum, Number number, AlarmTypeEnum alarmTypeEnum) throws IOException {
+        HttpClient httpclient = HttpClients.createDefault();
+        HttpPost httppost = new HttpPost(requestUrl);
+        httppost.addHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;);
+        String textMsg = getNotice(number, companyAppIdEnum, alarmTypeEnum);
+        StringEntity se = new StringEntity(textMsg, &quot;utf-8&quot;);
+        httppost.setEntity(se);
+        HttpResponse response = httpclient.execute(httppost);
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String result = EntityUtils.toString(response.getEntity(), &quot;utf-8&quot;);
+            logger.info(&quot;报警已经成功发送,机构为:{},响应消息为:{}&quot;, companyAppIdEnum.getDesc(), result);
+        }
+    }
+
+    private static String getNotice(Number number, CompanyAppIdEnum companyAppIdEnum, AlarmTypeEnum alarmTypeEnum) {
+        switch (alarmTypeEnum) {
+            case ORDER_ALARM:
+                return &quot;{\n&quot; +
+                        &quot;     \&quot;msgtype\&quot;: \&quot;markdown\&quot;,\n&quot; +
+                        &quot;     \&quot;markdown\&quot;: {\&quot;title\&quot;:\&quot;推单失败报警\&quot;,\n&quot; +
+                        &quot;\&quot;text\&quot;:\&quot;#### 推单失败报警  \\n &quot; + companyAppIdEnum.getDesc() + &quot;推单失败已超过&quot; + number.getCount() + &quot;单&quot; + &quot;\\n &gt; ![screenshot](https://note.youdao.com/yws/api/personal/file/WEB77f35c865dbd286c3baed15670e8892f?method=download&amp;shareKey=dfdd0302d114373146480ae3d4330af1)\\n  &gt; ######&quot; + new Date() + &quot;发布 [警告]() \&quot;\n&quot; +
+                        &quot;     },\n&quot; +
+                        &quot;    \&quot;at\&quot;: {\n&quot; +
+                        &quot;        \&quot;atMobiles\&quot;: [\n&quot; +
+                        &quot;            \&quot;15168426462\&quot;&quot; +
+                        &quot;        ], \n&quot; +
+                        &quot;        \&quot;isAtAll\&quot;: false\n&quot; +
+                        &quot;    }\n&quot; +
+                        &quot; }&quot;;
+            case ORDER_USER_FILTER:
+                return &quot;{\n&quot; +
+                        &quot;     \&quot;msgtype\&quot;: \&quot;markdown\&quot;,\n&quot; +
+                        &quot;     \&quot;markdown\&quot;: {\&quot;title\&quot;:\&quot;机构过滤报警\&quot;,\n&quot; +
+                        &quot;\&quot;text\&quot;:\&quot;#### 机构过滤报警  \\n &quot; + companyAppIdEnum.getDesc() + &quot;过滤失败已超过&quot; + number.getCount() + &quot;单&quot; + &quot;\\n &gt; ![screenshot](https://note.youdao.com/yws/api/personal/file/WEB77f35c865dbd286c3baed15670e8892f?method=download&amp;shareKey=dfdd0302d114373146480ae3d4330af1)\\n  &gt; ######&quot; + new Date() + &quot;发布 [警告]() \&quot;\n&quot; +
+                        &quot;     },\n&quot; +
+                        &quot;    \&quot;at\&quot;: {\n&quot; +
+                        &quot;        \&quot;atMobiles\&quot;: [\n&quot; +
+                        &quot;            \&quot;15168426462\&quot;&quot; +
+                        &quot;        ], \n&quot; +
+                        &quot;        \&quot;isAtAll\&quot;: false\n&quot; +
+                        &quot;    }\n&quot; +
+                        &quot; }&quot;;
+            default:
+                break;
+        }
+        return &quot;&quot;;
+    }
+
+    public enum Number {
+
+        INIT_NUMBER(0L, &quot;初始&quot;),
+
+        PRELIMINARY_WARNING(50L, &quot;初步警告&quot;),
+
+        PRELIMINARY_WARNING_PLUS(55L, &quot;初步警告&quot;),
+
+        INTERMEDIATE_WARNING(100L, &quot;中级警告&quot;),
+
+        INTERMEDIATE_WARNING_PLUS(105L, &quot;中级警告&quot;),
+
+        INTERMEDIATE_WARNING_PLUS_PLUS(200L, &quot;中级++警告&quot;),
+
+        INTERMEDIATE_WARNING_PLUS_PLUS_PLUS(205L, &quot;中级++警告&quot;),
+
+        SERIOUS_WARNING(300L, &quot;严重警告&quot;),
+
+        SERIOUS_WARNING_PLUS(305L, &quot;严重警告&quot;),
+
+        SERIOUS_WARNING_PLUS_PLUS(350L, &quot;严重警告&quot;),
+
+        SERIOUS_WARNING_PLUS_PLUS_PLUS(400L, &quot;严重警告&quot;),
+
+        SERIOUS_WARNING_PLUS_PLUS_PLUS_PLUS(500L, &quot;严重警告&quot;);
+
+        private Long count;
+
+        private String desc;
+
+        Number(Long count, String desc) {
+            this.count = count;
+            this.desc = desc;
+        }
+
+        public Long getCount() {
+            return count;
+        }
+
+        public Number setCount(Long count) {
+            this.count = count;
+            return this;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public Number setDesc(String desc) {
+            this.desc = desc;
+            return this;
+        }
+
+        public static Number getNumber(Long count) {
+            Number[] number = {INIT_NUMBER};
+            Arrays.asList(Number.values()).forEach(
+                    p -&gt; {
+                        if (p.getCount().equals(count)) {
+                            number[0] = p;
+                            return;
+                        }
+                    }
+            );
+            return number[0];
+        }
+    }
+
+    public enum AlarmTypeEnum {
+        ORDER_ALARM,
+        ORDER_USER_FILTER;
+    }
+}
+</code></pre><p>按照钉钉的文档来开发,创建机器人后,即可获取Webhook地址,整个过程还是很简单的,以上只是提供了一个思路.</p>
 
       
     </div>

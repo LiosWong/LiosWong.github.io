@@ -174,7 +174,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -619,7 +620,7 @@
 
    private String classNameToPath(String className) { 
        return rootDir + File.separatorChar 
-               + className.replace(&apos;.&apos;, File.separatorChar) + &quot;.class&quot;; 
+               + className.replace(&#39;.&#39;, File.separatorChar) + &quot;.class&quot;; 
    } 
 }
 </code></pre><p>类 FileSystemClassLoader的 <code>findClass()</code>方法首先根据类的全名在硬盘上查找类的字节代码文件（.class 文件），然后读取该文件内容，最后通过 defineClass()方法来把这些字节代码转换成 <code>java.lang.Class</code>类的实例。</p>

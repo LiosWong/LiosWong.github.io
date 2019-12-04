@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="从 2.0.5 版本开始，dubbo 开始支持通过 telnet 命令来进行服务治理。   命令列表1234567891011121314status [-l]                      - Show status.shutdown [-t &amp;lt;milliseconds&amp;gt;]     - Shutdown Dubbo Application.pwd">
+  <meta name="description" content="从 2.0.5 版本开始，dubbo 开始支持通过 telnet 命令来进行服务治理。   命令列表 status [-l]                      - Show status.  shutdown [-t &amp;lt;milliseconds&amp;gt;]     - Shutdown Dubbo Application.  pwd">
 <meta name="keywords" content="java,dubbo,telnet">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dubbo中telnet命令使用">
 <meta property="og:url" content="http://yoursite.com/2019/10/24/Dubbo中telnet命令使用/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="从 2.0.5 版本开始，dubbo 开始支持通过 telnet 命令来进行服务治理。   命令列表1234567891011121314status [-l]                      - Show status.shutdown [-t &amp;lt;milliseconds&amp;gt;]     - Shutdown Dubbo Application.pwd">
+<meta property="og:description" content="从 2.0.5 版本开始，dubbo 开始支持通过 telnet 命令来进行服务治理。   命令列表 status [-l]                      - Show status.  shutdown [-t &amp;lt;milliseconds&amp;gt;]     - Shutdown Dubbo Application.  pwd">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-10-24T02:49:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dubbo中telnet命令使用">
-<meta name="twitter:description" content="从 2.0.5 版本开始，dubbo 开始支持通过 telnet 命令来进行服务治理。   命令列表1234567891011121314status [-l]                      - Show status.shutdown [-t &amp;lt;milliseconds&amp;gt;]     - Shutdown Dubbo Application.pwd">
+<meta name="twitter:description" content="从 2.0.5 版本开始，dubbo 开始支持通过 telnet 命令来进行服务治理。   命令列表 status [-l]                      - Show status.  shutdown [-t &amp;lt;milliseconds&amp;gt;]     - Shutdown Dubbo Application.  pwd">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -490,58 +491,78 @@
 
       
         <p>从 2.0.5 版本开始，dubbo 开始支持通过 telnet 命令来进行服务治理。  </p>
-<h4 id="命令列表"><a href="#命令列表" class="headerlink" title="命令列表"></a>命令列表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">status [-l]                      - Show status.</span><br><span class="line">shutdown [-t &lt;milliseconds&gt;]     - Shutdown Dubbo Application.</span><br><span class="line">pwd                              - Print working default service.</span><br><span class="line">trace [service] [method] [times] - Trace the service.</span><br><span class="line">help [command]                   - Show help.</span><br><span class="line">exit                             - Exit the telnet.</span><br><span class="line">invoke [service.]method(args)    - Invoke the service method.</span><br><span class="line">clear [lines]                    - Clear screen.</span><br><span class="line">count [service] [method] [times] - Count the service.</span><br><span class="line">ls [-l] [service]                - List services and methods.</span><br><span class="line">log level                        - Change log level or show log </span><br><span class="line">select [index]                   - Select the index of the method you want to invoke.</span><br><span class="line">ps [-l] [port]                   - Print server ports and connections.</span><br><span class="line">cd [service]                     - Change default service.</span><br></pre></td></tr></table></figure>
-<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><ul>
+<h4 id="命令列表"><a href="#命令列表" class="headerlink" title="命令列表"></a>命令列表</h4><pre><code> status [-l]                      - Show status.
+ shutdown [-t &lt;milliseconds&gt;]     - Shutdown Dubbo Application.
+ pwd                              - Print working default service.
+ trace [service] [method] [times] - Trace the service.
+ help [command]                   - Show help.
+ exit                             - Exit the telnet.
+ invoke [service.]method(args)    - Invoke the service method.
+ clear [lines]                    - Clear screen.
+ count [service] [method] [times] - Count the service.
+ ls [-l] [service]                - List services and methods.
+ log level                        - Change log level or show log 
+ select [index]                   - Select the index of the method you want to invoke.
+ ps [-l] [port]                   - Print server ports and connections.
+ cd [service]                     - Change default service.
+</code></pre><h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><ul>
 <li>首先启动Dubbo提供者服务</li>
 <li><code>telnet localhost 20880</code></li>
 <li>输入<code>help</code>可以查看命令列表</li>
-<li>使用<code>invoke</code>命令调用服务  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dubbo&gt;invoke org.apache.dubbo.demo.DemoService.sayHello(&quot;lios&quot;)</span><br><span class="line">Use default service org.apache.dubbo.demo.DemoService.</span><br><span class="line">result: &quot;Hello lios, response from provider: null；null&quot;</span><br><span class="line">elapsed: 10 ms.</span><br></pre></td></tr></table></figure>
-</li>
+<li>使用<code>invoke</code>命令调用服务  <pre><code>dubbo&gt;invoke org.apache.dubbo.demo.DemoService.sayHello(&quot;lios&quot;)
+Use default service org.apache.dubbo.demo.DemoService.
+result: &quot;Hello lios, response from provider: null；null&quot;
+elapsed: 10 ms.
+</code></pre>由上可知,服务调用成功.</li>
 </ul>
-<p>由上可知,服务调用成功.</p>
 <h4 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h4><ul>
-<li><p>ls</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls: 显示服务列表</span><br><span class="line">ls -l: 显示服务详细信息列表</span><br><span class="line">ls XxxService: 显示服务的方法列表</span><br><span class="line">ls -l XxxService: 显示服务的方法详细信息列表</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>ps</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ps: 显示服务端口列表</span><br><span class="line">ps -l: 显示服务地址列表</span><br><span class="line">ps 20880: 显示端口上的连接信息</span><br><span class="line">ps -l 20880: 显示端口上的连接详细信息</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>cd</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd XxxService: 改变缺省服务，当设置了缺省服务，凡是需要输入服务名作为参数的命令，都可以省略服务参数</span><br><span class="line">cd /: 取消缺省服务</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>pwd</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pwd: 显示当前缺省服务</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>trace </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">trace XxxService: 跟踪 1 次服务任意方法的调用情况</span><br><span class="line">trace XxxService 10: 跟踪 10 次服务任意方法的调用情况</span><br><span class="line">trace XxxService xxxMethod: 跟踪 1 次服务方法的调用情况</span><br><span class="line">trace XxxService xxxMethod 10: 跟踪 10 次服务方法的调用情况</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>count</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">count XxxService: 统计 1 次服务任意方法的调用情况</span><br><span class="line">count XxxService 10: 统计 10 次服务任意方法的调用情况</span><br><span class="line">count XxxService xxxMethod: 统计 1 次服务方法的调用情况</span><br><span class="line">count XxxService xxxMethod 10: 统计 10 次服务方法的调用情况</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>invoke</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">invoke XxxService.xxxMethod(&#123;&quot;prop&quot;: &quot;value&quot;&#125;): 调用服务的方法</span><br><span class="line">invoke xxxMethod(&#123;&quot;prop&quot;: &quot;value&quot;&#125;): 调用服务的方法(自动查找包含此方法的服务)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>select </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 1: 当 invoke 命令匹配到多个方法时使用，根据提示列表选择需要调用的方法</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>status</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">status: 显示汇总状态，该状态将汇总所有资源的状态，当全部 OK 时则显示 OK，只要有一个 ERROR 则显示 ERROR，只要有一个 WARN 则显示 WARN</span><br><span class="line">status -l: 显示状态列表</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>log</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">log debug: 修改 dubbo logger 的日志级别</span><br><span class="line">log 100: 查看 file logger 的最后 100 字符的日志</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>help </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">help: 显示 telnet 命帮助信息</span><br><span class="line">help xxx: 显示xxx命令的详细帮助信息</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>clear</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">clear: 清除屏幕上的内容</span><br><span class="line">clear 100: 清除屏幕上的指定行数的内容</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>exit</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit: 退出当前 telnet 命令行</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>shutdown</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shutdown: 关闭 dubbo 应用</span><br><span class="line">shutdown -t 1000: 延迟 1000 毫秒关闭 dubbo 应用</span><br></pre></td></tr></table></figure>
-</li>
+<li>ls<pre><code>ls: 显示服务列表
+ls -l: 显示服务详细信息列表
+ls XxxService: 显示服务的方法列表
+ls -l XxxService: 显示服务的方法详细信息列表
+</code></pre></li>
+<li>ps<pre><code>ps: 显示服务端口列表
+ps -l: 显示服务地址列表
+ps 20880: 显示端口上的连接信息
+ps -l 20880: 显示端口上的连接详细信息
+</code></pre></li>
+<li>cd<pre><code>cd XxxService: 改变缺省服务，当设置了缺省服务，凡是需要输入服务名作为参数的命令，都可以省略服务参数
+cd /: 取消缺省服务
+</code></pre></li>
+<li>pwd<pre><code>pwd: 显示当前缺省服务
+</code></pre></li>
+<li>trace <pre><code>trace XxxService: 跟踪 1 次服务任意方法的调用情况
+trace XxxService 10: 跟踪 10 次服务任意方法的调用情况
+trace XxxService xxxMethod: 跟踪 1 次服务方法的调用情况
+trace XxxService xxxMethod 10: 跟踪 10 次服务方法的调用情况
+</code></pre></li>
+<li>count<pre><code>count XxxService: 统计 1 次服务任意方法的调用情况
+count XxxService 10: 统计 10 次服务任意方法的调用情况
+count XxxService xxxMethod: 统计 1 次服务方法的调用情况
+count XxxService xxxMethod 10: 统计 10 次服务方法的调用情况
+</code></pre></li>
+<li>invoke<pre><code>invoke XxxService.xxxMethod({&quot;prop&quot;: &quot;value&quot;}): 调用服务的方法
+invoke xxxMethod({&quot;prop&quot;: &quot;value&quot;}): 调用服务的方法(自动查找包含此方法的服务)
+</code></pre></li>
+<li>select <pre><code>select 1: 当 invoke 命令匹配到多个方法时使用，根据提示列表选择需要调用的方法
+</code></pre></li>
+<li>status<pre><code>status: 显示汇总状态，该状态将汇总所有资源的状态，当全部 OK 时则显示 OK，只要有一个 ERROR 则显示 ERROR，只要有一个 WARN 则显示 WARN
+status -l: 显示状态列表
+</code></pre></li>
+<li>log<pre><code>log debug: 修改 dubbo logger 的日志级别
+log 100: 查看 file logger 的最后 100 字符的日志
+</code></pre></li>
+<li>help <pre><code>help: 显示 telnet 命帮助信息
+help xxx: 显示xxx命令的详细帮助信息
+</code></pre></li>
+<li>clear<pre><code>clear: 清除屏幕上的内容
+clear 100: 清除屏幕上的指定行数的内容
+</code></pre></li>
+<li>exit<pre><code>exit: 退出当前 telnet 命令行
+</code></pre></li>
+<li>shutdown<pre><code>shutdown: 关闭 dubbo 应用
+shutdown -t 1000: 延迟 1000 毫秒关闭 dubbo 应用
+</code></pre></li>
 </ul>
 <blockquote>
 <p>参考</p>

@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="java.util.concurrent.CyclicBarrier字面意思是循环屏障,可实现一组线程等待至某种状态(屏障点)后,然后再一起同时执行,该屏障可循环使用,这一点和CountDownLatch不同,下面简单介绍下CyclicBarrier用法,对原理不作说明.    CyclicBarrier两个构造函数:  1234给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作Cy">
+  <meta name="description" content="java.util.concurrent.CyclicBarrier字面意思是循环屏障,可实现一组线程等待至某种状态(屏障点)后,然后再一起同时执行,该屏障可循环使用,这一点和CountDownLatch不同,下面简单介绍下CyclicBarrier用法,对原理不作说明.    CyclicBarrier两个构造函数:  给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作 Cycli">
 <meta name="keywords" content="java,并发包">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CyclicBarrier">
 <meta property="og:url" content="http://yoursite.com/2019/08/19/CyclicBarrier/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="java.util.concurrent.CyclicBarrier字面意思是循环屏障,可实现一组线程等待至某种状态(屏障点)后,然后再一起同时执行,该屏障可循环使用,这一点和CountDownLatch不同,下面简单介绍下CyclicBarrier用法,对原理不作说明.    CyclicBarrier两个构造函数:  1234给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作Cy">
+<meta property="og:description" content="java.util.concurrent.CyclicBarrier字面意思是循环屏障,可实现一组线程等待至某种状态(屏障点)后,然后再一起同时执行,该屏障可循环使用,这一点和CountDownLatch不同,下面简单介绍下CyclicBarrier用法,对原理不作说明.    CyclicBarrier两个构造函数:  给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作 Cycli">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CyclicBarrier">
-<meta name="twitter:description" content="java.util.concurrent.CyclicBarrier字面意思是循环屏障,可实现一组线程等待至某种状态(屏障点)后,然后再一起同时执行,该屏障可循环使用,这一点和CountDownLatch不同,下面简单介绍下CyclicBarrier用法,对原理不作说明.    CyclicBarrier两个构造函数:  1234给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作Cy">
+<meta name="twitter:description" content="java.util.concurrent.CyclicBarrier字面意思是循环屏障,可实现一组线程等待至某种状态(屏障点)后,然后再一起同时执行,该屏障可循环使用,这一点和CountDownLatch不同,下面简单介绍下CyclicBarrier用法,对原理不作说明.    CyclicBarrier两个构造函数:  给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作 Cycli">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -505,10 +506,94 @@
 <blockquote>
 <p>CyclicBarrier两个构造函数:</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作</span><br><span class="line">CyclicBarrier(int parties)</span><br><span class="line">给定数量的线程（线程）等待栅栏,当屏障跳闸时执行给定的屏障动作,由最后一个进入屏障的线程执行</span><br><span class="line">CyclicBarrier(int parties, Runnable barrierAction)</span><br></pre></td></tr></table></figure>
-<p>一个栗子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.*;</span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description</span><br><span class="line"> * @date 2019-08-12 23:49</span><br><span class="line"> */</span><br><span class="line">public class BarrierTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        CyclicBarrier cyclicBarrier = new CyclicBarrier(3, new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + &quot;全部集合完毕:&quot; + +System.currentTimeMillis());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(3);</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; cyclicBarrier.getParties(); i++) &#123;</span><br><span class="line">            int finalI = i;</span><br><span class="line">            executorService.execute(new Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;就位啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());</span><br><span class="line">                    try &#123;</span><br><span class="line">                        // 等待</span><br><span class="line">                        cyclicBarrier.await();</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125; catch (BrokenBarrierException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;出发啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面的三个线程全部到栅栏点时,然后一起往下继续运行,简单的修改上面的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description</span><br><span class="line"> * @date 2019-08-12 23:49</span><br><span class="line"> */</span><br><span class="line">public class BarrierTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        CyclicBarrier cyclicBarrier = new CyclicBarrier(3);</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(3);</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; cyclicBarrier.getParties(); i++) &#123;</span><br><span class="line">            int finalI = i;</span><br><span class="line">            executorService.execute(new Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;就位啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());</span><br><span class="line">                    try &#123;</span><br><span class="line">                        if (finalI == 0) &#123;</span><br><span class="line">                            Thread.sleep(200);</span><br><span class="line">                        &#125;</span><br><span class="line">                        // 栅栏等待超时时间为100毫秒,超时后不再等待未到达栅栏的线程,继续往下执行</span><br><span class="line">                        cyclicBarrier.await(100, TimeUnit.MILLISECONDS);</span><br><span class="line">=                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125; catch (BrokenBarrierException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125; catch (TimeoutException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;出发啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面执行结果报代码超时异常,发现finalI=0的线程是最后执行完成,也就是设置了栅栏等待超时后,如果有线程在超时时间内还未到达栅栏时,其他线程不再等待,继续往下执行</p>
+<pre><code>给定数量的线程（线程）等待栅栏,且当屏障跳闸时不执行预定义的动作
+CyclicBarrier(int parties)
+给定数量的线程（线程）等待栅栏,当屏障跳闸时执行给定的屏障动作,由最后一个进入屏障的线程执行
+CyclicBarrier(int parties, Runnable barrierAction)
+</code></pre><p>一个栗子:</p>
+<pre><code>import java.util.concurrent.*;
+/**
+ * @author LiosWong
+ * @description
+ * @date 2019-08-12 23:49
+ */
+public class BarrierTest {
+
+    public static void main(String[] args) {
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(3, new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + &quot;全部集合完毕:&quot; + +System.currentTimeMillis());
+            }
+        });
+
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+
+        for (int i = 0; i &lt; cyclicBarrier.getParties(); i++) {
+            int finalI = i;
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;就位啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());
+                    try {
+                        // 等待
+                        cyclicBarrier.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;出发啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());
+                }
+
+            });
+        }
+
+    }
+}
+</code></pre><p>上面的三个线程全部到栅栏点时,然后一起往下继续运行,简单的修改上面的代码:</p>
+<pre><code>import java.util.concurrent.*;
+
+/**
+ * @author LiosWong
+ * @description
+ * @date 2019-08-12 23:49
+ */
+public class BarrierTest {
+
+    public static void main(String[] args) {
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(3);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+
+        for (int i = 0; i &lt; cyclicBarrier.getParties(); i++) {
+            int finalI = i;
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;就位啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());
+                    try {
+                        if (finalI == 0) {
+                            Thread.sleep(200);
+                        }
+                        // 栅栏等待超时时间为100毫秒,超时后不再等待未到达栅栏的线程,继续往下执行
+                        cyclicBarrier.await(100, TimeUnit.MILLISECONDS);
+=                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(&quot;当前线程名:&quot; + Thread.currentThread().getName() + &quot;,&quot; + finalI + &quot;出发啦&quot; + &quot;,time:&quot; + System.currentTimeMillis());
+                }
+
+            });
+        }
+
+    }
+}
+</code></pre><p>上面执行结果报代码超时异常,发现finalI=0的线程是最后执行完成,也就是设置了栅栏等待超时后,如果有线程在超时时间内还未到达栅栏时,其他线程不再等待,继续往下执行</p>
 
       
     </div>

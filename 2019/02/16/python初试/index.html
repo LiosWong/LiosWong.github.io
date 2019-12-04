@@ -103,19 +103,19 @@
 
 
 
-  <meta name="description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码:12345678910111213141516171819202122232425262728# -*- coding: UTF-8 -*-import timeimport jsonimport request">
+  <meta name="description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码: # -*- coding: UTF-8 -*- import time import json import requests  def doIndexratePost(orderNo):   // body数">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python初试">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/python初试/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码:12345678910111213141516171819202122232425262728# -*- coding: UTF-8 -*-import timeimport jsonimport request">
+<meta property="og:description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码: # -*- coding: UTF-8 -*- import time import json import requests  def doIndexratePost(orderNo):   // body数">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python初试">
-<meta name="twitter:description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码:12345678910111213141516171819202122232425262728# -*- coding: UTF-8 -*-import timeimport jsonimport request">
+<meta name="twitter:description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码: # -*- coding: UTF-8 -*- import time import json import requests  def doIndexratePost(orderNo):   // body数">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d">
 
 
@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -503,8 +504,36 @@
       
 
       
-        <p>最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。<br>python代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: UTF-8 -*-</span><br><span class="line">import time</span><br><span class="line">import json</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">def doIndexratePost(orderNo):</span><br><span class="line">  // body数据</span><br><span class="line">  data = &#123;&apos;orderNo&apos;:orderNo,&apos;type&apos;:&apos;3&apos;&#125;</span><br><span class="line">  # 设置请求头token</span><br><span class="line">  headers = &#123;&apos;token&apos;:&apos;3eb44d33fdf59677fa97557c0e636463&apos;,&apos;Content-Type&apos;:&apos;application/json&apos;&#125;</span><br><span class="line">  requestUrl = &quot;请求的URL&quot;</span><br><span class="line">  // 使用requests库发起post请求</span><br><span class="line">  r = requests.post(requestUrl, data=json.dumps(data), headers=headers)</span><br><span class="line">  res = r.json()</span><br><span class="line">  // 打印响应</span><br><span class="line">  print(res)</span><br><span class="line">  # 休眠1s</span><br><span class="line">  time.sleep(1);</span><br><span class="line"></span><br><span class="line"># 批量读取文件</span><br><span class="line">f = open(&apos;/Users/wenchao.wang/LiosWang/sublimetext/dodataone.txt&apos;);</span><br><span class="line">num = 0;</span><br><span class="line">for i in f.readlines():</span><br><span class="line">  orderNo = i.strip(&apos;\n&apos;)</span><br><span class="line">  // 调用函数doIndexratePost处理业务</span><br><span class="line">  doIndexratePost(orderNo);</span><br><span class="line">  num = num + 1;</span><br><span class="line">  print (num,&quot;已执行完&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>在sublimetext3中执行如下:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&amp;shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d" alt="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&amp;shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d"><br>上面简短的代码就实现批量处理业务需求,确实简单方便。我用的mac,用的brew安装python3.7,比自己下载源代码编译安装方便的多，而且很可能会在安装三方库时遇到一些蛋痛的问题,编辑器用的sublimetext3,集成插件用起来十分轻量快捷。</p>
+        <p>最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。<br>python代码:</p>
+<pre><code># -*- coding: UTF-8 -*-
+import time
+import json
+import requests
+
+def doIndexratePost(orderNo):
+  // body数据
+  data = {&#39;orderNo&#39;:orderNo,&#39;type&#39;:&#39;3&#39;}
+  # 设置请求头token
+  headers = {&#39;token&#39;:&#39;3eb44d33fdf59677fa97557c0e636463&#39;,&#39;Content-Type&#39;:&#39;application/json&#39;}
+  requestUrl = &quot;请求的URL&quot;
+  // 使用requests库发起post请求
+  r = requests.post(requestUrl, data=json.dumps(data), headers=headers)
+  res = r.json()
+  // 打印响应
+  print(res)
+  # 休眠1s
+  time.sleep(1);
+
+# 批量读取文件
+f = open(&#39;/Users/wenchao.wang/LiosWang/sublimetext/dodataone.txt&#39;);
+num = 0;
+for i in f.readlines():
+  orderNo = i.strip(&#39;\n&#39;)
+  // 调用函数doIndexratePost处理业务
+  doIndexratePost(orderNo);
+  num = num + 1;
+  print (num,&quot;已执行完&quot;)
+</code></pre><p>在sublimetext3中执行如下:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&amp;shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d" alt="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&amp;shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d"><br>上面简短的代码就实现批量处理业务需求,确实简单方便。我用的mac,用的brew安装python3.7,比自己下载源代码编译安装方便的多，而且很可能会在安装三方库时遇到一些蛋痛的问题,编辑器用的sublimetext3,集成插件用起来十分轻量快捷。</p>
 
       
     </div>
@@ -578,8 +607,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/史上最全国家统计局划分代码爬取/" rel="next" title="史上最全国家统计局划分代码爬取">
-                <i class="fa fa-chevron-left"></i> 史上最全国家统计局划分代码爬取
+              <a href="/2019/02/16/javaConfig整合spring、redis/" rel="next" title="javaConfig整合spring、redis">
+                <i class="fa fa-chevron-left"></i> javaConfig整合spring、redis
               </a>
             
           </div>
@@ -588,8 +617,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/ThreadLocal/" rel="prev" title="ThreadLocal">
-                ThreadLocal <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/简话bean加载/" rel="prev" title="简话bean加载">
+                简话bean加载 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

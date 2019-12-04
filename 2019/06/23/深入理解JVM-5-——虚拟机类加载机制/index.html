@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -644,16 +645,16 @@ static int i = 1;
 <li><code>&lt;clinit&gt;()</code>方法与类的构造函数（或者说实例构造器<code>&lt;init&gt;()</code> 方法）不同，不需要显式的调用父类的()方法。虚拟机会自动保证在子类的<code>&lt;clinit&gt;()</code>方法运行之前，父类的<code>&lt;clinit&gt;()</code>方法已经执行结束。因此虚拟机中第一个执行<code>&lt;clinit&gt;()</code>方法的类肯定为<code>java.lang.Object</code>。</li>
 <li><p>由于父类的<code>&lt;clinit&gt;()</code>方法先执行，也就意味着父类中定义的静态语句块要优于子类的变量赋值操作。例如以下代码：</p>
 <p>static class Parent {</p>
-<pre><code>public static int A = 1;
-static {
-    A = 2;
-}
+<pre><code>    public static int A = 1;
+    static {
+        A = 2;
+    }
 </code></pre><p>}</p>
 <p>static class Sub extends Parent {</p>
-<pre><code>public static int B = A;
+<pre><code>    public static int B = A;
 </code></pre><p>}</p>
 <p>public static void main(String[] args) {</p>
-<pre><code>System.out.println(Sub.B);//输出结果是父类中的静态变量值A，也就是2
+<pre><code>    System.out.println(Sub.B);//输出结果是父类中的静态变量值A，也就是2
 </code></pre><p>}</p>
 </li>
 </ul>

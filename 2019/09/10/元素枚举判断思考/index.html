@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做:123456789101112131415161718192021222324252627282930@Getter@AllArgsConstructorpublic enum OrderStatusEnum &amp;#123;    STATUS_1(1, &amp;quot;初始化&amp;quot;),    STATUS_2(2, &amp;quot;状态2&amp;">
+  <meta name="description" content="开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做: @Getter @AllArgsConstructor public enum OrderStatusEnum {     STATUS_1(1, &amp;quot;初始化&amp;quot;),     STATUS_2(2, &amp;quot;状态2&amp;quot;),     STATUS_3(4, &amp;quot;状态3&amp;quot;),     STATU">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="元素枚举判断思考">
 <meta property="og:url" content="http://yoursite.com/2019/09/10/元素枚举判断思考/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做:123456789101112131415161718192021222324252627282930@Getter@AllArgsConstructorpublic enum OrderStatusEnum &amp;#123;    STATUS_1(1, &amp;quot;初始化&amp;quot;),    STATUS_2(2, &amp;quot;状态2&amp;">
+<meta property="og:description" content="开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做: @Getter @AllArgsConstructor public enum OrderStatusEnum {     STATUS_1(1, &amp;quot;初始化&amp;quot;),     STATUS_2(2, &amp;quot;状态2&amp;quot;),     STATUS_3(4, &amp;quot;状态3&amp;quot;),     STATU">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-10T12:33:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="元素枚举判断思考">
-<meta name="twitter:description" content="开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做:123456789101112131415161718192021222324252627282930@Getter@AllArgsConstructorpublic enum OrderStatusEnum &amp;#123;    STATUS_1(1, &amp;quot;初始化&amp;quot;),    STATUS_2(2, &amp;quot;状态2&amp;">
+<meta name="twitter:description" content="开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做: @Getter @AllArgsConstructor public enum OrderStatusEnum {     STATUS_1(1, &amp;quot;初始化&amp;quot;),     STATUS_2(2, &amp;quot;状态2&amp;quot;),     STATUS_3(4, &amp;quot;状态3&amp;quot;),     STATU">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -489,12 +490,150 @@
       
 
       
-        <p>开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">@Getter</span><br><span class="line">@AllArgsConstructor</span><br><span class="line">public enum OrderStatusEnum &#123;</span><br><span class="line">    STATUS_1(1, &quot;初始化&quot;),</span><br><span class="line">    STATUS_2(2, &quot;状态2&quot;),</span><br><span class="line">    STATUS_3(4, &quot;状态3&quot;),</span><br><span class="line">    STATUS_4(8, &quot;状态4&quot;),</span><br><span class="line">    STATUS_5(16, &quot;状态5&quot;),</span><br><span class="line">    STATUS_6(32, &quot;状态6&quot;),</span><br><span class="line">    STATUS_7(64, &quot;状态7&quot;),</span><br><span class="line">    STATUS_8(128, &quot;状态8&quot;);</span><br><span class="line">    </span><br><span class="line">    private int status;</span><br><span class="line"></span><br><span class="line">    private String desc;</span><br><span class="line"></span><br><span class="line">    // 循环</span><br><span class="line">    public static boolean isOrderStatus(int status) &#123;</span><br><span class="line">        for (OrderStatusEnum c : values()) &#123;</span><br><span class="line">            if (c.status.equals(status)) &#123;</span><br><span class="line">                return Boolean.TRUE;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return Boolean.FALSE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(OrderStatusEnum.isOrderStatus(32));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>有没有其他方法呢,可以使用java8特性处理:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">@Getter</span><br><span class="line">@AllArgsConstructor</span><br><span class="line">public enum OrderStatusEnum &#123;</span><br><span class="line">    STATUS_1(1, &quot;初始化&quot;),</span><br><span class="line">    STATUS_2(2, &quot;状态2&quot;),</span><br><span class="line">    STATUS_3(4, &quot;状态3&quot;),</span><br><span class="line">    STATUS_4(8, &quot;状态4&quot;),</span><br><span class="line">    STATUS_5(16, &quot;状态5&quot;),</span><br><span class="line">    STATUS_6(32, &quot;状态6&quot;),</span><br><span class="line">    STATUS_7(64, &quot;状态7&quot;),</span><br><span class="line">    STATUS_8(128, &quot;状态8&quot;);</span><br><span class="line">    </span><br><span class="line">    private int status;</span><br><span class="line"></span><br><span class="line">    private String desc;</span><br><span class="line"></span><br><span class="line">    public static boolean isOrderStatus(int status) &#123;</span><br><span class="line">        return Arrays.asList(values()).stream().anyMatch(p -&gt; &#123;</span><br><span class="line">            return p.getStatus() == status;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(OrderStatusEnum.isOrderStatus(32));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>除了上面的两种方法,当然还有很多方法处理,下面使用运算符<code>&gt;&gt;</code>、<code>&amp;</code>更优雅的处理:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@Getter</span><br><span class="line">@AllArgsConstructor</span><br><span class="line">public enum OrderStatusEnum &#123;</span><br><span class="line">    STATUS_1(0, 1, &quot;初始化&quot;),</span><br><span class="line">    STATUS_2(1, 2, &quot;状态2&quot;),</span><br><span class="line">    STATUS_22(1, 3, &quot;状态22&quot;),</span><br><span class="line">    STATUS_3(2, 4, &quot;状态3&quot;),</span><br><span class="line">    STATUS_4(3, 8, &quot;状态4&quot;),</span><br><span class="line">    STATUS_5(4, 16, &quot;状态5&quot;),</span><br><span class="line">    STATUS_6(5, 32, &quot;状态6&quot;),</span><br><span class="line">    STATUS_7(6, 64, &quot;状态7&quot;),</span><br><span class="line">    STATUS_8(7, 128, &quot;状态8&quot;);</span><br><span class="line"></span><br><span class="line">    private int offset;</span><br><span class="line"></span><br><span class="line">    private int status;</span><br><span class="line"></span><br><span class="line">    private String desc;</span><br><span class="line"></span><br><span class="line">    // 使用时,需要知道与具体哪个枚举值比较</span><br><span class="line">    public boolean isOrderStatus(int status) &#123;</span><br><span class="line">        return ((status &gt;&gt; (getStatus())) &amp; 1) == 1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(OrderStatusEnum.STATUS_3.isOrderStatus(4));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>由于java int数据类型最大存储4个字节,一个字节占8位,对于第三种方法分析如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 1</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * 1 &gt;&gt; 0 右移0位 --》 0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * (1 &gt;&gt; 1) &amp; 1 --》 (0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) --》0000 0000 0000 0000 0000 0000 0000 0001 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 2</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0000 0010</span><br><span class="line"> * 2 &gt;&gt; 1 右移1位 --》 0000 0000 0000 0000 0000 0000 0000 0001  高位由0补齐</span><br><span class="line"> * (2 &gt;&gt; 1) &amp; 1 --》 (0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 3</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0000 0011</span><br><span class="line"> * 3 &gt;&gt; 1 右移1位 --》 0000 0000 0000 0000 0000 0000 0000 0001  高位由0补齐</span><br><span class="line"> * (3 &gt;&gt; 1) &amp; 1 --》 (0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 4</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0000 0100  高位由0补齐</span><br><span class="line"> * 4 &gt;&gt; 2 右移2位 --》0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * (4 &gt;&gt; 2) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 8</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0000 1000</span><br><span class="line"> * 8 &gt;&gt; 3 右移3位 --》0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * (8 &gt;&gt; 3) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 16</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0001 0000</span><br><span class="line"> * 16 &gt;&gt; 4 右移4位 --》0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * (16 &gt;&gt; 4) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 32</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0010 0000</span><br><span class="line"> * 32 &gt;&gt; 5 右移5位 --》0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * (32 &gt;&gt; 5) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 64</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 0100 0000</span><br><span class="line"> * 64 &gt;&gt; 6 右移6位 --》0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * (64 &gt;&gt; 6) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> *</span><br><span class="line"> * 128</span><br><span class="line"> * 0000 0000 0000 0000 0000 0000 1000 0000</span><br><span class="line"> * 128 &gt;&gt; 7 右移7位 --》0000 0000 0000 0000 0000 0000 0000 0001</span><br><span class="line"> * (128 &gt;&gt; 7) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1</span><br><span class="line"> */</span><br></pre></td></tr></table></figure></p>
-<p>上面很清晰了具体过程,java中位运算符有左移(&lt;&lt;)、右移(&gt;&gt;)、无符号右移(&gt;&gt;&gt;)、位与(&amp;)、位或(|)、位非(~)、位异或(^),介绍下<code>&amp;</code>运算过程:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int a = 3</span><br><span class="line">int b = 4</span><br><span class="line">a &amp; b</span><br><span class="line">a转化成二进制: 0000 0000 0000 0000 0000 0000 0000 0011</span><br><span class="line">b转化成二进制: 0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">      结果值: 0000 0000 0000 0000 0000 0000 0000 0000</span><br><span class="line">      所以 a &amp; b = 0</span><br></pre></td></tr></table></figure></p>
+        <p>开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做:</p>
+<pre><code>@Getter
+@AllArgsConstructor
+public enum OrderStatusEnum {
+    STATUS_1(1, &quot;初始化&quot;),
+    STATUS_2(2, &quot;状态2&quot;),
+    STATUS_3(4, &quot;状态3&quot;),
+    STATUS_4(8, &quot;状态4&quot;),
+    STATUS_5(16, &quot;状态5&quot;),
+    STATUS_6(32, &quot;状态6&quot;),
+    STATUS_7(64, &quot;状态7&quot;),
+    STATUS_8(128, &quot;状态8&quot;);
 
+    private int status;
+
+    private String desc;
+
+    // 循环
+    public static boolean isOrderStatus(int status) {
+        for (OrderStatusEnum c : values()) {
+            if (c.status.equals(status)) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(OrderStatusEnum.isOrderStatus(32));
+    }
+}
+</code></pre><p>有没有其他方法呢,可以使用java8特性处理:</p>
+<pre><code>@Getter
+@AllArgsConstructor
+public enum OrderStatusEnum {
+    STATUS_1(1, &quot;初始化&quot;),
+    STATUS_2(2, &quot;状态2&quot;),
+    STATUS_3(4, &quot;状态3&quot;),
+    STATUS_4(8, &quot;状态4&quot;),
+    STATUS_5(16, &quot;状态5&quot;),
+    STATUS_6(32, &quot;状态6&quot;),
+    STATUS_7(64, &quot;状态7&quot;),
+    STATUS_8(128, &quot;状态8&quot;);
+
+    private int status;
+
+    private String desc;
+
+    public static boolean isOrderStatus(int status) {
+        return Arrays.asList(values()).stream().anyMatch(p -&gt; {
+            return p.getStatus() == status;
+        });
+    }
+
+    public static void main(String[] args) {
+        System.out.println(OrderStatusEnum.isOrderStatus(32));
+    }
+}
+</code></pre><p>除了上面的两种方法,当然还有很多方法处理,下面使用运算符<code>&gt;&gt;</code>、<code>&amp;</code>更优雅的处理:</p>
+<pre><code>
+@Getter
+@AllArgsConstructor
+public enum OrderStatusEnum {
+    STATUS_1(0, 1, &quot;初始化&quot;),
+    STATUS_2(1, 2, &quot;状态2&quot;),
+    STATUS_22(1, 3, &quot;状态22&quot;),
+    STATUS_3(2, 4, &quot;状态3&quot;),
+    STATUS_4(3, 8, &quot;状态4&quot;),
+    STATUS_5(4, 16, &quot;状态5&quot;),
+    STATUS_6(5, 32, &quot;状态6&quot;),
+    STATUS_7(6, 64, &quot;状态7&quot;),
+    STATUS_8(7, 128, &quot;状态8&quot;);
+
+    private int offset;
+
+    private int status;
+
+    private String desc;
+
+    // 使用时,需要知道与具体哪个枚举值比较
+    public boolean isOrderStatus(int status) {
+        return ((status &gt;&gt; (getStatus())) &amp; 1) == 1;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(OrderStatusEnum.STATUS_3.isOrderStatus(4));
+    }
+}
+</code></pre><p>由于java int数据类型最大存储4个字节,一个字节占8位,对于第三种方法分析如下:</p>
+<pre><code>    /**
+     * 1
+     * 0000 0000 0000 0000 0000 0000 0000 0001
+     * 1 &gt;&gt; 0 右移0位 --》 0000 0000 0000 0000 0000 0000 0000 0001
+     * (1 &gt;&gt; 1) &amp; 1 --》 (0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) --》0000 0000 0000 0000 0000 0000 0000 0001 结果为1
+     *
+     * 2
+     * 0000 0000 0000 0000 0000 0000 0000 0010
+     * 2 &gt;&gt; 1 右移1位 --》 0000 0000 0000 0000 0000 0000 0000 0001  高位由0补齐
+     * (2 &gt;&gt; 1) &amp; 1 --》 (0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     *
+     * 3
+     * 0000 0000 0000 0000 0000 0000 0000 0011
+     * 3 &gt;&gt; 1 右移1位 --》 0000 0000 0000 0000 0000 0000 0000 0001  高位由0补齐
+     * (3 &gt;&gt; 1) &amp; 1 --》 (0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     *
+     * 4
+     * 0000 0000 0000 0000 0000 0000 0000 0100  高位由0补齐
+     * 4 &gt;&gt; 2 右移2位 --》0000 0000 0000 0000 0000 0000 0000 0001
+     * (4 &gt;&gt; 2) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     *
+     * 8
+     * 0000 0000 0000 0000 0000 0000 0000 1000
+     * 8 &gt;&gt; 3 右移3位 --》0000 0000 0000 0000 0000 0000 0000 0001
+     * (8 &gt;&gt; 3) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     *
+     * 16
+     * 0000 0000 0000 0000 0000 0000 0001 0000
+     * 16 &gt;&gt; 4 右移4位 --》0000 0000 0000 0000 0000 0000 0000 0001
+     * (16 &gt;&gt; 4) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     *
+     * 32
+     * 0000 0000 0000 0000 0000 0000 0010 0000
+     * 32 &gt;&gt; 5 右移5位 --》0000 0000 0000 0000 0000 0000 0000 0001
+     * (32 &gt;&gt; 5) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     *
+     * 64
+     * 0000 0000 0000 0000 0000 0000 0100 0000
+     * 64 &gt;&gt; 6 右移6位 --》0000 0000 0000 0000 0000 0000 0000 0001
+     * (64 &gt;&gt; 6) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     *
+     * 128
+     * 0000 0000 0000 0000 0000 0000 1000 0000
+     * 128 &gt;&gt; 7 右移7位 --》0000 0000 0000 0000 0000 0000 0000 0001
+     * (128 &gt;&gt; 7) &amp; 1 --》(0000 0000 0000 0000 0000 0000 0000 0001) &amp; (0000 0000 0000 0000 0000 0000 0000 0001) 结果为1
+     */
+</code></pre><p>上面很清晰了具体过程,java中位运算符有左移(&lt;&lt;)、右移(&gt;&gt;)、无符号右移(&gt;&gt;&gt;)、位与(&amp;)、位或(|)、位非(~)、位异或(^),介绍下<code>&amp;</code>运算过程:</p>
+<pre><code>int a = 3
+int b = 4
+a &amp; b
+a转化成二进制: 0000 0000 0000 0000 0000 0000 0000 0011
+b转化成二进制: 0000 0000 0000 0000 0000 0000 0000 0100
+      结果值: 0000 0000 0000 0000 0000 0000 0000 0000
+      所以 a &amp; b = 0
+</code></pre>
       
     </div>
 

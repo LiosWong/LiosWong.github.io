@@ -168,7 +168,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -1063,7 +1064,7 @@ CyclicBarr
               开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.  
 key排序
 使用TreeMap的Comparator比较TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator:
-Map&lt;String, Integer&gt; map = new T
+      Map&lt;String, Integer&gt; map =
               ...
             </p>
           <!--noindex-->
@@ -1248,7 +1249,8 @@ Map&lt;String, Integer&gt; map = new T
         
           
             <p>
-              双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表.package com.lios.alg
+              双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表.
+package com.lios.al
               ...
             </p>
           <!--noindex-->
@@ -1618,7 +1620,10 @@ Map&lt;String, Integer&gt; map = new T
         
           
             <p>
-              CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法:// 当前线程在计数值减到0之前一直等待,除非当前线程被中断void await()// 当前线程
+              CountDownLatch是java.util.concurrent包下的线程同步类,并发环境下线程对计数值减1操作,当计数值为0时,被wait阻塞的线程将被唤醒,达到线程同步.该类涉及到的主要方法:
+// 当前线程在计数值减到0之前一直等待,除非当前线程被中断
+void await()
+// 当
               ...
             </p>
           <!--noindex-->

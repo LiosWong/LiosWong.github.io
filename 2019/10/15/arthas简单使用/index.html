@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -498,24 +499,58 @@
 <li>是否有一个全局视角来查看系统的运行状况？  </li>
 <li>有什么办法可以监控到JVM的实时运行状态？<br>Arthas支持JDK 6+,支持Linux/Mac/Windows,采用命令行交互模式,同时提供丰富的 Tab 自动补全功能,进一步方便进行问题的定位和诊断.</li>
 </ol>
-<h4 id="快速使用"><a href="#快速使用" class="headerlink" title="快速使用"></a>快速使用</h4><p>官方推荐通过arthas-boot方式安装,下载<code>arthas-boot.jar</code>,然后用<code>java -jar</code>的方式启动：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://alibaba.github.io/arthas/arthas-boot.jar</span><br><span class="line">java -jar arthas-boot.jar</span><br></pre></td></tr></table></figure></p>
-<p>当然如果有其他的需求,可以使用全量安装、手动安装的方式,具体参考<a href="https://alibaba.github.io/arthas/install-detail.html" target="_blank" rel="noopener">Arthas Install</a></p>
+<h4 id="快速使用"><a href="#快速使用" class="headerlink" title="快速使用"></a>快速使用</h4><p>官方推荐通过arthas-boot方式安装,下载<code>arthas-boot.jar</code>,然后用<code>java -jar</code>的方式启动：</p>
+<pre><code>wget https://alibaba.github.io/arthas/arthas-boot.jar
+java -jar arthas-boot.jar
+</code></pre><p>当然如果有其他的需求,可以使用全量安装、手动安装的方式,具体参考<a href="https://alibaba.github.io/arthas/install-detail.html" target="_blank" rel="noopener">Arthas Install</a></p>
 <h4 id="Simplecase"><a href="#Simplecase" class="headerlink" title="Simplecase"></a>Simplecase</h4><p>dubbo消费端调用服务时,会为接口生成一个代理类,这个代理类有什么信息呢,可以通过arthas可以反编译出Protocol、Cluster、Transporter、Wrapper等代理类,帮助理解源码.</p>
 <ul>
 <li>启动dubbo消费端服务</li>
-<li>启动arthas服务<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">➜  arthas java -jar arthas-boot.jar</span><br><span class="line">[INFO] arthas-boot version: 3.1.4</span><br><span class="line">[INFO] Found existing java process, please choose one and hit RETURN.</span><br><span class="line">* [1]: 1089 zookeeper-dev-ZooInspector.jar</span><br><span class="line">  [2]: 982 org.jetbrains.kotlin.daemon.KotlinCompileDaemon</span><br><span class="line">  [3]: 1623 org.apache.dubbo.demo.provider.ApplicationProvider1</span><br><span class="line">  [4]: 1627 org.jetbrains.jps.cmdline.Launcher</span><br><span class="line">  [5]: 1628 org.apache.dubbo.demo.consumer.ApplicationConsumer</span><br><span class="line">  [6]: 300 </span><br><span class="line">  [7]: 637 org.jetbrains.idea.maven.server.RemoteMavenServer36</span><br><span class="line">  [8]: 957 org.apache.zookeeper.server.quorum.QuorumPeerMain</span><br><span class="line">  [9]: 958 org.apache.zookeeper.server.quorum.QuorumPeerMain</span><br><span class="line">  [10]: 959 org.apache.zookeeper.server.quorum.QuorumPeerMain</span><br><span class="line">5</span><br><span class="line">[INFO] arthas home: /Users/lioswong/.arthas/lib/3.1.4/arthas</span><br><span class="line">[INFO] Try to attach process 1628</span><br><span class="line">[INFO] Attach process 1628 success.</span><br><span class="line">[INFO] arthas-client connect 127.0.0.1 9998</span><br><span class="line">  ,---.  ,------. ,--------.,--.  ,--.  ,---.   ,---.                           </span><br><span class="line"> /  O  \ |  .--. &apos;&apos;--.  .--&apos;|  &apos;--&apos;  | /  O  \ &apos;   .-&apos;                          </span><br><span class="line">|  .-.  ||  &apos;--&apos;.&apos;   |  |   |  .--.  ||  .-.  |`.  `-.                          </span><br><span class="line">|  | |  ||  |\  \    |  |   |  |  |  ||  | |  |.-&apos;    |                         </span><br><span class="line">`--&apos; `--&apos;`--&apos; &apos;--&apos;   `--&apos;   `--&apos;  `--&apos;`--&apos; `--&apos;`-----&apos;                          </span><br><span class="line">                                                                                </span><br><span class="line"></span><br><span class="line">wiki      https://alibaba.github.io/arthas                                      </span><br><span class="line">tutorials https://alibaba.github.io/arthas/arthas-tutorials                     </span><br><span class="line">version   3.1.4                                                                 </span><br><span class="line">pid       1628                                                                  </span><br><span class="line">time      2019-10-15 14:01:56</span><br></pre></td></tr></table></figure>
-</li>
+<li>启动arthas服务<br><code>`</code><br>➜  arthas java -jar arthas-boot.jar<br>[INFO] arthas-boot version: 3.1.4<br>[INFO] Found existing java process, please choose one and hit RETURN.</li>
+<li>[1]: 1089 zookeeper-dev-ZooInspector.jar<br>[2]: 982 org.jetbrains.kotlin.daemon.KotlinCompileDaemon<br>[3]: 1623 org.apache.dubbo.demo.provider.ApplicationProvider1<br>[4]: 1627 org.jetbrains.jps.cmdline.Launcher<br>[5]: 1628 org.apache.dubbo.demo.consumer.ApplicationConsumer</li>
 </ul>
-<p>arthas启动时,会发现dubbo服务消费者进程是第5个,则输入5,再输入回车/enter,Arthas会attach到目标进程上,并输出日志.</p>
+<p>  [7]: 637 org.jetbrains.idea.maven.server.RemoteMavenServer36<br>  [8]: 957 org.apache.zookeeper.server.quorum.QuorumPeerMain<br>  [9]: 958 org.apache.zookeeper.server.quorum.QuorumPeerMain<br>  [10]: 959 org.apache.zookeeper.server.quorum.QuorumPeerMain<br>5<br>[INFO] arthas home: /Users/lioswong/.arthas/lib/3.1.4/arthas<br>[INFO] Try to attach process 1628<br>[INFO] Attach process 1628 success.<br>[INFO] arthas-client connect 127.0.0.1 9998<br>  ,—.  ,——. ,——–.,–.  ,–.  ,—.   ,—.<br> /  O  \ |  .–. ‘’–.  .–’|  ‘–’  | /  O  \ ‘   .-‘<br>|  .-.  ||  ‘–’.’   |  |   |  .–.  ||  .-.  |<code>.</code>-.<br>|  | |  ||  |\  \    |  |   |  |  |  ||  | |  |.-‘    |<br><code>--&#39;</code>–’<code>--&#39; &#39;--&#39;</code>–’   <code>--&#39;</code>–’<code>--&#39;</code>–’`—–’                          </p>
+<p>wiki      <a href="https://alibaba.github.io/arthas" target="_blank" rel="noopener">https://alibaba.github.io/arthas</a><br>tutorials <a href="https://alibaba.github.io/arthas/arthas-tutorials" target="_blank" rel="noopener">https://alibaba.github.io/arthas/arthas-tutorials</a><br>version   3.1.4<br>pid       1628<br>time      2019-10-15 14:01:56    </p>
+<pre><code>arthas启动时,会发现dubbo服务消费者进程是第5个,则输入5,再输入回车/enter,Arthas会attach到目标进程上,并输出日志.
+
+* 根据``sc``命令搜索JVM已加载的类信息
+</code></pre><p>[arthas@1628]$ sc *proxy0<br>org.apache.dubbo.common.bytecode.proxy0<br>Affect(row-cnt:1) cost in 22 ms.</p>
+<pre><code>* 通过``jad``命令反编译  
+</code></pre><p>[arthas@1628]$ jad org.apache.dubbo.common.bytecode.proxy0</p>
+<p>ClassLoader:<br>+-sun.misc.Launcher$AppClassLoader@18b4aac2<br>  +-sun.misc.Launcher$ExtClassLoader@153f5a29                                                       </p>
+<p>Location:<br>/Users/lioswong/dev/source/dubbo/dubbo-common/target/classes/                                       </p>
+<p>/*</p>
 <ul>
-<li><p>根据<code>sc</code>命令搜索JVM已加载的类信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[arthas@1628]$ sc *proxy0</span><br><span class="line">org.apache.dubbo.common.bytecode.proxy0</span><br><span class="line">Affect(row-cnt:1) cost in 22 ms.</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>通过<code>jad</code>命令反编译  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">[arthas@1628]$ jad org.apache.dubbo.common.bytecode.proxy0</span><br><span class="line"></span><br><span class="line">ClassLoader:                                                                                        </span><br><span class="line">+-sun.misc.Launcher$AppClassLoader@18b4aac2                                                         </span><br><span class="line">  +-sun.misc.Launcher$ExtClassLoader@153f5a29                                                       </span><br><span class="line"></span><br><span class="line">Location:                                                                                           </span><br><span class="line">/Users/lioswong/dev/source/dubbo/dubbo-common/target/classes/                                       </span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * Decompiled with CFR.</span><br><span class="line"> * </span><br><span class="line"> * Could not load the following classes:</span><br><span class="line"> *  com.alibaba.dubbo.rpc.service.EchoService</span><br><span class="line"> *  org.apache.dubbo.common.bytecode.ClassGenerator</span><br><span class="line"> *  org.apache.dubbo.common.bytecode.ClassGenerator$DC</span><br><span class="line"> */</span><br><span class="line">package org.apache.dubbo.common.bytecode;</span><br><span class="line"></span><br><span class="line">import com.alibaba.dubbo.rpc.service.EchoService;</span><br><span class="line">import java.lang.reflect.InvocationHandler;</span><br><span class="line">import java.lang.reflect.Method;</span><br><span class="line">import org.apache.dubbo.common.bytecode.ClassGenerator;</span><br><span class="line">import org.apache.dubbo.demo.DemoService;</span><br><span class="line"></span><br><span class="line">public class proxy0</span><br><span class="line">implements ClassGenerator.DC,</span><br><span class="line">EchoService,</span><br><span class="line">DemoService &#123;</span><br><span class="line">    public static Method[] methods;</span><br><span class="line">    private InvocationHandler handler;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String sayHello(String string) &#123;</span><br><span class="line">        Object[] arrobject = new Object[]&#123;string&#125;;</span><br><span class="line">        Object object = this.handler.invoke(this, methods[0], arrobject);</span><br><span class="line">        return (String)object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Object $echo(Object object) &#123;</span><br><span class="line">        Object[] arrobject = new Object[]&#123;object&#125;;</span><br><span class="line">        Object object2 = this.handler.invoke(this, methods[1], arrobject);</span><br><span class="line">        return object2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public proxy0() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public proxy0(InvocationHandler invocationHandler) &#123;</span><br><span class="line">        this.handler = invocationHandler;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Affect(row-cnt:1) cost in 571 ms.</span><br></pre></td></tr></table></figure>
-</li>
+<li>Decompiled with CFR.</li>
+<li></li>
+<li>Could not load the following classes:</li>
+<li>com.alibaba.dubbo.rpc.service.EchoService</li>
+<li>org.apache.dubbo.common.bytecode.ClassGenerator</li>
+<li>org.apache.dubbo.common.bytecode.ClassGenerator$DC<br>*/<br>package org.apache.dubbo.common.bytecode;</li>
 </ul>
-<p>上面简单介绍arthas使用.</p>
+<p>import com.alibaba.dubbo.rpc.service.EchoService;<br>import java.lang.reflect.InvocationHandler;<br>import java.lang.reflect.Method;<br>import org.apache.dubbo.common.bytecode.ClassGenerator;<br>import org.apache.dubbo.demo.DemoService;</p>
+<p>public class proxy0<br>implements ClassGenerator.DC,<br>EchoService,<br>DemoService {<br>    public static Method[] methods;<br>    private InvocationHandler handler;</p>
+<pre><code>@Override
+public String sayHello(String string) {
+    Object[] arrobject = new Object[]{string};
+    Object object = this.handler.invoke(this, methods[0], arrobject);
+    return (String)object;
+}
+
+public Object $echo(Object object) {
+    Object[] arrobject = new Object[]{object};
+    Object object2 = this.handler.invoke(this, methods[1], arrobject);
+    return object2;
+}
+
+public proxy0() {
+}
+
+public proxy0(InvocationHandler invocationHandler) {
+    this.handler = invocationHandler;
+}
+</code></pre><p>}</p>
+<p>Affect(row-cnt:1) cost in 571 ms.<br><code>`</code><br>上面简单介绍arthas使用.</p>
 <h4 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h4><p>可参考官方<a href="https://alibaba.github.io/arthas/advanced-use.html" target="_blank" rel="noopener">中文文档</a></p>
 
       

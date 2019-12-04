@@ -103,19 +103,19 @@
 
 
 
-  <meta name="description" content="一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：1234567891011121314151617@RestControllerpublic class OkController &amp;#123;@Au">
+  <meta name="description" content="一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码： @RestController public class OkController { @Autowired UserService userSer">
 <meta name="keywords" content="java,spring,bean">
 <meta property="og:type" content="article">
 <meta property="og:title" content="interface注入及报错分析">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/interface注入及报错分析/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：1234567891011121314151617@RestControllerpublic class OkController &amp;#123;@Au">
+<meta property="og:description" content="一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码： @RestController public class OkController { @Autowired UserService userSer">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBfdaf58ac1dc8c2a883297003a4db402c?method=download&shareKey=fffbd764872b91bae807de4755fb5bc7">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="interface注入及报错分析">
-<meta name="twitter:description" content="一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：1234567891011121314151617@RestControllerpublic class OkController &amp;#123;@Au">
+<meta name="twitter:description" content="一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码： @RestController public class OkController { @Autowired UserService userSer">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBfdaf58ac1dc8c2a883297003a4db402c?method=download&shareKey=fffbd764872b91bae807de4755fb5bc7">
 
 
@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -504,18 +505,100 @@
 
       
         <p><img src="https://note.youdao.com/yws/api/personal/file/WEBfdaf58ac1dc8c2a883297003a4db402c?method=download&amp;shareKey=fffbd764872b91bae807de4755fb5bc7" alt="https://note.youdao.com/yws/api/personal/file/WEBfdaf58ac1dc8c2a883297003a4db402c?method=download&amp;shareKey=fffbd764872b91bae807de4755fb5bc7"></p>
-<h3 id="一个小case"><a href="#一个小case" class="headerlink" title="一个小case"></a>一个小case</h3><p>上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class OkController &#123;</span><br><span class="line">@Autowired</span><br><span class="line">UserService userService;</span><br><span class="line">@ResponseBody</span><br><span class="line">@GetMapping(value = &quot;/ok&quot;)</span><br><span class="line">public String ok()&#123;</span><br><span class="line">    UserInfoEntity userInfoEntity = userService.selectByTel(&quot;lioswang&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//此时项目中UserService的实现类只有UserServiceImpl</span><br><span class="line">@Service</span><br><span class="line">public class UserServiceImpl implements UserService&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public UserInfoEntity selectByTel(String tel) &#123;</span><br><span class="line">        return  null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在OkController中为什么可以直接注入接口，当项目启动时，调用了UserServiceImpl类中的selectByTel方法,由于在OkController中引用了UserService，所以锁定在OkController初始化时Spring到底干了些什么，根据之前源码分析的经验，在<code>org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean</code>方法中打上条件断点，首先看方法<code>org.springframework.beans.factory.support.AbstractBeanFactory#createBean</code>，调用了方法org.springframework.beans.factory.support.AbstractBeanFactory#createBean,继续跟进方法<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</code>,<br>再跟进去方法<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean</code>,继续跟进去<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues</code>，在方法中找到OkController注入的元数据UserService,调用了<code>org.springframework.beans.factory.annotation.InjectionMetadata#inject</code>,跟进去<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject</code>，继续跟<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#resolveDependency</code>，其中代码片段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//获取接口的依赖</span><br><span class="line">result = doResolveDependency(descriptor, beanName, autowiredBeanNames, typeConverter);</span><br></pre></td></tr></table></figure></p>
-<p>调用了<br><code>org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency</code>,该方法的代码片段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);</span><br></pre></td></tr></table></figure></p>
-<p>继续跟<br><code>org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates</code>,其中获取UserService所有的实现类:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//获取到UserService的实现类</span><br><span class="line">String[] candidateNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this, requiredType, true, descriptor.isEager());</span><br><span class="line">//获取到实现类后，并初始化，保存在Map&lt;String, Object&gt;</span><br><span class="line">result.put(candidateName, getBean(candidateName));</span><br><span class="line">``` </span><br><span class="line">再看``org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency``方法中代码片段：</span><br></pre></td></tr></table></figure></p>
-<p>Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);<br>if (matchingBeans.isEmpty()) {<br>    if (descriptor.isRequired()) {<br>        raiseNoSuchBeanDefinitionException(type, “”, descriptor);<br>    }<br>    return null;<br>}<br>//获取匹配到的bean数大于1时的逻辑处理<br>if (matchingBeans.size() &gt; 1) {<br>    String primaryBeanName = determineAutowireCandidate(matchingBeans, descriptor);<br>    if (primaryBeanName == null) {<br>        throw new NoUniqueBeanDefinitionException(type, matchingBeans.keySet());<br>    }<br>    if (autowiredBeanNames != null) {<br>        autowiredBeanNames.add(primaryBeanName);<br>    }<br>    return matchingBeans.get(primaryBeanName);<br>}<br>// We have exactly one match.<br>Map.Entry&lt;String, Object&gt; entry = matchingBeans.entrySet().iterator().next();<br>if (autowiredBeanNames != null) {<br>    autowiredBeanNames.add(entry.getKey());<br>}<br>return entry.getValue();<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">由于目前项目中UserService的实现类只有UserServiceImpl，所以最终获取到的只有一个。</span><br><span class="line">再回到``org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject``中，已经找到UserService的实现类，所以执行:</span><br></pre></td></tr></table></figure></p>
-<p>ReflectionUtils.makeAccessible(field);<br>field.set(bean, value);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">即把UserServiceImpl的实例设置到属性UserService中。</span><br><span class="line">所以当再OkController中调用UserService的selectByTel方法，其实调用的是UserServiceImpl的selectByTel方法。</span><br><span class="line">### 报错</span><br><span class="line">上面分析那么多，其实就是为了说明我们注入接口时，为什么会调用实现类的方法。为了报错，很简单，再写一个类实现UserService接口即可，OkController中不需要修改，其实由上面的分析知道，报错的就是上面的这段代码：</span><br></pre></td></tr></table></figure></p>
-<p>if (matchingBeans.size() &gt; 1) {<br>    String primaryBeanName = determineAutowireCandidate(matchingBeans, descriptor);<br>    if (primaryBeanName == null) {<br>        throw new NoUniqueBeanDefinitionException(type, matchingBeans.keySet());<br>    }<br>    if (autowiredBeanNames != null) {<br>        autowiredBeanNames.add(primaryBeanName);<br>    }<br>    return matchingBeans.get(primaryBeanName);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">也就是在UserService的实现类中找到多个bean实例，这个明显是错误的，</span><br><span class="line">### 错误解决</span><br><span class="line">如何解决这个问题呢，很简单:</span><br></pre></td></tr></table></figure></p>
-<p>@Autowired<br>@Qualifier(“userServiceImpl”)<br>UserService userService;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">或</span><br></pre></td></tr></table></figure></p>
-<p>@Resource(name = “userServiceImpl”)<br>UserService userService;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">因为在``org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates``方法中的</span><br></pre></td></tr></table></figure></p>
-<p>for (String candidateName : candidateNames) {<br>    if (!isSelfReference(beanName, candidateName) &amp;&amp; isAutowireCandidate(candidateName, descriptor)) {<br>        result.put(candidateName, getBean(candidateName));<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">会根据注解过滤bean，所以加上上面的注解后会解决错误,具体代码就不分析了，感兴趣的同学可打断点调试。</span><br><span class="line">### 思考拓展</span><br></pre></td></tr></table></figure></p>
-<p>@RestController<br>public class OkController {<br>@Autowired<br>Map&lt;String,UserService&gt; userServiceMap;<br>@ResponseBody<br>@GetMapping(value = “/ok”)<br>public String ok(){<br>   …<br>}<br><code>`
-若OkController中代码修改如上，项目启动后，发现没有报错，而且userServiceMap中有两个key-value元素，无疑是UserServiceImpl、UserServiceImplTest,我想原因不难看出，</code>org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates<code></code>返回了Map&lt;String, Object&gt;，其值和userServiceMap相同，不难看出spring功能非常强大。</p>
+<h3 id="一个小case"><a href="#一个小case" class="headerlink" title="一个小case"></a>一个小case</h3><p>上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：</p>
+<pre><code>@RestController
+public class OkController {
+@Autowired
+UserService userService;
+@ResponseBody
+@GetMapping(value = &quot;/ok&quot;)
+public String ok(){
+    UserInfoEntity userInfoEntity = userService.selectByTel(&quot;lioswang&quot;);
+}
+//此时项目中UserService的实现类只有UserServiceImpl
+@Service
+public class UserServiceImpl implements UserService{
+    @Override
+    public UserInfoEntity selectByTel(String tel) {
+        return  null;
+    }
+}
+</code></pre><p>在OkController中为什么可以直接注入接口，当项目启动时，调用了UserServiceImpl类中的selectByTel方法,由于在OkController中引用了UserService，所以锁定在OkController初始化时Spring到底干了些什么，根据之前源码分析的经验，在<code>org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean</code>方法中打上条件断点，首先看方法<code>org.springframework.beans.factory.support.AbstractBeanFactory#createBean</code>，调用了方法org.springframework.beans.factory.support.AbstractBeanFactory#createBean,继续跟进方法<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</code>,<br>再跟进去方法<code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean</code>,继续跟进去<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessPropertyValues</code>，在方法中找到OkController注入的元数据UserService,调用了<code>org.springframework.beans.factory.annotation.InjectionMetadata#inject</code>,跟进去<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject</code>，继续跟<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#resolveDependency</code>，其中代码片段：</p>
+<pre><code>//获取接口的依赖
+result = doResolveDependency(descriptor, beanName, autowiredBeanNames, typeConverter);
+</code></pre><p>调用了<br><code>org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency</code>,该方法的代码片段</p>
+<pre><code>Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);
+</code></pre><p>继续跟<br><code>org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates</code>,其中获取UserService所有的实现类:</p>
+<pre><code>//获取到UserService的实现类
+String[] candidateNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(this, requiredType, true, descriptor.isEager());
+//获取到实现类后，并初始化，保存在Map&lt;String, Object&gt;
+result.put(candidateName, getBean(candidateName));
+</code></pre><p>再看<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency</code>方法中代码片段：</p>
+<pre><code>Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);
+if (matchingBeans.isEmpty()) {
+    if (descriptor.isRequired()) {
+        raiseNoSuchBeanDefinitionException(type, &quot;&quot;, descriptor);
+    }
+    return null;
+}
+//获取匹配到的bean数大于1时的逻辑处理
+if (matchingBeans.size() &gt; 1) {
+    String primaryBeanName = determineAutowireCandidate(matchingBeans, descriptor);
+    if (primaryBeanName == null) {
+        throw new NoUniqueBeanDefinitionException(type, matchingBeans.keySet());
+    }
+    if (autowiredBeanNames != null) {
+        autowiredBeanNames.add(primaryBeanName);
+    }
+    return matchingBeans.get(primaryBeanName);
+}
+// We have exactly one match.
+Map.Entry&lt;String, Object&gt; entry = matchingBeans.entrySet().iterator().next();
+if (autowiredBeanNames != null) {
+    autowiredBeanNames.add(entry.getKey());
+}
+return entry.getValue();
+}
+</code></pre><p>由于目前项目中UserService的实现类只有UserServiceImpl，所以最终获取到的只有一个。<br>再回到<code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#inject</code>中，已经找到UserService的实现类，所以执行:</p>
+<pre><code>ReflectionUtils.makeAccessible(field);
+field.set(bean, value);
+</code></pre><p>即把UserServiceImpl的实例设置到属性UserService中。<br>所以当再OkController中调用UserService的selectByTel方法，其实调用的是UserServiceImpl的selectByTel方法。</p>
+<h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><p>上面分析那么多，其实就是为了说明我们注入接口时，为什么会调用实现类的方法。为了报错，很简单，再写一个类实现UserService接口即可，OkController中不需要修改，其实由上面的分析知道，报错的就是上面的这段代码：</p>
+<pre><code>if (matchingBeans.size() &gt; 1) {
+    String primaryBeanName = determineAutowireCandidate(matchingBeans, descriptor);
+    if (primaryBeanName == null) {
+        throw new NoUniqueBeanDefinitionException(type, matchingBeans.keySet());
+    }
+    if (autowiredBeanNames != null) {
+        autowiredBeanNames.add(primaryBeanName);
+    }
+    return matchingBeans.get(primaryBeanName);
+}
+</code></pre><p>也就是在UserService的实现类中找到多个bean实例，这个明显是错误的，</p>
+<h3 id="错误解决"><a href="#错误解决" class="headerlink" title="错误解决"></a>错误解决</h3><p>如何解决这个问题呢，很简单:</p>
+<pre><code>@Autowired
+@Qualifier(&quot;userServiceImpl&quot;)
+UserService userService;
+</code></pre><p>或</p>
+<pre><code>@Resource(name = &quot;userServiceImpl&quot;)
+UserService userService;
+</code></pre><p>因为在<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates</code>方法中的</p>
+<pre><code>for (String candidateName : candidateNames) {
+    if (!isSelfReference(beanName, candidateName) &amp;&amp; isAutowireCandidate(candidateName, descriptor)) {
+        result.put(candidateName, getBean(candidateName));
+    }
+}
+</code></pre><p>会根据注解过滤bean，所以加上上面的注解后会解决错误,具体代码就不分析了，感兴趣的同学可打断点调试。</p>
+<h3 id="思考拓展"><a href="#思考拓展" class="headerlink" title="思考拓展"></a>思考拓展</h3><pre><code>@RestController
+public class OkController {
+@Autowired
+Map&lt;String,UserService&gt; userServiceMap;
+@ResponseBody
+@GetMapping(value = &quot;/ok&quot;)
+public String ok(){
+   ...
+}
+</code></pre><p>若OkController中代码修改如上，项目启动后，发现没有报错，而且userServiceMap中有两个key-value元素，无疑是UserServiceImpl、UserServiceImplTest,我想原因不难看出，<code>org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates</code>返回了Map&lt;String, Object&gt;，其值和userServiceMap相同，不难看出spring功能非常强大。</p>
 
       
     </div>
@@ -593,8 +676,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/并行执行任务/" rel="next" title="并行执行任务">
-                <i class="fa fa-chevron-left"></i> 并行执行任务
+              <a href="/2019/02/16/bean懒加载/" rel="next" title="bean懒加载">
+                <i class="fa fa-chevron-left"></i> bean懒加载
               </a>
             
           </div>
@@ -603,8 +686,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/简话bean加载/" rel="prev" title="简话bean加载">
-                简话bean加载 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/并行执行任务/" rel="prev" title="并行执行任务">
+                并行执行任务 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

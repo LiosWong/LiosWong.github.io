@@ -103,20 +103,20 @@
 
 
 
-  <meta name="description" content="简介 实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报CloneNotSupportedException: 12345&amp;lt;p&amp;gt;* Invoking Object&amp;apos;s clone method on an instance that does not implement the* &amp;lt;code&amp;gt;Cloneable&amp;l">
+  <meta name="description" content="简介 实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报CloneNotSupportedException:  &amp;lt;p&amp;gt;  * Invoking Object&amp;#39;s clone method on an instance that does not implement the  * &amp;lt;code&amp;gt;Cloneable&amp;lt">
 <meta name="keywords" content="java,clone">
 <meta property="og:type" content="article">
 <meta property="og:title" content="clone">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/clone/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="简介 实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报CloneNotSupportedException: 12345&amp;lt;p&amp;gt;* Invoking Object&amp;apos;s clone method on an instance that does not implement the* &amp;lt;code&amp;gt;Cloneable&amp;l">
+<meta property="og:description" content="简介 实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报CloneNotSupportedException:  &amp;lt;p&amp;gt;  * Invoking Object&amp;#39;s clone method on an instance that does not implement the  * &amp;lt;code&amp;gt;Cloneable&amp;lt">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBc3012c388ab80da868f67a461b7023d5?method=download&shareKey=84a8b2485e2356be6e6fa18a91b6797f">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBe26613ea80dae7acc685ad9312704f38?method=download&shareKey=3e6af8ebb6ae3a40892d823c43ffc524">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="clone">
-<meta name="twitter:description" content="简介 实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报CloneNotSupportedException: 12345&amp;lt;p&amp;gt;* Invoking Object&amp;apos;s clone method on an instance that does not implement the* &amp;lt;code&amp;gt;Cloneable&amp;l">
+<meta name="twitter:description" content="简介 实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报CloneNotSupportedException:  &amp;lt;p&amp;gt;  * Invoking Object&amp;#39;s clone method on an instance that does not implement the  * &amp;lt;code&amp;gt;Cloneable&amp;lt">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBc3012c388ab80da868f67a461b7023d5?method=download&shareKey=84a8b2485e2356be6e6fa18a91b6797f">
 
 
@@ -173,7 +173,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -506,8 +507,13 @@
       
         <blockquote>
 <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4></blockquote>
-<p>实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报<code>CloneNotSupportedException</code>:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">* Invoking Object&apos;s clone method on an instance that does not implement the</span><br><span class="line">* &lt;code&gt;Cloneable&lt;/code&gt; interface results in the exception</span><br><span class="line">* &lt;code&gt;CloneNotSupportedException&lt;/code&gt; being thrown.</span><br><span class="line">&lt;p&gt;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
+<p>实现Cloneable接口的类才可以被克隆,如果不实现该接口,调用Object clone方法会报<code>CloneNotSupportedException</code>:</p>
+<pre><code> &lt;p&gt;
+ * Invoking Object&#39;s clone method on an instance that does not implement the
+ * &lt;code&gt;Cloneable&lt;/code&gt; interface results in the exception
+ * &lt;code&gt;CloneNotSupportedException&lt;/code&gt; being thrown.
+ &lt;p&gt;
+</code></pre><blockquote>
 <h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4></blockquote>
 <ol>
 <li>浅克隆<br>指拷贝对象时仅拷贝对象本身中的基本变量,而不拷贝对象包含的引用指向的对象</li>
@@ -515,11 +521,151 @@
 </ol>
 <blockquote>
 <h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">package com.lios.clone;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description</span><br><span class="line"> * @date 2018/6/25 上午4:11</span><br><span class="line"> */</span><br><span class="line">public class Person implements Cloneable &#123;</span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    private Worker worker;</span><br><span class="line"></span><br><span class="line">    public Person(String name, Worker worker) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.worker = worker;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Person setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected Object clone() throws CloneNotSupportedException &#123;</span><br><span class="line">        return super.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Person p = new Person(&quot;lios&quot;, new Worker(&quot;worker&quot;, 25));</span><br><span class="line">        Person p1 = p;</span><br><span class="line">        System.out.println(&quot;p:toString:&quot; + p + &quot;,hashCode:&quot; + p.hashCode() + &quot;,Worker:&quot; + p.getWorker().hashCode() + &quot;,name=&quot; + p.getName().hashCode());</span><br><span class="line">        System.out.println(&quot;p1:toString:&quot; + p1 + &quot;,hashCode:&quot; + p1.hashCode() + &quot;,Worker:&quot; + p1.getWorker().hashCode() + &quot;,name=&quot; + p1.getName().hashCode());</span><br><span class="line">        System.out.println(p1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;=====================&quot;);</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            Person p2 = (Person) p.clone();</span><br><span class="line">            System.out.println(&quot;p:Worker:name:&quot;+p.getWorker().getName());</span><br><span class="line">            System.out.println(&quot;p1:Worker:name:&quot;+p1.getWorker().getName());</span><br><span class="line">            System.out.println(&quot;p2:Worker:name:&quot;+p2.getWorker().getName());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;p2:toString:&quot; + p2 + &quot;,hashCode:&quot; + p2.hashCode() + &quot;,Worker:&quot; + p2.getWorker().hashCode() + &quot;,name=&quot; + p2.getName().hashCode());</span><br><span class="line">            p.getWorker().setName(&quot;workp&quot;);</span><br><span class="line">            p.setName(&quot;cc&quot;);</span><br><span class="line">            System.out.println(&quot;p2:toString:&quot; + p2 + &quot;,hashCode:&quot; + p2.hashCode() + &quot;,Worker:&quot; + p2.getWorker().hashCode() + &quot;,name=&quot; + p2.getName().hashCode());</span><br><span class="line">            System.out.println(&quot;p:Worker:name:&quot;+p.getWorker().getName());</span><br><span class="line">            System.out.println(&quot;p1:Worker:name:&quot;+p1.getWorker().getName());</span><br><span class="line">            System.out.println(&quot;p2:Worker:name:&quot;+p2.getWorker().getName());</span><br><span class="line">            System.out.println(&quot;p:&quot;+p.getName());</span><br><span class="line">            System.out.println(&quot;p1:&quot;+p1.getName());</span><br><span class="line">            System.out.println(&quot;p2:&quot;+p2.getName());</span><br><span class="line">        &#125; catch (CloneNotSupportedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Worker getWorker() &#123;</span><br><span class="line">        return worker;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Person setWorker(Worker worker) &#123;</span><br><span class="line">        this.worker = worker;</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static class Worker implements Cloneable &#123;</span><br><span class="line">        private String name;</span><br><span class="line">        private Integer age;</span><br><span class="line"></span><br><span class="line">        public Worker(String name, Integer age) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">            this.age = age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        protected Object clone() throws CloneNotSupportedException &#123;</span><br><span class="line">            return super.clone();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Worker setName(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">            return this;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Integer getAge() &#123;</span><br><span class="line">            return age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Worker setAge(Integer age) &#123;</span><br><span class="line">            this.age = age;</span><br><span class="line">            return this;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行结果为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">p:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889</span><br><span class="line">p1:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889</span><br><span class="line">com.lios.clone.Person@2401f4c3</span><br><span class="line">=====================</span><br><span class="line">p:Worker:name:worker</span><br><span class="line">p1:Worker:name:worker</span><br><span class="line">p2:Worker:name:worker</span><br><span class="line">p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:123961122,name=3321889</span><br><span class="line">p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:123961122,name=3321889</span><br><span class="line">p:Worker:name:workp</span><br><span class="line">p1:Worker:name:workp</span><br><span class="line">p2:Worker:name:workp</span><br><span class="line">p:cc</span><br><span class="line">p1:cc</span><br><span class="line">p2:lios</span><br></pre></td></tr></table></figure></p>
-<p>发现p,p1所有的值都是一致的,当对象p中重置name属性的值、Worker属性中name的值后,p、p1、p2中属性Worker中name属性值都改变了且值相同,但是p2中的name属性值没有变化,下面用图描述:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBc3012c388ab80da868f67a461b7023d5?method=download&amp;shareKey=84a8b2485e2356be6e6fa18a91b6797f" alt="https://note.youdao.com/yws/api/personal/file/WEBc3012c388ab80da868f67a461b7023d5?method=download&amp;shareKey=84a8b2485e2356be6e6fa18a91b6797f"><br>p1与p指向堆中的同一块内存区域,p2虽然与p、p1不是指向同一块内存区域,但是它们中的Worker属性都引用同一块内存区域,其实这就是<font color="#FF6347" size="3">浅克隆</font>,修改上面clone方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   protected Object clone() throws CloneNotSupportedException &#123;</span><br><span class="line">        Person p = (Person) super.clone();</span><br><span class="line">        p.worker = (Worker) p.getWorker().clone();</span><br><span class="line">        return p;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>再执行,结果如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">p:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889</span><br><span class="line">p1:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889</span><br><span class="line">com.lios.clone.Person@2401f4c3</span><br><span class="line">=====================</span><br><span class="line">p:Worker:name:worker</span><br><span class="line">p1:Worker:name:worker</span><br><span class="line">p2:Worker:name:worker</span><br><span class="line">p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:1982791261,name=3321889</span><br><span class="line">p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:1982791261,name=3321889</span><br><span class="line">p:Worker:name:workp</span><br><span class="line">p1:Worker:name:workp</span><br><span class="line">p2:Worker:name:worker</span><br><span class="line">p:cc</span><br><span class="line">p1:cc</span><br><span class="line">p2:lios</span><br></pre></td></tr></table></figure></p>
-<p>发现此时p2中属性Worker中的name属性值没有改变,仅仅p、p1中属性Worker中的name属性值改变了,图示:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBe26613ea80dae7acc685ad9312704f38?method=download&amp;shareKey=3e6af8ebb6ae3a40892d823c43ffc524" alt="https://note.youdao.com/yws/api/personal/file/WEBe26613ea80dae7acc685ad9312704f38?method=download&amp;shareKey=3e6af8ebb6ae3a40892d823c43ffc524"><br>上面就是<font color="#FF6347" size="3">深克隆</font></p>
+<pre><code>package com.lios.clone;
+
+/**
+ * @author LiosWong
+ * @description
+ * @date 2018/6/25 上午4:11
+ */
+public class Person implements Cloneable {
+    private String name;
+
+    private Worker worker;
+
+    public Person(String name, Worker worker) {
+        this.name = name;
+        this.worker = worker;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Person setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public static void main(String[] args) {
+        Person p = new Person(&quot;lios&quot;, new Worker(&quot;worker&quot;, 25));
+        Person p1 = p;
+        System.out.println(&quot;p:toString:&quot; + p + &quot;,hashCode:&quot; + p.hashCode() + &quot;,Worker:&quot; + p.getWorker().hashCode() + &quot;,name=&quot; + p.getName().hashCode());
+        System.out.println(&quot;p1:toString:&quot; + p1 + &quot;,hashCode:&quot; + p1.hashCode() + &quot;,Worker:&quot; + p1.getWorker().hashCode() + &quot;,name=&quot; + p1.getName().hashCode());
+        System.out.println(p1);
+
+
+        System.out.println(&quot;=====================&quot;);
+
+        try {
+            Person p2 = (Person) p.clone();
+            System.out.println(&quot;p:Worker:name:&quot;+p.getWorker().getName());
+            System.out.println(&quot;p1:Worker:name:&quot;+p1.getWorker().getName());
+            System.out.println(&quot;p2:Worker:name:&quot;+p2.getWorker().getName());
+
+
+            System.out.println(&quot;p2:toString:&quot; + p2 + &quot;,hashCode:&quot; + p2.hashCode() + &quot;,Worker:&quot; + p2.getWorker().hashCode() + &quot;,name=&quot; + p2.getName().hashCode());
+            p.getWorker().setName(&quot;workp&quot;);
+            p.setName(&quot;cc&quot;);
+            System.out.println(&quot;p2:toString:&quot; + p2 + &quot;,hashCode:&quot; + p2.hashCode() + &quot;,Worker:&quot; + p2.getWorker().hashCode() + &quot;,name=&quot; + p2.getName().hashCode());
+            System.out.println(&quot;p:Worker:name:&quot;+p.getWorker().getName());
+            System.out.println(&quot;p1:Worker:name:&quot;+p1.getWorker().getName());
+            System.out.println(&quot;p2:Worker:name:&quot;+p2.getWorker().getName());
+            System.out.println(&quot;p:&quot;+p.getName());
+            System.out.println(&quot;p1:&quot;+p1.getName());
+            System.out.println(&quot;p2:&quot;+p2.getName());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public Person setWorker(Worker worker) {
+        this.worker = worker;
+        return this;
+    }
+
+    public static class Worker implements Cloneable {
+        private String name;
+        private Integer age;
+
+        public Worker(String name, Integer age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Worker setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Integer getAge() {
+            return age;
+        }
+
+        public Worker setAge(Integer age) {
+            this.age = age;
+            return this;
+        }
+    }
+}
+</code></pre><p>执行结果为:</p>
+<pre><code>p:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889
+p1:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889
+com.lios.clone.Person@2401f4c3
+=====================
+p:Worker:name:worker
+p1:Worker:name:worker
+p2:Worker:name:worker
+p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:123961122,name=3321889
+p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:123961122,name=3321889
+p:Worker:name:workp
+p1:Worker:name:workp
+p2:Worker:name:workp
+p:cc
+p1:cc
+p2:lios
+</code></pre><p>发现p,p1所有的值都是一致的,当对象p中重置name属性的值、Worker属性中name的值后,p、p1、p2中属性Worker中name属性值都改变了且值相同,但是p2中的name属性值没有变化,下面用图描述:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBc3012c388ab80da868f67a461b7023d5?method=download&amp;shareKey=84a8b2485e2356be6e6fa18a91b6797f" alt="https://note.youdao.com/yws/api/personal/file/WEBc3012c388ab80da868f67a461b7023d5?method=download&amp;shareKey=84a8b2485e2356be6e6fa18a91b6797f"><br>p1与p指向堆中的同一块内存区域,p2虽然与p、p1不是指向同一块内存区域,但是它们中的Worker属性都引用同一块内存区域,其实这就是<font color="#FF6347" size="3">浅克隆</font>,修改上面clone方法:</p>
+<pre><code> @Override
+    protected Object clone() throws CloneNotSupportedException {
+         Person p = (Person) super.clone();
+         p.worker = (Worker) p.getWorker().clone();
+         return p;
+    }
+</code></pre><p>再执行,结果如下:</p>
+<pre><code>p:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889
+p1:toString:com.lios.clone.Person@2401f4c3,hashCode:604107971,Worker:123961122,name=3321889
+com.lios.clone.Person@2401f4c3
+=====================
+p:Worker:name:worker
+p1:Worker:name:worker
+p2:Worker:name:worker
+p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:1982791261,name=3321889
+p2:toString:com.lios.clone.Person@4926097b,hashCode:1227229563,Worker:1982791261,name=3321889
+p:Worker:name:workp
+p1:Worker:name:workp
+p2:Worker:name:worker
+p:cc
+p1:cc
+p2:lios
+</code></pre><p>发现此时p2中属性Worker中的name属性值没有改变,仅仅p、p1中属性Worker中的name属性值改变了,图示:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBe26613ea80dae7acc685ad9312704f38?method=download&amp;shareKey=3e6af8ebb6ae3a40892d823c43ffc524" alt="https://note.youdao.com/yws/api/personal/file/WEBe26613ea80dae7acc685ad9312704f38?method=download&amp;shareKey=3e6af8ebb6ae3a40892d823c43ffc524"><br>上面就是<font color="#FF6347" size="3">深克隆</font></p>
 <blockquote>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4></blockquote>
 <ol>
@@ -611,8 +757,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="prev" title="Spring源码之解析并注册BeanDefinition(一)">
-                Spring源码之解析并注册BeanDefinition(一) <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/springboot、redis整合/" rel="prev" title="springboot、redis整合">
+                springboot、redis整合 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -517,24 +518,121 @@
 <blockquote>
 <h4 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h4></blockquote>
 <ol>
-<li><p>业务代码日志打印</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">JSONObject jsonObject = new JSONObject();</span><br><span class="line">jsonObject.put(&quot;time&quot;, new Date());</span><br><span class="line">jsonObject.put(&quot;companyId&quot;, companyId);</span><br><span class="line">jsonObject.put(&quot;companyName&quot;, CompanyAppIdEnum.getCompanyAppIdEnum(companyId).getDesc());</span><br><span class="line">jsonObject.put(&quot;orderNo&quot;, &quot;暂不展示敏感信息&quot;);</span><br><span class="line">jsonObject.put(&quot;orderStatus&quot;, -1);</span><br><span class="line">jsonObject.put(&quot;type&quot;,FilterFailEnum.FILTER.getName());</span><br><span class="line">// 关键字</span><br><span class="line">jsonObject.put(&quot;keyword&quot;, CompanyAppIdEnum.getCompanyAppIdEnum(companyId).getDesc() + FilterFailEnum.FILTER.getDesc());</span><br><span class="line">jsonObject.put(&quot;fail&quot;, response.getErrorMsg());</span><br><span class="line">thirdLogger.info(jsonObject.toJSONString());</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Elasticsearch Client构建<br>因为是Java程序员，所以用的Java客户端<br>构建TransportClient</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * elasticsearch集群</span><br><span class="line">    * TransportClient获取</span><br><span class="line">    *</span><br><span class="line">    * @return</span><br><span class="line">    */</span><br><span class="line">   protected TransportClient getTransportClient() &#123;</span><br><span class="line">       if (transportClient == null) &#123;</span><br><span class="line">           synchronized (ElkLogSearchServiceImpl.class) &#123;</span><br><span class="line">               if (transportClient == null) &#123;</span><br><span class="line">                   //ES集群地址</span><br><span class="line">                   String[] ESHosts = configUtil.getEsClientHosts().split(&quot;,&quot;);</span><br><span class="line">                   //设置es实例名称</span><br><span class="line">                   Settings settings = Settings.builder().put(&quot;cluster.name&quot;, configUtil.getEsClusterName())</span><br><span class="line">                           //自动嗅探整个集群的状态，把集群中其他ES节点的ip添加到本地的客户端列表中、</span><br><span class="line">                           .put(&quot;client.transport.sniff&quot;, true)</span><br><span class="line">                           .put(&quot;xpack.security.user&quot;, configUtil.getEsClientUser())</span><br><span class="line">                           .put(&quot;xpack.security.transport.ssl.verification_mode&quot;, &quot;certificate&quot;)</span><br><span class="line">                           .put(&quot;xpack.security.transport.ssl.enabled&quot;, &quot;true&quot;)</span><br><span class="line">                           .put(&quot;xpack.security.transport.ssl.keystore.path&quot;, configUtil.getEsCertificates())</span><br><span class="line">                           .put(&quot;xpack.security.transport.ssl.truststore.path&quot;, configUtil.getEsCertificates()).build();</span><br><span class="line">                   TransportClient preBuiltTransportClient = new PreBuiltXPackTransportClient(settings);</span><br><span class="line">                   for (String esHost : ESHosts) &#123;</span><br><span class="line">                       preBuiltTransportClient.addTransportAddress(new TransportAddress(new InetSocketAddress(esHost, 9300)));</span><br><span class="line">                   &#125;</span><br><span class="line">                   return preBuiltTransportClient;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       return transportClient;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>根据时间获取索引、构建查询条件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据时间范围获得索引</span><br><span class="line"> * @param startDate</span><br><span class="line"> * @param endDate</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">protected String[] getIndices(long startDate, long endDate,String indiceName) &#123;</span><br><span class="line">    int days = (int) (endDate - startDate) / 86400000 + 1;</span><br><span class="line">    String[] indices = new String[days];</span><br><span class="line">    for (int i = 0; i &lt; days; i++) &#123;</span><br><span class="line">        String dayIndex = simpleDateFormat.format(new Date(startDate + i * 86400000));</span><br><span class="line">        indices[i] = indiceName + dayIndex;</span><br><span class="line">    &#125;</span><br><span class="line">    return indices;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>业务代码日志打印<pre><code>JSONObject jsonObject = new JSONObject();
+jsonObject.put(&quot;time&quot;, new Date());
+jsonObject.put(&quot;companyId&quot;, companyId);
+jsonObject.put(&quot;companyName&quot;, CompanyAppIdEnum.getCompanyAppIdEnum(companyId).getDesc());
+jsonObject.put(&quot;orderNo&quot;, &quot;暂不展示敏感信息&quot;);
+jsonObject.put(&quot;orderStatus&quot;, -1);
+jsonObject.put(&quot;type&quot;,FilterFailEnum.FILTER.getName());
+// 关键字
+jsonObject.put(&quot;keyword&quot;, CompanyAppIdEnum.getCompanyAppIdEnum(companyId).getDesc() + FilterFailEnum.FILTER.getDesc());
+jsonObject.put(&quot;fail&quot;, response.getErrorMsg());
+thirdLogger.info(jsonObject.toJSONString());
+</code></pre></li>
+<li>Elasticsearch Client构建<br>因为是Java程序员，所以用的Java客户端<br>构建TransportClient<pre><code>/**
+  * elasticsearch集群
+  * TransportClient获取
+  *
+  * @return
+  */
+ protected TransportClient getTransportClient() {
+     if (transportClient == null) {
+         synchronized (ElkLogSearchServiceImpl.class) {
+             if (transportClient == null) {
+                 //ES集群地址
+                 String[] ESHosts = configUtil.getEsClientHosts().split(&quot;,&quot;);
+                 //设置es实例名称
+                 Settings settings = Settings.builder().put(&quot;cluster.name&quot;, configUtil.getEsClusterName())
+                         //自动嗅探整个集群的状态，把集群中其他ES节点的ip添加到本地的客户端列表中、
+                         .put(&quot;client.transport.sniff&quot;, true)
+                         .put(&quot;xpack.security.user&quot;, configUtil.getEsClientUser())
+                         .put(&quot;xpack.security.transport.ssl.verification_mode&quot;, &quot;certificate&quot;)
+                         .put(&quot;xpack.security.transport.ssl.enabled&quot;, &quot;true&quot;)
+                         .put(&quot;xpack.security.transport.ssl.keystore.path&quot;, configUtil.getEsCertificates())
+                         .put(&quot;xpack.security.transport.ssl.truststore.path&quot;, configUtil.getEsCertificates()).build();
+                 TransportClient preBuiltTransportClient = new PreBuiltXPackTransportClient(settings);
+                 for (String esHost : ESHosts) {
+                     preBuiltTransportClient.addTransportAddress(new TransportAddress(new InetSocketAddress(esHost, 9300)));
+                 }
+                 return preBuiltTransportClient;
+             }
+         }
+     }
+     return transportClient;
+ }
+</code></pre></li>
+<li>根据时间获取索引、构建查询条件<pre><code>/**
+* 根据时间范围获得索引
+* @param startDate
+* @param endDate
+* @return
+*/
+protected String[] getIndices(long startDate, long endDate,String indiceName) {
+ int days = (int) (endDate - startDate) / 86400000 + 1;
+ String[] indices = new String[days];
+ for (int i = 0; i &lt; days; i++) {
+     String dayIndex = simpleDateFormat.format(new Date(startDate + i * 86400000));
+     indices[i] = indiceName + dayIndex;
+ }
+ return indices;
+}
+</code></pre></li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">protected QueryBuilder getFilterQueryBuilder(String keywords)&#123;</span><br><span class="line">    BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();</span><br><span class="line">    // 可以添加多个查询条件</span><br><span class="line">    queryBuilder.must(QueryBuilders.matchPhraseQuery(&quot;message.params&quot;,keywords));</span><br><span class="line">    return queryBuilder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>查询<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">public ResponseVo getFilterFailByES(Long companyId, int pageNo, FilterFailEnum filterFailEnum, long startDate, long endDate) &#123;</span><br><span class="line">       ResponseVo vo = new ResponseVo();</span><br><span class="line">       LinkedList linkedList = new LinkedList();</span><br><span class="line">       transportClient = getTransportClient();</span><br><span class="line">       String regexp = CompanyAppIdEnum.getCompanyAppIdEnum(companyId).getDesc() + filterFailEnum.getDesc();</span><br><span class="line">       String[] indices = getIndices(startDate, endDate, IndiceTypeEnum.JKZJ_API_THIRD_SERVER_LOG.getIndiceName());</span><br><span class="line">       QueryBuilder queryBuilder = getFilterQueryBuilder(regexp);</span><br><span class="line">       try &#123;</span><br><span class="line">           SearchResponse searchResponse = transportClient.prepareSearch(indices).setQuery(queryBuilder).addSort(&quot;logdate&quot;, SortOrder.DESC).setSize(10).setFrom((pageNo - 1) * 10).execute().actionGet();</span><br><span class="line">           SearchHits searchHits = searchResponse.getHits();</span><br><span class="line">           if (searchHits.getTotalHits() &gt; 0) &#123;</span><br><span class="line">               for (SearchHit searchHit : searchHits) &#123;</span><br><span class="line">                   JSONObject paramsDetailsJO = JSONObject.parseObject(searchHit.getSourceAsString());</span><br><span class="line">                   JSONObject messapgeParam = paramsDetailsJO.getJSONObject(&quot;message&quot;).getJSONObject(&quot;params&quot;);</span><br><span class="line">                   Long time = messapgeParam.getLong(&quot;time&quot;);</span><br><span class="line">                   String companyIds = messapgeParam.getString(&quot;companyId&quot;);</span><br><span class="line">                   String companyName = messapgeParam.getString(&quot;companyName&quot;);</span><br><span class="line">                   String orderNo = messapgeParam.getString(&quot;orderNo&quot;);</span><br><span class="line">                   String orderStatus = messapgeParam.getString(&quot;orderStatus&quot;);</span><br><span class="line">                   String fail = messapgeParam.getString(&quot;fail&quot;);</span><br><span class="line">                   String type = messapgeParam.getString(&quot;type&quot;);</span><br><span class="line">                   Map map = new HashMap();</span><br><span class="line">                   map.put(&quot;companyId&quot;, companyIds);</span><br><span class="line">                   Date times = new Date(Long.valueOf(time));</span><br><span class="line">                   map.put(&quot;time&quot;, DateUtils.getDate(times));</span><br><span class="line">                   map.put(&quot;companyName&quot;, companyName);</span><br><span class="line">                   map.put(&quot;orderNo&quot;, orderNo);</span><br><span class="line">                   map.put(&quot;orderStatus&quot;, orderStatus);</span><br><span class="line">                   map.put(&quot;fail&quot;, fail);</span><br><span class="line">                   map.put(&quot;type&quot;, type);</span><br><span class="line">                   linkedList.add(map);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           vo.setVoList(linkedList);</span><br><span class="line">           //总条数</span><br><span class="line">           vo.setMsg(searchHits.getTotalHits() + &quot;&quot;);</span><br><span class="line">       &#125; catch (Exception e) &#123;</span><br><span class="line">           logger.error(e.getMessage(), e);</span><br><span class="line">           vo.setCode(204);</span><br><span class="line">           vo.setMsg(&quot;查询失败&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">       return vo;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<blockquote>
+<pre><code>protected QueryBuilder getFilterQueryBuilder(String keywords){
+    BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+    // 可以添加多个查询条件
+    queryBuilder.must(QueryBuilders.matchPhraseQuery(&quot;message.params&quot;,keywords));
+    return queryBuilder;
+}
+</code></pre><ol start="4">
+<li>查询<pre><code>public ResponseVo getFilterFailByES(Long companyId, int pageNo, FilterFailEnum filterFailEnum, long startDate, long endDate) {
+     ResponseVo vo = new ResponseVo();
+     LinkedList linkedList = new LinkedList();
+     transportClient = getTransportClient();
+     String regexp = CompanyAppIdEnum.getCompanyAppIdEnum(companyId).getDesc() + filterFailEnum.getDesc();
+     String[] indices = getIndices(startDate, endDate, IndiceTypeEnum.JKZJ_API_THIRD_SERVER_LOG.getIndiceName());
+     QueryBuilder queryBuilder = getFilterQueryBuilder(regexp);
+     try {
+         SearchResponse searchResponse = transportClient.prepareSearch(indices).setQuery(queryBuilder).addSort(&quot;logdate&quot;, SortOrder.DESC).setSize(10).setFrom((pageNo - 1) * 10).execute().actionGet();
+         SearchHits searchHits = searchResponse.getHits();
+         if (searchHits.getTotalHits() &gt; 0) {
+             for (SearchHit searchHit : searchHits) {
+                 JSONObject paramsDetailsJO = JSONObject.parseObject(searchHit.getSourceAsString());
+                 JSONObject messapgeParam = paramsDetailsJO.getJSONObject(&quot;message&quot;).getJSONObject(&quot;params&quot;);
+                 Long time = messapgeParam.getLong(&quot;time&quot;);
+                 String companyIds = messapgeParam.getString(&quot;companyId&quot;);
+                 String companyName = messapgeParam.getString(&quot;companyName&quot;);
+                 String orderNo = messapgeParam.getString(&quot;orderNo&quot;);
+                 String orderStatus = messapgeParam.getString(&quot;orderStatus&quot;);
+                 String fail = messapgeParam.getString(&quot;fail&quot;);
+                 String type = messapgeParam.getString(&quot;type&quot;);
+                 Map map = new HashMap();
+                 map.put(&quot;companyId&quot;, companyIds);
+                 Date times = new Date(Long.valueOf(time));
+                 map.put(&quot;time&quot;, DateUtils.getDate(times));
+                 map.put(&quot;companyName&quot;, companyName);
+                 map.put(&quot;orderNo&quot;, orderNo);
+                 map.put(&quot;orderStatus&quot;, orderStatus);
+                 map.put(&quot;fail&quot;, fail);
+                 map.put(&quot;type&quot;, type);
+                 linkedList.add(map);
+             }
+         }
+         vo.setVoList(linkedList);
+         //总条数
+         vo.setMsg(searchHits.getTotalHits() + &quot;&quot;);
+     } catch (Exception e) {
+         logger.error(e.getMessage(), e);
+         vo.setCode(204);
+         vo.setMsg(&quot;查询失败&quot;);
+     }
+     return vo;
+ }
+</code></pre><blockquote>
 <h4 id="页面展示"><a href="#页面展示" class="headerlink" title="页面展示"></a>页面展示</h4></blockquote>
-<p><img src="https://note.youdao.com/yws/api/personal/file/WEB8821157b1044b8b70dee777027aa7258?method=download&amp;shareKey=f47bc85a3780b5f5343ddddb75743be5" alt="https://note.youdao.com/yws/api/personal/file/WEB8821157b1044b8b70dee777027aa7258?method=download&amp;shareKey=f47bc85a3780b5f5343ddddb75743be5"><br>好啦，再也不用被PM老哥烦了。</p>
+<img src="https://note.youdao.com/yws/api/personal/file/WEB8821157b1044b8b70dee777027aa7258?method=download&amp;shareKey=f47bc85a3780b5f5343ddddb75743be5" alt="https://note.youdao.com/yws/api/personal/file/WEB8821157b1044b8b70dee777027aa7258?method=download&amp;shareKey=f47bc85a3780b5f5343ddddb75743be5"><br>好啦，再也不用被PM老哥烦了。</li>
+</ol>
 
       
     </div>

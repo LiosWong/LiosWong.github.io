@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表.1234567891011121314151617181920212223242526272829303132333435363738394">
+  <meta name="description" content="双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表. package com.lios.algorithm; import java.util.Objects; /**  * @author">
 <meta name="keywords" content="java,数据结构,链表长度">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java实现双向链表">
 <meta property="og:url" content="http://yoursite.com/2019/08/16/java实现双向链表/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表.1234567891011121314151617181920212223242526272829303132333435363738394">
+<meta property="og:description" content="双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表. package com.lios.algorithm; import java.util.Objects; /**  * @author">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java实现双向链表">
-<meta name="twitter:description" content="双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表.1234567891011121314151617181920212223242526272829303132333435363738394">
+<meta name="twitter:description" content="双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。–维基百科下面用Java实现不具有双端性质的双向链表. package com.lios.algorithm; import java.util.Objects; /**  * @author">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,8 +502,212 @@
       
 
       
-        <p>双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。<a href="https://zh.wikipedia.org/wiki/双向链表" target="_blank" rel="noopener">–维基百科</a><br>下面用Java实现不具有双端性质的双向链表.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br></pre></td><td class="code"><pre><span class="line">package com.lios.algorithm;</span><br><span class="line">import java.util.Objects;</span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description 双向链表</span><br><span class="line"> * @date 2019-08-15 17:00</span><br><span class="line"> */</span><br><span class="line">public class My2NodeList &#123;</span><br><span class="line"></span><br><span class="line">    private Node head = null;</span><br><span class="line"></span><br><span class="line">    class Node &#123;</span><br><span class="line">        private Integer data;</span><br><span class="line">        private Node preNode;</span><br><span class="line">        private Node nextNode;</span><br><span class="line"></span><br><span class="line">        public Node(Integer data) &#123;</span><br><span class="line">            this.data = data;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Integer getData() &#123;</span><br><span class="line">            return data;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Node setData(Integer data) &#123;</span><br><span class="line">            this.data = data;</span><br><span class="line">            return this;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Node getPreNode() &#123;</span><br><span class="line">            return preNode;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Node setPreNode(Node preNode) &#123;</span><br><span class="line">            this.preNode = preNode;</span><br><span class="line">            return this;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Node getNextNode() &#123;</span><br><span class="line">            return nextNode;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Node setNextNode(Node nextNode) &#123;</span><br><span class="line">            this.nextNode = nextNode;</span><br><span class="line">            return this;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 尾部插入节点</span><br><span class="line">    public Node addNodeLast(Integer data) &#123;</span><br><span class="line">        Node node = new Node(data);</span><br><span class="line">        if (head == null) &#123;</span><br><span class="line">            this.head = node;</span><br><span class="line">            return head;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Node temp = head;</span><br><span class="line"></span><br><span class="line">        while (temp.nextNode != null) &#123;</span><br><span class="line">            temp = temp.nextNode;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        temp.nextNode = node;</span><br><span class="line">        node.preNode = temp;</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 首部插入节点,注意和尾插法的区别,尾插法需要根据head找到最后的节点,而首插法根据head就能操作</span><br><span class="line">    public Node addNodeFirst(Integer data) &#123;</span><br><span class="line">        Node node = new Node(data);</span><br><span class="line">        if (head == null) &#123;</span><br><span class="line">            head = node;</span><br><span class="line">            return head;</span><br><span class="line">        &#125;</span><br><span class="line">        node.nextNode = head;</span><br><span class="line">        head.preNode = node;</span><br><span class="line">        head = node;</span><br><span class="line">        return head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 链表长度</span><br><span class="line">    public Integer getNodeLength() &#123;</span><br><span class="line">        Integer lenght = 0;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            temp = temp.nextNode;</span><br><span class="line">            lenght++;</span><br><span class="line">        &#125;</span><br><span class="line">        return lenght;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 查找前驱元素</span><br><span class="line">    public Integer queryPreNode(Integer data) &#123;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            if (temp.data.equals(data)) &#123;</span><br><span class="line">                if (temp.preNode == null) &#123;</span><br><span class="line">                    return null;</span><br><span class="line">                &#125;</span><br><span class="line">                return temp.preNode.data;</span><br><span class="line">            &#125;</span><br><span class="line">            temp = temp.nextNode;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 查找后驱元素</span><br><span class="line">    public Integer queryAfterNode(Integer data) &#123;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            if (temp.data.equals(data)) &#123;</span><br><span class="line">                if (temp.nextNode == null) &#123;</span><br><span class="line">                    return null;</span><br><span class="line">                &#125;</span><br><span class="line">                return temp.nextNode.data;</span><br><span class="line">            &#125;</span><br><span class="line">            temp = temp.nextNode;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 删除第几个节点</span><br><span class="line">    public void deleteByIndex(Integer index) &#123;</span><br><span class="line">        if (index &lt; 1 || index &gt; getNodeLength()) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Node temp = head;</span><br><span class="line">        Integer flag = 1;</span><br><span class="line"></span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            if (Objects.equals(flag, index)) &#123;</span><br><span class="line"></span><br><span class="line">                // 删除首节点</span><br><span class="line">                if (temp.preNode == null) &#123;</span><br><span class="line">                    if (temp.nextNode != null) &#123;</span><br><span class="line">                        head = temp.nextNode;</span><br><span class="line">                        head.preNode = null;</span><br><span class="line">                        temp = null;</span><br><span class="line">                        break;</span><br><span class="line">                    &#125;</span><br><span class="line">                    temp = null;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                if (temp.nextNode == null) &#123;</span><br><span class="line">                    Node pre = temp.preNode;</span><br><span class="line">                    pre.nextNode = null;</span><br><span class="line">                    temp = null;</span><br><span class="line">                    break;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                Node pre = temp.preNode;</span><br><span class="line">                Node next = temp.nextNode;</span><br><span class="line"></span><br><span class="line">                pre.nextNode = next;</span><br><span class="line">                next.preNode = pre;</span><br><span class="line"></span><br><span class="line">                temp = null;</span><br><span class="line">            &#125;</span><br><span class="line">            if (temp != null) &#123;</span><br><span class="line">                temp = temp.nextNode;</span><br><span class="line">            &#125;</span><br><span class="line">            flag++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 遍历链表打印所有节点</span><br><span class="line">    public void printNodeList() &#123;</span><br><span class="line">        Node temp = head;</span><br><span class="line">        while (temp != null) &#123;</span><br><span class="line">            System.out.println(&quot;元素:&quot; + temp.data);</span><br><span class="line">            temp = temp.nextNode;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">        My2NodeList my2NodeList = new My2NodeList();</span><br><span class="line"></span><br><span class="line">        my2NodeList.addNodeLast(1);</span><br><span class="line">        my2NodeList.addNodeLast(2);</span><br><span class="line">        my2NodeList.addNodeLast(3);</span><br><span class="line">        my2NodeList.addNodeLast(4);</span><br><span class="line"></span><br><span class="line">//        my2NodeList.addNodeFirst(1);</span><br><span class="line">//        my2NodeList.addNodeFirst(2);</span><br><span class="line">//        my2NodeList.addNodeFirst(3);</span><br><span class="line">//        my2NodeList.addNodeFirst(4);</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;链表长度:&quot; + my2NodeList.getNodeLength());</span><br><span class="line">        </span><br><span class="line">        my2NodeList.printNodeList();</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;查找前驱元素:&quot; + my2NodeList.queryPreNode(1));</span><br><span class="line">        System.out.println(&quot;查找后驱元素:&quot; + my2NodeList.queryAfterNode(2));</span><br><span class="line"></span><br><span class="line">        my2NodeList.deleteByIndex(3);</span><br><span class="line"></span><br><span class="line">        my2NodeList.printNodeList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>双向链表，又称为双链表，是链表的一种，它的每个数据结点中都有两个指针，分别指向直接后继和直接前驱。所以，从双向链表中的任意一个结点开始，都可以很方便地访问它的前驱结点和后继结点。一般我们都构造双向循环链表。<a href="https://zh.wikipedia.org/wiki/双向链表" target="_blank" rel="noopener">–维基百科</a><br>下面用Java实现不具有双端性质的双向链表.</p>
+<pre><code>package com.lios.algorithm;
+import java.util.Objects;
+/**
+ * @author LiosWong
+ * @description 双向链表
+ * @date 2019-08-15 17:00
+ */
+public class My2NodeList {
 
+    private Node head = null;
+
+    class Node {
+        private Integer data;
+        private Node preNode;
+        private Node nextNode;
+
+        public Node(Integer data) {
+            this.data = data;
+        }
+
+        public Integer getData() {
+            return data;
+        }
+
+        public Node setData(Integer data) {
+            this.data = data;
+            return this;
+        }
+
+        public Node getPreNode() {
+            return preNode;
+        }
+
+        public Node setPreNode(Node preNode) {
+            this.preNode = preNode;
+            return this;
+        }
+
+        public Node getNextNode() {
+            return nextNode;
+        }
+
+        public Node setNextNode(Node nextNode) {
+            this.nextNode = nextNode;
+            return this;
+        }
+    }
+
+    // 尾部插入节点
+    public Node addNodeLast(Integer data) {
+        Node node = new Node(data);
+        if (head == null) {
+            this.head = node;
+            return head;
+        }
+
+        Node temp = head;
+
+        while (temp.nextNode != null) {
+            temp = temp.nextNode;
+        }
+
+        temp.nextNode = node;
+        node.preNode = temp;
+        return node;
+    }
+
+    // 首部插入节点,注意和尾插法的区别,尾插法需要根据head找到最后的节点,而首插法根据head就能操作
+    public Node addNodeFirst(Integer data) {
+        Node node = new Node(data);
+        if (head == null) {
+            head = node;
+            return head;
+        }
+        node.nextNode = head;
+        head.preNode = node;
+        head = node;
+        return head;
+    }
+
+    // 链表长度
+    public Integer getNodeLength() {
+        Integer lenght = 0;
+        Node temp = head;
+        while (temp != null) {
+            temp = temp.nextNode;
+            lenght++;
+        }
+        return lenght;
+    }
+
+    // 查找前驱元素
+    public Integer queryPreNode(Integer data) {
+        Node temp = head;
+        while (temp != null) {
+            if (temp.data.equals(data)) {
+                if (temp.preNode == null) {
+                    return null;
+                }
+                return temp.preNode.data;
+            }
+            temp = temp.nextNode;
+        }
+        return null;
+    }
+
+    // 查找后驱元素
+    public Integer queryAfterNode(Integer data) {
+        Node temp = head;
+        while (temp != null) {
+            if (temp.data.equals(data)) {
+                if (temp.nextNode == null) {
+                    return null;
+                }
+                return temp.nextNode.data;
+            }
+            temp = temp.nextNode;
+        }
+        return null;
+    }
+
+    // 删除第几个节点
+    public void deleteByIndex(Integer index) {
+        if (index &lt; 1 || index &gt; getNodeLength()) {
+            return;
+        }
+
+        Node temp = head;
+        Integer flag = 1;
+
+        while (temp != null) {
+            if (Objects.equals(flag, index)) {
+
+                // 删除首节点
+                if (temp.preNode == null) {
+                    if (temp.nextNode != null) {
+                        head = temp.nextNode;
+                        head.preNode = null;
+                        temp = null;
+                        break;
+                    }
+                    temp = null;
+                    break;
+                }
+
+                if (temp.nextNode == null) {
+                    Node pre = temp.preNode;
+                    pre.nextNode = null;
+                    temp = null;
+                    break;
+
+                }
+
+                Node pre = temp.preNode;
+                Node next = temp.nextNode;
+
+                pre.nextNode = next;
+                next.preNode = pre;
+
+                temp = null;
+            }
+            if (temp != null) {
+                temp = temp.nextNode;
+            }
+            flag++;
+        }
+
+    }
+
+    // 遍历链表打印所有节点
+    public void printNodeList() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.println(&quot;元素:&quot; + temp.data);
+            temp = temp.nextNode;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        My2NodeList my2NodeList = new My2NodeList();
+
+        my2NodeList.addNodeLast(1);
+        my2NodeList.addNodeLast(2);
+        my2NodeList.addNodeLast(3);
+        my2NodeList.addNodeLast(4);
+
+//        my2NodeList.addNodeFirst(1);
+//        my2NodeList.addNodeFirst(2);
+//        my2NodeList.addNodeFirst(3);
+//        my2NodeList.addNodeFirst(4);
+
+        System.out.println(&quot;链表长度:&quot; + my2NodeList.getNodeLength());
+
+        my2NodeList.printNodeList();
+
+        System.out.println(&quot;查找前驱元素:&quot; + my2NodeList.queryPreNode(1));
+        System.out.println(&quot;查找后驱元素:&quot; + my2NodeList.queryAfterNode(2));
+
+        my2NodeList.deleteByIndex(3);
+
+        my2NodeList.printNodeList();
+    }
+}
+</code></pre>
       
     </div>
 

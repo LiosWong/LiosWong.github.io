@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.   key排序 使用TreeMap的Comparator比较TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator: 123456789101112131415161718Map&amp;lt;String, Integer&amp;gt; map = new TreeMap&amp;lt;String, Integ">
+  <meta name="description" content="开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.   key排序 使用TreeMap的Comparator比较TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator:       Map&amp;lt;String, Integer&amp;gt; map = new TreeMap&amp;lt;String, Integer&amp;gt;(new Comparator">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Map元素排序">
 <meta property="og:url" content="http://yoursite.com/2019/08/17/Map元素排序/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.   key排序 使用TreeMap的Comparator比较TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator: 123456789101112131415161718Map&amp;lt;String, Integer&amp;gt; map = new TreeMap&amp;lt;String, Integ">
+<meta property="og:description" content="开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.   key排序 使用TreeMap的Comparator比较TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator:       Map&amp;lt;String, Integer&amp;gt; map = new TreeMap&amp;lt;String, Integer&amp;gt;(new Comparator">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Map元素排序">
-<meta name="twitter:description" content="开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.   key排序 使用TreeMap的Comparator比较TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator: 123456789101112131415161718Map&amp;lt;String, Integer&amp;gt; map = new TreeMap&amp;lt;String, Integ">
+<meta name="twitter:description" content="开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.   key排序 使用TreeMap的Comparator比较TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator:       Map&amp;lt;String, Integer&amp;gt; map = new TreeMap&amp;lt;String, Integer&amp;gt;(new Comparator">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -504,15 +505,73 @@
         <p>开发中会遇到对Map元素排序的问题,下面介绍下如何根据key、value排序.  </p>
 <h5 id="key排序"><a href="#key排序" class="headerlink" title="key排序"></a>key排序</h5><ul>
 <li><p>使用TreeMap的Comparator比较<br>TreeMap默认是升序的,如果需要自定义排序规则,可以使用Comparator:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Integer&gt; map = new TreeMap&lt;String, Integer&gt;(new Comparator&lt;String&gt;() &#123;</span><br><span class="line">    // 按照key排序</span><br><span class="line">    @Override</span><br><span class="line">    public int compare(String o1, String o2) &#123;</span><br><span class="line">        // 按照key降序排列</span><br><span class="line">        return Integer.valueOf(o2).compareTo(Integer.valueOf(o1));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;) &#123;</span><br><span class="line">    &#123;</span><br><span class="line">        put(&quot;1&quot;, 9);</span><br><span class="line">        put(&quot;3&quot;, 6);</span><br><span class="line">        put(&quot;5&quot;, 2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">for (Map.Entry c : map.entrySet()) &#123;</span><br><span class="line">    System.out.println(c.getKey() + &quot;=&quot; + c.getValue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<pre><code>      Map&lt;String, Integer&gt; map = new TreeMap&lt;String, Integer&gt;(new Comparator&lt;String&gt;() {
+          // 按照key排序
+          @Override
+          public int compare(String o1, String o2) {
+              // 按照key降序排列
+              return Integer.valueOf(o2).compareTo(Integer.valueOf(o1));
+          }
+      }) {
+          {
+              put(&quot;1&quot;, 9);
+              put(&quot;3&quot;, 6);
+              put(&quot;5&quot;, 2);
+          }
+      };
+
+      for (Map.Entry c : map.entrySet()) {
+          System.out.println(c.getKey() + &quot;=&quot; + c.getValue());
+      }
+</code></pre></li>
 <li><p><code>java.util.Collections</code>的sort方法  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Integer&gt; map = new TreeMap&lt;String, Integer&gt;() &#123;</span><br><span class="line">    &#123;</span><br><span class="line">        put(&quot;1&quot;, 9);</span><br><span class="line">        put(&quot;3&quot;, 6);</span><br><span class="line">        put(&quot;5&quot;, 2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">List&lt;Map.Entry&lt;String, Integer&gt;&gt; entryList = new ArrayList&lt;Map.Entry&lt;String, Integer&gt;&gt;(map.entrySet());</span><br><span class="line"></span><br><span class="line">Collections.sort(entryList, new Comparator&lt;Map.Entry&lt;String, Integer&gt;&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public int compare(Map.Entry&lt;String, Integer&gt; o1, Map.Entry&lt;String, Integer&gt; o2) &#123;</span><br><span class="line">        // 根据key降序排列</span><br><span class="line">        return Integer.valueOf(o2.getKey()).compareTo(Integer.valueOf(o1.getKey()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">for (Map.Entry c : entryList) &#123;</span><br><span class="line">    System.out.println(c.getKey() + &quot;=&quot; + c.getValue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<pre><code>      Map&lt;String, Integer&gt; map = new TreeMap&lt;String, Integer&gt;() {
+          {
+              put(&quot;1&quot;, 9);
+              put(&quot;3&quot;, 6);
+              put(&quot;5&quot;, 2);
+          }
+      };
+
+      List&lt;Map.Entry&lt;String, Integer&gt;&gt; entryList = new ArrayList&lt;Map.Entry&lt;String, Integer&gt;&gt;(map.entrySet());
+
+      Collections.sort(entryList, new Comparator&lt;Map.Entry&lt;String, Integer&gt;&gt;() {
+          @Override
+          public int compare(Map.Entry&lt;String, Integer&gt; o1, Map.Entry&lt;String, Integer&gt; o2) {
+              // 根据key降序排列
+              return Integer.valueOf(o2.getKey()).compareTo(Integer.valueOf(o1.getKey()));
+          }
+      });
+
+      for (Map.Entry c : entryList) {
+          System.out.println(c.getKey() + &quot;=&quot; + c.getValue());
+      }
+</code></pre></li>
 </ul>
 <h5 id="value排序"><a href="#value排序" class="headerlink" title="value排序"></a>value排序</h5><ul>
-<li><code>java.util.Collections</code>的sort方法<br>由上可知,对value排序也很容易实现:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Integer&gt; map = new TreeMap&lt;String, Integer&gt;() &#123;</span><br><span class="line">    &#123;</span><br><span class="line">        put(&quot;1&quot;, 9);</span><br><span class="line">        put(&quot;3&quot;, 6);</span><br><span class="line">        put(&quot;5&quot;, 2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">List&lt;Map.Entry&lt;String, Integer&gt;&gt; entryList = new ArrayList&lt;Map.Entry&lt;String, Integer&gt;&gt;(map.entrySet());</span><br><span class="line"></span><br><span class="line">Collections.sort(entryList, new Comparator&lt;Map.Entry&lt;String, Integer&gt;&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public int compare(Map.Entry&lt;String, Integer&gt; o1, Map.Entry&lt;String, Integer&gt; o2) &#123;</span><br><span class="line">        // 根据value降序排列</span><br><span class="line">        return o2.getValue().compareTo(o1.getValue());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">for (Map.Entry c : entryList) &#123;</span><br><span class="line">    System.out.println(c.getKey() + &quot;=&quot; + c.getValue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li><p><code>java.util.Collections</code>的sort方法<br>由上可知,对value排序也很容易实现:</p>
+<pre><code>      Map&lt;String, Integer&gt; map = new TreeMap&lt;String, Integer&gt;() {
+          {
+              put(&quot;1&quot;, 9);
+              put(&quot;3&quot;, 6);
+              put(&quot;5&quot;, 2);
+          }
+      };
+
+      List&lt;Map.Entry&lt;String, Integer&gt;&gt; entryList = new ArrayList&lt;Map.Entry&lt;String, Integer&gt;&gt;(map.entrySet());
+
+      Collections.sort(entryList, new Comparator&lt;Map.Entry&lt;String, Integer&gt;&gt;() {
+          @Override
+          public int compare(Map.Entry&lt;String, Integer&gt; o1, Map.Entry&lt;String, Integer&gt; o2) {
+              // 根据value降序排列
+              return o2.getValue().compareTo(o1.getValue());
+          }
+      });
+
+      for (Map.Entry c : entryList) {
+          System.out.println(c.getKey() + &quot;=&quot; + c.getValue());
+      }
+</code></pre></li>
 </ul>
 
       

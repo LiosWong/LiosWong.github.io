@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="Dubbo SPI的暴露原理参考https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/,本文分析服务暴露过程,运行 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 中 Application:1234567891011">
+  <meta name="description" content="Dubbo SPI的暴露原理参考https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/,本文分析服务暴露过程,运行 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 中 Application: public class">
 <meta name="keywords" content="java,dubbo,RPC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dubbo服务暴露过程解析">
 <meta property="og:url" content="http://yoursite.com/2019/09/29/Dubbo服务暴露过程解析/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="Dubbo SPI的暴露原理参考https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/,本文分析服务暴露过程,运行 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 中 Application:1234567891011">
+<meta property="og:description" content="Dubbo SPI的暴露原理参考https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/,本文分析服务暴露过程,运行 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 中 Application: public class">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-30T01:31:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dubbo服务暴露过程解析">
-<meta name="twitter:description" content="Dubbo SPI的暴露原理参考https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/,本文分析服务暴露过程,运行 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 中 Application:1234567891011">
+<meta name="twitter:description" content="Dubbo SPI的暴露原理参考https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/,本文分析服务暴露过程,运行 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 中 Application: public class">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,60 +502,1053 @@
       
 
       
-        <p>Dubbo SPI的暴露原理参考<a href="https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</a>,本文分析服务暴露过程,运行 <code>demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider</code> 中 <code>Application</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Application &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        ServiceConfig&lt;DemoServiceImpl&gt; service = new ServiceConfig&lt;&gt;();</span><br><span class="line">        service.setApplication(new ApplicationConfig(&quot;dubbo-demo-api-provider&quot;));</span><br><span class="line">        service.setRegistry(new RegistryConfig(&quot;zookeeper://127.0.0.1:2181&quot;));</span><br><span class="line">        service.setInterface(DemoService.class);</span><br><span class="line">        service.setRef(new DemoServiceImpl());</span><br><span class="line">        service.export();</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>先创建对象 <code>ServiceConfig</code> ,设置 <code>ApplicationConfig</code> 、<code>RegistryConfig</code> 、接口 、实现类对象,接下来导出服务,断点进入 <code>org.apache.dubbo.config.ServiceConfig#export</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void export() &#123;</span><br><span class="line">       // 配置检查</span><br><span class="line">       checkAndUpdateSubConfigs();</span><br><span class="line">       // 是否导出</span><br><span class="line">       if (!shouldExport()) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       // 是否延导出</span><br><span class="line">       if (shouldDelay()) &#123;</span><br><span class="line">           DELAY_EXPORT_EXECUTOR.schedule(this::doExport, getDelay(), TimeUnit.MILLISECONDS);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           // 直接暴露服务</span><br><span class="line">           doExport();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先配置检查(涉及检查和刷新,这里不多做介绍),根据属性配置 <code>export</code> 判断是否导出服务,根据 <code>delay</code> 判断是否延迟导出,比如某些应用需要预热处理,配置示例如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:service interface=&quot;org.apache.dubbo.demo.DemoService&quot; export=&quot;true&quot; delay=&quot;5000&quot;/&gt;</span><br></pre></td></tr></table></figure></p>
-<p>进入 <code>org.apache.dubbo.config.ServiceConfig#doExport</code> 方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">protected synchronized void doExport() &#123;</span><br><span class="line">        if (unexported) &#123;</span><br><span class="line">            throw new IllegalStateException(&quot;The service &quot; + interfaceClass.getName() + &quot; has already unexported!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (exported) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        exported = true;</span><br><span class="line"></span><br><span class="line">        if (StringUtils.isEmpty(path)) &#123;</span><br><span class="line">            path = interfaceName;</span><br><span class="line">        &#125;</span><br><span class="line">        // 导出</span><br><span class="line">        doExportUrls();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面的代码很简单,直接断点进入 <code>org.apache.dubbo.config.ServiceConfig#doExportUrls()</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;URL&gt; registryURLs = loadRegistries(true);</span><br><span class="line">for (ProtocolConfig protocolConfig : protocols) &#123;</span><br><span class="line">    String pathKey = URL.buildKey(getContextPath(protocolConfig).map(p -&gt; p + &quot;/&quot; + path).orElse(path), group, version);</span><br><span class="line">    ProviderModel providerModel = new ProviderModel(pathKey, ref, interfaceClass);</span><br><span class="line">    ApplicationModel.initProviderModel(pathKey, providerModel);</span><br><span class="line">    doExportUrlsFor1Protocol(protocolConfig, registryURLs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>org.apache.dubbo.config.AbstractInterfaceConfig#loadRegistries</code> 这个方法逻辑很简单,从 <code>RegistryConfig</code> 中获取协议配置属性然后封装成 <code>org.apache.dubbo.common.URL</code> ,返回协议列表,然后遍历列表,把服务以不同的协议以 <code>URL</code> 形式暴露,例如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">registry://127.0.0.1:2181/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-api-provider&amp;dubbo=2.0.2&amp;pid=7660&amp;registry=zookeeper&amp;timestamp=1569035160813</span><br></pre></td></tr></table></figure></p>
-<p>进入 <code>org.apache.dubbo.config.ServiceConfig#doExportUrlsFor1Protocol</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">private void doExportUrlsFor1Protocol(ProtocolConfig protocolConfig, List&lt;URL&gt; registryURLs) &#123;</span><br><span class="line">        String name = protocolConfig.getName();</span><br><span class="line">        // 默认协议dubbo</span><br><span class="line">        if (StringUtils.isEmpty(name)) &#123;</span><br><span class="line">            name = DUBBO;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();</span><br><span class="line">        map.put(SIDE_KEY, PROVIDER_SIDE);</span><br><span class="line"></span><br><span class="line">        // 获取属性配置放入map中</span><br><span class="line">        appendRuntimeParameters(map);</span><br><span class="line">        appendParameters(map, metrics);</span><br><span class="line">        appendParameters(map, application);</span><br><span class="line">        appendParameters(map, module);</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">        if (ProtocolUtils.isGeneric(generic)) &#123;</span><br><span class="line">            map.put(GENERIC_KEY, generic);</span><br><span class="line">            map.put(METHODS_KEY, ANY_VALUE);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 获取revision</span><br><span class="line">            String revision = Version.getVersion(interfaceClass, version);</span><br><span class="line">            if (revision != null &amp;&amp; revision.length() &gt; 0) &#123;</span><br><span class="line">                map.put(REVISION_KEY, revision);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            String[] methods = Wrapper.getWrapper(interfaceClass).getMethodNames();  // a</span><br><span class="line">            if (methods.length == 0) &#123;</span><br><span class="line">                logger.warn(&quot;No method found in service interface &quot; + interfaceClass.getName());</span><br><span class="line">                map.put(METHODS_KEY, ANY_VALUE);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                map.put(METHODS_KEY, StringUtils.join(new HashSet&lt;String&gt;(Arrays.asList(methods)), &quot;,&quot;));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (!ConfigUtils.isEmpty(token)) &#123;</span><br><span class="line">            if (ConfigUtils.isDefault(token)) &#123;</span><br><span class="line">                map.put(TOKEN_KEY, UUID.randomUUID().toString());</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                map.put(TOKEN_KEY, token);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // export service</span><br><span class="line">        String host = this.findConfigedHosts(protocolConfig, registryURLs, map);</span><br><span class="line">        // 获取服务暴露端口号</span><br><span class="line">        Integer port = this.findConfigedPorts(protocolConfig, name, map);</span><br><span class="line">        // 构建URL</span><br><span class="line">        URL url = new URL(name, host, port, getContextPath(protocolConfig).map(p -&gt; p + &quot;/&quot; + path).orElse(path), map);</span><br><span class="line"></span><br><span class="line">        if (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class) // b</span><br><span class="line">                .hasExtension(url.getProtocol())) &#123; </span><br><span class="line">            url = ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class) // c</span><br><span class="line">                    .getExtension(url.getProtocol()).getConfigurator(url).configure(url);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String scope = url.getParameter(SCOPE_KEY);</span><br><span class="line">        // don&apos;t export when none is configured</span><br><span class="line">        if (!SCOPE_NONE.equalsIgnoreCase(scope)) &#123;  // d</span><br><span class="line"></span><br><span class="line">            // export to local if the config is not remote (export to remote only when config is remote)</span><br><span class="line">            if (!SCOPE_REMOTE.equalsIgnoreCase(scope)) &#123; // e</span><br><span class="line">                exportLocal(url); </span><br><span class="line">            &#125;</span><br><span class="line">            // export to remote if the config is not local (export to local only when config is local)</span><br><span class="line">            if (!SCOPE_LOCAL.equalsIgnoreCase(scope)) &#123; // f</span><br><span class="line">                if (CollectionUtils.isNotEmpty(registryURLs)) &#123;</span><br><span class="line">                    for (URL registryURL : registryURLs) &#123;</span><br><span class="line">                        //if protocol is only injvm ,not register</span><br><span class="line">                        if (LOCAL_PROTOCOL.equalsIgnoreCase(url.getProtocol())) &#123;</span><br><span class="line">                            continue;</span><br><span class="line">                        &#125;</span><br><span class="line">                        url = url.addParameterIfAbsent(DYNAMIC_KEY, registryURL.getParameter(DYNAMIC_KEY));</span><br><span class="line">                        URL monitorUrl = loadMonitor(registryURL);</span><br><span class="line">                        if (monitorUrl != null) &#123;</span><br><span class="line">                            url = url.addParameterAndEncoded(MONITOR_KEY, monitorUrl.toFullString());</span><br><span class="line">                        &#125;</span><br><span class="line">                        if (logger.isInfoEnabled()) &#123;</span><br><span class="line">                            if (url.getParameter(REGISTER_KEY, true)) &#123;</span><br><span class="line">                                logger.info(&quot;Register dubbo service &quot; + interfaceClass.getName() + &quot; url &quot; + url + &quot; to registry &quot; + registryURL);</span><br><span class="line">                            &#125; else &#123;</span><br><span class="line">                                logger.info(&quot;Export dubbo service &quot; + interfaceClass.getName() + &quot; to url &quot; + url);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        // For providers, this is used to enable custom proxy to generate invoker</span><br><span class="line">                        String proxy = url.getParameter(PROXY_KEY);</span><br><span class="line">                        if (StringUtils.isNotEmpty(proxy)) &#123;</span><br><span class="line">                            registryURL = registryURL.addParameter(PROXY_KEY, proxy);</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(EXPORT_KEY, url.toFullString()));  // f</span><br><span class="line">                        DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);</span><br><span class="line"></span><br><span class="line">                        Exporter&lt;?&gt; exporter = protocol.export(wrapperInvoker); // g</span><br><span class="line">                        exporters.add(exporter); // h</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    if (logger.isInfoEnabled()) &#123;</span><br><span class="line">                        logger.info(&quot;Export dubbo service &quot; + interfaceClass.getName() + &quot; to url &quot; + url);</span><br><span class="line">                    &#125;</span><br><span class="line">                    Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, url);</span><br><span class="line">                    DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);</span><br><span class="line"></span><br><span class="line">                    Exporter&lt;?&gt; exporter = protocol.export(wrapperInvoker);</span><br><span class="line">                    exporters.add(exporter);</span><br><span class="line">                &#125;</span><br><span class="line">                /**</span><br><span class="line">                 * @since 2.7.0</span><br><span class="line">                 * ServiceData Store</span><br><span class="line">                 */</span><br><span class="line">                MetadataReportService metadataReportService = null;</span><br><span class="line">                if ((metadataReportService = getMetadataReportService()) != null) &#123;</span><br><span class="line">                    metadataReportService.publishProvider(url);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        this.urls.add(url);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="构建包装类Wrapper"><a href="#构建包装类Wrapper" class="headerlink" title="构建包装类Wrapper"></a>构建包装类Wrapper</h4><p>这段代码比较长,首先把各个属性值放入到 <code>map</code> 中，断点到 <code>a</code> 处,进入 <code>org.apache.dubbo.common.bytecode.Wrapper#getWrapper</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public static Wrapper getWrapper(Class&lt;?&gt; c) &#123;</span><br><span class="line">        while (ClassGenerator.isDynamicClass(c)) // can not wrapper on dynamic class.</span><br><span class="line">        &#123;</span><br><span class="line">            c = c.getSuperclass();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (c == Object.class) &#123;</span><br><span class="line">            return OBJECT_WRAPPER;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Wrapper ret = WRAPPER_MAP.get(c);</span><br><span class="line">        if (ret == null) &#123;</span><br><span class="line">            ret = makeWrapper(c);</span><br><span class="line">            WRAPPER_MAP.put(c, ret);</span><br><span class="line">        &#125;</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先从缓存中获取包装类 <code>Wrapper</code>,如果没有创建,进入 <code>org.apache.dubbo.common.bytecode.Wrapper#makeWrapper</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">private static Wrapper makeWrapper(Class&lt;?&gt; c) &#123;</span><br><span class="line">        if (c.isPrimitive()) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;Can not create wrapper for primitive type: &quot; + c);</span><br><span class="line">        &#125;</span><br><span class="line">        String name = c.getName();</span><br><span class="line">        ClassLoader cl = ClassUtils.getClassLoader(c);</span><br><span class="line">        StringBuilder c1 = new StringBuilder(&quot;public void setPropertyValue(Object o, String n, Object v)&#123; &quot;);</span><br><span class="line">        StringBuilder c2 = new StringBuilder(&quot;public Object getPropertyValue(Object o, String n)&#123; &quot;);</span><br><span class="line">        StringBuilder c3 = new StringBuilder(&quot;public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws &quot; + InvocationTargetException.class.getName() + &quot;&#123; &quot;);</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">        try &#123;</span><br><span class="line">            Class&lt;?&gt; wc = cc.toClass();</span><br><span class="line">            // setup static field.</span><br><span class="line">            wc.getField(&quot;pts&quot;).set(null, pts);</span><br><span class="line">            wc.getField(&quot;pns&quot;).set(null, pts.keySet().toArray(new String[0]));</span><br><span class="line">            wc.getField(&quot;mns&quot;).set(null, mns.toArray(new String[0]));</span><br><span class="line">            wc.getField(&quot;dmns&quot;).set(null, dmns.toArray(new String[0]));</span><br><span class="line">            int ix = 0;</span><br><span class="line">            for (Method m : ms.values()) &#123;</span><br><span class="line">                wc.getField(&quot;mts&quot; + ix++).set(null, m.getParameterTypes());</span><br><span class="line">            &#125;</span><br><span class="line">            return (Wrapper) wc.newInstance();</span><br><span class="line">        &#125; catch (RuntimeException e) &#123;</span><br><span class="line">            throw e;</span><br><span class="line">        &#125; catch (Throwable e) &#123;</span><br><span class="line">            throw new RuntimeException(e.getMessage(), e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            cc.release();</span><br><span class="line">            ms.clear();</span><br><span class="line">            mns.clear();</span><br><span class="line">            dmns.clear();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面的代码不具体分析,通过javassist动态生成类 <code>class org.apache.dubbo.common.bytecode.Wrapper0</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">public class org.apache.dubbo.common.bytecode.Wrapper0 extends Wrapper</span><br><span class="line">&#123;</span><br><span class="line">    public static String[] pns;</span><br><span class="line">    public static java.util.Map pts;</span><br><span class="line">    public static String[] mns;</span><br><span class="line">    public static String[] dmns;</span><br><span class="line">    public static Class[] mts0;</span><br><span class="line">    public String[] getPropertyNames()</span><br><span class="line">    &#123;</span><br><span class="line">        return pns;</span><br><span class="line">    &#125;</span><br><span class="line">    public boolean hasProperty(String n)</span><br><span class="line">    &#123;</span><br><span class="line">        return pts.containsKey($1);</span><br><span class="line">    &#125;</span><br><span class="line">    public Class getPropertyType(String n)</span><br><span class="line">    &#123;</span><br><span class="line">        return (Class)pts.get($1);</span><br><span class="line">    &#125;</span><br><span class="line">    public String[] getMethodNames()</span><br><span class="line">    &#123;</span><br><span class="line">        return mns;</span><br><span class="line">    &#125;</span><br><span class="line">    public String[] getDeclaredMethodNames()</span><br><span class="line">    &#123;</span><br><span class="line">        return dmns;</span><br><span class="line">    &#125;</span><br><span class="line">    public void setPropertyValue(Object o, String n, Object v)</span><br><span class="line">    &#123;</span><br><span class="line">        org.apache.dubbo.demo.DemoService w;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            w = ((org.apache.dubbo.demo.DemoService)$1);</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.DemoService.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public Object getPropertyValue(Object o, String n)</span><br><span class="line">    &#123;</span><br><span class="line">        org.apache.dubbo.demo.DemoService w;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            w = ((org.apache.dubbo.demo.DemoService)$1);</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.DemoService.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    // 根据方法名调用</span><br><span class="line">    public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws java.lang.reflect.InvocationTargetException</span><br><span class="line">    &#123;</span><br><span class="line">        org.apache.dubbo.demo.DemoService w;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            w = ((org.apache.dubbo.demo.DemoService)$1);</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            if( &quot;sayHello&quot;.equals( $2 )  &amp;&amp;  $3.length == 1 )</span><br><span class="line">            &#123;</span><br><span class="line">                return ($w)w.sayHello((java.lang.String)$4[0]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new java.lang.reflect.InvocationTargetException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new org.apache.dubbo.common.bytecode.NoSuchMethodException(&quot;Not found method \&quot;&quot; + $2 + &quot;\&quot; in class org.apache.dubbo.demo.DemoService.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>有上面可知,包装类 <code>Wrapper0</code> 的 <code>invokeMethod</code> 方法里会真正调用服务方法。</p>
-<h4 id="本地暴露服务"><a href="#本地暴露服务" class="headerlink" title="本地暴露服务"></a>本地暴露服务</h4><p>回到 <code>org.apache.dubbo.config.ServiceConfig#doExportUrlsFor1Protocol</code> 方法的 <code>a</code> 处,返回的方法数组只有一个元素 <code>sayHello</code>, <code>d</code> 处会根据 <code>scope</code> 判断是否暴露服务, <code>e</code> 处如果不是远程暴露服务则暴露到本地,进入 <code>org.apache.dubbo.config.ServiceConfig#exportLocal</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private void exportLocal(URL url) &#123;</span><br><span class="line">    URL local = URLBuilder.from(url)</span><br><span class="line">    .setProtocol(LOCAL_PROTOCOL)</span><br><span class="line">    .setHost(LOCALHOST_VALUE)</span><br><span class="line">    .setPort(0)</span><br><span class="line">    .build();</span><br><span class="line">    Exporter&lt;?&gt; exporter = protocol.export(</span><br><span class="line">        PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, local));</span><br><span class="line">        exporters.add(exporter);</span><br><span class="line">        logger.info(&quot;Export dubbo service &quot; + interfaceClass.getName() + &quot; to local registry url : &quot; + local);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>关于 <code>PROXY_FACTORY</code> 、<code>protocol</code> 的初始化过程不再分析,通过Dubbo SPI实现,生成的自适应代理工厂类 <code>PROXY_FACTORY</code> 对象为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.dubbo.rpc;</span><br><span class="line">import org.apache.dubbo.common.extension.ExtensionLoader;</span><br><span class="line">public class ProxyFactory$Adaptive implements org.apache.dubbo.rpc.ProxyFactory</span><br><span class="line">&#123;</span><br><span class="line">    public java.lang.Object getProxy(org.apache.dubbo.rpc.Invoker arg0) throws org.apache.dubbo.rpc.RpcException</span><br><span class="line">    &#123;</span><br><span class="line">        if (arg0 == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument == null&quot;);</span><br><span class="line">        if (arg0.getUrl() == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument getUrl() == null&quot;);</span><br><span class="line">        org.apache.dubbo.common.URL url = arg0.getUrl();</span><br><span class="line">        String extName = url.getParameter(&quot;proxy&quot;, &quot;javassist&quot;);</span><br><span class="line">        if(extName == null) throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.ProxyFactory) name from url (&quot; + url.toString() + &quot;) use keys([proxy])&quot;);</span><br><span class="line">        org.apache.dubbo.rpc.ProxyFactory extension = (org.apache.dubbo.rpc.ProxyFactory)ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.ProxyFactory.class).getExtension(extName);</span><br><span class="line">        return extension.getProxy(arg0);</span><br><span class="line">    &#125;</span><br><span class="line">    public java.lang.Object getProxy(org.apache.dubbo.rpc.Invoker arg0, boolean arg1) throws org.apache.dubbo.rpc.RpcException</span><br><span class="line">    &#123;</span><br><span class="line">        if (arg0 == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument == null&quot;);</span><br><span class="line">        if (arg0.getUrl() == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument getUrl() == null&quot;);</span><br><span class="line">        org.apache.dubbo.common.URL url = arg0.getUrl();</span><br><span class="line">        String extName = url.getParameter(&quot;proxy&quot;, &quot;javassist&quot;);</span><br><span class="line">        if(extName == null) throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.ProxyFactory) name from url (&quot; + url.toString() + &quot;) use keys([proxy])&quot;);</span><br><span class="line">        org.apache.dubbo.rpc.ProxyFactory extension = (org.apache.dubbo.rpc.ProxyFactory)ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.ProxyFactory.class).getExtension(extName);</span><br><span class="line">        return extension.getProxy(arg0, arg1);</span><br><span class="line">    &#125;</span><br><span class="line">    public org.apache.dubbo.rpc.Invoker getInvoker(java.lang.Object arg0, java.lang.Class arg1, org.apache.dubbo.common.URL arg2) throws org.apache.dubbo.rpc.RpcException</span><br><span class="line">    &#123;</span><br><span class="line">        if (arg2 == null) throw new IllegalArgumentException(&quot;url == null&quot;);</span><br><span class="line">        org.apache.dubbo.common.URL url = arg2;</span><br><span class="line">        String extName = url.getParameter(&quot;proxy&quot;, &quot;javassist&quot;);</span><br><span class="line">        if(extName == null) throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.ProxyFactory) name from url (&quot; + url.toString() + &quot;) use keys([proxy])&quot;);</span><br><span class="line">        org.apache.dubbo.rpc.ProxyFactory extension = (org.apache.dubbo.rpc.ProxyFactory)ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.ProxyFactory.class).getExtension(extName);</span><br><span class="line">        return extension.getInvoker(arg0, arg1, arg2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>getInvoker</code> 方法中首先会获取 <code>extName</code>,默认值为 <code>javassist</code>,即默认的代理工厂类为 <code>org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory</code>, 在文章 <a href="https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">Dubbo SPI实现原理</a> 中知晓,该类会被包装类 <code>org.apache.dubbo.rpc.proxy.wrapper.StubProxyFactoryWrapper</code> 包裹,进入 <code>org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory#getInvoker</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Invoker&lt;T&gt; getInvoker(T proxy, Class&lt;T&gt; type, URL url) &#123;</span><br><span class="line">       // TODO Wrapper cannot handle this scenario correctly: the classname contains &apos;$&apos;</span><br><span class="line">       final Wrapper wrapper = Wrapper.getWrapper(proxy.getClass().getName().indexOf(&apos;$&apos;) &lt; 0 ? proxy.getClass() : type);</span><br><span class="line">       return new AbstractProxyInvoker&lt;T&gt;(proxy, type, url) &#123;</span><br><span class="line">           @Override</span><br><span class="line">           protected Object doInvoke(T proxy, String methodName,</span><br><span class="line">                                     Class&lt;?&gt;[] parameterTypes,</span><br><span class="line">                                     Object[] arguments) throws Throwable &#123;</span><br><span class="line">               return wrapper.invokeMethod(proxy, methodName, parameterTypes, arguments);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先会获取包装类,然后生成 <code>org.apache.dubbo.rpc.proxy.AbstractProxyInvoker</code> 的匿名类,并返回.在 <code>doInvoke</code> 方法中实现真正的方法调用,<br>关于包装类 <code>Wrapper</code> 的生成不具体分析,和上文分析一致,看下生成的包装类:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">class org.apache.dubbo.common.bytecode.Wrapper1</span><br><span class="line">&#123;</span><br><span class="line">    public static String[] pns;</span><br><span class="line">    public static java.util.Map pts;</span><br><span class="line">    public static String[] mns;</span><br><span class="line">    public static String[] dmns;</span><br><span class="line">    public static Class[] mts0;</span><br><span class="line">    public String[] getPropertyNames()</span><br><span class="line">    &#123;</span><br><span class="line">        return pns;</span><br><span class="line">    &#125;</span><br><span class="line">    public boolean hasProperty(String n)</span><br><span class="line">    &#123;</span><br><span class="line">        return pts.containsKey($1);</span><br><span class="line">    &#125;</span><br><span class="line">    public Class getPropertyType(String n)</span><br><span class="line">    &#123;</span><br><span class="line">        return (Class)pts.get($1);</span><br><span class="line">    &#125;</span><br><span class="line">    public String[] getMethodNames()</span><br><span class="line">    &#123;</span><br><span class="line">        return mns;</span><br><span class="line">    &#125;</span><br><span class="line">    public String[] getDeclaredMethodNames()</span><br><span class="line">    &#123;</span><br><span class="line">        return dmns;</span><br><span class="line">    &#125;</span><br><span class="line">    public void setPropertyValue(Object o, String n, Object v)</span><br><span class="line">    &#123;</span><br><span class="line">        org.apache.dubbo.demo.provider.DemoServiceImpl w;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            w = ((org.apache.dubbo.demo.provider.DemoServiceImpl)$1);</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.provider.DemoServiceImpl.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public Object getPropertyValue(Object o, String n)</span><br><span class="line">    &#123;</span><br><span class="line">        org.apache.dubbo.demo.provider.DemoServiceImpl w;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            w = ((org.apache.dubbo.demo.provider.DemoServiceImpl)$1);</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.provider.DemoServiceImpl.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws java.lang.reflect.InvocationTargetException</span><br><span class="line">    &#123;</span><br><span class="line">        org.apache.dubbo.demo.provider.DemoServiceImpl w;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            w = ((org.apache.dubbo.demo.provider.DemoServiceImpl)$1);</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new IllegalArgumentException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            if( &quot;sayHello&quot;.equals( $2 )  &amp;&amp;  $3.length == 1 )</span><br><span class="line">            &#123;</span><br><span class="line">                return ($w)w.sayHello((java.lang.String)$4[0]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        catch(Throwable e)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new java.lang.reflect.InvocationTargetException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        throw new org.apache.dubbo.common.bytecode.NoSuchMethodException(&quot;Not found method \&quot;&quot; + $2 + &quot;\&quot; in class org.apache.dubbo.demo.provider.DemoServiceImpl.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>invokeMethod方法的内部逻辑十分清晰,就不多做分析,继续回到 <code>org.apache.dubbo.config.ServiceConfig#exportLocal</code> 方法中,上面 <code>Invoker</code> 对象已经生成,然后就导出服务,在<a href="https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">Dubbo SPI实现原理</a>中分析过,生成的 <code>Protocol</code> 会被包装类包裹,由于是本地暴露,所以结构为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper</span><br><span class="line">   org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper</span><br><span class="line">      org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol</span><br></pre></td></tr></table></figure></p>
-<p>即首先会调用 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#export</code> 方法,然后再调用 <code>org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper#export</code> 方法,最后调用 <code>org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol#export</code> 方法,首先进入 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#export</code> 方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException &#123;</span><br><span class="line">       // 如果协议为registry,直接暴露</span><br><span class="line">       if (REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) &#123;</span><br><span class="line">           return protocol.export(invoker);</span><br><span class="line">       &#125;</span><br><span class="line">       // 构建过滤器调用链</span><br><span class="line">       return protocol.export(buildInvokerChain(invoker, SERVICE_FILTER_KEY, CommonConstants.PROVIDER));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面代码注释已经说明,如果协议是非registry,则会调用 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#buildInvokerChain</code> 方法,进行过滤器调用链的组装,进入该方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">private static &lt;T&gt; Invoker&lt;T&gt; buildInvokerChain(final Invoker&lt;T&gt; invoker, String key, String group) &#123;</span><br><span class="line">        Invoker&lt;T&gt; last = invoker;</span><br><span class="line">        // 自适应扩展获取过滤器</span><br><span class="line">        List&lt;Filter&gt; filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);</span><br><span class="line"></span><br><span class="line">        if (!filters.isEmpty()) &#123;</span><br><span class="line">            for (int i = filters.size() - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">                final Filter filter = filters.get(i);</span><br><span class="line">                final Invoker&lt;T&gt; next = last;</span><br><span class="line">                last = new Invoker&lt;T&gt;() &#123;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public Class&lt;T&gt; getInterface() &#123;</span><br><span class="line">                        return invoker.getInterface();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public URL getUrl() &#123;</span><br><span class="line">                        return invoker.getUrl();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public boolean isAvailable() &#123;</span><br><span class="line">                        return invoker.isAvailable();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public Result invoke(Invocation invocation) throws RpcException &#123;</span><br><span class="line">                        Result asyncResult;</span><br><span class="line">                        try &#123;</span><br><span class="line">                            asyncResult = filter.invoke(next, invocation);</span><br><span class="line">                        &#125; catch (Exception e) &#123;</span><br><span class="line">                            // onError callback</span><br><span class="line">                            if (filter instanceof ListenableFilter) &#123;</span><br><span class="line">                                Filter.Listener listener = ((ListenableFilter) filter).listener();</span><br><span class="line">                                if (listener != null) &#123;</span><br><span class="line">                                    listener.onError(e, invoker, invocation);</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                            throw e;</span><br><span class="line">                        &#125;</span><br><span class="line">                        return asyncResult;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public void destroy() &#123;</span><br><span class="line">                        invoker.destroy();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    @Override</span><br><span class="line">                    public String toString() &#123;</span><br><span class="line">                        return invoker.toString();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return new CallbackRegistrationInvoker&lt;&gt;(last, filters);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面主要根据自适应扩展获取过滤器,然后循环过滤器列表,创建匿名的 <code>Invoker</code> 类,在<code>invoke</code>方法中调用过滤器的<code>invoke</code>方法,实现一些其他功能逻辑,获取的过滤器如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">org.apache.dubbo.rpc.filter.ExceptionFilter</span><br><span class="line">org.apache.dubbo.monitor.support.MonitorFilter</span><br><span class="line">org.apache.dubbo.rpc.filter.TimeoutFilter</span><br><span class="line">org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter</span><br><span class="line">org.apache.dubbo.rpc.filter.ContextFilter</span><br><span class="line">org.apache.dubbo.rpc.filter.GenericFilter</span><br><span class="line">org.apache.dubbo.rpc.filter.ClassLoaderFilter</span><br><span class="line">org.apache.dubbo.rpc.filter.EchoFilter</span><br></pre></td></tr></table></figure></p>
-<p>根据过滤器的名称就大概知道功能,获取过滤器的过程就不多做分析,感兴趣可以调试分析,回到 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#export</code> 方法中,至此,过滤器链已构建完成,下一步继续调用包装类<code>ProtocolListenerWrapper</code>的<code>org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper#export</code>方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException &#123;</span><br><span class="line">        // 如果协议为registry,直接暴露</span><br><span class="line">        if (REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) &#123;</span><br><span class="line">            return protocol.export(invoker);</span><br><span class="line">        &#125;</span><br><span class="line">        // </span><br><span class="line">        return new ListenerExporterWrapper&lt;T&gt;(protocol.export(invoker),</span><br><span class="line">                Collections.unmodifiableList(ExtensionLoader.getExtensionLoader(ExporterListener.class)</span><br><span class="line">                        .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果协议为registry,直接暴露,否则会先暴露,然后获取监听器列表,构建ListenerExporterWrapper对象返回.由于本地暴露,所以直接导出到本地, 进入到 <code>org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol#export</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException &#123;</span><br><span class="line">        return new InjvmExporter&lt;T&gt;(invoker, invoker.getUrl().getServiceKey(), exporterMap);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>直接创建对象 <code>InjvmExporter</code> 返回,并把 <code>InjvmExporter</code> 放入缓存 <code>exporterMap</code>中.回到 <code>org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper#export</code>中,本地服务导出很简单,然后通过<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ExtensionLoader.getExtensionLoader(ExporterListener.class)</span><br><span class="line">                        .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)</span><br></pre></td></tr></table></figure></p>
-<p>自适应扩展获取监听器列表,该过程不再分析,然后进入到 <code>org.apache.dubbo.rpc.listener.ListenerExporterWrapper#ListenerExporterWrapper</code> 中:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public ListenerExporterWrapper(Exporter&lt;T&gt; exporter, List&lt;ExporterListener&gt; listeners) &#123;</span><br><span class="line">    // 如果exporter为空则抛异常</span><br><span class="line">    if (exporter == null) &#123;</span><br><span class="line">        throw new IllegalArgumentException(&quot;exporter == null&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    this.exporter = exporter;</span><br><span class="line">    this.listeners = listeners;</span><br><span class="line">    if (CollectionUtils.isNotEmpty(listeners)) &#123;</span><br><span class="line">        RuntimeException exception = null;</span><br><span class="line">        // 循环调用监听器</span><br><span class="line">        for (ExporterListener listener : listeners) &#123;</span><br><span class="line">            if (listener != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    listener.exported(this);</span><br><span class="line">                &#125; catch (RuntimeException t) &#123;</span><br><span class="line">                    logger.error(t.getMessage(), t);</span><br><span class="line">                    exception = t;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (exception != null) &#123;</span><br><span class="line">            throw exception;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>调试过程中发现,<code>listeners</code> 为空,也就是这里dubbo没有实现自己的监听器,所以用户可以在服务暴露完成或者不暴露添加自定义监听器,用于业务逻辑的处理.<br>分析到这里,本地暴露基本完成,回到 <code>org.apache.dubbo.config.ServiceConfig#exportLocal</code> 中,暴露结束后,会把 <code>exporter</code> 放入到缓存中.</p>
-<h4 id="服务远程暴露"><a href="#服务远程暴露" class="headerlink" title="服务远程暴露"></a>服务远程暴露</h4><p>让我们再回到 <code>org.apache.dubbo.config.ServiceConfig#doExportUrlsFor1Protocol</code>,下面判断如果没有配置本地暴露,则远程暴露,然后循环协议列表 <code>registryURLs</code> 逐个暴露服务,我们着重分析以下几行代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(EXPORT_KEY, url.toFullString()));</span><br><span class="line">DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);</span><br><span class="line">Exporter&lt;?&gt; exporter = protocol.export(wrapperInvoker);</span><br><span class="line">exporters.add(exporter);</span><br></pre></td></tr></table></figure></p>
-<p>关于 <code>invoker</code> 的获取,在本地暴露时已经分析,由于本地依据暴露完成,所以 <code>JavassistProxyFactory</code>、<code>Wrapper</code>直接从缓存中获取即可,不再分析.然后构建对象 <code>DelegateProviderMetaDataInvoker</code>,然后服务导出,由本地导出可知,通过自适应扩展动态获取的 <code>RegistryProtocol</code> 对象被对象 <code>ProtocolFilterWrapper</code>、<code>ProtocolListenerWrapper</code> 包裹,但是注意,由于此时协议为<code>registry</code>,所以再这两个类中导出时不作任何处理,直接进入 <code>org.apache.dubbo.registry.integration.RegistryProtocol#export</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Exporter&lt;T&gt; export(final Invoker&lt;T&gt; originInvoker) throws RpcException &#123;</span><br><span class="line">    // 获取URL,用于向注册中心注册</span><br><span class="line">    URL registryUrl = getRegistryUrl(originInvoker);</span><br><span class="line">    // url to export locally  获取URL用于导出服务</span><br><span class="line">    URL providerUrl = getProviderUrl(originInvoker);</span><br><span class="line"></span><br><span class="line">    // Subscribe the override data</span><br><span class="line">    // FIXME When the provider subscribes, it will affect the scene : a certain JVM exposes the service and call</span><br><span class="line">    //  the same service. Because the subscribed is cached key with the name of the service, it causes the</span><br><span class="line">    //  subscription information to cover.</span><br><span class="line">    final URL overrideSubscribeUrl = getSubscribedOverrideUrl(providerUrl);</span><br><span class="line">    final OverrideListener overrideSubscribeListener = new OverrideListener(overrideSubscribeUrl, originInvoker);</span><br><span class="line">    overrideListeners.put(overrideSubscribeUrl, overrideSubscribeListener);</span><br><span class="line"></span><br><span class="line">    providerUrl = overrideUrlWithConfig(providerUrl, overrideSubscribeListener);</span><br><span class="line">    //export invoker 导出服务</span><br><span class="line">    final ExporterChangeableWrapper&lt;T&gt; exporter = doLocalExport(originInvoker, providerUrl);</span><br><span class="line"></span><br><span class="line">    // url to registry</span><br><span class="line">    final Registry registry = getRegistry(originInvoker);</span><br><span class="line">    final URL registeredProviderUrl = getRegisteredProviderUrl(providerUrl, registryUrl);</span><br><span class="line">    ProviderInvokerWrapper&lt;T&gt; providerInvokerWrapper = ProviderConsumerRegTable.registerProvider(originInvoker,</span><br><span class="line">            registryUrl, registeredProviderUrl);</span><br><span class="line">    //to judge if we need to delay publish</span><br><span class="line">    boolean register = registeredProviderUrl.getParameter(&quot;register&quot;, true);</span><br><span class="line">    if (register) &#123;</span><br><span class="line">        register(registryUrl, registeredProviderUrl);</span><br><span class="line">        providerInvokerWrapper.setReg(true);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Deprecated! Subscribe to override rules in 2.6.x or before.</span><br><span class="line">    registry.subscribe(overrideSubscribeUrl, overrideSubscribeListener);</span><br><span class="line"></span><br><span class="line">    exporter.setRegisterUrl(registeredProviderUrl);</span><br><span class="line">    exporter.setSubscribeUrl(overrideSubscribeUrl);</span><br><span class="line">    //Ensure that a new exporter instance is returned every time export</span><br><span class="line">    return new DestroyableExporter&lt;&gt;(exporter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先获取注册URL,在后面往注册中心注册服务会用到,然后获取服务提供者URL,用于服务导出,例如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dubbo://192.168.1.220:20880/org.apache.dubbo.demo.DemoService?anyhost=true&amp;application=dubbo-demo-api-provider&amp;bind.ip=192.168.1.220&amp;bind.port=20880&amp;deprecated=false&amp;dubbo=2.0.2&amp;dynamic=true&amp;generic=false&amp;interface=org.apache.dubbo.demo.DemoService&amp;methods=sayHello&amp;pid=11557&amp;release=&amp;side=provider&amp;timestamp=1569413558031</span><br></pre></td></tr></table></figure></p>
-<p>断点进入<code>org.apache.dubbo.registry.integration.RegistryProtocol#doLocalExport</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private &lt;T&gt; ExporterChangeableWrapper&lt;T&gt; doLocalExport(final Invoker&lt;T&gt; originInvoker, URL providerUrl) &#123;</span><br><span class="line">        String key = getCacheKey(originInvoker);</span><br><span class="line">        return (ExporterChangeableWrapper&lt;T&gt;) bounds.computeIfAbsent(key, s -&gt; &#123;</span><br><span class="line">            // 创建InvokerDelegate封装originInvoker, providerUrl</span><br><span class="line">            Invoker&lt;?&gt; invokerDelegate = new InvokerDelegate&lt;&gt;(originInvoker, providerUrl);</span><br><span class="line">            return new ExporterChangeableWrapper&lt;&gt;((Exporter&lt;T&gt;) protocol.export(invokerDelegate), originInvoker);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先从缓存中获取key-value的值,如果key-value值不存在,则重新获取,再重新获取时,就需要暴露服务,一般key为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dubbo://192.168.1.220:20880/org.apache.dubbo.demo.DemoService?anyhost=true&amp;application=dubbo-demo-api-provider&amp;bind.ip=192.168.1.220&amp;bind.port=20880&amp;deprecated=false&amp;dubbo=2.0.2&amp;generic=false&amp;interface=org.apache.dubbo.demo.DemoService&amp;methods=sayHello&amp;pid=11557&amp;release=&amp;side=provider&amp;timestamp=1569413558031</span><br></pre></td></tr></table></figure></p>
-<p>暴露服务时,还是通过Dubbo SPI自适应扩展实现,动态获取到的对象结构如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper</span><br><span class="line">  org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper</span><br><span class="line">     org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol</span><br></pre></td></tr></table></figure></p>
-<p><code>DubboProtocol</code> 被包装类包装,所以在导出时首先调用的是 <code>ProtocolFilterWrapper</code>的<code>export</code> 方法,同样与本地服务导出一样,同样会构建过滤器链,这里就不再重述;然后继续调用 <code>ProtocolListenerWrapper</code>的 <code>export</code> 方法,在该方法中,首先进行服务的暴露,然后再根据自适应扩展获取监听器类列表,再构建<code>ListenerExporterWrapper</code>对象返回,与本地暴露一样.但是这里服务暴露会调用 <code>org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol#export</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException &#123;</span><br><span class="line">    URL url = invoker.getUrl();</span><br><span class="line"></span><br><span class="line">    // export service.</span><br><span class="line">    String key = serviceKey(url);  </span><br><span class="line">    DubboExporter&lt;T&gt; exporter = new DubboExporter&lt;T&gt;(invoker, key, exporterMap);</span><br><span class="line">    exporterMap.put(key, exporter);</span><br><span class="line"></span><br><span class="line">    //export an stub service for dispatching event</span><br><span class="line">    Boolean isStubSupportEvent = url.getParameter(STUB_EVENT_KEY, DEFAULT_STUB_EVENT);</span><br><span class="line">    Boolean isCallbackservice = url.getParameter(IS_CALLBACK_SERVICE, false);</span><br><span class="line">    if (isStubSupportEvent &amp;&amp; !isCallbackservice) &#123;</span><br><span class="line">        String stubServiceMethods = url.getParameter(STUB_EVENT_METHODS_KEY);</span><br><span class="line">        if (stubServiceMethods == null || stubServiceMethods.length() == 0) &#123;</span><br><span class="line">            if (logger.isWarnEnabled()) &#123;</span><br><span class="line">                logger.warn(new IllegalStateException(&quot;consumer [&quot; + url.getParameter(INTERFACE_KEY) +</span><br><span class="line">                &quot;], has set stubproxy support event ,but no stub methods founded.&quot;));</span><br><span class="line">            &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                stubServiceMethodsMap.put(url.getServiceKey(), stubServiceMethods);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        openServer(url);</span><br><span class="line">        optimizeSerialization(url);</span><br><span class="line">        return exporter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先获取service key,这里的值为<code>org.apache.dubbo.demo.DemoService:20880</code>,然后创建DubboExporter对象,放入缓存Map中,直接进入到<code>org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol#openServer</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">private void openServer(URL url) &#123;</span><br><span class="line">       // find server.  </span><br><span class="line">       String key = url.getAddress(); </span><br><span class="line">       //client can export a service which&apos;s only for server to invoke</span><br><span class="line">       boolean isServer = url.getParameter(IS_SERVER_KEY, true);</span><br><span class="line">       if (isServer) &#123;</span><br><span class="line">           // 从缓存中获取ExchangeServer</span><br><span class="line">           ExchangeServer server = serverMap.get(key);</span><br><span class="line">           if (server == null) &#123;</span><br><span class="line">               synchronized (this) &#123;</span><br><span class="line">                   server = serverMap.get(key);</span><br><span class="line">                   if (server == null) &#123;</span><br><span class="line">                       serverMap.put(key, createServer(url));</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               // server supports reset, use together with override</span><br><span class="line">               server.reset(url);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先获取到服务提供者地址,例如<code>192.168.1.220:20880</code>,根据URL判断,如果是服务提供者,则从缓存中获取ExchangeServer,如果缓存为空,则创建,断点进入到<code>org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol#createServer</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private ExchangeServer createServer(URL url) &#123;</span><br><span class="line">    url = URLBuilder.from(url)</span><br><span class="line">            // send readonly event when server closes, it&apos;s enabled by default</span><br><span class="line">            .addParameterIfAbsent(CHANNEL_READONLYEVENT_SENT_KEY, Boolean.TRUE.toString())</span><br><span class="line">            // enable heartbeat by default</span><br><span class="line">            .addParameterIfAbsent(HEARTBEAT_KEY, String.valueOf(DEFAULT_HEARTBEAT))</span><br><span class="line">            .addParameter(CODEC_KEY, DubboCodec.NAME)</span><br><span class="line">            .build();</span><br><span class="line">    // 获取通信协议,默认为netty</span><br><span class="line">    String str = url.getParameter(SERVER_KEY, DEFAULT_REMOTING_SERVER);</span><br><span class="line"></span><br><span class="line">    if (str != null &amp;&amp; str.length() &gt; 0 &amp;&amp; !ExtensionLoader.getExtensionLoader(Transporter.class).hasExtension(str)) &#123;</span><br><span class="line">        throw new RpcException(&quot;Unsupported server type: &quot; + str + &quot;, url: &quot; + url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ExchangeServer server;</span><br><span class="line">    try &#123;</span><br><span class="line">        server = Exchangers.bind(url, requestHandler);</span><br><span class="line">    &#125; catch (RemotingException e) &#123;</span><br><span class="line">        throw new RpcException(&quot;Fail to start server(url: &quot; + url + &quot;) &quot; + e.getMessage(), e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    str = url.getParameter(CLIENT_KEY);</span><br><span class="line">    if (str != null &amp;&amp; str.length() &gt; 0) &#123;</span><br><span class="line">        Set&lt;String&gt; supportedTypes = ExtensionLoader.getExtensionLoader(Transporter.class).getSupportedExtensions();</span><br><span class="line">        if (!supportedTypes.contains(str)) &#123;</span><br><span class="line">            throw new RpcException(&quot;Unsupported client type: &quot; + str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return server;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先构建URL,添加属性参数,比如心跳、编码解码器参数,默认通信协议是netty,传入的<code>requestHandler</code>是ExchangeHandler类型,这个类十分重要,服务提供者在收到消费这请求时,会通过该处理器处理,实现方法的调用.然后根据自适应扩展判断是否存在协议通信类,然后再进行服务的绑定,进入<code>org.apache.dubbo.remoting.exchange.Exchangers#bind</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static ExchangeServer bind(URL url, ExchangeHandler handler) throws RemotingException &#123;</span><br><span class="line">        if (url == null) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;url == null&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (handler == null) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;handler == null&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        url = url.addParameterIfAbsent(Constants.CODEC_KEY, &quot;exchange&quot;);</span><br><span class="line">        return getExchanger(url).bind(url, handler);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>根据自适应扩展动态获取到对象<code>org.apache.dubbo.remoting.exchange.support.header.HeaderExchanger</code>,然后继续调用<code>org.apache.dubbo.remoting.exchange.support.header.HeaderExchanger#bind</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public ExchangeServer bind(URL url, ExchangeHandler handler) throws RemotingException &#123;</span><br><span class="line">    return new HeaderExchangeServer(Transporters.bind(url, new DecodeHandler(new HeaderExchangeHandler(handler))));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先对传入的<code>handler</code>进行包裹,然后调用<code>org.apache.dubbo.remoting.Transporters#bind</code>方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static Server bind(URL url, ChannelHandler... handlers) throws RemotingException &#123;</span><br><span class="line">        if (url == null) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;url == null&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (handlers == null || handlers.length == 0) &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;handlers == null&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        ChannelHandler handler;</span><br><span class="line">        if (handlers.length == 1) &#123;</span><br><span class="line">            handler = handlers[0];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            handler = new ChannelHandlerDispatcher(handlers);</span><br><span class="line">        &#125;</span><br><span class="line">        return getTransporter().bind(url, handler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>getTransporter</code>获取自适应扩展类,具体过程不再分析,然后根据URL动态获取具体的实现,断点进入<code>org.apache.dubbo.remoting.transport.netty4.NettyTransporter#bind</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> public Server bind(URL url, ChannelHandler listener) throws RemotingException &#123;</span><br><span class="line">        return new NettyServer(url, listener);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>创建了NettyServer对象,进入其构造函数:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public NettyServer(URL url, ChannelHandler handler) throws RemotingException &#123;</span><br><span class="line">      // you can customize name and type of client thread pool by THREAD_NAME_KEY and THREADPOOL_KEY in CommonConstants.</span><br><span class="line">      // the handler will be warped: MultiMessageHandler-&gt;HeartbeatHandler-&gt;handler</span><br><span class="line">      super(url, ChannelHandlers.wrap(handler, ExecutorUtil.setThreadName(url, SERVER_THREAD_POOL_NAME)));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>继续进入父类的构造函数<code>org.apache.dubbo.remoting.transport.AbstractServer#AbstractServer</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public AbstractServer(URL url, ChannelHandler handler) throws RemotingException &#123;</span><br><span class="line">        super(url, handler);</span><br><span class="line">        localAddress = getUrl().toInetSocketAddress();</span><br><span class="line"></span><br><span class="line">        String bindIp = getUrl().getParameter(Constants.BIND_IP_KEY, getUrl().getHost());</span><br><span class="line">        int bindPort = getUrl().getParameter(Constants.BIND_PORT_KEY, getUrl().getPort());</span><br><span class="line">        if (url.getParameter(ANYHOST_KEY, false) || NetUtils.isInvalidLocalHost(bindIp)) &#123;</span><br><span class="line">            bindIp = ANYHOST_VALUE;</span><br><span class="line">        &#125;</span><br><span class="line">        bindAddress = new InetSocketAddress(bindIp, bindPort);</span><br><span class="line">        this.accepts = url.getParameter(ACCEPTS_KEY, DEFAULT_ACCEPTS);</span><br><span class="line">        this.idleTimeout = url.getParameter(IDLE_TIMEOUT_KEY, DEFAULT_IDLE_TIMEOUT);</span><br><span class="line">        try &#123;</span><br><span class="line">            doOpen();</span><br><span class="line">            if (logger.isInfoEnabled()) &#123;</span><br><span class="line">                logger.info(&quot;Start &quot; + getClass().getSimpleName() + &quot; bind &quot; + getBindAddress() + &quot;, export &quot; + getLocalAddress());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Throwable t) &#123;</span><br><span class="line">            throw new RemotingException(url.toInetSocketAddress(), null, &quot;Failed to bind &quot; + getClass().getSimpleName()</span><br><span class="line">                    + &quot; on &quot; + getLocalAddress() + &quot;, cause: &quot; + t.getMessage(), t);</span><br><span class="line">        &#125;</span><br><span class="line">        //fixme replace this with better method</span><br><span class="line">        DataStore dataStore = ExtensionLoader.getExtensionLoader(DataStore.class).getDefaultExtension();</span><br><span class="line">        executor = (ExecutorService) dataStore.get(Constants.EXECUTOR_SERVICE_COMPONENT_KEY, Integer.toString(url.getPort()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>再进入父类构造函数:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public AbstractEndpoint(URL url, ChannelHandler handler) &#123;</span><br><span class="line">        super(url, handler);</span><br><span class="line">        // 编解码器</span><br><span class="line">        this.codec = getChannelCodec(url);</span><br><span class="line">        this.timeout = url.getPositiveParameter(TIMEOUT_KEY, DEFAULT_TIMEOUT);</span><br><span class="line">        this.connectTimeout = url.getPositiveParameter(Constants.CONNECT_TIMEOUT_KEY, Constants.DEFAULT_CONNECT_TIMEOUT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面会获取编解码器,默认获取的是<code>org.apache.dubbo.rpc.protocol.dubbo.DubboCountCodec</code>,再获取远程服务调用超时时间、netty连接超时时间.<br>再回到<code>org.apache.dubbo.remoting.transport.AbstractServer#AbstractServer</code>中,根据URL获取服务提供者的IP、端口号,据此创建对象 <code>InetSocketAddress</code>,进入<code>org.apache.dubbo.remoting.transport.netty4.NettyServer#doOpen</code>,该方法是模版方法,具体实现有子类完成:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void doOpen() throws Throwable &#123;</span><br><span class="line">    bootstrap = new ServerBootstrap();</span><br><span class="line"></span><br><span class="line">    bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory(&quot;NettyServerBoss&quot;, true));</span><br><span class="line">    workerGroup = new NioEventLoopGroup(getUrl().getPositiveParameter(IO_THREADS_KEY, Constants.DEFAULT_IO_THREADS),</span><br><span class="line">            new DefaultThreadFactory(&quot;NettyServerWorker&quot;, true));</span><br><span class="line"></span><br><span class="line">    final NettyServerHandler nettyServerHandler = new NettyServerHandler(getUrl(), this);</span><br><span class="line">    channels = nettyServerHandler.getChannels();</span><br><span class="line"></span><br><span class="line">    bootstrap.group(bossGroup, workerGroup)</span><br><span class="line">            .channel(NioServerSocketChannel.class)</span><br><span class="line">            .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)</span><br><span class="line">            .childOption(ChannelOption.SO_REUSEADDR, Boolean.TRUE)</span><br><span class="line">            .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)</span><br><span class="line">            .childHandler(new ChannelInitializer&lt;NioSocketChannel&gt;() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                protected void initChannel(NioSocketChannel ch) throws Exception &#123;</span><br><span class="line">                    // FIXME: should we use getTimeout()?</span><br><span class="line">                    int idleTimeout = UrlUtils.getIdleTimeout(getUrl());</span><br><span class="line">                    NettyCodecAdapter adapter = new NettyCodecAdapter(getCodec(), getUrl(), NettyServer.this);</span><br><span class="line">                    ch.pipeline()//.addLast(&quot;logging&quot;,new LoggingHandler(LogLevel.INFO))//for debug</span><br><span class="line">                            .addLast(&quot;decoder&quot;, adapter.getDecoder())</span><br><span class="line">                            .addLast(&quot;encoder&quot;, adapter.getEncoder())</span><br><span class="line">                            .addLast(&quot;server-idle-handler&quot;, new IdleStateHandler(0, 0, idleTimeout, MILLISECONDS))</span><br><span class="line">                            .addLast(&quot;handler&quot;, nettyServerHandler);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">    // bind 服务绑定</span><br><span class="line">    ChannelFuture channelFuture = bootstrap.bind(getBindAddress());</span><br><span class="line">    channelFuture.syncUninterruptibly();</span><br><span class="line">    channel = channelFuture.channel();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这里很清楚的看到netty相关的类了,在这里进行服务端口的暴露,关于netty相关知识在这里不作介绍了.</p>
-<h4 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h4><p>继续回到<code>org.apache.dubbo.registry.integration.RegistryProtocol#export</code>中.<br>然后获取Registry、注册服务提供者URL对象,然后在往注册中心注册服务,进入<code>org.apache.dubbo.registry.support.FailbackRegistry#register</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">    public void register(URL url) &#123;</span><br><span class="line">        super.register(url);</span><br><span class="line">        removeFailedRegistered(url);</span><br><span class="line">        removeFailedUnregistered(url);</span><br><span class="line">        try &#123;</span><br><span class="line">            // Sending a registration request to the server side</span><br><span class="line">            doRegister(url);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            Throwable t = e;</span><br><span class="line"></span><br><span class="line">            // If the startup detection is opened, the Exception is thrown directly.</span><br><span class="line">            boolean check = getUrl().getParameter(Constants.CHECK_KEY, true)</span><br><span class="line">                    &amp;&amp; url.getParameter(Constants.CHECK_KEY, true)</span><br><span class="line">                    &amp;&amp; !CONSUMER_PROTOCOL.equals(url.getProtocol());</span><br><span class="line">            boolean skipFailback = t instanceof SkipFailbackWrapperException;</span><br><span class="line">            if (check || skipFailback) &#123;</span><br><span class="line">                if (skipFailback) &#123;</span><br><span class="line">                    t = t.getCause();</span><br><span class="line">                &#125;</span><br><span class="line">                throw new IllegalStateException(&quot;Failed to register &quot; + url + &quot; to registry &quot; + getUrl().getAddress() + &quot;, cause: &quot; + t.getMessage(), t);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                logger.error(&quot;Failed to register &quot; + url + &quot;, waiting for retry, cause: &quot; + t.getMessage(), t);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // Record a failed registration request to a failed list, retry regularly</span><br><span class="line">            addFailedRegistered(url);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>在doRegister完成注册的逻辑:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public void doRegister(URL url) &#123;</span><br><span class="line">       try &#123;</span><br><span class="line">           zkClient.create(toUrlPath(url), url.getParameter(DYNAMIC_KEY, true));</span><br><span class="line">       &#125; catch (Throwable e) &#123;</span><br><span class="line">           throw new RpcException(&quot;Failed to register &quot; + url + &quot; to zookeeper &quot; + getUrl() + &quot;, cause: &quot; + e.getMessage(), e);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>进入<code>org.apache.dubbo.remoting.zookeeper.support.AbstractZookeeperClient#create</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public void create(String path, boolean ephemeral) &#123;</span><br><span class="line">       if (!ephemeral) &#123;</span><br><span class="line">           if(persistentExistNodePath.contains(path))&#123;</span><br><span class="line">               return;</span><br><span class="line">           &#125;</span><br><span class="line">           if (checkExists(path)) &#123;</span><br><span class="line">               persistentExistNodePath.add(path);</span><br><span class="line">               return;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       int i = path.lastIndexOf(&apos;/&apos;);</span><br><span class="line">       if (i &gt; 0) &#123;</span><br><span class="line">           create(path.substring(0, i), false);</span><br><span class="line">       &#125;</span><br><span class="line">       if (ephemeral) &#123;</span><br><span class="line">           createEphemeral(path);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           createPersistent(path);</span><br><span class="line">           persistentExistNodePath.add(path);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>依次创建持久结点:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/dubbo</span><br><span class="line">/dubbo/org.apache.dubbo.demo.DemoService</span><br><span class="line">/dubbo/org.apache.dubbo.demo.DemoService/providers</span><br></pre></td></tr></table></figure></p>
-<p>最后创建临时结点:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/dubbo/org.apache.dubbo.demo.DemoService/providers/dubbo%3A%2F%2F192.168.1.220%3A20880%2Forg.apache.dubbo.demo.DemoService%3Fanyhost%3Dtrue%26application%3Ddubbo-demo-api-provider%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dorg.apache.dubbo.demo.DemoService%26methods%3DsayHello%26pid%3D19865%26release%3D%26side%3Dprovider%26timestamp%3D1569551377814</span><br></pre></td></tr></table></figure></p>
-<p>此时服务往注册中心已经注册完成.</p>
-<h4 id="服务订阅"><a href="#服务订阅" class="headerlink" title="服务订阅"></a>服务订阅</h4><p>进入 <code>org.apache.dubbo.registry.support.FailbackRegistry#subscribe</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public void subscribe(URL url, NotifyListener listener) &#123;</span><br><span class="line">    super.subscribe(url, listener);</span><br><span class="line">    removeFailedSubscribed(url, listener);</span><br><span class="line">    try &#123;</span><br><span class="line">        // Sending a subscription request to the server side</span><br><span class="line">        doSubscribe(url, listener);</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        Throwable t = e;</span><br><span class="line"></span><br><span class="line">        List&lt;URL&gt; urls = getCacheUrls(url);</span><br><span class="line">        if (CollectionUtils.isNotEmpty(urls)) &#123;</span><br><span class="line">            notify(url, listener, urls);</span><br><span class="line">            logger.error(&quot;Failed to subscribe &quot; + url + &quot;, Using cached list: &quot; + urls + &quot; from cache file: &quot; + getUrl().getParameter(FILE_KEY, System.getProperty(&quot;user.home&quot;) + &quot;/dubbo-registry-&quot; + url.getHost() + &quot;.cache&quot;) + &quot;, cause: &quot; + t.getMessage(), t);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // If the startup detection is opened, the Exception is thrown directly.</span><br><span class="line">            boolean check = getUrl().getParameter(Constants.CHECK_KEY, true)</span><br><span class="line">                    &amp;&amp; url.getParameter(Constants.CHECK_KEY, true);</span><br><span class="line">            boolean skipFailback = t instanceof SkipFailbackWrapperException;</span><br><span class="line">            if (check || skipFailback) &#123;</span><br><span class="line">                if (skipFailback) &#123;</span><br><span class="line">                    t = t.getCause();</span><br><span class="line">                &#125;</span><br><span class="line">                throw new IllegalStateException(&quot;Failed to subscribe &quot; + url + &quot;, cause: &quot; + t.getMessage(), t);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                logger.error(&quot;Failed to subscribe &quot; + url + &quot;, waiting for retry, cause: &quot; + t.getMessage(), t);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // Record a failed registration request to a failed list, retry regularly</span><br><span class="line">        addFailedSubscribed(url, listener);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>继续进入方法<code>doSubscribe</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">public void doSubscribe(final URL url, final NotifyListener listener) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        if (ANY_VALUE.equals(url.getServiceInterface())) &#123;</span><br><span class="line">            String root = toRootPath();</span><br><span class="line">            ConcurrentMap&lt;NotifyListener, ChildListener&gt; listeners = zkListeners.get(url);</span><br><span class="line">            if (listeners == null) &#123;</span><br><span class="line">                zkListeners.putIfAbsent(url, new ConcurrentHashMap&lt;&gt;());</span><br><span class="line">                listeners = zkListeners.get(url);</span><br><span class="line">            &#125;</span><br><span class="line">            ChildListener zkListener = listeners.get(listener);</span><br><span class="line">            if (zkListener == null) &#123;</span><br><span class="line">                listeners.putIfAbsent(listener, (parentPath, currentChilds) -&gt; &#123;</span><br><span class="line">                    for (String child : currentChilds) &#123;</span><br><span class="line">                        child = URL.decode(child);</span><br><span class="line">                        if (!anyServices.contains(child)) &#123;</span><br><span class="line">                            anyServices.add(child);</span><br><span class="line">                            subscribe(url.setPath(child).addParameters(INTERFACE_KEY, child,</span><br><span class="line">                                    Constants.CHECK_KEY, String.valueOf(false)), listener);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                zkListener = listeners.get(listener);</span><br><span class="line">            &#125;</span><br><span class="line">            zkClient.create(root, false);</span><br><span class="line">            List&lt;String&gt; services = zkClient.addChildListener(root, zkListener);</span><br><span class="line">            if (CollectionUtils.isNotEmpty(services)) &#123;</span><br><span class="line">                for (String service : services) &#123;</span><br><span class="line">                    service = URL.decode(service);</span><br><span class="line">                    anyServices.add(service);</span><br><span class="line">                    subscribe(url.setPath(service).addParameters(INTERFACE_KEY, service,</span><br><span class="line">                            Constants.CHECK_KEY, String.valueOf(false)), listener);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            List&lt;URL&gt; urls = new ArrayList&lt;&gt;();</span><br><span class="line">            for (String path : toCategoriesPath(url)) &#123;</span><br><span class="line">                ConcurrentMap&lt;NotifyListener, ChildListener&gt; listeners = zkListeners.get(url);</span><br><span class="line">                if (listeners == null) &#123;</span><br><span class="line">                    zkListeners.putIfAbsent(url, new ConcurrentHashMap&lt;&gt;());</span><br><span class="line">                    listeners = zkListeners.get(url);</span><br><span class="line">                &#125;</span><br><span class="line">                ChildListener zkListener = listeners.get(listener);</span><br><span class="line">                if (zkListener == null) &#123;</span><br><span class="line">                    listeners.putIfAbsent(listener, (parentPath, currentChilds) -&gt; ZookeeperRegistry.this.notify(url, listener, toUrlsWithEmpty(url, parentPath, currentChilds)));</span><br><span class="line">                    zkListener = listeners.get(listener);</span><br><span class="line">                &#125;</span><br><span class="line">                zkClient.create(path, false);</span><br><span class="line">                List&lt;String&gt; children = zkClient.addChildListener(path, zkListener);</span><br><span class="line">                if (children != null) &#123;</span><br><span class="line">                    urls.addAll(toUrlsWithEmpty(url, path, children));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            notify(url, listener, urls);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Throwable e) &#123;</span><br><span class="line">        throw new RpcException(&quot;Failed to subscribe &quot; + url + &quot; to zookeeper &quot; + getUrl() + &quot;, cause: &quot; + e.getMessage(), e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面主要是往zk服务端注册客户端的监听回调,当zk服务端结点发生变化时,会通知zk客户端,具体进入 <code>org.apache.dubbo.registry.support.FailbackRegistry#notify</code>,该方法中调用 <code>org.apache.dubbo.registry.support.FailbackRegistry#doNotify</code>处理,继续调用父类<code>org.apache.dubbo.registry.support.AbstractRegistry#notify</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">protected void notify(URL url, NotifyListener listener, List&lt;URL&gt; urls) &#123;</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">        Map&lt;String, List&lt;URL&gt;&gt; categoryNotified = notified.computeIfAbsent(url, u -&gt; new ConcurrentHashMap&lt;&gt;());</span><br><span class="line">        for (Map.Entry&lt;String, List&lt;URL&gt;&gt; entry : result.entrySet()) &#123;</span><br><span class="line">            String category = entry.getKey();</span><br><span class="line">            List&lt;URL&gt; categoryList = entry.getValue();</span><br><span class="line">            categoryNotified.put(category, categoryList);</span><br><span class="line">            // 调用监听器通知</span><br><span class="line">            listener.notify(categoryList);</span><br><span class="line">            // We will update our cache file after each notification.</span><br><span class="line">            // When our Registry has a subscribe failure due to network jitter, we can return at least the existing cache URL.</span><br><span class="line">            // 持久化到磁盘文件</span><br><span class="line">            saveProperties(url);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先看监听器的notify方法,该方法又调用doOverrideIfNecessary进行处理:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void doOverrideIfNecessary() &#123;</span><br><span class="line">            final Invoker&lt;?&gt; invoker;</span><br><span class="line">            if (originInvoker instanceof InvokerDelegate) &#123;</span><br><span class="line">                invoker = ((InvokerDelegate&lt;?&gt;) originInvoker).getInvoker();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                invoker = originInvoker;</span><br><span class="line">            &#125;</span><br><span class="line">            //The origin invoker</span><br><span class="line">            URL originUrl = RegistryProtocol.this.getProviderUrl(invoker);</span><br><span class="line">            String key = getCacheKey(originInvoker);</span><br><span class="line">            ExporterChangeableWrapper&lt;?&gt; exporter = bounds.get(key);</span><br><span class="line">            if (exporter == null) &#123;</span><br><span class="line">                logger.warn(new IllegalStateException(&quot;error state, exporter should not be null&quot;));</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            //The current, may have been merged many times</span><br><span class="line">            URL currentUrl = exporter.getInvoker().getUrl();</span><br><span class="line">            //Merged with this configuration</span><br><span class="line">            URL newUrl = getConfigedInvokerUrl(configurators, originUrl);</span><br><span class="line">            newUrl = getConfigedInvokerUrl(providerConfigurationListener.getConfigurators(), newUrl);</span><br><span class="line">            newUrl = getConfigedInvokerUrl(serviceConfigurationListeners.get(originUrl.getServiceKey())</span><br><span class="line">                    .getConfigurators(), newUrl);</span><br><span class="line">            if (!currentUrl.equals(newUrl)) &#123;</span><br><span class="line">                RegistryProtocol.this.reExport(originInvoker, newUrl);</span><br><span class="line">                logger.info(&quot;exported provider url changed, origin url: &quot; + originUrl +</span><br><span class="line">                        &quot;, old export url: &quot; + currentUrl + &quot;, new export url: &quot; + newUrl);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面主要就是比较当前与最新的URL,如果不相等,则根据最新的URL重新进行服务的暴露.再回到<code>org.apache.dubbo.registry.support.AbstractRegistry#notify</code>中,下一步会把URL信息持久化到本地磁盘,感兴趣可自己分析代码,具体保存的目录及文件信息如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ cd .dubbo </span><br><span class="line">➜  .dubbo pwd</span><br><span class="line">/Users/lioswong/.dubbo</span><br><span class="line">➜  .dubbo cat dubbo-registry-dubbo-demo-api-provider-127.0.0.1:2181.cache </span><br><span class="line">#Dubbo Registry Cache</span><br><span class="line">#Sun Sep 29 11:13:03 CST 2019</span><br><span class="line">org.apache.dubbo.demo.DemoService=empty\://192.168.31.40\:20880/org.apache.dubbo.demo.DemoService?anyhost\=true&amp;application\=dubbo-demo-api-provider&amp;bind.ip\=192.168.31.40&amp;bind.port\=20880&amp;category\=configurators&amp;check\=false&amp;deprecated\=false&amp;dubbo\=2.0.2&amp;dynamic\=true&amp;generic\=false&amp;interface\=org.apache.dubbo.demo.DemoService&amp;methods\=sayHello&amp;pid\=8443&amp;release\=&amp;side\=provider&amp;timestamp\=1569602514942</span><br></pre></td></tr></table></figure></p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由于时间问题,分析的过程比较粗糙,上文主要介绍Wrapper和Invoker的创建、服务本地暴露、服务远程暴露、服务注册、服务订阅等,尤其理解Wrapper、Invoker的创建过程至关重要.</p>
+        <p>Dubbo SPI的暴露原理参考<a href="https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</a>,本文分析服务暴露过程,运行 <code>demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider</code> 中 <code>Application</code>:</p>
+<pre><code>public class Application {
+    public static void main(String[] args) throws Exception {
+        ServiceConfig&lt;DemoServiceImpl&gt; service = new ServiceConfig&lt;&gt;();
+        service.setApplication(new ApplicationConfig(&quot;dubbo-demo-api-provider&quot;));
+        service.setRegistry(new RegistryConfig(&quot;zookeeper://127.0.0.1:2181&quot;));
+        service.setInterface(DemoService.class);
+        service.setRef(new DemoServiceImpl());
+        service.export();
+        System.in.read();
+    }
+}
+</code></pre><p>先创建对象 <code>ServiceConfig</code> ,设置 <code>ApplicationConfig</code> 、<code>RegistryConfig</code> 、接口 、实现类对象,接下来导出服务,断点进入 <code>org.apache.dubbo.config.ServiceConfig#export</code> :</p>
+<pre><code> public synchronized void export() {
+        // 配置检查
+        checkAndUpdateSubConfigs();
+        // 是否导出
+        if (!shouldExport()) {
+            return;
+        }
+        // 是否延导出
+        if (shouldDelay()) {
+            DELAY_EXPORT_EXECUTOR.schedule(this::doExport, getDelay(), TimeUnit.MILLISECONDS);
+        } else {
+            // 直接暴露服务
+            doExport();
+        }
+    }
+</code></pre><p>首先配置检查(涉及检查和刷新,这里不多做介绍),根据属性配置 <code>export</code> 判断是否导出服务,根据 <code>delay</code> 判断是否延迟导出,比如某些应用需要预热处理,配置示例如下:</p>
+<pre><code>&lt;dubbo:service interface=&quot;org.apache.dubbo.demo.DemoService&quot; export=&quot;true&quot; delay=&quot;5000&quot;/&gt;
+</code></pre><p>进入 <code>org.apache.dubbo.config.ServiceConfig#doExport</code> 方法:</p>
+<pre><code>protected synchronized void doExport() {
+        if (unexported) {
+            throw new IllegalStateException(&quot;The service &quot; + interfaceClass.getName() + &quot; has already unexported!&quot;);
+        }
+        if (exported) {
+            return;
+        }
+        exported = true;
+
+        if (StringUtils.isEmpty(path)) {
+            path = interfaceName;
+        }
+        // 导出
+        doExportUrls();
+    }
+</code></pre><p>上面的代码很简单,直接断点进入 <code>org.apache.dubbo.config.ServiceConfig#doExportUrls()</code> :</p>
+<pre><code>    List&lt;URL&gt; registryURLs = loadRegistries(true);
+    for (ProtocolConfig protocolConfig : protocols) {
+        String pathKey = URL.buildKey(getContextPath(protocolConfig).map(p -&gt; p + &quot;/&quot; + path).orElse(path), group, version);
+        ProviderModel providerModel = new ProviderModel(pathKey, ref, interfaceClass);
+        ApplicationModel.initProviderModel(pathKey, providerModel);
+        doExportUrlsFor1Protocol(protocolConfig, registryURLs);
+    }
+</code></pre><p><code>org.apache.dubbo.config.AbstractInterfaceConfig#loadRegistries</code> 这个方法逻辑很简单,从 <code>RegistryConfig</code> 中获取协议配置属性然后封装成 <code>org.apache.dubbo.common.URL</code> ,返回协议列表,然后遍历列表,把服务以不同的协议以 <code>URL</code> 形式暴露,例如:</p>
+<pre><code>registry://127.0.0.1:2181/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-api-provider&amp;dubbo=2.0.2&amp;pid=7660&amp;registry=zookeeper&amp;timestamp=1569035160813
+</code></pre><p>进入 <code>org.apache.dubbo.config.ServiceConfig#doExportUrlsFor1Protocol</code> :</p>
+<pre><code>private void doExportUrlsFor1Protocol(ProtocolConfig protocolConfig, List&lt;URL&gt; registryURLs) {
+        String name = protocolConfig.getName();
+        // 默认协议dubbo
+        if (StringUtils.isEmpty(name)) {
+            name = DUBBO;
+        }
+
+        Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+        map.put(SIDE_KEY, PROVIDER_SIDE);
+
+        // 获取属性配置放入map中
+        appendRuntimeParameters(map);
+        appendParameters(map, metrics);
+        appendParameters(map, application);
+        appendParameters(map, module);
+        ...
+        ...
+        ...
+        if (ProtocolUtils.isGeneric(generic)) {
+            map.put(GENERIC_KEY, generic);
+            map.put(METHODS_KEY, ANY_VALUE);
+        } else {
+            // 获取revision
+            String revision = Version.getVersion(interfaceClass, version);
+            if (revision != null &amp;&amp; revision.length() &gt; 0) {
+                map.put(REVISION_KEY, revision);
+            }
+
+            String[] methods = Wrapper.getWrapper(interfaceClass).getMethodNames();  // a
+            if (methods.length == 0) {
+                logger.warn(&quot;No method found in service interface &quot; + interfaceClass.getName());
+                map.put(METHODS_KEY, ANY_VALUE);
+            } else {
+                map.put(METHODS_KEY, StringUtils.join(new HashSet&lt;String&gt;(Arrays.asList(methods)), &quot;,&quot;));
+            }
+        }
+        if (!ConfigUtils.isEmpty(token)) {
+            if (ConfigUtils.isDefault(token)) {
+                map.put(TOKEN_KEY, UUID.randomUUID().toString());
+            } else {
+                map.put(TOKEN_KEY, token);
+            }
+        }
+        // export service
+        String host = this.findConfigedHosts(protocolConfig, registryURLs, map);
+        // 获取服务暴露端口号
+        Integer port = this.findConfigedPorts(protocolConfig, name, map);
+        // 构建URL
+        URL url = new URL(name, host, port, getContextPath(protocolConfig).map(p -&gt; p + &quot;/&quot; + path).orElse(path), map);
+
+        if (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class) // b
+                .hasExtension(url.getProtocol())) { 
+            url = ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class) // c
+                    .getExtension(url.getProtocol()).getConfigurator(url).configure(url);
+        }
+
+        String scope = url.getParameter(SCOPE_KEY);
+        // don&#39;t export when none is configured
+        if (!SCOPE_NONE.equalsIgnoreCase(scope)) {  // d
+
+            // export to local if the config is not remote (export to remote only when config is remote)
+            if (!SCOPE_REMOTE.equalsIgnoreCase(scope)) { // e
+                exportLocal(url); 
+            }
+            // export to remote if the config is not local (export to local only when config is local)
+            if (!SCOPE_LOCAL.equalsIgnoreCase(scope)) { // f
+                if (CollectionUtils.isNotEmpty(registryURLs)) {
+                    for (URL registryURL : registryURLs) {
+                        //if protocol is only injvm ,not register
+                        if (LOCAL_PROTOCOL.equalsIgnoreCase(url.getProtocol())) {
+                            continue;
+                        }
+                        url = url.addParameterIfAbsent(DYNAMIC_KEY, registryURL.getParameter(DYNAMIC_KEY));
+                        URL monitorUrl = loadMonitor(registryURL);
+                        if (monitorUrl != null) {
+                            url = url.addParameterAndEncoded(MONITOR_KEY, monitorUrl.toFullString());
+                        }
+                        if (logger.isInfoEnabled()) {
+                            if (url.getParameter(REGISTER_KEY, true)) {
+                                logger.info(&quot;Register dubbo service &quot; + interfaceClass.getName() + &quot; url &quot; + url + &quot; to registry &quot; + registryURL);
+                            } else {
+                                logger.info(&quot;Export dubbo service &quot; + interfaceClass.getName() + &quot; to url &quot; + url);
+                            }
+                        }
+
+                        // For providers, this is used to enable custom proxy to generate invoker
+                        String proxy = url.getParameter(PROXY_KEY);
+                        if (StringUtils.isNotEmpty(proxy)) {
+                            registryURL = registryURL.addParameter(PROXY_KEY, proxy);
+                        }
+
+                        Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(EXPORT_KEY, url.toFullString()));  // f
+                        DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);
+
+                        Exporter&lt;?&gt; exporter = protocol.export(wrapperInvoker); // g
+                        exporters.add(exporter); // h
+                    }
+                } else {
+                    if (logger.isInfoEnabled()) {
+                        logger.info(&quot;Export dubbo service &quot; + interfaceClass.getName() + &quot; to url &quot; + url);
+                    }
+                    Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, url);
+                    DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);
+
+                    Exporter&lt;?&gt; exporter = protocol.export(wrapperInvoker);
+                    exporters.add(exporter);
+                }
+                /**
+                 * @since 2.7.0
+                 * ServiceData Store
+                 */
+                MetadataReportService metadataReportService = null;
+                if ((metadataReportService = getMetadataReportService()) != null) {
+                    metadataReportService.publishProvider(url);
+                }
+            }
+        }
+        this.urls.add(url);
+    }
+</code></pre><h4 id="构建包装类Wrapper"><a href="#构建包装类Wrapper" class="headerlink" title="构建包装类Wrapper"></a>构建包装类Wrapper</h4><p>这段代码比较长,首先把各个属性值放入到 <code>map</code> 中，断点到 <code>a</code> 处,进入 <code>org.apache.dubbo.common.bytecode.Wrapper#getWrapper</code> :</p>
+<pre><code>public static Wrapper getWrapper(Class&lt;?&gt; c) {
+        while (ClassGenerator.isDynamicClass(c)) // can not wrapper on dynamic class.
+        {
+            c = c.getSuperclass();
+        }
+
+        if (c == Object.class) {
+            return OBJECT_WRAPPER;
+        }
+
+        Wrapper ret = WRAPPER_MAP.get(c);
+        if (ret == null) {
+            ret = makeWrapper(c);
+            WRAPPER_MAP.put(c, ret);
+        }
+        return ret;
+    }
+</code></pre><p>首先从缓存中获取包装类 <code>Wrapper</code>,如果没有创建,进入 <code>org.apache.dubbo.common.bytecode.Wrapper#makeWrapper</code> :</p>
+<pre><code>private static Wrapper makeWrapper(Class&lt;?&gt; c) {
+        if (c.isPrimitive()) {
+            throw new IllegalArgumentException(&quot;Can not create wrapper for primitive type: &quot; + c);
+        }
+        String name = c.getName();
+        ClassLoader cl = ClassUtils.getClassLoader(c);
+        StringBuilder c1 = new StringBuilder(&quot;public void setPropertyValue(Object o, String n, Object v){ &quot;);
+        StringBuilder c2 = new StringBuilder(&quot;public Object getPropertyValue(Object o, String n){ &quot;);
+        StringBuilder c3 = new StringBuilder(&quot;public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws &quot; + InvocationTargetException.class.getName() + &quot;{ &quot;);
+        ...
+        ...
+        ...
+        ...
+        try {
+            Class&lt;?&gt; wc = cc.toClass();
+            // setup static field.
+            wc.getField(&quot;pts&quot;).set(null, pts);
+            wc.getField(&quot;pns&quot;).set(null, pts.keySet().toArray(new String[0]));
+            wc.getField(&quot;mns&quot;).set(null, mns.toArray(new String[0]));
+            wc.getField(&quot;dmns&quot;).set(null, dmns.toArray(new String[0]));
+            int ix = 0;
+            for (Method m : ms.values()) {
+                wc.getField(&quot;mts&quot; + ix++).set(null, m.getParameterTypes());
+            }
+            return (Wrapper) wc.newInstance();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            cc.release();
+            ms.clear();
+            mns.clear();
+            dmns.clear();
+        }
+    }
+</code></pre><p>上面的代码不具体分析,通过javassist动态生成类 <code>class org.apache.dubbo.common.bytecode.Wrapper0</code> :</p>
+<pre><code>public class org.apache.dubbo.common.bytecode.Wrapper0 extends Wrapper
+{
+    public static String[] pns;
+    public static java.util.Map pts;
+    public static String[] mns;
+    public static String[] dmns;
+    public static Class[] mts0;
+    public String[] getPropertyNames()
+    {
+        return pns;
+    }
+    public boolean hasProperty(String n)
+    {
+        return pts.containsKey($1);
+    }
+    public Class getPropertyType(String n)
+    {
+        return (Class)pts.get($1);
+    }
+    public String[] getMethodNames()
+    {
+        return mns;
+    }
+    public String[] getDeclaredMethodNames()
+    {
+        return dmns;
+    }
+    public void setPropertyValue(Object o, String n, Object v)
+    {
+        org.apache.dubbo.demo.DemoService w;
+        try
+        {
+            w = ((org.apache.dubbo.demo.DemoService)$1);
+        }
+        catch(Throwable e)
+        {
+            throw new IllegalArgumentException(e);
+        }
+        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.DemoService.&quot;);
+    }
+    public Object getPropertyValue(Object o, String n)
+    {
+        org.apache.dubbo.demo.DemoService w;
+        try
+        {
+            w = ((org.apache.dubbo.demo.DemoService)$1);
+        }
+        catch(Throwable e)
+        {
+            throw new IllegalArgumentException(e);
+        }
+        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.DemoService.&quot;);
+    }
+    // 根据方法名调用
+    public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws java.lang.reflect.InvocationTargetException
+    {
+        org.apache.dubbo.demo.DemoService w;
+        try
+        {
+            w = ((org.apache.dubbo.demo.DemoService)$1);
+        }
+        catch(Throwable e)
+        {
+            throw new IllegalArgumentException(e);
+        }
+        try
+        {
+            if( &quot;sayHello&quot;.equals( $2 )  &amp;&amp;  $3.length == 1 )
+            {
+                return ($w)w.sayHello((java.lang.String)$4[0]);
+            }
+        }
+        catch(Throwable e)
+        {
+            throw new java.lang.reflect.InvocationTargetException(e);
+        }
+        throw new org.apache.dubbo.common.bytecode.NoSuchMethodException(&quot;Not found method \&quot;&quot; + $2 + &quot;\&quot; in class org.apache.dubbo.demo.DemoService.&quot;);
+    }
+}
+</code></pre><p>有上面可知,包装类 <code>Wrapper0</code> 的 <code>invokeMethod</code> 方法里会真正调用服务方法。</p>
+<h4 id="本地暴露服务"><a href="#本地暴露服务" class="headerlink" title="本地暴露服务"></a>本地暴露服务</h4><p>回到 <code>org.apache.dubbo.config.ServiceConfig#doExportUrlsFor1Protocol</code> 方法的 <code>a</code> 处,返回的方法数组只有一个元素 <code>sayHello</code>, <code>d</code> 处会根据 <code>scope</code> 判断是否暴露服务, <code>e</code> 处如果不是远程暴露服务则暴露到本地,进入 <code>org.apache.dubbo.config.ServiceConfig#exportLocal</code> :</p>
+<pre><code>private void exportLocal(URL url) {
+    URL local = URLBuilder.from(url)
+    .setProtocol(LOCAL_PROTOCOL)
+    .setHost(LOCALHOST_VALUE)
+    .setPort(0)
+    .build();
+    Exporter&lt;?&gt; exporter = protocol.export(
+        PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, local));
+        exporters.add(exporter);
+        logger.info(&quot;Export dubbo service &quot; + interfaceClass.getName() + &quot; to local registry url : &quot; + local);
+}
+</code></pre><p>关于 <code>PROXY_FACTORY</code> 、<code>protocol</code> 的初始化过程不再分析,通过Dubbo SPI实现,生成的自适应代理工厂类 <code>PROXY_FACTORY</code> 对象为:</p>
+<pre><code>package org.apache.dubbo.rpc;
+import org.apache.dubbo.common.extension.ExtensionLoader;
+public class ProxyFactory$Adaptive implements org.apache.dubbo.rpc.ProxyFactory
+{
+    public java.lang.Object getProxy(org.apache.dubbo.rpc.Invoker arg0) throws org.apache.dubbo.rpc.RpcException
+    {
+        if (arg0 == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument == null&quot;);
+        if (arg0.getUrl() == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument getUrl() == null&quot;);
+        org.apache.dubbo.common.URL url = arg0.getUrl();
+        String extName = url.getParameter(&quot;proxy&quot;, &quot;javassist&quot;);
+        if(extName == null) throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.ProxyFactory) name from url (&quot; + url.toString() + &quot;) use keys([proxy])&quot;);
+        org.apache.dubbo.rpc.ProxyFactory extension = (org.apache.dubbo.rpc.ProxyFactory)ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.ProxyFactory.class).getExtension(extName);
+        return extension.getProxy(arg0);
+    }
+    public java.lang.Object getProxy(org.apache.dubbo.rpc.Invoker arg0, boolean arg1) throws org.apache.dubbo.rpc.RpcException
+    {
+        if (arg0 == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument == null&quot;);
+        if (arg0.getUrl() == null) throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument getUrl() == null&quot;);
+        org.apache.dubbo.common.URL url = arg0.getUrl();
+        String extName = url.getParameter(&quot;proxy&quot;, &quot;javassist&quot;);
+        if(extName == null) throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.ProxyFactory) name from url (&quot; + url.toString() + &quot;) use keys([proxy])&quot;);
+        org.apache.dubbo.rpc.ProxyFactory extension = (org.apache.dubbo.rpc.ProxyFactory)ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.ProxyFactory.class).getExtension(extName);
+        return extension.getProxy(arg0, arg1);
+    }
+    public org.apache.dubbo.rpc.Invoker getInvoker(java.lang.Object arg0, java.lang.Class arg1, org.apache.dubbo.common.URL arg2) throws org.apache.dubbo.rpc.RpcException
+    {
+        if (arg2 == null) throw new IllegalArgumentException(&quot;url == null&quot;);
+        org.apache.dubbo.common.URL url = arg2;
+        String extName = url.getParameter(&quot;proxy&quot;, &quot;javassist&quot;);
+        if(extName == null) throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.ProxyFactory) name from url (&quot; + url.toString() + &quot;) use keys([proxy])&quot;);
+        org.apache.dubbo.rpc.ProxyFactory extension = (org.apache.dubbo.rpc.ProxyFactory)ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.ProxyFactory.class).getExtension(extName);
+        return extension.getInvoker(arg0, arg1, arg2);
+    }
+}
+</code></pre><p><code>getInvoker</code> 方法中首先会获取 <code>extName</code>,默认值为 <code>javassist</code>,即默认的代理工厂类为 <code>org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory</code>, 在文章 <a href="https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">Dubbo SPI实现原理</a> 中知晓,该类会被包装类 <code>org.apache.dubbo.rpc.proxy.wrapper.StubProxyFactoryWrapper</code> 包裹,进入 <code>org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory#getInvoker</code> :</p>
+<pre><code> public &lt;T&gt; Invoker&lt;T&gt; getInvoker(T proxy, Class&lt;T&gt; type, URL url) {
+        // TODO Wrapper cannot handle this scenario correctly: the classname contains &#39;$&#39;
+        final Wrapper wrapper = Wrapper.getWrapper(proxy.getClass().getName().indexOf(&#39;$&#39;) &lt; 0 ? proxy.getClass() : type);
+        return new AbstractProxyInvoker&lt;T&gt;(proxy, type, url) {
+            @Override
+            protected Object doInvoke(T proxy, String methodName,
+                                      Class&lt;?&gt;[] parameterTypes,
+                                      Object[] arguments) throws Throwable {
+                return wrapper.invokeMethod(proxy, methodName, parameterTypes, arguments);
+            }
+        };
+    }
+</code></pre><p>首先会获取包装类,然后生成 <code>org.apache.dubbo.rpc.proxy.AbstractProxyInvoker</code> 的匿名类,并返回.在 <code>doInvoke</code> 方法中实现真正的方法调用,<br>关于包装类 <code>Wrapper</code> 的生成不具体分析,和上文分析一致,看下生成的包装类: </p>
+<pre><code>class org.apache.dubbo.common.bytecode.Wrapper1
+{
+    public static String[] pns;
+    public static java.util.Map pts;
+    public static String[] mns;
+    public static String[] dmns;
+    public static Class[] mts0;
+    public String[] getPropertyNames()
+    {
+        return pns;
+    }
+    public boolean hasProperty(String n)
+    {
+        return pts.containsKey($1);
+    }
+    public Class getPropertyType(String n)
+    {
+        return (Class)pts.get($1);
+    }
+    public String[] getMethodNames()
+    {
+        return mns;
+    }
+    public String[] getDeclaredMethodNames()
+    {
+        return dmns;
+    }
+    public void setPropertyValue(Object o, String n, Object v)
+    {
+        org.apache.dubbo.demo.provider.DemoServiceImpl w;
+        try
+        {
+            w = ((org.apache.dubbo.demo.provider.DemoServiceImpl)$1);
+        }
+        catch(Throwable e)
+        {
+            throw new IllegalArgumentException(e);
+        }
+        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.provider.DemoServiceImpl.&quot;);
+    }
+    public Object getPropertyValue(Object o, String n)
+    {
+        org.apache.dubbo.demo.provider.DemoServiceImpl w;
+        try
+        {
+            w = ((org.apache.dubbo.demo.provider.DemoServiceImpl)$1);
+        }
+        catch(Throwable e)
+        {
+            throw new IllegalArgumentException(e);
+        }
+        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException(&quot;Not found property \&quot;&quot; + $2 + &quot;\&quot; field or setter method in class org.apache.dubbo.demo.provider.DemoServiceImpl.&quot;);
+    }
+    public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws java.lang.reflect.InvocationTargetException
+    {
+        org.apache.dubbo.demo.provider.DemoServiceImpl w;
+        try
+        {
+            w = ((org.apache.dubbo.demo.provider.DemoServiceImpl)$1);
+        }
+        catch(Throwable e)
+        {
+            throw new IllegalArgumentException(e);
+        }
+        try
+        {
+            if( &quot;sayHello&quot;.equals( $2 )  &amp;&amp;  $3.length == 1 )
+            {
+                return ($w)w.sayHello((java.lang.String)$4[0]);
+            }
+        }
+        catch(Throwable e)
+        {
+            throw new java.lang.reflect.InvocationTargetException(e);
+        }
+        throw new org.apache.dubbo.common.bytecode.NoSuchMethodException(&quot;Not found method \&quot;&quot; + $2 + &quot;\&quot; in class org.apache.dubbo.demo.provider.DemoServiceImpl.&quot;);
+    }
+}
+</code></pre><p>invokeMethod方法的内部逻辑十分清晰,就不多做分析,继续回到 <code>org.apache.dubbo.config.ServiceConfig#exportLocal</code> 方法中,上面 <code>Invoker</code> 对象已经生成,然后就导出服务,在<a href="https://lioswong.github.io/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">Dubbo SPI实现原理</a>中分析过,生成的 <code>Protocol</code> 会被包装类包裹,由于是本地暴露,所以结构为:</p>
+<pre><code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper
+   org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper
+      org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol
+</code></pre><p>即首先会调用 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#export</code> 方法,然后再调用 <code>org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper#export</code> 方法,最后调用 <code>org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol#export</code> 方法,首先进入 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#export</code> 方法:</p>
+<pre><code> public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException {
+        // 如果协议为registry,直接暴露
+        if (REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) {
+            return protocol.export(invoker);
+        }
+        // 构建过滤器调用链
+        return protocol.export(buildInvokerChain(invoker, SERVICE_FILTER_KEY, CommonConstants.PROVIDER));
+    }
+</code></pre><p>上面代码注释已经说明,如果协议是非registry,则会调用 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#buildInvokerChain</code> 方法,进行过滤器调用链的组装,进入该方法:</p>
+<pre><code>private static &lt;T&gt; Invoker&lt;T&gt; buildInvokerChain(final Invoker&lt;T&gt; invoker, String key, String group) {
+        Invoker&lt;T&gt; last = invoker;
+        // 自适应扩展获取过滤器
+        List&lt;Filter&gt; filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);
+
+        if (!filters.isEmpty()) {
+            for (int i = filters.size() - 1; i &gt;= 0; i--) {
+                final Filter filter = filters.get(i);
+                final Invoker&lt;T&gt; next = last;
+                last = new Invoker&lt;T&gt;() {
+
+                    @Override
+                    public Class&lt;T&gt; getInterface() {
+                        return invoker.getInterface();
+                    }
+
+                    @Override
+                    public URL getUrl() {
+                        return invoker.getUrl();
+                    }
+
+                    @Override
+                    public boolean isAvailable() {
+                        return invoker.isAvailable();
+                    }
+
+                    @Override
+                    public Result invoke(Invocation invocation) throws RpcException {
+                        Result asyncResult;
+                        try {
+                            asyncResult = filter.invoke(next, invocation);
+                        } catch (Exception e) {
+                            // onError callback
+                            if (filter instanceof ListenableFilter) {
+                                Filter.Listener listener = ((ListenableFilter) filter).listener();
+                                if (listener != null) {
+                                    listener.onError(e, invoker, invocation);
+                                }
+                            }
+                            throw e;
+                        }
+                        return asyncResult;
+                    }
+
+                    @Override
+                    public void destroy() {
+                        invoker.destroy();
+                    }
+
+                    @Override
+                    public String toString() {
+                        return invoker.toString();
+                    }
+                };
+            }
+        }
+        return new CallbackRegistrationInvoker&lt;&gt;(last, filters);
+    }
+</code></pre><p>上面主要根据自适应扩展获取过滤器,然后循环过滤器列表,创建匿名的 <code>Invoker</code> 类,在<code>invoke</code>方法中调用过滤器的<code>invoke</code>方法,实现一些其他功能逻辑,获取的过滤器如下:</p>
+<pre><code>org.apache.dubbo.rpc.filter.ExceptionFilter
+org.apache.dubbo.monitor.support.MonitorFilter
+org.apache.dubbo.rpc.filter.TimeoutFilter
+org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter
+org.apache.dubbo.rpc.filter.ContextFilter
+org.apache.dubbo.rpc.filter.GenericFilter
+org.apache.dubbo.rpc.filter.ClassLoaderFilter
+org.apache.dubbo.rpc.filter.EchoFilter
+</code></pre><p>根据过滤器的名称就大概知道功能,获取过滤器的过程就不多做分析,感兴趣可以调试分析,回到 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper#export</code> 方法中,至此,过滤器链已构建完成,下一步继续调用包装类<code>ProtocolListenerWrapper</code>的<code>org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper#export</code>方法:</p>
+<pre><code>public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException {
+        // 如果协议为registry,直接暴露
+        if (REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) {
+            return protocol.export(invoker);
+        }
+        // 
+        return new ListenerExporterWrapper&lt;T&gt;(protocol.export(invoker),
+                Collections.unmodifiableList(ExtensionLoader.getExtensionLoader(ExporterListener.class)
+                        .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)));
+    }
+</code></pre><p>如果协议为registry,直接暴露,否则会先暴露,然后获取监听器列表,构建ListenerExporterWrapper对象返回.由于本地暴露,所以直接导出到本地, 进入到 <code>org.apache.dubbo.rpc.protocol.injvm.InjvmProtocol#export</code>:</p>
+<pre><code>public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException {
+        return new InjvmExporter&lt;T&gt;(invoker, invoker.getUrl().getServiceKey(), exporterMap);
+    }
+</code></pre><p>直接创建对象 <code>InjvmExporter</code> 返回,并把 <code>InjvmExporter</code> 放入缓存 <code>exporterMap</code>中.回到 <code>org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper#export</code>中,本地服务导出很简单,然后通过 </p>
+<pre><code>ExtensionLoader.getExtensionLoader(ExporterListener.class)
+                        .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)
+</code></pre><p>自适应扩展获取监听器列表,该过程不再分析,然后进入到 <code>org.apache.dubbo.rpc.listener.ListenerExporterWrapper#ListenerExporterWrapper</code> 中:</p>
+<pre><code>    public ListenerExporterWrapper(Exporter&lt;T&gt; exporter, List&lt;ExporterListener&gt; listeners) {
+        // 如果exporter为空则抛异常
+        if (exporter == null) {
+            throw new IllegalArgumentException(&quot;exporter == null&quot;);
+        }
+        this.exporter = exporter;
+        this.listeners = listeners;
+        if (CollectionUtils.isNotEmpty(listeners)) {
+            RuntimeException exception = null;
+            // 循环调用监听器
+            for (ExporterListener listener : listeners) {
+                if (listener != null) {
+                    try {
+                        listener.exported(this);
+                    } catch (RuntimeException t) {
+                        logger.error(t.getMessage(), t);
+                        exception = t;
+                    }
+                }
+            }
+            if (exception != null) {
+                throw exception;
+            }
+        }
+    }
+</code></pre><p>调试过程中发现,<code>listeners</code> 为空,也就是这里dubbo没有实现自己的监听器,所以用户可以在服务暴露完成或者不暴露添加自定义监听器,用于业务逻辑的处理.<br>分析到这里,本地暴露基本完成,回到 <code>org.apache.dubbo.config.ServiceConfig#exportLocal</code> 中,暴露结束后,会把 <code>exporter</code> 放入到缓存中.</p>
+<h4 id="服务远程暴露"><a href="#服务远程暴露" class="headerlink" title="服务远程暴露"></a>服务远程暴露</h4><p>让我们再回到 <code>org.apache.dubbo.config.ServiceConfig#doExportUrlsFor1Protocol</code>,下面判断如果没有配置本地暴露,则远程暴露,然后循环协议列表 <code>registryURLs</code> 逐个暴露服务,我们着重分析以下几行代码:</p>
+<pre><code>Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(EXPORT_KEY, url.toFullString()));
+DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);
+Exporter&lt;?&gt; exporter = protocol.export(wrapperInvoker);
+exporters.add(exporter);
+</code></pre><p>关于 <code>invoker</code> 的获取,在本地暴露时已经分析,由于本地依据暴露完成,所以 <code>JavassistProxyFactory</code>、<code>Wrapper</code>直接从缓存中获取即可,不再分析.然后构建对象 <code>DelegateProviderMetaDataInvoker</code>,然后服务导出,由本地导出可知,通过自适应扩展动态获取的 <code>RegistryProtocol</code> 对象被对象 <code>ProtocolFilterWrapper</code>、<code>ProtocolListenerWrapper</code> 包裹,但是注意,由于此时协议为<code>registry</code>,所以再这两个类中导出时不作任何处理,直接进入 <code>org.apache.dubbo.registry.integration.RegistryProtocol#export</code>:</p>
+<pre><code>    public &lt;T&gt; Exporter&lt;T&gt; export(final Invoker&lt;T&gt; originInvoker) throws RpcException {
+        // 获取URL,用于向注册中心注册
+        URL registryUrl = getRegistryUrl(originInvoker);
+        // url to export locally  获取URL用于导出服务
+        URL providerUrl = getProviderUrl(originInvoker);
+
+        // Subscribe the override data
+        // FIXME When the provider subscribes, it will affect the scene : a certain JVM exposes the service and call
+        //  the same service. Because the subscribed is cached key with the name of the service, it causes the
+        //  subscription information to cover.
+        final URL overrideSubscribeUrl = getSubscribedOverrideUrl(providerUrl);
+        final OverrideListener overrideSubscribeListener = new OverrideListener(overrideSubscribeUrl, originInvoker);
+        overrideListeners.put(overrideSubscribeUrl, overrideSubscribeListener);
+
+        providerUrl = overrideUrlWithConfig(providerUrl, overrideSubscribeListener);
+        //export invoker 导出服务
+        final ExporterChangeableWrapper&lt;T&gt; exporter = doLocalExport(originInvoker, providerUrl);
+
+        // url to registry
+        final Registry registry = getRegistry(originInvoker);
+        final URL registeredProviderUrl = getRegisteredProviderUrl(providerUrl, registryUrl);
+        ProviderInvokerWrapper&lt;T&gt; providerInvokerWrapper = ProviderConsumerRegTable.registerProvider(originInvoker,
+                registryUrl, registeredProviderUrl);
+        //to judge if we need to delay publish
+        boolean register = registeredProviderUrl.getParameter(&quot;register&quot;, true);
+        if (register) {
+            register(registryUrl, registeredProviderUrl);
+            providerInvokerWrapper.setReg(true);
+        }
+
+        // Deprecated! Subscribe to override rules in 2.6.x or before.
+        registry.subscribe(overrideSubscribeUrl, overrideSubscribeListener);
+
+        exporter.setRegisterUrl(registeredProviderUrl);
+        exporter.setSubscribeUrl(overrideSubscribeUrl);
+        //Ensure that a new exporter instance is returned every time export
+        return new DestroyableExporter&lt;&gt;(exporter);
+    }
+</code></pre><p>首先获取注册URL,在后面往注册中心注册服务会用到,然后获取服务提供者URL,用于服务导出,例如:</p>
+<pre><code>dubbo://192.168.1.220:20880/org.apache.dubbo.demo.DemoService?anyhost=true&amp;application=dubbo-demo-api-provider&amp;bind.ip=192.168.1.220&amp;bind.port=20880&amp;deprecated=false&amp;dubbo=2.0.2&amp;dynamic=true&amp;generic=false&amp;interface=org.apache.dubbo.demo.DemoService&amp;methods=sayHello&amp;pid=11557&amp;release=&amp;side=provider&amp;timestamp=1569413558031
+</code></pre><p>断点进入<code>org.apache.dubbo.registry.integration.RegistryProtocol#doLocalExport</code>:</p>
+<pre><code>private &lt;T&gt; ExporterChangeableWrapper&lt;T&gt; doLocalExport(final Invoker&lt;T&gt; originInvoker, URL providerUrl) {
+        String key = getCacheKey(originInvoker);
+        return (ExporterChangeableWrapper&lt;T&gt;) bounds.computeIfAbsent(key, s -&gt; {
+            // 创建InvokerDelegate封装originInvoker, providerUrl
+            Invoker&lt;?&gt; invokerDelegate = new InvokerDelegate&lt;&gt;(originInvoker, providerUrl);
+            return new ExporterChangeableWrapper&lt;&gt;((Exporter&lt;T&gt;) protocol.export(invokerDelegate), originInvoker);
+        });
+    }
+</code></pre><p>首先从缓存中获取key-value的值,如果key-value值不存在,则重新获取,再重新获取时,就需要暴露服务,一般key为:</p>
+<pre><code>dubbo://192.168.1.220:20880/org.apache.dubbo.demo.DemoService?anyhost=true&amp;application=dubbo-demo-api-provider&amp;bind.ip=192.168.1.220&amp;bind.port=20880&amp;deprecated=false&amp;dubbo=2.0.2&amp;generic=false&amp;interface=org.apache.dubbo.demo.DemoService&amp;methods=sayHello&amp;pid=11557&amp;release=&amp;side=provider&amp;timestamp=1569413558031
+</code></pre><p>暴露服务时,还是通过Dubbo SPI自适应扩展实现,动态获取到的对象结构如下:</p>
+<pre><code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper
+  org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper
+     org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol
+</code></pre><p><code>DubboProtocol</code> 被包装类包装,所以在导出时首先调用的是 <code>ProtocolFilterWrapper</code>的<code>export</code> 方法,同样与本地服务导出一样,同样会构建过滤器链,这里就不再重述;然后继续调用 <code>ProtocolListenerWrapper</code>的 <code>export</code> 方法,在该方法中,首先进行服务的暴露,然后再根据自适应扩展获取监听器类列表,再构建<code>ListenerExporterWrapper</code>对象返回,与本地暴露一样.但是这里服务暴露会调用 <code>org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol#export</code>:</p>
+<pre><code>public &lt;T&gt; Exporter&lt;T&gt; export(Invoker&lt;T&gt; invoker) throws RpcException {
+    URL url = invoker.getUrl();
+
+    // export service.
+    String key = serviceKey(url);  
+    DubboExporter&lt;T&gt; exporter = new DubboExporter&lt;T&gt;(invoker, key, exporterMap);
+    exporterMap.put(key, exporter);
+
+    //export an stub service for dispatching event
+    Boolean isStubSupportEvent = url.getParameter(STUB_EVENT_KEY, DEFAULT_STUB_EVENT);
+    Boolean isCallbackservice = url.getParameter(IS_CALLBACK_SERVICE, false);
+    if (isStubSupportEvent &amp;&amp; !isCallbackservice) {
+        String stubServiceMethods = url.getParameter(STUB_EVENT_METHODS_KEY);
+        if (stubServiceMethods == null || stubServiceMethods.length() == 0) {
+            if (logger.isWarnEnabled()) {
+                logger.warn(new IllegalStateException(&quot;consumer [&quot; + url.getParameter(INTERFACE_KEY) +
+                &quot;], has set stubproxy support event ,but no stub methods founded.&quot;));
+            }
+            } else {
+                stubServiceMethodsMap.put(url.getServiceKey(), stubServiceMethods);
+            }
+        }
+        openServer(url);
+        optimizeSerialization(url);
+        return exporter;
+}
+</code></pre><p>首先获取service key,这里的值为<code>org.apache.dubbo.demo.DemoService:20880</code>,然后创建DubboExporter对象,放入缓存Map中,直接进入到<code>org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol#openServer</code>:</p>
+<pre><code> private void openServer(URL url) {
+        // find server.  
+        String key = url.getAddress(); 
+        //client can export a service which&#39;s only for server to invoke
+        boolean isServer = url.getParameter(IS_SERVER_KEY, true);
+        if (isServer) {
+            // 从缓存中获取ExchangeServer
+            ExchangeServer server = serverMap.get(key);
+            if (server == null) {
+                synchronized (this) {
+                    server = serverMap.get(key);
+                    if (server == null) {
+                        serverMap.put(key, createServer(url));
+                    }
+                }
+            } else {
+                // server supports reset, use together with override
+                server.reset(url);
+            }
+        }
+    }
+</code></pre><p>首先获取到服务提供者地址,例如<code>192.168.1.220:20880</code>,根据URL判断,如果是服务提供者,则从缓存中获取ExchangeServer,如果缓存为空,则创建,断点进入到<code>org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol#createServer</code>:</p>
+<pre><code>    private ExchangeServer createServer(URL url) {
+        url = URLBuilder.from(url)
+                // send readonly event when server closes, it&#39;s enabled by default
+                .addParameterIfAbsent(CHANNEL_READONLYEVENT_SENT_KEY, Boolean.TRUE.toString())
+                // enable heartbeat by default
+                .addParameterIfAbsent(HEARTBEAT_KEY, String.valueOf(DEFAULT_HEARTBEAT))
+                .addParameter(CODEC_KEY, DubboCodec.NAME)
+                .build();
+        // 获取通信协议,默认为netty
+        String str = url.getParameter(SERVER_KEY, DEFAULT_REMOTING_SERVER);
+
+        if (str != null &amp;&amp; str.length() &gt; 0 &amp;&amp; !ExtensionLoader.getExtensionLoader(Transporter.class).hasExtension(str)) {
+            throw new RpcException(&quot;Unsupported server type: &quot; + str + &quot;, url: &quot; + url);
+        }
+
+        ExchangeServer server;
+        try {
+            server = Exchangers.bind(url, requestHandler);
+        } catch (RemotingException e) {
+            throw new RpcException(&quot;Fail to start server(url: &quot; + url + &quot;) &quot; + e.getMessage(), e);
+        }
+
+        str = url.getParameter(CLIENT_KEY);
+        if (str != null &amp;&amp; str.length() &gt; 0) {
+            Set&lt;String&gt; supportedTypes = ExtensionLoader.getExtensionLoader(Transporter.class).getSupportedExtensions();
+            if (!supportedTypes.contains(str)) {
+                throw new RpcException(&quot;Unsupported client type: &quot; + str);
+            }
+        }
+
+        return server;
+    }
+</code></pre><p>首先构建URL,添加属性参数,比如心跳、编码解码器参数,默认通信协议是netty,传入的<code>requestHandler</code>是ExchangeHandler类型,这个类十分重要,服务提供者在收到消费这请求时,会通过该处理器处理,实现方法的调用.然后根据自适应扩展判断是否存在协议通信类,然后再进行服务的绑定,进入<code>org.apache.dubbo.remoting.exchange.Exchangers#bind</code>:</p>
+<pre><code>public static ExchangeServer bind(URL url, ExchangeHandler handler) throws RemotingException {
+        if (url == null) {
+            throw new IllegalArgumentException(&quot;url == null&quot;);
+        }
+        if (handler == null) {
+            throw new IllegalArgumentException(&quot;handler == null&quot;);
+        }
+        url = url.addParameterIfAbsent(Constants.CODEC_KEY, &quot;exchange&quot;);
+        return getExchanger(url).bind(url, handler);
+    }
+</code></pre><p>根据自适应扩展动态获取到对象<code>org.apache.dubbo.remoting.exchange.support.header.HeaderExchanger</code>,然后继续调用<code>org.apache.dubbo.remoting.exchange.support.header.HeaderExchanger#bind</code>:</p>
+<pre><code>public ExchangeServer bind(URL url, ExchangeHandler handler) throws RemotingException {
+    return new HeaderExchangeServer(Transporters.bind(url, new DecodeHandler(new HeaderExchangeHandler(handler))));
+}
+</code></pre><p>首先对传入的<code>handler</code>进行包裹,然后调用<code>org.apache.dubbo.remoting.Transporters#bind</code>方法:</p>
+<pre><code>public static Server bind(URL url, ChannelHandler... handlers) throws RemotingException {
+        if (url == null) {
+            throw new IllegalArgumentException(&quot;url == null&quot;);
+        }
+        if (handlers == null || handlers.length == 0) {
+            throw new IllegalArgumentException(&quot;handlers == null&quot;);
+        }
+        ChannelHandler handler;
+        if (handlers.length == 1) {
+            handler = handlers[0];
+        } else {
+            handler = new ChannelHandlerDispatcher(handlers);
+        }
+        return getTransporter().bind(url, handler);
+}
+</code></pre><p><code>getTransporter</code>获取自适应扩展类,具体过程不再分析,然后根据URL动态获取具体的实现,断点进入<code>org.apache.dubbo.remoting.transport.netty4.NettyTransporter#bind</code>:</p>
+<pre><code> public Server bind(URL url, ChannelHandler listener) throws RemotingException {
+        return new NettyServer(url, listener);
+}
+</code></pre><p>创建了NettyServer对象,进入其构造函数:</p>
+<pre><code>  public NettyServer(URL url, ChannelHandler handler) throws RemotingException {
+        // you can customize name and type of client thread pool by THREAD_NAME_KEY and THREADPOOL_KEY in CommonConstants.
+        // the handler will be warped: MultiMessageHandler-&gt;HeartbeatHandler-&gt;handler
+        super(url, ChannelHandlers.wrap(handler, ExecutorUtil.setThreadName(url, SERVER_THREAD_POOL_NAME)));
+    }
+</code></pre><p>继续进入父类的构造函数<code>org.apache.dubbo.remoting.transport.AbstractServer#AbstractServer</code>:</p>
+<pre><code>public AbstractServer(URL url, ChannelHandler handler) throws RemotingException {
+        super(url, handler);
+        localAddress = getUrl().toInetSocketAddress();
+
+        String bindIp = getUrl().getParameter(Constants.BIND_IP_KEY, getUrl().getHost());
+        int bindPort = getUrl().getParameter(Constants.BIND_PORT_KEY, getUrl().getPort());
+        if (url.getParameter(ANYHOST_KEY, false) || NetUtils.isInvalidLocalHost(bindIp)) {
+            bindIp = ANYHOST_VALUE;
+        }
+        bindAddress = new InetSocketAddress(bindIp, bindPort);
+        this.accepts = url.getParameter(ACCEPTS_KEY, DEFAULT_ACCEPTS);
+        this.idleTimeout = url.getParameter(IDLE_TIMEOUT_KEY, DEFAULT_IDLE_TIMEOUT);
+        try {
+            doOpen();
+            if (logger.isInfoEnabled()) {
+                logger.info(&quot;Start &quot; + getClass().getSimpleName() + &quot; bind &quot; + getBindAddress() + &quot;, export &quot; + getLocalAddress());
+            }
+        } catch (Throwable t) {
+            throw new RemotingException(url.toInetSocketAddress(), null, &quot;Failed to bind &quot; + getClass().getSimpleName()
+                    + &quot; on &quot; + getLocalAddress() + &quot;, cause: &quot; + t.getMessage(), t);
+        }
+        //fixme replace this with better method
+        DataStore dataStore = ExtensionLoader.getExtensionLoader(DataStore.class).getDefaultExtension();
+        executor = (ExecutorService) dataStore.get(Constants.EXECUTOR_SERVICE_COMPONENT_KEY, Integer.toString(url.getPort()));
+}
+</code></pre><p>再进入父类构造函数:</p>
+<pre><code>public AbstractEndpoint(URL url, ChannelHandler handler) {
+        super(url, handler);
+        // 编解码器
+        this.codec = getChannelCodec(url);
+        this.timeout = url.getPositiveParameter(TIMEOUT_KEY, DEFAULT_TIMEOUT);
+        this.connectTimeout = url.getPositiveParameter(Constants.CONNECT_TIMEOUT_KEY, Constants.DEFAULT_CONNECT_TIMEOUT);
+}
+</code></pre><p>上面会获取编解码器,默认获取的是<code>org.apache.dubbo.rpc.protocol.dubbo.DubboCountCodec</code>,再获取远程服务调用超时时间、netty连接超时时间.<br>再回到<code>org.apache.dubbo.remoting.transport.AbstractServer#AbstractServer</code>中,根据URL获取服务提供者的IP、端口号,据此创建对象 <code>InetSocketAddress</code>,进入<code>org.apache.dubbo.remoting.transport.netty4.NettyServer#doOpen</code>,该方法是模版方法,具体实现有子类完成: </p>
+<pre><code>    @Override
+    protected void doOpen() throws Throwable {
+        bootstrap = new ServerBootstrap();
+
+        bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory(&quot;NettyServerBoss&quot;, true));
+        workerGroup = new NioEventLoopGroup(getUrl().getPositiveParameter(IO_THREADS_KEY, Constants.DEFAULT_IO_THREADS),
+                new DefaultThreadFactory(&quot;NettyServerWorker&quot;, true));
+
+        final NettyServerHandler nettyServerHandler = new NettyServerHandler(getUrl(), this);
+        channels = nettyServerHandler.getChannels();
+
+        bootstrap.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
+                .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
+                .childOption(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
+                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childHandler(new ChannelInitializer&lt;NioSocketChannel&gt;() {
+                    @Override
+                    protected void initChannel(NioSocketChannel ch) throws Exception {
+                        // FIXME: should we use getTimeout()?
+                        int idleTimeout = UrlUtils.getIdleTimeout(getUrl());
+                        NettyCodecAdapter adapter = new NettyCodecAdapter(getCodec(), getUrl(), NettyServer.this);
+                        ch.pipeline()//.addLast(&quot;logging&quot;,new LoggingHandler(LogLevel.INFO))//for debug
+                                .addLast(&quot;decoder&quot;, adapter.getDecoder())
+                                .addLast(&quot;encoder&quot;, adapter.getEncoder())
+                                .addLast(&quot;server-idle-handler&quot;, new IdleStateHandler(0, 0, idleTimeout, MILLISECONDS))
+                                .addLast(&quot;handler&quot;, nettyServerHandler);
+                    }
+                });
+        // bind 服务绑定
+        ChannelFuture channelFuture = bootstrap.bind(getBindAddress());
+        channelFuture.syncUninterruptibly();
+        channel = channelFuture.channel();
+
+    }
+</code></pre><p>这里很清楚的看到netty相关的类了,在这里进行服务端口的暴露,关于netty相关知识在这里不作介绍了.</p>
+<h4 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h4><p>继续回到<code>org.apache.dubbo.registry.integration.RegistryProtocol#export</code>中.<br>然后获取Registry、注册服务提供者URL对象,然后在往注册中心注册服务,进入<code>org.apache.dubbo.registry.support.FailbackRegistry#register</code>:</p>
+<pre><code>@Override
+    public void register(URL url) {
+        super.register(url);
+        removeFailedRegistered(url);
+        removeFailedUnregistered(url);
+        try {
+            // Sending a registration request to the server side
+            doRegister(url);
+        } catch (Exception e) {
+            Throwable t = e;
+
+            // If the startup detection is opened, the Exception is thrown directly.
+            boolean check = getUrl().getParameter(Constants.CHECK_KEY, true)
+                    &amp;&amp; url.getParameter(Constants.CHECK_KEY, true)
+                    &amp;&amp; !CONSUMER_PROTOCOL.equals(url.getProtocol());
+            boolean skipFailback = t instanceof SkipFailbackWrapperException;
+            if (check || skipFailback) {
+                if (skipFailback) {
+                    t = t.getCause();
+                }
+                throw new IllegalStateException(&quot;Failed to register &quot; + url + &quot; to registry &quot; + getUrl().getAddress() + &quot;, cause: &quot; + t.getMessage(), t);
+            } else {
+                logger.error(&quot;Failed to register &quot; + url + &quot;, waiting for retry, cause: &quot; + t.getMessage(), t);
+            }
+
+            // Record a failed registration request to a failed list, retry regularly
+            addFailedRegistered(url);
+        }
+    }
+</code></pre><p>在doRegister完成注册的逻辑:</p>
+<pre><code> public void doRegister(URL url) {
+        try {
+            zkClient.create(toUrlPath(url), url.getParameter(DYNAMIC_KEY, true));
+        } catch (Throwable e) {
+            throw new RpcException(&quot;Failed to register &quot; + url + &quot; to zookeeper &quot; + getUrl() + &quot;, cause: &quot; + e.getMessage(), e);
+        }
+    }
+</code></pre><p>进入<code>org.apache.dubbo.remoting.zookeeper.support.AbstractZookeeperClient#create</code>:</p>
+<pre><code> public void create(String path, boolean ephemeral) {
+        if (!ephemeral) {
+            if(persistentExistNodePath.contains(path)){
+                return;
+            }
+            if (checkExists(path)) {
+                persistentExistNodePath.add(path);
+                return;
+            }
+        }
+        int i = path.lastIndexOf(&#39;/&#39;);
+        if (i &gt; 0) {
+            create(path.substring(0, i), false);
+        }
+        if (ephemeral) {
+            createEphemeral(path);
+        } else {
+            createPersistent(path);
+            persistentExistNodePath.add(path);
+        }
+    }
+</code></pre><p>依次创建持久结点:</p>
+<pre><code>/dubbo
+/dubbo/org.apache.dubbo.demo.DemoService
+/dubbo/org.apache.dubbo.demo.DemoService/providers
+</code></pre><p>最后创建临时结点:</p>
+<pre><code>/dubbo/org.apache.dubbo.demo.DemoService/providers/dubbo%3A%2F%2F192.168.1.220%3A20880%2Forg.apache.dubbo.demo.DemoService%3Fanyhost%3Dtrue%26application%3Ddubbo-demo-api-provider%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dorg.apache.dubbo.demo.DemoService%26methods%3DsayHello%26pid%3D19865%26release%3D%26side%3Dprovider%26timestamp%3D1569551377814
+</code></pre><p>此时服务往注册中心已经注册完成.</p>
+<h4 id="服务订阅"><a href="#服务订阅" class="headerlink" title="服务订阅"></a>服务订阅</h4><p>进入 <code>org.apache.dubbo.registry.support.FailbackRegistry#subscribe</code>:</p>
+<pre><code>    public void subscribe(URL url, NotifyListener listener) {
+        super.subscribe(url, listener);
+        removeFailedSubscribed(url, listener);
+        try {
+            // Sending a subscription request to the server side
+            doSubscribe(url, listener);
+        } catch (Exception e) {
+            Throwable t = e;
+
+            List&lt;URL&gt; urls = getCacheUrls(url);
+            if (CollectionUtils.isNotEmpty(urls)) {
+                notify(url, listener, urls);
+                logger.error(&quot;Failed to subscribe &quot; + url + &quot;, Using cached list: &quot; + urls + &quot; from cache file: &quot; + getUrl().getParameter(FILE_KEY, System.getProperty(&quot;user.home&quot;) + &quot;/dubbo-registry-&quot; + url.getHost() + &quot;.cache&quot;) + &quot;, cause: &quot; + t.getMessage(), t);
+            } else {
+                // If the startup detection is opened, the Exception is thrown directly.
+                boolean check = getUrl().getParameter(Constants.CHECK_KEY, true)
+                        &amp;&amp; url.getParameter(Constants.CHECK_KEY, true);
+                boolean skipFailback = t instanceof SkipFailbackWrapperException;
+                if (check || skipFailback) {
+                    if (skipFailback) {
+                        t = t.getCause();
+                    }
+                    throw new IllegalStateException(&quot;Failed to subscribe &quot; + url + &quot;, cause: &quot; + t.getMessage(), t);
+                } else {
+                    logger.error(&quot;Failed to subscribe &quot; + url + &quot;, waiting for retry, cause: &quot; + t.getMessage(), t);
+                }
+            }
+
+            // Record a failed registration request to a failed list, retry regularly
+            addFailedSubscribed(url, listener);
+        }
+    }
+</code></pre><p>继续进入方法<code>doSubscribe</code>:</p>
+<pre><code>    public void doSubscribe(final URL url, final NotifyListener listener) {
+        try {
+            if (ANY_VALUE.equals(url.getServiceInterface())) {
+                String root = toRootPath();
+                ConcurrentMap&lt;NotifyListener, ChildListener&gt; listeners = zkListeners.get(url);
+                if (listeners == null) {
+                    zkListeners.putIfAbsent(url, new ConcurrentHashMap&lt;&gt;());
+                    listeners = zkListeners.get(url);
+                }
+                ChildListener zkListener = listeners.get(listener);
+                if (zkListener == null) {
+                    listeners.putIfAbsent(listener, (parentPath, currentChilds) -&gt; {
+                        for (String child : currentChilds) {
+                            child = URL.decode(child);
+                            if (!anyServices.contains(child)) {
+                                anyServices.add(child);
+                                subscribe(url.setPath(child).addParameters(INTERFACE_KEY, child,
+                                        Constants.CHECK_KEY, String.valueOf(false)), listener);
+                            }
+                        }
+                    });
+                    zkListener = listeners.get(listener);
+                }
+                zkClient.create(root, false);
+                List&lt;String&gt; services = zkClient.addChildListener(root, zkListener);
+                if (CollectionUtils.isNotEmpty(services)) {
+                    for (String service : services) {
+                        service = URL.decode(service);
+                        anyServices.add(service);
+                        subscribe(url.setPath(service).addParameters(INTERFACE_KEY, service,
+                                Constants.CHECK_KEY, String.valueOf(false)), listener);
+                    }
+                }
+            } else {
+                List&lt;URL&gt; urls = new ArrayList&lt;&gt;();
+                for (String path : toCategoriesPath(url)) {
+                    ConcurrentMap&lt;NotifyListener, ChildListener&gt; listeners = zkListeners.get(url);
+                    if (listeners == null) {
+                        zkListeners.putIfAbsent(url, new ConcurrentHashMap&lt;&gt;());
+                        listeners = zkListeners.get(url);
+                    }
+                    ChildListener zkListener = listeners.get(listener);
+                    if (zkListener == null) {
+                        listeners.putIfAbsent(listener, (parentPath, currentChilds) -&gt; ZookeeperRegistry.this.notify(url, listener, toUrlsWithEmpty(url, parentPath, currentChilds)));
+                        zkListener = listeners.get(listener);
+                    }
+                    zkClient.create(path, false);
+                    List&lt;String&gt; children = zkClient.addChildListener(path, zkListener);
+                    if (children != null) {
+                        urls.addAll(toUrlsWithEmpty(url, path, children));
+                    }
+                }
+                notify(url, listener, urls);
+            }
+        } catch (Throwable e) {
+            throw new RpcException(&quot;Failed to subscribe &quot; + url + &quot; to zookeeper &quot; + getUrl() + &quot;, cause: &quot; + e.getMessage(), e);
+        }
+    }
+</code></pre><p>上面主要是往zk服务端注册客户端的监听回调,当zk服务端结点发生变化时,会通知zk客户端,具体进入 <code>org.apache.dubbo.registry.support.FailbackRegistry#notify</code>,该方法中调用 <code>org.apache.dubbo.registry.support.FailbackRegistry#doNotify</code>处理,继续调用父类<code>org.apache.dubbo.registry.support.AbstractRegistry#notify</code>:</p>
+<pre><code>protected void notify(URL url, NotifyListener listener, List&lt;URL&gt; urls) {
+        ...
+        ...
+        ...
+        Map&lt;String, List&lt;URL&gt;&gt; categoryNotified = notified.computeIfAbsent(url, u -&gt; new ConcurrentHashMap&lt;&gt;());
+        for (Map.Entry&lt;String, List&lt;URL&gt;&gt; entry : result.entrySet()) {
+            String category = entry.getKey();
+            List&lt;URL&gt; categoryList = entry.getValue();
+            categoryNotified.put(category, categoryList);
+            // 调用监听器通知
+            listener.notify(categoryList);
+            // We will update our cache file after each notification.
+            // When our Registry has a subscribe failure due to network jitter, we can return at least the existing cache URL.
+            // 持久化到磁盘文件
+            saveProperties(url);
+        }
+    }
+</code></pre><p>首先看监听器的notify方法,该方法又调用doOverrideIfNecessary进行处理:</p>
+<pre><code>public synchronized void doOverrideIfNecessary() {
+            final Invoker&lt;?&gt; invoker;
+            if (originInvoker instanceof InvokerDelegate) {
+                invoker = ((InvokerDelegate&lt;?&gt;) originInvoker).getInvoker();
+            } else {
+                invoker = originInvoker;
+            }
+            //The origin invoker
+            URL originUrl = RegistryProtocol.this.getProviderUrl(invoker);
+            String key = getCacheKey(originInvoker);
+            ExporterChangeableWrapper&lt;?&gt; exporter = bounds.get(key);
+            if (exporter == null) {
+                logger.warn(new IllegalStateException(&quot;error state, exporter should not be null&quot;));
+                return;
+            }
+            //The current, may have been merged many times
+            URL currentUrl = exporter.getInvoker().getUrl();
+            //Merged with this configuration
+            URL newUrl = getConfigedInvokerUrl(configurators, originUrl);
+            newUrl = getConfigedInvokerUrl(providerConfigurationListener.getConfigurators(), newUrl);
+            newUrl = getConfigedInvokerUrl(serviceConfigurationListeners.get(originUrl.getServiceKey())
+                    .getConfigurators(), newUrl);
+            if (!currentUrl.equals(newUrl)) {
+                RegistryProtocol.this.reExport(originInvoker, newUrl);
+                logger.info(&quot;exported provider url changed, origin url: &quot; + originUrl +
+                        &quot;, old export url: &quot; + currentUrl + &quot;, new export url: &quot; + newUrl);
+            }
+        }
+</code></pre><p>上面主要就是比较当前与最新的URL,如果不相等,则根据最新的URL重新进行服务的暴露.再回到<code>org.apache.dubbo.registry.support.AbstractRegistry#notify</code>中,下一步会把URL信息持久化到本地磁盘,感兴趣可自己分析代码,具体保存的目录及文件信息如下:</p>
+<pre><code>➜  ~ cd .dubbo 
+➜  .dubbo pwd
+/Users/lioswong/.dubbo
+➜  .dubbo cat dubbo-registry-dubbo-demo-api-provider-127.0.0.1:2181.cache 
+#Dubbo Registry Cache
+#Sun Sep 29 11:13:03 CST 2019
+org.apache.dubbo.demo.DemoService=empty\://192.168.31.40\:20880/org.apache.dubbo.demo.DemoService?anyhost\=true&amp;application\=dubbo-demo-api-provider&amp;bind.ip\=192.168.31.40&amp;bind.port\=20880&amp;category\=configurators&amp;check\=false&amp;deprecated\=false&amp;dubbo\=2.0.2&amp;dynamic\=true&amp;generic\=false&amp;interface\=org.apache.dubbo.demo.DemoService&amp;methods\=sayHello&amp;pid\=8443&amp;release\=&amp;side\=provider&amp;timestamp\=1569602514942
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由于时间问题,分析的过程比较粗糙,上文主要介绍Wrapper和Invoker的创建、服务本地暴露、服务远程暴露、服务注册、服务订阅等,尤其理解Wrapper、Invoker的创建过程至关重要.</p>
 <blockquote>
 <p>参考文档</p>
 </blockquote>

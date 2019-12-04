@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -504,16 +505,137 @@
 
       
         <p>开发中，app端给服务端会传基础参数、其他参数，一般基础参数app端都会传给服务端，其他参数则是根据不同接口传不同参数。若以表单的形式提交的数据:<br><img src="https://mmbiz.qpic.cn/mmbiz_png/AFibVNx7tNjI6iah1lcv3setn2hk2lMqXvc51mOk17TsibZbic5RfE00xXIllUTZp3r3UoyCJTmm6RjGo5m6CibjCdQ/0?wx_fmt=png" alt="https://mmbiz.qpic.cn/mmbiz_png/AFibVNx7tNjI6iah1lcv3setn2hk2lMqXvc51mOk17TsibZbic5RfE00xXIllUTZp3r3UoyCJTmm6RjGo5m6CibjCdQ/0?wx_fmt=png"><br>其中请求参数params就是上文所说的其他参数，而除了它都是基本参数，param的值是json字符串，对于这种请求方式用@RequestParam、@RequestBody都不能满足要求，用spring中自定义的参数解析器恰好可以解决这个问题。</p>
-<h4 id="首先定义映射参数的类"><a href="#首先定义映射参数的类" class="headerlink" title="首先定义映射参数的类"></a>首先定义映射参数的类</h4><p>UserParam:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class UserParam extends BaseParam&#123;</span><br><span class="line">    private UserInfoEntity params;//其他参数映射类</span><br><span class="line"></span><br><span class="line">    public UserInfoEntity getParams() &#123;</span><br><span class="line">        return params;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setParams(UserInfoEntity params) &#123;</span><br><span class="line">        this.params = params;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setParamsFromJson(String json)&#123;</span><br><span class="line">        UserInfoEntity userInfoEntity = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            userInfoEntity = JSONUtils.json2pojo(json,UserInfoEntity.class);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        setParams(userInfoEntity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>BaseParam(基础参数类):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public class BaseParam &#123;</span><br><span class="line">    public String token;</span><br><span class="line">    public String channel;</span><br><span class="line">    public String clientId;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public String getToken() &#123;</span><br><span class="line">        return token;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setToken(String token) &#123;</span><br><span class="line">        this.token = token;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getChannel() &#123;</span><br><span class="line">        return channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setChannel(String channel) &#123;</span><br><span class="line">        this.channel = channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getClientId() &#123;</span><br><span class="line">        return clientId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setClientId(String clientId) &#123;</span><br><span class="line">        this.clientId = clientId;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="Controller类方法"><a href="#Controller类方法" class="headerlink" title="Controller类方法"></a>Controller类方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    UserInfoService userInfoService;</span><br><span class="line">    @PostMapping(value = &quot;/lios/boot/ok&quot;,produces = &#123;&quot;application/json;charset=utf-8&quot;&#125;)</span><br><span class="line">    public Object ok(UserParam param)&#123;</span><br><span class="line">        return userInfoService.selectByMobile(param.getParams().getMobile());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="自定义参数解析器类"><a href="#自定义参数解析器类" class="headerlink" title="自定义参数解析器类"></a>自定义参数解析器类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">public class CustomArgumentResolver implements HandlerMethodArgumentResolver &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean supportsParameter(MethodParameter methodParameter) &#123;</span><br><span class="line">        Class paramObjClass = methodParameter.getParameterType();</span><br><span class="line">        if(BaseParam.class.isAssignableFrom(paramObjClass))&#123;</span><br><span class="line">            return true; //参数为BaseParam.class类类型时,则执行resolveArgument方法</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">        Class paramObjClass = parameter.getParameterType();//获取参数类类型</span><br><span class="line"></span><br><span class="line">        Object paramObj = paramObjClass.newInstance();//根据class new 出对象</span><br><span class="line"></span><br><span class="line">        Map&lt;String, String[]&gt; param = webRequest.getParameterMap();//获取所有请求参数</span><br><span class="line">        for (Map.Entry&lt;String, String[]&gt; entry : param.entrySet()) &#123;</span><br><span class="line">            String[] val = entry.getValue();</span><br><span class="line">            if (val != null &amp;&amp; &quot;params&quot;.equals(entry.getKey())) &#123;</span><br><span class="line">                Method method = paramObjClass.getMethod(&quot;setParamsFromJson&quot;, String.class);//获取到方法setParamsFromJson的对象</span><br><span class="line">                method.invoke(paramObj, val[0]);//把params的值当作形参传入</span><br><span class="line">            &#125; else if (val != null &amp;&amp; val.length == 1) &#123; //基础类参数处理</span><br><span class="line">                Field field =null;</span><br><span class="line">                if(paramObjClass.getName().equals(BaseParam.class.getName()))&#123;</span><br><span class="line">                    field=paramObjClass.getDeclaredField(entry.getKey());</span><br><span class="line">                &#125;else &#123;</span><br><span class="line">                    field= paramObjClass.getSuperclass().getDeclaredField(entry.getKey());</span><br><span class="line">                &#125;</span><br><span class="line">                //把基础参数的值放入UserParam中</span><br><span class="line">                if (field.getType().isAssignableFrom(String.class)) &#123;</span><br><span class="line">                    field.set(paramObj, val[0]);</span><br><span class="line">                &#125; else if (field.getType().isAssignableFrom(Integer.class)) &#123;</span><br><span class="line">                    field.set(paramObj, Integer.valueOf(val[0]));</span><br><span class="line">                &#125; else if (field.getType().isAssignableFrom(Long.class)) &#123;</span><br><span class="line">                    field.set(paramObj, Long.valueOf(val[0]));</span><br><span class="line">                &#125; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return paramObj;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><ul>
+<h4 id="首先定义映射参数的类"><a href="#首先定义映射参数的类" class="headerlink" title="首先定义映射参数的类"></a>首先定义映射参数的类</h4><p>UserParam:</p>
+<pre><code>public class UserParam extends BaseParam{
+    private UserInfoEntity params;//其他参数映射类
+
+    public UserInfoEntity getParams() {
+        return params;
+    }
+
+    public void setParams(UserInfoEntity params) {
+        this.params = params;
+    }
+
+    public void setParamsFromJson(String json){
+        UserInfoEntity userInfoEntity = null;
+        try {
+            userInfoEntity = JSONUtils.json2pojo(json,UserInfoEntity.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setParams(userInfoEntity);
+    }
+}
+
+</code></pre><p>BaseParam(基础参数类):</p>
+<pre><code>public class BaseParam {
+    public String token;
+    public String channel;
+    public String clientId;
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+}
+
+</code></pre><h4 id="Controller类方法"><a href="#Controller类方法" class="headerlink" title="Controller类方法"></a>Controller类方法</h4><pre><code>@RestController
+public class HelloController {
+    @Autowired
+    UserInfoService userInfoService;
+    @PostMapping(value = &quot;/lios/boot/ok&quot;,produces = {&quot;application/json;charset=utf-8&quot;})
+    public Object ok(UserParam param){
+        return userInfoService.selectByMobile(param.getParams().getMobile());
+    }
+}
+</code></pre><h4 id="自定义参数解析器类"><a href="#自定义参数解析器类" class="headerlink" title="自定义参数解析器类"></a>自定义参数解析器类</h4><pre><code>public class CustomArgumentResolver implements HandlerMethodArgumentResolver {
+
+    @Override
+    public boolean supportsParameter(MethodParameter methodParameter) {
+        Class paramObjClass = methodParameter.getParameterType();
+        if(BaseParam.class.isAssignableFrom(paramObjClass)){
+            return true; //参数为BaseParam.class类类型时,则执行resolveArgument方法
+        }
+        return false;
+    }
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+
+        Class paramObjClass = parameter.getParameterType();//获取参数类类型
+
+        Object paramObj = paramObjClass.newInstance();//根据class new 出对象
+
+        Map&lt;String, String[]&gt; param = webRequest.getParameterMap();//获取所有请求参数
+        for (Map.Entry&lt;String, String[]&gt; entry : param.entrySet()) {
+            String[] val = entry.getValue();
+            if (val != null &amp;&amp; &quot;params&quot;.equals(entry.getKey())) {
+                Method method = paramObjClass.getMethod(&quot;setParamsFromJson&quot;, String.class);//获取到方法setParamsFromJson的对象
+                method.invoke(paramObj, val[0]);//把params的值当作形参传入
+            } else if (val != null &amp;&amp; val.length == 1) { //基础类参数处理
+                Field field =null;
+                if(paramObjClass.getName().equals(BaseParam.class.getName())){
+                    field=paramObjClass.getDeclaredField(entry.getKey());
+                }else {
+                    field= paramObjClass.getSuperclass().getDeclaredField(entry.getKey());
+                }
+                //把基础参数的值放入UserParam中
+                if (field.getType().isAssignableFrom(String.class)) {
+                    field.set(paramObj, val[0]);
+                } else if (field.getType().isAssignableFrom(Integer.class)) {
+                    field.set(paramObj, Integer.valueOf(val[0]));
+                } else if (field.getType().isAssignableFrom(Long.class)) {
+                    field.set(paramObj, Long.valueOf(val[0]));
+                } 
+            }
+        }
+        return paramObj;
+    }
+}
+
+</code></pre><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><ul>
 <li><p>一般项目配置</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  &lt;mvc:annotation-driven&gt;</span><br><span class="line">    &lt;mvc:argument-resolvers&gt;</span><br><span class="line">        &lt;bean class=&quot;com.lios.api.resolver.CustomArgumentResolver&quot;/&gt;</span><br><span class="line">    &lt;/mvc:argument-resolvers&gt;</span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>springboot项目中配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)</span><br><span class="line">@ImportResource(&#123;&quot;classpath*:dispatcher-servlet.xml&quot;&#125;)</span><br><span class="line">public class LiosBootApplication extends WebMvcConfigurerAdapter &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(LiosBootApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void addArgumentResolvers(List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) &#123;</span><br><span class="line">        super.addArgumentResolvers(argumentResolvers);</span><br><span class="line">        argumentResolvers.add(new CustomArgumentResolver());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<pre><code>        &lt;mvc:annotation-driven&gt;
+          &lt;mvc:argument-resolvers&gt;
+              &lt;bean class=&quot;com.lios.api.resolver.CustomArgumentResolver&quot;/&gt;
+          &lt;/mvc:argument-resolvers&gt;
+      &lt;/mvc:annotation-driven&gt;
+</code></pre><ul>
+<li><p>springboot项目中配置</p>
+<pre><code>@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@ImportResource({&quot;classpath*:dispatcher-servlet.xml&quot;})
+public class LiosBootApplication extends WebMvcConfigurerAdapter {
+    public static void main(String[] args) {
+        SpringApplication.run(LiosBootApplication.class, args);
+    }
+    @Override
+    public void addArgumentResolvers(List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) {
+        super.addArgumentResolvers(argumentResolvers);
+        argumentResolvers.add(new CustomArgumentResolver());
+    }
+}
+
+</code></pre></li>
 </ul>
 </li>
 </ul>

@@ -103,13 +103,13 @@
 
 
 
-  <meta name="description" content="上图文字来自https://jwt.io/introduction/现项目中的JWT来解析如下：左边是生成的token,左边是其三部分的解析。项目中的使用,1234567891011121314151617181920212223242526272829303132333435363738public class JWTSignerUtil &amp;#123;    private static fin">
+  <meta name="description" content="上图文字来自https://jwt.io/introduction/现项目中的JWT来解析如下：左边是生成的token,左边是其三部分的解析。项目中的使用, public class JWTSignerUtil {     private static final String JWT_SECRET = &amp;quot;密钥字符串&amp;quot;;     private static JWTSigner">
 <meta name="keywords" content="java,JWT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JWT">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/JWT/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="上图文字来自https://jwt.io/introduction/现项目中的JWT来解析如下：左边是生成的token,左边是其三部分的解析。项目中的使用,1234567891011121314151617181920212223242526272829303132333435363738public class JWTSignerUtil &amp;#123;    private static fin">
+<meta property="og:description" content="上图文字来自https://jwt.io/introduction/现项目中的JWT来解析如下：左边是生成的token,左边是其三部分的解析。项目中的使用, public class JWTSignerUtil {     private static final String JWT_SECRET = &amp;quot;密钥字符串&amp;quot;;     private static JWTSigner">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBff086a9673fbfd80034914abfb78b656?method=download&shareKey=58577f840ca558fcb3d378123e53640d">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBffd386ebffa4fa1b2aafc2ec086f332f?method=download&shareKey=9bc3aea3ffb8508f2093bf7d862a9513">
@@ -117,7 +117,7 @@
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JWT">
-<meta name="twitter:description" content="上图文字来自https://jwt.io/introduction/现项目中的JWT来解析如下：左边是生成的token,左边是其三部分的解析。项目中的使用,1234567891011121314151617181920212223242526272829303132333435363738public class JWTSignerUtil &amp;#123;    private static fin">
+<meta name="twitter:description" content="上图文字来自https://jwt.io/introduction/现项目中的JWT来解析如下：左边是生成的token,左边是其三部分的解析。项目中的使用, public class JWTSignerUtil {     private static final String JWT_SECRET = &amp;quot;密钥字符串&amp;quot;;     private static JWTSigner">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBff086a9673fbfd80034914abfb78b656?method=download&shareKey=58577f840ca558fcb3d378123e53640d">
 
 
@@ -174,7 +174,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -505,8 +506,46 @@
       
 
       
-        <p><img src="https://note.youdao.com/yws/api/personal/file/WEBff086a9673fbfd80034914abfb78b656?method=download&amp;shareKey=58577f840ca558fcb3d378123e53640d" alt="https://note.youdao.com/yws/api/personal/file/WEBff086a9673fbfd80034914abfb78b656?method=download&amp;shareKey=58577f840ca558fcb3d378123e53640d"><br>上图文字来自<a href="https://jwt.io/introduction/" target="_blank" rel="noopener">https://jwt.io/introduction/</a><br>现项目中的JWT来解析如下：<br><img src="https://note.youdao.com/yws/api/personal/file/WEBffd386ebffa4fa1b2aafc2ec086f332f?method=download&amp;shareKey=9bc3aea3ffb8508f2093bf7d862a9513" alt="https://note.youdao.com/yws/api/personal/file/WEBffd386ebffa4fa1b2aafc2ec086f332f?method=download&amp;shareKey=9bc3aea3ffb8508f2093bf7d862a9513"><br>左边是生成的token,左边是其三部分的解析。<br>项目中的使用,<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">public class JWTSignerUtil &#123;</span><br><span class="line">    private static final String JWT_SECRET = &quot;密钥字符串&quot;;</span><br><span class="line">    private static JWTSigner signer = new JWTSigner(JWT_SECRET);</span><br><span class="line">    /**</span><br><span class="line">    ** 生成JWT</span><br><span class="line">    **/</span><br><span class="line">    public static String shouldSignStringOrURICollection(String uri, String userId) throws Exception &#123;</span><br><span class="line">        LinkedList&lt;String&gt; aud = new LinkedList&lt;String&gt;();</span><br><span class="line">        aud.add(uri);</span><br><span class="line">        aud.add(System.currentTimeMillis() + &quot;&quot;);</span><br><span class="line">        aud.add(userId);</span><br><span class="line">        HashMap&lt;String, Object&gt; claims = new HashMap&lt;String, Object&gt;();</span><br><span class="line">        claims.put(&quot;aud&quot;, aud);</span><br><span class="line">        return signer.sign(claims);</span><br><span class="line">    &#125;</span><br><span class="line">   /**</span><br><span class="line">    ** 解析</span><br><span class="line">    **/</span><br><span class="line">    public static List verify(String token)&#123;</span><br><span class="line">        Map&lt;String, Object&gt; decodedPayload;</span><br><span class="line">        try &#123;</span><br><span class="line">            decodedPayload = new JWTVerifier(JWT_SECRET).verify(token);</span><br><span class="line">            List&lt;String&gt; list = (List&lt;String&gt;) decodedPayload.get(&quot;aud&quot;);</span><br><span class="line">            return list;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        String token = JWTSignerUtil.shouldSignStringOrURICollection(</span><br><span class="line">                &quot;/user/login&quot;,&quot;304914&quot;);</span><br><span class="line">        System.out.println(token);</span><br><span class="line">        List tokenList = JWTSignerUtil.verify(token);</span><br><span class="line">        Long userId = Long.parseLong(tokenList.get(2) + &quot;&quot;);</span><br><span class="line">        System.out.println(userId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>交互流程如下：<br><img src="https://segmentfault.com/image?src=http://source.aicode.cc/markdown/jwt-diagram.png&amp;objectId=1190000005047525&amp;token=fc83f4c0cf107cabeafd6a449cd49762" alt="https://segmentfault.com/image?src=http://source.aicode.cc/markdown/jwt-diagram.png&amp;objectId=1190000005047525&amp;token=fc83f4c0cf107cabeafd6a449cd49762">(图来自参考文章)<br>客户端登录时，服务端根据JWT生成token,并返回给客户端，客户端再次请求时需要带上该token,服务端在拦截器中拿到token后使用JWT解析，如果拿到负载中的值后，会通过此次请求否则中断此次请求.<br>目前项目中还没有设置token失效；当客户端注销时，服务端目前什么操作都没做，只需客户端清除本地中的token。</p>
+        <p><img src="https://note.youdao.com/yws/api/personal/file/WEBff086a9673fbfd80034914abfb78b656?method=download&amp;shareKey=58577f840ca558fcb3d378123e53640d" alt="https://note.youdao.com/yws/api/personal/file/WEBff086a9673fbfd80034914abfb78b656?method=download&amp;shareKey=58577f840ca558fcb3d378123e53640d"><br>上图文字来自<a href="https://jwt.io/introduction/" target="_blank" rel="noopener">https://jwt.io/introduction/</a><br>现项目中的JWT来解析如下：<br><img src="https://note.youdao.com/yws/api/personal/file/WEBffd386ebffa4fa1b2aafc2ec086f332f?method=download&amp;shareKey=9bc3aea3ffb8508f2093bf7d862a9513" alt="https://note.youdao.com/yws/api/personal/file/WEBffd386ebffa4fa1b2aafc2ec086f332f?method=download&amp;shareKey=9bc3aea3ffb8508f2093bf7d862a9513"><br>左边是生成的token,左边是其三部分的解析。<br>项目中的使用,</p>
+<pre><code>public class JWTSignerUtil {
+    private static final String JWT_SECRET = &quot;密钥字符串&quot;;
+    private static JWTSigner signer = new JWTSigner(JWT_SECRET);
+    /**
+    ** 生成JWT
+    **/
+    public static String shouldSignStringOrURICollection(String uri, String userId) throws Exception {
+        LinkedList&lt;String&gt; aud = new LinkedList&lt;String&gt;();
+        aud.add(uri);
+        aud.add(System.currentTimeMillis() + &quot;&quot;);
+        aud.add(userId);
+        HashMap&lt;String, Object&gt; claims = new HashMap&lt;String, Object&gt;();
+        claims.put(&quot;aud&quot;, aud);
+        return signer.sign(claims);
+    }
+   /**
+    ** 解析
+    **/
+    public static List verify(String token){
+        Map&lt;String, Object&gt; decodedPayload;
+        try {
+            decodedPayload = new JWTVerifier(JWT_SECRET).verify(token);
+            List&lt;String&gt; list = (List&lt;String&gt;) decodedPayload.get(&quot;aud&quot;);
+            return list;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        String token = JWTSignerUtil.shouldSignStringOrURICollection(
+                &quot;/user/login&quot;,&quot;304914&quot;);
+        System.out.println(token);
+        List tokenList = JWTSignerUtil.verify(token);
+        Long userId = Long.parseLong(tokenList.get(2) + &quot;&quot;);
+        System.out.println(userId);
+    }
+}
+</code></pre><p>交互流程如下：<br><img src="https://segmentfault.com/image?src=http://source.aicode.cc/markdown/jwt-diagram.png&amp;objectId=1190000005047525&amp;token=fc83f4c0cf107cabeafd6a449cd49762" alt="https://segmentfault.com/image?src=http://source.aicode.cc/markdown/jwt-diagram.png&amp;objectId=1190000005047525&amp;token=fc83f4c0cf107cabeafd6a449cd49762">(图来自参考文章)<br>客户端登录时，服务端根据JWT生成token,并返回给客户端，客户端再次请求时需要带上该token,服务端在拦截器中拿到token后使用JWT解析，如果拿到负载中的值后，会通过此次请求否则中断此次请求.<br>目前项目中还没有设置token失效；当客户端注销时，服务端目前什么操作都没做，只需客户端清除本地中的token。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
 <li>由于用户的状态在服务端的内存中是不存储的，所以这是一种无状态的认证机制;因为JWT并不使用Cookie，可以使用任何域名提供API服务而不需要担心跨域资源共享问题</li>
 <li>由于JSON比XML简洁，因此在编码时它的大小也更小，使得JWT比SAML更紧凑。这使得JWT成为在HTML和HTTP环境中传递的不错选择</li>

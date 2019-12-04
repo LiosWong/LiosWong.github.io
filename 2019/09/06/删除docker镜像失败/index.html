@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="环境 MacBook Pro Docker version 19.03.1, build 74b1e89  问题12MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced)">
+  <meta name="description" content="环境 MacBook Pro Docker version 19.03.1, build 74b1e89  问题MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5 Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced) -">
 <meta name="keywords" content="docker,镜像,容器,仓库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="删除docker镜像失败">
 <meta property="og:url" content="http://yoursite.com/2019/09/06/删除docker镜像失败/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="环境 MacBook Pro Docker version 19.03.1, build 74b1e89  问题12MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced)">
+<meta property="og:description" content="环境 MacBook Pro Docker version 19.03.1, build 74b1e89  问题MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5 Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced) -">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-07T15:49:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="删除docker镜像失败">
-<meta name="twitter:description" content="环境 MacBook Pro Docker version 19.03.1, build 74b1e89  问题12MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced)">
+<meta name="twitter:description" content="环境 MacBook Pro Docker version 19.03.1, build 74b1e89  问题MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5 Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced) -">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -505,11 +506,22 @@
 <li>MacBook Pro</li>
 <li>Docker version 19.03.1, build 74b1e89</li>
 </ol>
-<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5</span><br><span class="line">Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced) - image has dependent child images</span><br></pre></td></tr></table></figure>
-<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>参考网上的方法，找出依赖的镜像:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image inspect --format=&apos;&#123;&#123;.RepoTags&#125;&#125; &#123;&#123;.Id&#125;&#125; &#123;&#123;.Parent&#125;&#125;&apos; $(docker image ls -q --filter since=620cdd31d76f)</span><br></pre></td></tr></table></figure></p>
-<p>发现还是删除不了，然后停止所有容器、删除所有容器、删除所有none容器，还是不行,具体命令如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 停止所有容器</span><br><span class="line">docker ps -a | grep &quot;Exited&quot; | awk &apos;&#123;print $1 &#125;&apos;|xargs docker stop</span><br><span class="line"># 删除所有容器</span><br><span class="line">docker ps -a | grep &quot;Exited&quot; | awk &apos;&#123;print $1 &#125;&apos;|xargs docker rm</span><br><span class="line"># 删除所有none容器</span><br><span class="line">docker images|grep none|awk &apos;&#123;print $3 &#125;&apos;|xargs docker rmi</span><br></pre></td></tr></table></figure></p>
-<p>也尝试了给镜像修改tag,也失败了，最后根据<code>REPOSITORY:TAG</code>删除成功了，具体原因不清楚<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MacdeMacBook-Pro:war lioswong$ docker rmi hub.c.163.com/public/ubuntu:16.04-tools</span><br><span class="line">Untagged: hub.c.163.com/public/ubuntu:16.04-tools</span><br><span class="line">Untagged: hub.c.163.com/public/ubuntu@sha256:0fc4a48462a92b0a5a53b35540b8ca33a68606c6cd23c21df54c5f54bccbf33a</span><br></pre></td></tr></table></figure></p>
-<blockquote>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><pre><code>MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5
+Error response from daemon: conflict: unable to delete 620cdd31d76f (cannot be forced) - image has dependent child images
+</code></pre><h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>参考网上的方法，找出依赖的镜像:</p>
+<pre><code>docker image inspect --format=&#39;{{.RepoTags}} {{.Id}} {{.Parent}}&#39; $(docker image ls -q --filter since=620cdd31d76f)
+</code></pre><p>发现还是删除不了，然后停止所有容器、删除所有容器、删除所有none容器，还是不行,具体命令如下:</p>
+<pre><code># 停止所有容器
+docker ps -a | grep &quot;Exited&quot; | awk &#39;{print $1 }&#39;|xargs docker stop
+# 删除所有容器
+docker ps -a | grep &quot;Exited&quot; | awk &#39;{print $1 }&#39;|xargs docker rm
+# 删除所有none容器
+docker images|grep none|awk &#39;{print $3 }&#39;|xargs docker rmi
+</code></pre><p>也尝试了给镜像修改tag,也失败了，最后根据<code>REPOSITORY:TAG</code>删除成功了，具体原因不清楚</p>
+<pre><code>MacdeMacBook-Pro:war lioswong$ docker rmi hub.c.163.com/public/ubuntu:16.04-tools
+Untagged: hub.c.163.com/public/ubuntu:16.04-tools
+Untagged: hub.c.163.com/public/ubuntu@sha256:0fc4a48462a92b0a5a53b35540b8ca33a68606c6cd23c21df54c5f54bccbf33a
+</code></pre><blockquote>
 <p>参考文章  </p>
 </blockquote>
 <ol>

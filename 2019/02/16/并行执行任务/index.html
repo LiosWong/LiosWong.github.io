@@ -173,7 +173,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -512,52 +513,100 @@
 <p>为了更好的用体验,无疑需要使用多线程并行处理http请求,而且还需要拿到每个线程的执行结果.<br>上面的分析,有两个问题需要解决:  </p>
 <pre><code>1. 如何创建线程池  
 2. 如何拿到所有线程的执行结果  
-</code></pre><p>对于第一个问题,还是很好解决的,使用并发包(<code>java.util.concurrent</code>)下面的ThreadPoolExecutor类创建线程池,阿里巴巴Java开发手册上推荐使用该类创建线程池:<img src="https://note.youdao.com/yws/api/personal/file/WEB8ff09313c73335f1ad8ff8697dc18776?method=download&amp;shareKey=122bd8452d30e4d6e9097a3f63205a1e" alt="https://note.youdao.com/yws/api/personal/file/WEB8ff09313c73335f1ad8ff8697dc18776?method=download&amp;shareKey=122bd8452d30e4d6e9097a3f63205a1e">,根据统计,该首页的qps最大为3以及服务器的配置后,线程池创建如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">protected static class ThreadFactory &#123;</span><br><span class="line">       static ThreadPoolExecutor executor = new ThreadPoolExecutor(ThreadNumEnum.CORE_POOL_SIZE.getNum(), ThreadNumEnum.MAX_IMUM_POOL_SIZE.getNum(), TimeOutEnum.FiveSecond.getSeconds(), TimeUnit.MILLISECONDS, new LinkedBlockingDeque&lt;Runnable&gt;(),new ThreadPoolExecutor.DiscardPolicy());</span><br><span class="line">       private ThreadFactory() &#123;</span><br><span class="line">       </span><br><span class="line">       &#125;</span><br><span class="line">       public static ExecutorService getThreadPool() &#123;</span><br><span class="line">           return executor;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>如何能拿到线程的执行结果呢,传统的Thread无法拿到执行结果,由于run方法无返回值,通过ThreadPoolExecutor类图发现:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB4ef3858d7f413c8ad003fff211386730?method=download&amp;shareKey=4b734c076ea0b02705e85df1a6be5d1b" alt="https://note.youdao.com/yws/api/personal/file/WEB4ef3858d7f413c8ad003fff211386730?method=download&amp;shareKey=4b734c076ea0b02705e85df1a6be5d1b">  继承了AbstractExecutorService、ExecutorService,对ExecutorService中的invokeAll方法产生极大的兴趣,仔细阅读注释,其实这个方法用来并行执行任务:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * Executes the given tasks, returning a list of Futures holding</span><br><span class="line">     * their status and results</span><br><span class="line">     * when all complete or the timeout expires, whichever happens first.</span><br><span class="line">     * &#123;@link Future#isDone&#125; is &#123;@code true&#125; for each</span><br><span class="line">     * element of the returned list.</span><br><span class="line">     * Upon return, tasks that have not completed are cancelled.</span><br><span class="line">     * Note that a &lt;em&gt;completed&lt;/em&gt; task could have</span><br><span class="line">     * terminated either normally or by throwing an exception.</span><br><span class="line">     * The results of this method are undefined if the given</span><br><span class="line">     * collection is modified while this operation is in progress.</span><br><span class="line">     *</span><br><span class="line">     * @param tasks the collection of tasks</span><br><span class="line">     * @param timeout the maximum time to wait</span><br><span class="line">     * @param unit the time unit of the timeout argument</span><br><span class="line">     * @param &lt;T&gt; the type of the values returned from the tasks</span><br><span class="line">     * @return a list of Futures representing the tasks, in the same</span><br><span class="line">     *         sequential order as produced by the iterator for the</span><br><span class="line">     *         given task list. If the operation did not time out,</span><br><span class="line">     *         each task will have completed. If it did time out, some</span><br><span class="line">     *         of these tasks will not have completed.</span><br><span class="line">     * @throws InterruptedException if interrupted while waiting, in</span><br><span class="line">     *         which case unfinished tasks are cancelled</span><br><span class="line">     * @throws NullPointerException if tasks, any of its elements, or</span><br><span class="line">     *         unit are &#123;@code null&#125;</span><br><span class="line">     * @throws RejectedExecutionException if any task cannot be scheduled</span><br><span class="line">     *         for execution</span><br><span class="line">     */</span><br><span class="line">    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks,</span><br><span class="line">                                  long timeout, TimeUnit unit)</span><br><span class="line">        throws InterruptedException;</span><br></pre></td></tr></table></figure></p>
-<p>到这里,第二个问题的解决思路已经有了.</p>
+</code></pre><p>对于第一个问题,还是很好解决的,使用并发包(<code>java.util.concurrent</code>)下面的ThreadPoolExecutor类创建线程池,阿里巴巴Java开发手册上推荐使用该类创建线程池:<img src="https://note.youdao.com/yws/api/personal/file/WEB8ff09313c73335f1ad8ff8697dc18776?method=download&amp;shareKey=122bd8452d30e4d6e9097a3f63205a1e" alt="https://note.youdao.com/yws/api/personal/file/WEB8ff09313c73335f1ad8ff8697dc18776?method=download&amp;shareKey=122bd8452d30e4d6e9097a3f63205a1e">,根据统计,该首页的qps最大为3以及服务器的配置后,线程池创建如下:</p>
+<pre><code> protected static class ThreadFactory {
+        static ThreadPoolExecutor executor = new ThreadPoolExecutor(ThreadNumEnum.CORE_POOL_SIZE.getNum(), ThreadNumEnum.MAX_IMUM_POOL_SIZE.getNum(), TimeOutEnum.FiveSecond.getSeconds(), TimeUnit.MILLISECONDS, new LinkedBlockingDeque&lt;Runnable&gt;(),new ThreadPoolExecutor.DiscardPolicy());
+        private ThreadFactory() {
+
+        }
+        public static ExecutorService getThreadPool() {
+            return executor;
+        }
+    }
+</code></pre><p>如何能拿到线程的执行结果呢,传统的Thread无法拿到执行结果,由于run方法无返回值,通过ThreadPoolExecutor类图发现:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB4ef3858d7f413c8ad003fff211386730?method=download&amp;shareKey=4b734c076ea0b02705e85df1a6be5d1b" alt="https://note.youdao.com/yws/api/personal/file/WEB4ef3858d7f413c8ad003fff211386730?method=download&amp;shareKey=4b734c076ea0b02705e85df1a6be5d1b">  继承了AbstractExecutorService、ExecutorService,对ExecutorService中的invokeAll方法产生极大的兴趣,仔细阅读注释,其实这个方法用来并行执行任务:</p>
+<pre><code>/**
+     * Executes the given tasks, returning a list of Futures holding
+     * their status and results
+     * when all complete or the timeout expires, whichever happens first.
+     * {@link Future#isDone} is {@code true} for each
+     * element of the returned list.
+     * Upon return, tasks that have not completed are cancelled.
+     * Note that a &lt;em&gt;completed&lt;/em&gt; task could have
+     * terminated either normally or by throwing an exception.
+     * The results of this method are undefined if the given
+     * collection is modified while this operation is in progress.
+     *
+     * @param tasks the collection of tasks
+     * @param timeout the maximum time to wait
+     * @param unit the time unit of the timeout argument
+     * @param &lt;T&gt; the type of the values returned from the tasks
+     * @return a list of Futures representing the tasks, in the same
+     *         sequential order as produced by the iterator for the
+     *         given task list. If the operation did not time out,
+     *         each task will have completed. If it did time out, some
+     *         of these tasks will not have completed.
+     * @throws InterruptedException if interrupted while waiting, in
+     *         which case unfinished tasks are cancelled
+     * @throws NullPointerException if tasks, any of its elements, or
+     *         unit are {@code null}
+     * @throws RejectedExecutionException if any task cannot be scheduled
+     *         for execution
+     */
+    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks,
+                                  long timeout, TimeUnit unit)
+        throws InterruptedException;
+</code></pre><p>到这里,第二个问题的解决思路已经有了.</p>
 <blockquote>
 <h4 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h4></blockquote>
-<p>invokeAll方法的入参分别为任务列表list、超时时间、时间单位,所以首先我们需要创建任务列表:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> List&lt;BasicUserFilter&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">```  </span><br><span class="line">超时时间为每个FutureTask执行超时时间,这里设置成3s,这里的3s超时时间是针对的所有tasks，而不是单个task的超时时间,如果超时，会取消没有执行完的所有任务，并抛出超时异常,源码如下:</span><br></pre></td></tr></table></figure></p>
-<p>for (int i = 0; i &lt; size; i++) {<br>                execute((Runnable)futures.get(i));<br>                nanos = deadline - System.nanoTime();<br>                if (nanos &lt;= 0L)<br>                    return futures;<br>            }</p>
+<p>invokeAll方法的入参分别为任务列表list、超时时间、时间单位,所以首先我们需要创建任务列表:</p>
+<pre><code> List&lt;BasicUserFilter&gt; list = new ArrayList&lt;&gt;();
+</code></pre><p>超时时间为每个FutureTask执行超时时间,这里设置成3s,这里的3s超时时间是针对的所有tasks，而不是单个task的超时时间,如果超时，会取消没有执行完的所有任务，并抛出超时异常,源码如下:</p>
 <pre><code>for (int i = 0; i &lt; size; i++) {
-    Future&lt;T&gt; f = futures.get(i);
-    if (!f.isDone()) {
-        if (nanos &lt;= 0L)
-            return futures;
+                execute((Runnable)futures.get(i));
+                nanos = deadline - System.nanoTime();
+                if (nanos &lt;= 0L)
+                    return futures;
+            }
+
+            for (int i = 0; i &lt; size; i++) {
+                Future&lt;T&gt; f = futures.get(i);
+                if (!f.isDone()) {
+                    if (nanos &lt;= 0L)
+                        return futures;
+                    try {
+                        f.get(nanos, TimeUnit.NANOSECONDS);
+                    } catch (CancellationException ignore) {
+                    } catch (ExecutionException ignore) {
+                    } catch (TimeoutException toe) {
+                        return futures;
+                    }
+                    nanos = deadline - System.nanoTime();
+                }
+            }
+</code></pre><p>BasicUserFilter需要实现Callable接口,因为在方法call里能拿到线程的执行结果,<br>下面就是并行执行任务了:</p>
+<pre><code>        ExecutorService executor = ThreadFactory.getThreadPool();
+        List&lt;XXX&gt; userFilterDtoList = new ArrayList&lt;&gt;();
         try {
-            f.get(nanos, TimeUnit.NANOSECONDS);
-        } catch (CancellationException ignore) {
-        } catch (ExecutionException ignore) {
-        } catch (TimeoutException toe) {
-            return futures;
-        }
-        nanos = deadline - System.nanoTime();
-    }
-}
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BasicUserFilter需要实现Callable接口,因为在方法call里能拿到线程的执行结果,</span><br><span class="line">下面就是并行执行任务了:</span><br></pre></td></tr></table></figure>
-<pre><code>ExecutorService executor = ThreadFactory.getThreadPool();
-List&lt;XXX&gt; userFilterDtoList = new ArrayList&lt;&gt;();
-try {
-    List&lt;Future&lt;XXX&gt;&gt; futureList = executor.invokeAll(list, TimeOutEnum.FourSecond.getSeconds(), TimeUnit.MILLISECONDS);
-    futureList.stream().forEach(p -&gt; {
-        try {
-            Future&lt;XXX&gt; filterDtoFuture = p;
-           //拿到线程执行结果  
-           userFilterDtoList.add(filterDtoFuture.get());
+            List&lt;Future&lt;XXX&gt;&gt; futureList = executor.invokeAll(list, TimeOutEnum.FourSecond.getSeconds(), TimeUnit.MILLISECONDS);
+            futureList.stream().forEach(p -&gt; {
+                try {
+                    Future&lt;XXX&gt; filterDtoFuture = p;
+                   //拿到线程执行结果  
+                   userFilterDtoList.add(filterDtoFuture.get());
+                } catch (InterruptedException e) {
+                    logger.error(e.getMessage(), e);
+                } catch (ExecutionException e) {
+                    logger.error(e.getMessage(), e);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+            });
         } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
-        } catch (ExecutionException e) {
             logger.error(e.getMessage(), e);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-    });
-} catch (InterruptedException e) {
-    logger.error(e.getMessage(), e);
-} catch (Exception e) {
-    logger.error(e.getMessage(), e);
-}
-</code></pre><p><code>`</code><br>关于多线程笔者还有很多需要去学习,上面是一个工作笔记,关于invokeAll的执行流程、神奇的Future模式,感兴趣的可以阅读源码就能找到答案.</p>
+</code></pre><p>关于多线程笔者还有很多需要去学习,上面是一个工作笔记,关于invokeAll的执行流程、神奇的Future模式,感兴趣的可以阅读源码就能找到答案.</p>
 
       
     </div>
@@ -635,8 +684,8 @@ try {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/springboot、redis整合/" rel="next" title="springboot、redis整合">
-                <i class="fa fa-chevron-left"></i> springboot、redis整合
+              <a href="/2019/02/16/interface注入及报错分析/" rel="next" title="interface注入及报错分析">
+                <i class="fa fa-chevron-left"></i> interface注入及报错分析
               </a>
             
           </div>
@@ -645,8 +694,8 @@ try {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/interface注入及报错分析/" rel="prev" title="interface注入及报错分析">
-                interface注入及报错分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/史上最全国家统计局划分代码爬取/" rel="prev" title="史上最全国家统计局划分代码爬取">
+                史上最全国家统计局划分代码爬取 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="1234Indicates whether or not this bean is to be lazily initialized.If false, it will be instantiated on startup by bean factoriesthat perform eager initialization of singletons. The default is&amp;quot;fa">
+  <meta name="description" content="Indicates whether or not this bean is to be lazily initialized. If false, it will be instantiated on startup by bean factories that perform eager initialization of singletons. The default is &amp;quot;fal">
 <meta name="keywords" content="java,spring,bean,懒加载">
 <meta property="og:type" content="article">
 <meta property="og:title" content="bean懒加载">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/bean懒加载/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="1234Indicates whether or not this bean is to be lazily initialized.If false, it will be instantiated on startup by bean factoriesthat perform eager initialization of singletons. The default is&amp;quot;fa">
+<meta property="og:description" content="Indicates whether or not this bean is to be lazily initialized. If false, it will be instantiated on startup by bean factories that perform eager initialization of singletons. The default is &amp;quot;fal">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bean懒加载">
-<meta name="twitter:description" content="1234Indicates whether or not this bean is to be lazily initialized.If false, it will be instantiated on startup by bean factoriesthat perform eager initialization of singletons. The default is&amp;quot;fa">
+<meta name="twitter:description" content="Indicates whether or not this bean is to be lazily initialized. If false, it will be instantiated on startup by bean factories that perform eager initialization of singletons. The default is &amp;quot;fal">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -501,16 +502,42 @@
       
 
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Indicates whether or not this bean is to be lazily initialized.</span><br><span class="line">If false, it will be instantiated on startup by bean factories</span><br><span class="line">that perform eager initialization of singletons. The default is</span><br><span class="line">&quot;false&quot;.</span><br></pre></td></tr></table></figure>
-<p>bean如果配置lazy-init=”true”时,则在容器初始化过程中不会执行依赖注入,而当使用时才会去初始化bean,真的是这样么?下面就是深入源码探究,会分析以下三种情况:</p>
+        <pre><code>Indicates whether or not this bean is to be lazily initialized.
+If false, it will be instantiated on startup by bean factories
+that perform eager initialization of singletons. The default is
+&quot;false&quot;.
+</code></pre><p>bean如果配置lazy-init=”true”时,则在容器初始化过程中不会执行依赖注入,而当使用时才会去初始化bean,真的是这样么?下面就是深入源码探究,会分析以下三种情况:</p>
 <ol>
 <li>bean A没有引用任何其他bean,且配置成懒加载</li>
 <li>bean A引用了bean B,且bean A配置成懒加载</li>
-<li>bean A引用了bean B,bean A没有配置为懒加载,bean B配置为懒加载<br>首先代码入口还是<code>AbstractApplicationContext#refresh</code>方法,其中在<code>AbstractApplicationContext#finishBeanFactoryInitialization</code>方法中会执行<code>DefaultListableBeanFactory#preInstantiateSingletons</code>:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">for (String beanName : beanNames) &#123;</span><br><span class="line">            RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);</span><br><span class="line">            if (!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()) &#123;</span><br><span class="line">                if (isFactoryBean(beanName)) &#123;</span><br><span class="line">                    final FactoryBean&lt;?&gt; factory = (FactoryBean&lt;?&gt;) getBean(FACTORY_BEAN_PREFIX + beanName);</span><br><span class="line">                    boolean isEagerInit;</span><br><span class="line">                    if (System.getSecurityManager() != null &amp;&amp; factory instanceof SmartFactoryBean) &#123;</span><br><span class="line">                        isEagerInit = AccessController.doPrivileged(new PrivilegedAction&lt;Boolean&gt;() &#123;</span><br><span class="line">                            @Override</span><br><span class="line">                            public Boolean run() &#123;</span><br><span class="line">                                return ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit();</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;, getAccessControlContext());</span><br><span class="line">                    &#125;</span><br><span class="line">                    else &#123;</span><br><span class="line">                        isEagerInit = (factory instanceof SmartFactoryBean &amp;&amp;</span><br><span class="line">                                ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit());</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (isEagerInit) &#123;</span><br><span class="line">                        getBean(beanName);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                else &#123;</span><br><span class="line">                    getBean(beanName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>关键代码是<code>!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()</code>,会判断bean是否为抽象类、单例、懒加载,如果不符合就不会执行if里的代码,其实第一、二中情况都不符合的,所以不会执行到if语句里的代码.关键是第三种情况,分析思路之前<a href="https://mp.weixin.qq.com/s/gduv_fAgB4-T13f6vsxkNw" target="_blank" rel="noopener">这篇</a>(<a href="https://mp.weixin.qq.com/s/gduv_fAgB4-T13f6vsxkNw)分析是一样的,也就是在创建bean" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/gduv_fAgB4-T13f6vsxkNw)分析是一样的,也就是在创建bean</a> A的时候,在实例化其属性时,会创建bean B,有兴趣的朋友可以打断点调试,以下总结:</p>
-<ol>
+<li>bean A引用了bean B,bean A没有配置为懒加载,bean B配置为懒加载<br>首先代码入口还是<code>AbstractApplicationContext#refresh</code>方法,其中在<code>AbstractApplicationContext#finishBeanFactoryInitialization</code>方法中会执行<code>DefaultListableBeanFactory#preInstantiateSingletons</code>:<pre><code>for (String beanName : beanNames) {
+         RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+         if (!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()) {
+             if (isFactoryBean(beanName)) {
+                 final FactoryBean&lt;?&gt; factory = (FactoryBean&lt;?&gt;) getBean(FACTORY_BEAN_PREFIX + beanName);
+                 boolean isEagerInit;
+                 if (System.getSecurityManager() != null &amp;&amp; factory instanceof SmartFactoryBean) {
+                     isEagerInit = AccessController.doPrivileged(new PrivilegedAction&lt;Boolean&gt;() {
+                         @Override
+                         public Boolean run() {
+                             return ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit();
+                         }
+                     }, getAccessControlContext());
+                 }
+                 else {
+                     isEagerInit = (factory instanceof SmartFactoryBean &amp;&amp;
+                             ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit());
+                 }
+                 if (isEagerInit) {
+                     getBean(beanName);
+                 }
+             }
+             else {
+                 getBean(beanName);
+             }
+         }
+     }
+</code></pre>关键代码是<code>!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()</code>,会判断bean是否为抽象类、单例、懒加载,如果不符合就不会执行if里的代码,其实第一、二中情况都不符合的,所以不会执行到if语句里的代码.关键是第三种情况,分析思路之前<a href="https://mp.weixin.qq.com/s/gduv_fAgB4-T13f6vsxkNw" target="_blank" rel="noopener">这篇</a>(<a href="https://mp.weixin.qq.com/s/gduv_fAgB4-T13f6vsxkNw)分析是一样的,也就是在创建bean" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/gduv_fAgB4-T13f6vsxkNw)分析是一样的,也就是在创建bean</a> A的时候,在实例化其属性时,会创建bean B,有兴趣的朋友可以打断点调试,以下总结:</li>
 <li>bean配置lazy-init=”true”时,在容器初始化时不会创建该bean</li>
 <li>若一为单例且非懒加载的bean A引用了懒加载bean B时,在bean A被创建时,会创建bean B</li>
 <li>非单例或为抽象类或配置lazy-init=”true”的bean,都不会在容器初始化时创建bean</li>
@@ -594,8 +621,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/javaConfig整合spring、redis/" rel="next" title="javaConfig整合spring、redis">
-                <i class="fa fa-chevron-left"></i> javaConfig整合spring、redis
+              <a href="/2019/02/16/spring、mybatis整合源码简单分析/" rel="next" title="spring、mybatis整合源码简单分析">
+                <i class="fa fa-chevron-left"></i> spring、mybatis整合源码简单分析
               </a>
             
           </div>
@@ -604,8 +631,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/spring、mybatis整合源码简单分析/" rel="prev" title="spring、mybatis整合源码简单分析">
-                spring、mybatis整合源码简单分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/interface注入及报错分析/" rel="prev" title="interface注入及报错分析">
+                interface注入及报错分析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

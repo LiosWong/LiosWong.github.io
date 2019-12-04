@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错:123上午10:37 Cannot download sourcesSources not found for:com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49 开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看ma">
+  <meta name="description" content="开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错: 上午10:37 Cannot download sources Sources not found for: com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49 开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看ma">
 <meta name="keywords" content="maven">
 <meta property="og:type" content="article">
 <meta property="og:title" content="maven打包生成源码">
 <meta property="og:url" content="http://yoursite.com/2019/11/24/maven打包生成源码/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错:123上午10:37 Cannot download sourcesSources not found for:com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49 开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看ma">
+<meta property="og:description" content="开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错: 上午10:37 Cannot download sources Sources not found for: com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49 开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看ma">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-11-24T13:57:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="maven打包生成源码">
-<meta name="twitter:description" content="开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错:123上午10:37 Cannot download sourcesSources not found for:com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49 开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看ma">
+<meta name="twitter:description" content="开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错: 上午10:37 Cannot download sources Sources not found for: com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49 开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看ma">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -489,10 +490,47 @@
       
 
       
-        <p>开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">上午10:37 Cannot download sources</span><br><span class="line">Sources not found for:</span><br><span class="line">com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49</span><br></pre></td></tr></table></figure></p>
-<p>开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看maven配置,没有配置源码包插件,所以加入项目的配置即可:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.0.0&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;id&gt;attach-sources&lt;/id&gt;</span><br><span class="line">            &lt;phase&gt;verify&lt;/phase&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;jar-no-fork&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p>
-<p>往往我们打包都不会把源码打上去.如果想配置生成Javadoc包,加入插件即可:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;maven-javadoc-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.10.4&lt;/version&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;encoding&gt;UTF-8&lt;/encoding&gt;</span><br><span class="line">        &lt;aggregate&gt;true&lt;/aggregate&gt;</span><br><span class="line">        &lt;charset&gt;UTF-8&lt;/charset&gt;</span><br><span class="line">        &lt;docencoding&gt;UTF-8&lt;/docencoding&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;id&gt;attach-javadocs&lt;/id&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;jar&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p>
+        <p>开发中,项目A中的模块需要打包给项目B用,在调试B时,发现A中的包的源码下载失败,报错:</p>
+<pre><code>上午10:37 Cannot download sources
+Sources not found for:
+com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49
+</code></pre><p>开始怀疑是打的包问题,到远程仓库看了也没发现什么问题,idea检查也没问题,再去A中看maven配置,没有配置源码包插件,所以加入项目的配置即可:</p>
+<pre><code>            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.0.0&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;attach-sources&lt;/id&gt;
+                        &lt;phase&gt;verify&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;jar-no-fork&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+</code></pre><p>往往我们打包都不会把源码打上去.如果想配置生成Javadoc包,加入插件即可:</p>
+<pre><code>        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-javadoc-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.10.4&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;encoding&gt;UTF-8&lt;/encoding&gt;
+                &lt;aggregate&gt;true&lt;/aggregate&gt;
+                &lt;charset&gt;UTF-8&lt;/charset&gt;
+                &lt;docencoding&gt;UTF-8&lt;/docencoding&gt;
+            &lt;/configuration&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;attach-javadocs&lt;/id&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;jar&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+        &lt;/plugin&gt;
 
+</code></pre>
       
     </div>
 

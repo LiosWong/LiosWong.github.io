@@ -103,13 +103,13 @@
 
 
 
-  <meta name="description" content="最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:从图表上分析初步得出该款bra黑色较受欢迎，购买的小姐姐size 75B最多～下面通过数据爬取、数据解析、图表分析三方面分析。 数据爬取12345678910111213141516171819202122232425262728293031323334353637383940414243def d">
+  <meta name="description" content="最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:从图表上分析初步得出该款bra黑色较受欢迎，购买的小姐姐size 75B最多～下面通过数据爬取、数据解析、图表分析三方面分析。 数据爬取def doPullData():     # 设置请求头     headers = {         &amp;quot;:authority&amp;quot;: &amp;quo">
 <meta name="keywords" content="python,爬虫,ECharts">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python小白爬取某东bra数据分析">
 <meta property="og:url" content="http://yoursite.com/2019/02/15/python小白爬取某东bra数据分析/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:从图表上分析初步得出该款bra黑色较受欢迎，购买的小姐姐size 75B最多～下面通过数据爬取、数据解析、图表分析三方面分析。 数据爬取12345678910111213141516171819202122232425262728293031323334353637383940414243def d">
+<meta property="og:description" content="最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:从图表上分析初步得出该款bra黑色较受欢迎，购买的小姐姐size 75B最多～下面通过数据爬取、数据解析、图表分析三方面分析。 数据爬取def doPullData():     # 设置请求头     headers = {         &amp;quot;:authority&amp;quot;: &amp;quo">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB4ca739a6d1f980eb0abd34b663486565?method=download&shareKey=bc493e1e2c90cbb1199cf42326cd1aea">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa829f9231f752c33bfe4f8cf2c33a10c?method=download&shareKey=5cd08578de074cc96a315b8c3535e90c">
@@ -118,7 +118,7 @@
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python小白爬取某东bra数据分析">
-<meta name="twitter:description" content="最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:从图表上分析初步得出该款bra黑色较受欢迎，购买的小姐姐size 75B最多～下面通过数据爬取、数据解析、图表分析三方面分析。 数据爬取12345678910111213141516171819202122232425262728293031323334353637383940414243def d">
+<meta name="twitter:description" content="最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:从图表上分析初步得出该款bra黑色较受欢迎，购买的小姐姐size 75B最多～下面通过数据爬取、数据解析、图表分析三方面分析。 数据爬取def doPullData():     # 设置请求头     headers = {         &amp;quot;:authority&amp;quot;: &amp;quo">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB4ca739a6d1f980eb0abd34b663486565?method=download&shareKey=bc493e1e2c90cbb1199cf42326cd1aea">
 
 
@@ -175,7 +175,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -507,12 +508,188 @@
 
       
         <p>最近用python爬取了某东上的x款bra的用户评论,然后进行了size、color分析,直接上图:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB4ca739a6d1f980eb0abd34b663486565?method=download&amp;shareKey=bc493e1e2c90cbb1199cf42326cd1aea" alt="https://note.youdao.com/yws/api/personal/file/WEB4ca739a6d1f980eb0abd34b663486565?method=download&amp;shareKey=bc493e1e2c90cbb1199cf42326cd1aea"><br>从图表上分析初步得出该款bra黑色较受欢迎，购买的小姐姐size 75B最多～<br>下面通过数据爬取、数据解析、图表分析三方面分析。</p>
-<h3 id="数据爬取"><a href="#数据爬取" class="headerlink" title="数据爬取"></a>数据爬取</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">def doPullData():</span><br><span class="line">    # 设置请求头</span><br><span class="line">    headers = &#123;</span><br><span class="line">        &quot;:authority&quot;: &quot;sclub.jd.com&quot;,</span><br><span class="line">        &quot;:method&quot;: &quot;GET&quot;,</span><br><span class="line">        &quot;:path&quot;: &quot;/comment/productPageComments.action?callback=fetchJSON_comment98vv1980&amp;productId=10124144495&amp;score=0&amp;sortType=5&amp;page=0&amp;pageSize=10&amp;isShadowSku=0&amp;fold=1&quot;,</span><br><span class="line">        &quot;:scheme&quot;: &quot;https&quot;,</span><br><span class="line">        &quot;accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&quot;,</span><br><span class="line">        &quot;accept-encoding&quot;: &quot;gzip, deflate, br&quot;,</span><br><span class="line">        &quot;accept-language&quot;: &quot;zh-CN,zh;q=0.9,en;q=0.8&quot;,</span><br><span class="line">        &quot;cookie&quot;: &quot;shshshfpb=086b12d4e13b64d2ab454c0592b747059858aa0b2c965c7b25b1fef00d; shshshfpa=a9bc80bb-8fae-00ea-d688-7c060b026654-1545813312; ipLoc-djd=1-72-2799-0; user-key=a45a7f32-8d02-45c7-acdb-80586f8a75f4; cn=0; PCSYCityID=1213; __jdc=122270672; __jda=122270672.1960352535.1545662675.1547021613.1547045550.6; __jdu=1960352535; unpl=V2_ZzNtbRFRSkdwWBMBL0kLVWIFGwkSUkcVfQ5GUXNNCwZmVhcJclRCFX0UR1RnGFQUZAEZXkNcQx1FCEdkeBBVAWMDE1VGZxBFLV0CFSNGF1wjU00zQwBBQHcJFF0uSgwDYgcaDhFTQEJ2XBVQL0oMDDdRFAhyZ0AVRQhHZHsRWwRlBxFZQFNzJXI4dmRyHl8GZAoiXHJWc1chVEBQexlcBCoDGlpDVUcWcQpCZHopXw%3d%3d; shshshfp=b4d288e3959f3d57333ec63b277d246e; TrackID=1mqY28YiCc_QIPlhdl_yB-5MJfQNbi0MmMLJXAlsLuDy5vAImaiIuUujo18CehAJ9sVAmWOgexcWY8CXjfL-G1ydikjVAdUOf1Du5k2JHxrE0qBQ4fKPSSkYIW3etZQJO; thor=5FE438B5588118B03FF72C53690F219FECC569A54F2BBE0E20BDA38248047F07675EEEC90BBB86067FB102D042F95B66557CD207D7FC8F1CA2B9E1EA1BEA7BE1E9DE225C763524E7C65C35DF6062795323C8A69734796F1C721F9F5E1BACFC10864AAB9B51D5144D6FCE4ADF69D90AD86191A738C9E7C25A0BDD20B1F81B1170C2E9EE80E214E9A1A6A6C64DD7AD6AEC; pinId=kYCBFA88kKZe4tdMoc03gA; pin=2265532975_m; unick=diy_os; ceshi3.com=103; _tp=Oh5iHgb0BZF3J4ODGsToig%3D%3D; _pst=2265532975_m; __jdb=122270672.8.1960352535|6.1547045550; __jdv=122270672|baidu-pinzhuan|t_288551095_baidupinzhuan|cpc|0f3d30c8dba7459bb52f2eb5eba8ac7d_0_b78c4addeafa478ea45197149ef20d4e|1547047238917; shshshsID=f0c8a36bfc34b9d362a3827dcaed3cac_6_1547047239476; JSESSIONID=971C3D798C75A96132DA343FCB0EAB0C.s1&quot;,</span><br><span class="line">        &quot;referer&quot;: &quot;https://item.jd.com/10124144495.html&quot;,</span><br><span class="line">        &quot;user-agent&quot;: &quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 请求URL,通过某东网站抓包即可获取</span><br><span class="line">    request_url = &quot;https://sclub.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98vv1980&amp;productId=10124144495&amp;score=0&amp;sortType=5&amp;pageSize=30&amp;isShadowSku=0&amp;rid=0&amp;fold=1&amp;page=%d&quot;</span><br><span class="line">    file = None</span><br><span class="line">    for page in range(1, 5000):</span><br><span class="line">        url = request_url % page</span><br><span class="line">        r = requests.get(url, headers)</span><br><span class="line">        time.sleep(2);</span><br><span class="line">        try:</span><br><span class="line">             # 正则获取所需数据</span><br><span class="line">             rex = re.findall(r&quot;fetchJSON_comment98vv1980\((.*)\);&quot;, r.text);</span><br><span class="line">             comment = json.loads(rex[0]);</span><br><span class="line">             comments = comment[&apos;comments&apos;]</span><br><span class="line">        except Exception as e:</span><br><span class="line">             print(e);</span><br><span class="line">             continue;</span><br><span class="line">        for comment in comments:</span><br><span class="line">            item = &#123;&#125;</span><br><span class="line">            item[&apos;content&apos;] = comment[&apos;content&apos;]  # 评论正文</span><br><span class="line">            item[&apos;guid&apos;] = comment[&apos;guid&apos;]</span><br><span class="line">            item[&apos;color&apos;] = comment[&apos;productColor&apos;]  # 商品颜色</span><br><span class="line">            item[&apos;size&apos;] = comment[&apos;productSize&apos;]</span><br><span class="line">            item[&apos;userClientShow&apos;] = comment[&apos;userClientShow&apos;]  # 购物渠道</span><br><span class="line">            file = open(</span><br><span class="line">                &apos;/Users/wenchao.wang/LiosWang/sublimetext/bra_jindong.json&apos;, mode=&apos;a+&apos;)</span><br><span class="line">            # 换行写入文件</span><br><span class="line">            # 写入json到本地磁盘,注意中文乱码处理</span><br><span class="line">            file.write(json.dumps(item, ensure_ascii=False) + &quot;,\n&quot;)</span><br><span class="line">            print(json.dumps(item, ensure_ascii=False), &quot;,&quot;)</span><br><span class="line">        file.close()</span><br></pre></td></tr></table></figure>
-<p>由于调用request_url获取的数据不是json格式，所以上面使用了正则截取需要的json文本，然后把得的数据写入本地磁盘文件,在sublimetext3中打开bra_jindong.json文本,由于写入的文本有一定的格式，所以稍作处理就是一个格式规范的json啦</p>
-<h3 id="数据解析"><a href="#数据解析" class="headerlink" title="数据解析"></a>数据解析</h3><p>以上已经得到数据，但是需要对bra的size、color进行统计，所以不得不对数据进行处理了，下面直接通过代码分析:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">def parsingJSON():</span><br><span class="line">    textJSON = None</span><br><span class="line">    # 打开文件</span><br><span class="line">    with open(&apos;/Users/wenchao.wang/LiosWang/sublimetext/bra_jindong.json&apos;, encoding=&apos;utf-8&apos;) as f:</span><br><span class="line">        # print(f.read());</span><br><span class="line">        textJSON = json.load(f)</span><br><span class="line">        dataArray = textJSON[&apos;data&apos;]</span><br><span class="line">        dataArray.sort(key=itemgetter(&apos;size&apos;))</span><br><span class="line">        sortDataArray = groupby(dataArray, itemgetter(&apos;size&apos;))</span><br><span class="line">        # dataArray.sort(key=itemgetter(&apos;color&apos;))</span><br><span class="line">        # sortDataArray = groupby(dataArray, itemgetter(&apos;color&apos;))</span><br><span class="line">        # 按照size或color统计</span><br><span class="line">        sizeInfo = dict([(key, len(list(group)))</span><br><span class="line">                         for key, group in sortDataArray])</span><br><span class="line">        print(json.dumps(sizeInfo, ensure_ascii=False))</span><br><span class="line">        # 打印出所有分组明细</span><br><span class="line">        #for key, group in sortDataArray:</span><br><span class="line">            #for g in group:</span><br><span class="line">                #pass</span><br><span class="line">               # print(key,g);</span><br><span class="line">        # print(textJSON[&apos;data&apos;][0]);</span><br></pre></td></tr></table></figure></p>
-<p>使用python内置模块operator、itertools可以很好的对数据进行分组统计,以上对大小、颜色统计的输出结果分别为:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBa829f9231f752c33bfe4f8cf2c33a10c?method=download&amp;shareKey=5cd08578de074cc96a315b8c3535e90c" alt="https://note.youdao.com/yws/api/personal/file/WEBa829f9231f752c33bfe4f8cf2c33a10c?method=download&amp;shareKey=5cd08578de074cc96a315b8c3535e90c"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB75feae340a12247cd8d3d993ebdcde23?method=download&amp;shareKey=cd58ad7fcff8f61989414e8b6a7472b1" alt="https://note.youdao.com/yws/api/personal/file/WEB75feae340a12247cd8d3d993ebdcde23?method=download&amp;shareKey=cd58ad7fcff8f61989414e8b6a7472b1"></p>
-<h3 id="图表分析"><a href="#图表分析" class="headerlink" title="图表分析"></a>图表分析</h3><p>以上已经得到具体数据，下面使用echarts通过图片的方式直观的展示。使用echarts也非常简单，到其官网上下载js文件引入即可。具体代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line"></span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;ECharts&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;!-- 为ECharts准备一个具备大小（宽高）的Dom --&gt;</span><br><span class="line">    &lt;div id=&quot;bra_size&quot; style=&quot;height:400px&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;div id=&quot;bra_color&quot; style=&quot;height:400px&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;!-- ECharts单文件引入 --&gt;</span><br><span class="line">    &lt;!--script src=&quot;http://echarts.baidu.com/build/dist/echarts.js&quot;&gt;&lt;/script--&gt;</span><br><span class="line">    &lt;script src=&quot;echarts.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;esl.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    var myChartSize = echarts.init(document.getElementById(&apos;bra_size&apos;));</span><br><span class="line">    var myChartColor = echarts.init(document.getElementById(&apos;bra_color&apos;));</span><br><span class="line">    // 显示标题，图例和空的坐标轴</span><br><span class="line">    option = &#123;</span><br><span class="line">        title: &#123;</span><br><span class="line">            text: &apos;某东x款bra size统计&apos;,</span><br><span class="line">            subtext: &apos;from LiosWong&apos;,</span><br><span class="line">            x: &apos;center&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        tooltip: &#123;</span><br><span class="line">            trigger: &apos;item&apos;,</span><br><span class="line">            formatter: &quot;&#123;a&#125; &lt;br/&gt;&#123;b&#125; : &#123;c&#125; (&#123;d&#125;%)&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        legend: &#123;</span><br><span class="line">            orient: &apos;vertical&apos;,</span><br><span class="line">            left: &apos;left&apos;,</span><br><span class="line">            data: [&apos;70A&apos;,</span><br><span class="line">                &apos;70B&apos;,</span><br><span class="line">                &apos;75A&apos;,</span><br><span class="line">                &apos;75B&apos;,</span><br><span class="line">                &apos;75C&apos;,</span><br><span class="line">                &apos;80A&apos;,</span><br><span class="line">                &apos;80B&apos;,</span><br><span class="line">                &apos;80C&apos;,</span><br><span class="line">                &apos;85B&apos;,</span><br><span class="line">                &apos;85C&apos;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        series: [&#123;</span><br><span class="line">            name: &apos;访问来源&apos;,</span><br><span class="line">            type: &apos;pie&apos;,</span><br><span class="line">            radius: &apos;55%&apos;,</span><br><span class="line">            center: [&apos;50%&apos;, &apos;60%&apos;],</span><br><span class="line">            data: [</span><br><span class="line">                &#123; name: &apos;70A&apos;, value: 16 &#125;,</span><br><span class="line">                &#123; name: &apos;70B&apos;, value: 20 &#125;,</span><br><span class="line">                &#123; name: &apos;75A&apos;, value: 55 &#125;,</span><br><span class="line">                &#123; name: &apos;75B&apos;, value: 123 &#125;,</span><br><span class="line">                &#123; name: &apos;75C&apos;, value: 9 &#125;,</span><br><span class="line">                &#123; name: &apos;80A&apos;, value: 47 &#125;,</span><br><span class="line">                &#123; name: &apos;80B&apos;, value: 85 &#125;,</span><br><span class="line">                &#123; name: &apos;80C&apos;, value: 31 &#125;,</span><br><span class="line">                &#123; name: &apos;85B&apos;, value: 60 &#125;,</span><br><span class="line">                &#123; name: &apos;85C&apos;, value: 44 &#125;</span><br><span class="line">            ],</span><br><span class="line">            itemStyle: &#123;</span><br><span class="line">                emphasis: &#123;</span><br><span class="line">                    shadowBlur: 10,</span><br><span class="line">                    shadowOffsetX: 0,</span><br><span class="line">                    shadowColor: &apos;rgba(0, 0, 0, 0.5)&apos;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    option1 = &#123;</span><br><span class="line">        title: &#123;</span><br><span class="line">            text: &apos;某东x款bra 颜色统计&apos;,</span><br><span class="line">            subtext: &apos;from LiosWong&apos;,</span><br><span class="line">            x: &apos;center&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        tooltip: &#123;</span><br><span class="line">            trigger: &apos;item&apos;,</span><br><span class="line">            formatter: &quot;&#123;a&#125; &lt;br/&gt;&#123;b&#125; : &#123;c&#125; (&#123;d&#125;%)&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        legend: &#123;</span><br><span class="line">            orient: &apos;vertical&apos;,</span><br><span class="line">            left: &apos;left&apos;,</span><br><span class="line">            data: [&apos;大红&apos;, &apos;浅粉&apos;, &apos;浅黄&apos;, &apos;肤色&apos;, &apos;黑色&apos;]</span><br><span class="line">        &#125;,</span><br><span class="line">        series: [&#123;</span><br><span class="line">            name: &apos;访问来源&apos;,</span><br><span class="line">            type: &apos;pie&apos;,</span><br><span class="line">            radius: &apos;55%&apos;,</span><br><span class="line">            center: [&apos;50%&apos;, &apos;60%&apos;],</span><br><span class="line">            data: [</span><br><span class="line">                &#123; name: &apos;大红&apos;, value: 105 &#125;,</span><br><span class="line">                &#123; name: &apos;浅粉&apos;, value: 47 &#125;, &#123; name: &apos;浅黄&apos;, value: 29 &#125;,</span><br><span class="line">                &#123; name: &apos;肤色&apos;, value: 109 &#125;,</span><br><span class="line">                &#123; name: &apos;黑色&apos;, value: 200 &#125;</span><br><span class="line">            ],</span><br><span class="line">            itemStyle: &#123;</span><br><span class="line">                emphasis: &#123;</span><br><span class="line">                    shadowBlur: 10,</span><br><span class="line">                    shadowOffsetX: 0,</span><br><span class="line">                    shadowColor: &apos;rgba(0, 0, 0, 0.5)&apos;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;;</span><br><span class="line">    myChartSize.setOption(option);</span><br><span class="line">    myChartColor.setOption(option1);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></p>
-<p>为了方便使用,利用nginx搭建了web服务指向本地html、js静态资源,在浏览器中输入<code>http://localhost:8088/echarts_bra.html</code>即可得出文章开始的图表。笔者是一名python小白，有任何问题和建议欢迎随时交流，下面是我的wechat</p>
+<h3 id="数据爬取"><a href="#数据爬取" class="headerlink" title="数据爬取"></a>数据爬取</h3><pre><code>def doPullData():
+    # 设置请求头
+    headers = {
+        &quot;:authority&quot;: &quot;sclub.jd.com&quot;,
+        &quot;:method&quot;: &quot;GET&quot;,
+        &quot;:path&quot;: &quot;/comment/productPageComments.action?callback=fetchJSON_comment98vv1980&amp;productId=10124144495&amp;score=0&amp;sortType=5&amp;page=0&amp;pageSize=10&amp;isShadowSku=0&amp;fold=1&quot;,
+        &quot;:scheme&quot;: &quot;https&quot;,
+        &quot;accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&quot;,
+        &quot;accept-encoding&quot;: &quot;gzip, deflate, br&quot;,
+        &quot;accept-language&quot;: &quot;zh-CN,zh;q=0.9,en;q=0.8&quot;,
+        &quot;cookie&quot;: &quot;shshshfpb=086b12d4e13b64d2ab454c0592b747059858aa0b2c965c7b25b1fef00d; shshshfpa=a9bc80bb-8fae-00ea-d688-7c060b026654-1545813312; ipLoc-djd=1-72-2799-0; user-key=a45a7f32-8d02-45c7-acdb-80586f8a75f4; cn=0; PCSYCityID=1213; __jdc=122270672; __jda=122270672.1960352535.1545662675.1547021613.1547045550.6; __jdu=1960352535; unpl=V2_ZzNtbRFRSkdwWBMBL0kLVWIFGwkSUkcVfQ5GUXNNCwZmVhcJclRCFX0UR1RnGFQUZAEZXkNcQx1FCEdkeBBVAWMDE1VGZxBFLV0CFSNGF1wjU00zQwBBQHcJFF0uSgwDYgcaDhFTQEJ2XBVQL0oMDDdRFAhyZ0AVRQhHZHsRWwRlBxFZQFNzJXI4dmRyHl8GZAoiXHJWc1chVEBQexlcBCoDGlpDVUcWcQpCZHopXw%3d%3d; shshshfp=b4d288e3959f3d57333ec63b277d246e; TrackID=1mqY28YiCc_QIPlhdl_yB-5MJfQNbi0MmMLJXAlsLuDy5vAImaiIuUujo18CehAJ9sVAmWOgexcWY8CXjfL-G1ydikjVAdUOf1Du5k2JHxrE0qBQ4fKPSSkYIW3etZQJO; thor=5FE438B5588118B03FF72C53690F219FECC569A54F2BBE0E20BDA38248047F07675EEEC90BBB86067FB102D042F95B66557CD207D7FC8F1CA2B9E1EA1BEA7BE1E9DE225C763524E7C65C35DF6062795323C8A69734796F1C721F9F5E1BACFC10864AAB9B51D5144D6FCE4ADF69D90AD86191A738C9E7C25A0BDD20B1F81B1170C2E9EE80E214E9A1A6A6C64DD7AD6AEC; pinId=kYCBFA88kKZe4tdMoc03gA; pin=2265532975_m; unick=diy_os; ceshi3.com=103; _tp=Oh5iHgb0BZF3J4ODGsToig%3D%3D; _pst=2265532975_m; __jdb=122270672.8.1960352535|6.1547045550; __jdv=122270672|baidu-pinzhuan|t_288551095_baidupinzhuan|cpc|0f3d30c8dba7459bb52f2eb5eba8ac7d_0_b78c4addeafa478ea45197149ef20d4e|1547047238917; shshshsID=f0c8a36bfc34b9d362a3827dcaed3cac_6_1547047239476; JSESSIONID=971C3D798C75A96132DA343FCB0EAB0C.s1&quot;,
+        &quot;referer&quot;: &quot;https://item.jd.com/10124144495.html&quot;,
+        &quot;user-agent&quot;: &quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36&quot;
+    }
+    # 请求URL,通过某东网站抓包即可获取
+    request_url = &quot;https://sclub.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98vv1980&amp;productId=10124144495&amp;score=0&amp;sortType=5&amp;pageSize=30&amp;isShadowSku=0&amp;rid=0&amp;fold=1&amp;page=%d&quot;
+    file = None
+    for page in range(1, 5000):
+        url = request_url % page
+        r = requests.get(url, headers)
+        time.sleep(2);
+        try:
+             # 正则获取所需数据
+             rex = re.findall(r&quot;fetchJSON_comment98vv1980\((.*)\);&quot;, r.text);
+             comment = json.loads(rex[0]);
+             comments = comment[&#39;comments&#39;]
+        except Exception as e:
+             print(e);
+             continue;
+        for comment in comments:
+            item = {}
+            item[&#39;content&#39;] = comment[&#39;content&#39;]  # 评论正文
+            item[&#39;guid&#39;] = comment[&#39;guid&#39;]
+            item[&#39;color&#39;] = comment[&#39;productColor&#39;]  # 商品颜色
+            item[&#39;size&#39;] = comment[&#39;productSize&#39;]
+            item[&#39;userClientShow&#39;] = comment[&#39;userClientShow&#39;]  # 购物渠道
+            file = open(
+                &#39;/Users/wenchao.wang/LiosWang/sublimetext/bra_jindong.json&#39;, mode=&#39;a+&#39;)
+            # 换行写入文件
+            # 写入json到本地磁盘,注意中文乱码处理
+            file.write(json.dumps(item, ensure_ascii=False) + &quot;,\n&quot;)
+            print(json.dumps(item, ensure_ascii=False), &quot;,&quot;)
+        file.close()
+</code></pre><p>由于调用request_url获取的数据不是json格式，所以上面使用了正则截取需要的json文本，然后把得的数据写入本地磁盘文件,在sublimetext3中打开bra_jindong.json文本,由于写入的文本有一定的格式，所以稍作处理就是一个格式规范的json啦</p>
+<h3 id="数据解析"><a href="#数据解析" class="headerlink" title="数据解析"></a>数据解析</h3><p>以上已经得到数据，但是需要对bra的size、color进行统计，所以不得不对数据进行处理了，下面直接通过代码分析:</p>
+<pre><code>def parsingJSON():
+    textJSON = None
+    # 打开文件
+    with open(&#39;/Users/wenchao.wang/LiosWang/sublimetext/bra_jindong.json&#39;, encoding=&#39;utf-8&#39;) as f:
+        # print(f.read());
+        textJSON = json.load(f)
+        dataArray = textJSON[&#39;data&#39;]
+        dataArray.sort(key=itemgetter(&#39;size&#39;))
+        sortDataArray = groupby(dataArray, itemgetter(&#39;size&#39;))
+        # dataArray.sort(key=itemgetter(&#39;color&#39;))
+        # sortDataArray = groupby(dataArray, itemgetter(&#39;color&#39;))
+        # 按照size或color统计
+        sizeInfo = dict([(key, len(list(group)))
+                         for key, group in sortDataArray])
+        print(json.dumps(sizeInfo, ensure_ascii=False))
+        # 打印出所有分组明细
+        #for key, group in sortDataArray:
+            #for g in group:
+                #pass
+               # print(key,g);
+        # print(textJSON[&#39;data&#39;][0]);
+</code></pre><p>使用python内置模块operator、itertools可以很好的对数据进行分组统计,以上对大小、颜色统计的输出结果分别为:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBa829f9231f752c33bfe4f8cf2c33a10c?method=download&amp;shareKey=5cd08578de074cc96a315b8c3535e90c" alt="https://note.youdao.com/yws/api/personal/file/WEBa829f9231f752c33bfe4f8cf2c33a10c?method=download&amp;shareKey=5cd08578de074cc96a315b8c3535e90c"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB75feae340a12247cd8d3d993ebdcde23?method=download&amp;shareKey=cd58ad7fcff8f61989414e8b6a7472b1" alt="https://note.youdao.com/yws/api/personal/file/WEB75feae340a12247cd8d3d993ebdcde23?method=download&amp;shareKey=cd58ad7fcff8f61989414e8b6a7472b1"></p>
+<h3 id="图表分析"><a href="#图表分析" class="headerlink" title="图表分析"></a>图表分析</h3><p>以上已经得到具体数据，下面使用echarts通过图片的方式直观的展示。使用echarts也非常简单，到其官网上下载js文件引入即可。具体代码如下:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;ECharts&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;!-- 为ECharts准备一个具备大小（宽高）的Dom --&gt;
+    &lt;div id=&quot;bra_size&quot; style=&quot;height:400px&quot;&gt;&lt;/div&gt;
+    &lt;div id=&quot;bra_color&quot; style=&quot;height:400px&quot;&gt;&lt;/div&gt;
+    &lt;!-- ECharts单文件引入 --&gt;
+    &lt;!--script src=&quot;http://echarts.baidu.com/build/dist/echarts.js&quot;&gt;&lt;/script--&gt;
+    &lt;script src=&quot;echarts.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;esl.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    var myChartSize = echarts.init(document.getElementById(&#39;bra_size&#39;));
+    var myChartColor = echarts.init(document.getElementById(&#39;bra_color&#39;));
+    // 显示标题，图例和空的坐标轴
+    option = {
+        title: {
+            text: &#39;某东x款bra size统计&#39;,
+            subtext: &#39;from LiosWong&#39;,
+            x: &#39;center&#39;
+        },
+        tooltip: {
+            trigger: &#39;item&#39;,
+            formatter: &quot;{a} &lt;br/&gt;{b} : {c} ({d}%)&quot;
+        },
+        legend: {
+            orient: &#39;vertical&#39;,
+            left: &#39;left&#39;,
+            data: [&#39;70A&#39;,
+                &#39;70B&#39;,
+                &#39;75A&#39;,
+                &#39;75B&#39;,
+                &#39;75C&#39;,
+                &#39;80A&#39;,
+                &#39;80B&#39;,
+                &#39;80C&#39;,
+                &#39;85B&#39;,
+                &#39;85C&#39;
+            ]
+        },
+        series: [{
+            name: &#39;访问来源&#39;,
+            type: &#39;pie&#39;,
+            radius: &#39;55%&#39;,
+            center: [&#39;50%&#39;, &#39;60%&#39;],
+            data: [
+                { name: &#39;70A&#39;, value: 16 },
+                { name: &#39;70B&#39;, value: 20 },
+                { name: &#39;75A&#39;, value: 55 },
+                { name: &#39;75B&#39;, value: 123 },
+                { name: &#39;75C&#39;, value: 9 },
+                { name: &#39;80A&#39;, value: 47 },
+                { name: &#39;80B&#39;, value: 85 },
+                { name: &#39;80C&#39;, value: 31 },
+                { name: &#39;85B&#39;, value: 60 },
+                { name: &#39;85C&#39;, value: 44 }
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: &#39;rgba(0, 0, 0, 0.5)&#39;
+                }
+            }
+        }]
+    };
+
+    option1 = {
+        title: {
+            text: &#39;某东x款bra 颜色统计&#39;,
+            subtext: &#39;from LiosWong&#39;,
+            x: &#39;center&#39;
+        },
+        tooltip: {
+            trigger: &#39;item&#39;,
+            formatter: &quot;{a} &lt;br/&gt;{b} : {c} ({d}%)&quot;
+        },
+        legend: {
+            orient: &#39;vertical&#39;,
+            left: &#39;left&#39;,
+            data: [&#39;大红&#39;, &#39;浅粉&#39;, &#39;浅黄&#39;, &#39;肤色&#39;, &#39;黑色&#39;]
+        },
+        series: [{
+            name: &#39;访问来源&#39;,
+            type: &#39;pie&#39;,
+            radius: &#39;55%&#39;,
+            center: [&#39;50%&#39;, &#39;60%&#39;],
+            data: [
+                { name: &#39;大红&#39;, value: 105 },
+                { name: &#39;浅粉&#39;, value: 47 }, { name: &#39;浅黄&#39;, value: 29 },
+                { name: &#39;肤色&#39;, value: 109 },
+                { name: &#39;黑色&#39;, value: 200 }
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: &#39;rgba(0, 0, 0, 0.5)&#39;
+                }
+            }
+        }]
+    };
+    myChartSize.setOption(option);
+    myChartColor.setOption(option1);
+    &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre><p>为了方便使用,利用nginx搭建了web服务指向本地html、js静态资源,在浏览器中输入<code>http://localhost:8088/echarts_bra.html</code>即可得出文章开始的图表。笔者是一名python小白，有任何问题和建议欢迎随时交流，下面是我的wechat</p>
 <p><img src="https://note.youdao.com/yws/api/personal/file/WEBc7c871f0e0cbc535314b9301cd39a1ef?method=download&amp;shareKey=be641961ad14870b805fb689bcdec557" alt="https://note.youdao.com/yws/api/personal/file/WEBc7c871f0e0cbc535314b9301cd39a1ef?method=download&amp;shareKey=be641961ad14870b805fb689bcdec557"></p>
 
       

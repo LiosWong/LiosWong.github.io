@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -502,10 +503,111 @@
 
       
         <h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a><strong>定义</strong></h5><p>模板方法模式定义了一个算法的步骤，并允许子类别为一个或多个步骤提供其实践方式。让子类别在不改变算法架构的情况下，重新定义算法中的某些步骤.在软件工程中，它是一种软件设计模式，和C++模板没有关连.–<a href="https://zh.wikipedia.org/wiki/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95" target="_blank" rel="noopener">维基百科</a></p>
-<h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><p>首先看一个最常见的模版方法,Spring中的<code>org.springframework.context.support.AbstractApplicationContext#refresh</code>方法,它是IOC容器的入口,定义了初始化流程,其中公共的执行逻辑,在父类中实现,对于不同的实现,在子类中去实现即可,Spring中几乎所有的扩展都运用了模版方法.<br>麦子、水稻是人类主要的作物,它们大致的一生为<code>播种 --》灌溉 --》施肥 --》除草 --》收割 --》加工 --》食用</code>,其中播种、灌溉、加工、食用两者相差非常大,而施肥、除草、收割几乎相同,下面用代码说明,<br>首选定义FooldLife:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">public abstract class FooldLife &#123;</span><br><span class="line">    public void fooldLife() &#123;</span><br><span class="line">        sowing();</span><br><span class="line">        irrigation();</span><br><span class="line">        fertilization();</span><br><span class="line">        weeding();</span><br><span class="line">        harvest();</span><br><span class="line">        machining();</span><br><span class="line">        harvest();</span><br><span class="line">        edible();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 播种</span><br><span class="line">    protected void sowing() &#123;</span><br><span class="line">        // 空方法,具体逻辑由子类实现</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 灌溉</span><br><span class="line">    protected void irrigation() &#123;</span><br><span class="line">        // 空方法,具体逻辑由子类实现</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 施肥 公共实现</span><br><span class="line">    protected void fertilization() &#123;</span><br><span class="line">        // ... 具体实现</span><br><span class="line">        System.out.println(&quot;施肥---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 除草 公共实现</span><br><span class="line">    protected void weeding() &#123;</span><br><span class="line">        // ... 具体实现</span><br><span class="line">        System.out.println(&quot;除草---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 收割 公共实现</span><br><span class="line">    protected void harvest() &#123;</span><br><span class="line">        // ... 具体实现</span><br><span class="line">        System.out.println(&quot;收割---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 加工</span><br><span class="line">    protected void machining() &#123;</span><br><span class="line">        // 空方法,具体逻辑由子类实现</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 食用</span><br><span class="line">    protected void edible() &#123;</span><br><span class="line">        // 空方法,具体逻辑由子类实现</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>子类RiceLife:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class RiceLife extends FooldLife &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void sowing() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;播种---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void irrigation() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;灌溉---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void machining() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;加工---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void edible() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;食用---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>子类WheatLife:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class WheatLife extends FooldLife &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void sowing() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;播种---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void irrigation() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;灌溉---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void machining() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;加工---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void edible() &#123;</span><br><span class="line">        // 具体实现</span><br><span class="line">        System.out.println(&quot;食用---&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>FooldLife中的fooldLife方法描述了作物的一生,<code>fertilization</code>、<code>weeding</code>、<code>harvest</code>方法为公共方法;而其他方法需求子类去重写,也就是空方法(钩子),子类可以由该方法控制父类,通过以上总结下模版方法模式:</p>
+<h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><p>首先看一个最常见的模版方法,Spring中的<code>org.springframework.context.support.AbstractApplicationContext#refresh</code>方法,它是IOC容器的入口,定义了初始化流程,其中公共的执行逻辑,在父类中实现,对于不同的实现,在子类中去实现即可,Spring中几乎所有的扩展都运用了模版方法.<br>麦子、水稻是人类主要的作物,它们大致的一生为<code>播种 --》灌溉 --》施肥 --》除草 --》收割 --》加工 --》食用</code>,其中播种、灌溉、加工、食用两者相差非常大,而施肥、除草、收割几乎相同,下面用代码说明,<br>首选定义FooldLife:</p>
+<pre><code>public abstract class FooldLife {
+    public void fooldLife() {
+        sowing();
+        irrigation();
+        fertilization();
+        weeding();
+        harvest();
+        machining();
+        harvest();
+        edible();
+    }
+
+    // 播种
+    protected void sowing() {
+        // 空方法,具体逻辑由子类实现
+    }
+
+    // 灌溉
+    protected void irrigation() {
+        // 空方法,具体逻辑由子类实现
+    }
+
+    // 施肥 公共实现
+    protected void fertilization() {
+        // ... 具体实现
+        System.out.println(&quot;施肥---&quot;);
+    }
+
+    // 除草 公共实现
+    protected void weeding() {
+        // ... 具体实现
+        System.out.println(&quot;除草---&quot;);
+    }
+
+    // 收割 公共实现
+    protected void harvest() {
+        // ... 具体实现
+        System.out.println(&quot;收割---&quot;);
+    }
+
+    // 加工
+    protected void machining() {
+        // 空方法,具体逻辑由子类实现
+    }
+
+    // 食用
+    protected void edible() {
+        // 空方法,具体逻辑由子类实现
+    }
+
+}
+</code></pre><p>子类RiceLife:</p>
+<pre><code>public class RiceLife extends FooldLife {
+    @Override
+    protected void sowing() {
+        // 具体实现
+        System.out.println(&quot;播种---&quot;);
+    }
+
+    @Override
+    protected void irrigation() {
+        // 具体实现
+        System.out.println(&quot;灌溉---&quot;);
+    }
+
+    @Override
+    protected void machining() {
+        // 具体实现
+        System.out.println(&quot;加工---&quot;);
+    }
+
+    @Override
+    protected void edible() {
+        // 具体实现
+        System.out.println(&quot;食用---&quot;);
+    }
+}
+</code></pre><p>子类WheatLife:</p>
+<pre><code>public class WheatLife extends FooldLife {
+    @Override
+    protected void sowing() {
+        // 具体实现
+        System.out.println(&quot;播种---&quot;);
+    }
+
+    @Override
+    protected void irrigation() {
+        // 具体实现
+        System.out.println(&quot;灌溉---&quot;);
+    }
+
+    @Override
+    protected void machining() {
+        // 具体实现
+        System.out.println(&quot;加工---&quot;);
+    }
+
+    @Override
+    protected void edible() {
+        // 具体实现
+        System.out.println(&quot;食用---&quot;);
+    }
+}
+</code></pre><p>FooldLife中的fooldLife方法描述了作物的一生,<code>fertilization</code>、<code>weeding</code>、<code>harvest</code>方法为公共方法;而其他方法需求子类去重写,也就是空方法(钩子),子类可以由该方法控制父类,通过以上总结下模版方法模式:</p>
 <ol>
 <li>代码复用性<br>公共代码由父类实现,子类复用</li>
 <li>可扩展性<br>子类可以对父类方法扩展、功能加强</li>

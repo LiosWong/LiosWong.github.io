@@ -168,7 +168,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -1217,7 +1218,12 @@
         
           
             <p>
-              开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做:@Getter@AllArgsConstructorpublic enum OrderStatusEnum &#123;    STATUS_1(1, &quot;初始化&quot;),    STATUS_2(2, &quot;状态2&q
+              开发中会遇到,判断某个值是否在枚举中,通常情况下可以这么做:
+@Getter
+@AllArgsConstructor
+public enum OrderStatusEnum {
+    STATUS_1(1, &quot;初始化&quot;),
+    STATUS_2(2, &quot;状态2&q
               ...
             </p>
           <!--noindex-->
@@ -1582,7 +1588,8 @@
 MacBook Pro
 Docker version 19.03.1, build 74b1e89
 
-问题MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5Error response from daemon: conflict: u
+问题MacdeMacBook-Pro:war lioswong$ docker rmi 620cdd31d76f5
+Error response from daemon: conflict: 
               ...
             </p>
           <!--noindex-->
@@ -1755,7 +1762,10 @@ Docker version 19.03.1, build 74b1e89
         
           
             <p>
-              Optional类是Java8进行空值判断处理的工具类,下面是该类提供的方法:empty: 返回一个空的 Optional实例filter: 如果一个值存在，并且该值给定的谓词相匹配时，返回一个 Optional描述的值，否则返回一个空的 Optional flatMap: 如果一个值存在，应用提供
+              Optional类是Java8进行空值判断处理的工具类,下面是该类提供的方法:
+empty: 返回一个空的 Optional实例
+filter: 如果一个值存在，并且该值给定的谓词相匹配时，返回一个 Optional描述的值，否则返回一个空的 Optional 
+flatMap: 如果一个值存在，应
               ...
             </p>
           <!--noindex-->
@@ -1929,7 +1939,10 @@ Docker version 19.03.1, build 74b1e89
           
             <p>
               Vavr是java8函数式库，提供了非常丰富的API，便于开发使用。
-引入依赖&lt;dependency&gt;    &lt;groupId&gt;io.vavr&lt;/groupId&gt;    &lt;artifactId&gt;vavr&lt;/artifactId&gt;    &l
+引入依赖&lt;dependency&gt;
+    &lt;groupId&gt;io.vavr&lt;/groupId&gt;
+    &lt;artifactId&gt;vavr&lt;/artifactId&gt;
+   
               ...
             </p>
           <!--noindex-->

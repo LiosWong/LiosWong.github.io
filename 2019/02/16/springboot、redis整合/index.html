@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="redis安装 下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz  解压 sudo tar -zxvf redis-3.2.6.tar.gz 安装gcc sudo apt-get install gcc 编译、安装 12sudo makesudo make install    redis-conf copy到/et">
+  <meta name="description" content="redis安装 下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz 解压 sudo tar -zxvf redis-3.2.6.tar.gz 安装gcc sudo apt-get install gcc 编译、安装 sudo make sudo make install     redis-conf copy到/etc">
 <meta name="keywords" content="java,redis,spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="springboot、redis整合">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/springboot、redis整合/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="redis安装 下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz  解压 sudo tar -zxvf redis-3.2.6.tar.gz 安装gcc sudo apt-get install gcc 编译、安装 12sudo makesudo make install    redis-conf copy到/et">
+<meta property="og:description" content="redis安装 下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz 解压 sudo tar -zxvf redis-3.2.6.tar.gz 安装gcc sudo apt-get install gcc 编译、安装 sudo make sudo make install     redis-conf copy到/etc">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot、redis整合">
-<meta name="twitter:description" content="redis安装 下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz  解压 sudo tar -zxvf redis-3.2.6.tar.gz 安装gcc sudo apt-get install gcc 编译、安装 12sudo makesudo make install    redis-conf copy到/et">
+<meta name="twitter:description" content="redis安装 下载:sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz 解压 sudo tar -zxvf redis-3.2.6.tar.gz 安装gcc sudo apt-get install gcc 编译、安装 sudo make sudo make install     redis-conf copy到/etc">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -502,30 +503,107 @@
 
       
         <h4 id="redis安装"><a href="#redis安装" class="headerlink" title="redis安装"></a>redis安装</h4><ul>
-<li><p>下载:sudo wget <a href="http://download.redis.io/releases/redis-3.2.6.tar.gz" target="_blank" rel="noopener">http://download.redis.io/releases/redis-3.2.6.tar.gz</a></p>
-<ul>
+<li>下载:sudo wget <a href="http://download.redis.io/releases/redis-3.2.6.tar.gz" target="_blank" rel="noopener">http://download.redis.io/releases/redis-3.2.6.tar.gz</a><ul>
 <li>解压 <code>sudo tar -zxvf redis-3.2.6.tar.gz</code></li>
 <li>安装gcc <code>sudo apt-get install gcc</code></li>
-<li>编译、安装 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-</li>
+<li>编译、安装 <pre><code>sudo make
+sudo make install 
+</code></pre></li>
 </ul>
 </li>
-<li><p>redis-conf copy到/etc/redis目录,修改:</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">requirepass 123456</span><br><span class="line">#bind 127.0.0.1 注释该行</span><br></pre></td></tr></table></figure>
-<ul>
+<li>redis-conf copy到/etc/redis目录,修改:<pre><code>       requirepass 123456
+       #bind 127.0.0.1 注释该行
+</code></pre><ul>
 <li>启动redis服务<br>./redis-server /etc/redis/redis.conf<h4 id="springboot中整合"><a href="#springboot中整合" class="headerlink" title="springboot中整合"></a>springboot中整合</h4></li>
 </ul>
 </li>
 </ul>
 <ul>
 <li><p>redis-client.xml</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</span><br><span class="line">       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;</span><br><span class="line">    &lt;aop:aspectj-autoproxy/&gt;</span><br><span class="line">    &lt;bean id=&quot;redisConfig&quot; class=&quot;redis.clients.jedis.JedisPoolConfig&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;maxIdle&quot; value=&quot;6&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;minEvictableIdleTimeMillis&quot; value=&quot;300000&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;numTestsPerEvictionRun&quot; value=&quot;3&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;timeBetweenEvictionRunsMillis&quot; value=&quot;60000&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;jedisConnectionFactory&quot; class=&quot;org.springframework.data.redis.connection.jedis.JedisConnectionFactory&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;poolConfig&quot; ref=&quot;redisConfig&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;hostName&quot; value=&quot;$&#123;redis.host&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;port&quot; value=&quot;$&#123;redis.port&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;password&quot; value=&quot;$&#123;redis.password&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;timeout&quot; value=&quot;15000&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;usePool&quot; value=&quot;true&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;redisTemplate&quot; class=&quot;org.springframework.data.redis.core.RedisTemplate&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;connectionFactory&quot; ref=&quot;jedisConnectionFactory&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;keySerializer&quot;&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;/&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;valueSerializer&quot;&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;/&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;hashKeySerializer&quot;&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;&gt;&lt;/bean&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;hashValueSerializer&quot;&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;&gt;&lt;/bean&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;shardedJedisPool&quot; class=&quot;redis.clients.jedis.ShardedJedisPool&quot; &gt;</span><br><span class="line">        &lt;constructor-arg index=&quot;0&quot; ref=&quot;redisConfig&quot; /&gt;</span><br><span class="line">        &lt;constructor-arg index=&quot;1&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;bean class=&quot;redis.clients.jedis.JedisShardInfo&quot;&gt;</span><br><span class="line">                    &lt;constructor-arg name=&quot;host&quot; value=&quot;$&#123;redis.host&#125;&quot; /&gt;</span><br><span class="line">                    &lt;constructor-arg name=&quot;port&quot; value=&quot;$&#123;redis.port&#125;&quot; /&gt;</span><br><span class="line">                   &lt;!-- &lt;constructor-arg name=&quot;timeout&quot; value=&quot;15000&quot; /&gt;</span><br><span class="line">                    &lt;constructor-arg name=&quot;weight&quot; value=&quot;1&quot; /&gt;--&gt;</span><br><span class="line">                    &lt;property name=&quot;password&quot; value=&quot;$&#123;redis.password&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">                &lt;/bean&gt;</span><br><span class="line">            &lt;/list&gt;</span><br><span class="line">        &lt;/constructor-arg&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;valueOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultValueOperations&quot;&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;hashOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultHashOperations&quot;&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;setOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultSetOperations&quot;&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;zSetOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultZSetOperations&quot;&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;!-- 用String来做序列化的redis存储 --&gt;</span><br><span class="line">    &lt;bean id=&quot;rawRedisTemplate&quot; class=&quot;org.springframework.data.redis.core.RedisTemplate&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;connectionFactory&quot; ref=&quot;jedisConnectionFactory&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;KeySerializer&quot;&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;&gt;&lt;/bean&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;defaultSerializer&quot;&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;&gt;&lt;/bean&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">    &lt;bean id=&quot;rawValueOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultValueOperations&quot;&gt;</span><br><span class="line">        &lt;constructor-arg name=&quot;template&quot; ref=&quot;rawRedisTemplate&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>redis.properties</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#redis</span><br><span class="line">redis.host=192.168.31.168</span><br><span class="line">redis.port=6379</span><br><span class="line">redis.password=123456</span><br></pre></td></tr></table></figure>
-</li>
+<pre><code>  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+  &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+         xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
+      &lt;aop:aspectj-autoproxy/&gt;
+      &lt;bean id=&quot;redisConfig&quot; class=&quot;redis.clients.jedis.JedisPoolConfig&quot;&gt;
+          &lt;property name=&quot;maxIdle&quot; value=&quot;6&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;minEvictableIdleTimeMillis&quot; value=&quot;300000&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;numTestsPerEvictionRun&quot; value=&quot;3&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;timeBetweenEvictionRunsMillis&quot; value=&quot;60000&quot;&gt;&lt;/property&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;jedisConnectionFactory&quot; class=&quot;org.springframework.data.redis.connection.jedis.JedisConnectionFactory&quot;&gt;
+          &lt;property name=&quot;poolConfig&quot; ref=&quot;redisConfig&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;hostName&quot; value=&quot;${redis.host}&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;port&quot; value=&quot;${redis.port}&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;password&quot; value=&quot;${redis.password}&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;timeout&quot; value=&quot;15000&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;usePool&quot; value=&quot;true&quot;&gt;&lt;/property&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;redisTemplate&quot; class=&quot;org.springframework.data.redis.core.RedisTemplate&quot;&gt;
+          &lt;property name=&quot;connectionFactory&quot; ref=&quot;jedisConnectionFactory&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;keySerializer&quot;&gt;
+              &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;/&gt;
+          &lt;/property&gt;
+          &lt;property name=&quot;valueSerializer&quot;&gt;
+              &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;/&gt;
+          &lt;/property&gt;
+          &lt;property name=&quot;hashKeySerializer&quot;&gt;
+              &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;&gt;&lt;/bean&gt;
+          &lt;/property&gt;
+          &lt;property name=&quot;hashValueSerializer&quot;&gt;
+              &lt;bean class=&quot;org.springframework.data.redis.serializer.JdkSerializationRedisSerializer&quot;&gt;&lt;/bean&gt;
+          &lt;/property&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;shardedJedisPool&quot; class=&quot;redis.clients.jedis.ShardedJedisPool&quot; &gt;
+          &lt;constructor-arg index=&quot;0&quot; ref=&quot;redisConfig&quot; /&gt;
+          &lt;constructor-arg index=&quot;1&quot;&gt;
+              &lt;list&gt;
+                  &lt;bean class=&quot;redis.clients.jedis.JedisShardInfo&quot;&gt;
+                      &lt;constructor-arg name=&quot;host&quot; value=&quot;${redis.host}&quot; /&gt;
+                      &lt;constructor-arg name=&quot;port&quot; value=&quot;${redis.port}&quot; /&gt;
+                     &lt;!-- &lt;constructor-arg name=&quot;timeout&quot; value=&quot;15000&quot; /&gt;
+                      &lt;constructor-arg name=&quot;weight&quot; value=&quot;1&quot; /&gt;--&gt;
+                      &lt;property name=&quot;password&quot; value=&quot;${redis.password}&quot;&gt;&lt;/property&gt;
+                  &lt;/bean&gt;
+              &lt;/list&gt;
+          &lt;/constructor-arg&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;valueOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultValueOperations&quot;&gt;
+          &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;hashOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultHashOperations&quot;&gt;
+          &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;setOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultSetOperations&quot;&gt;
+          &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;zSetOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultZSetOperations&quot;&gt;
+          &lt;constructor-arg name=&quot;template&quot; ref=&quot;redisTemplate&quot;&gt;&lt;/constructor-arg&gt;
+      &lt;/bean&gt;
+      &lt;!-- 用String来做序列化的redis存储 --&gt;
+      &lt;bean id=&quot;rawRedisTemplate&quot; class=&quot;org.springframework.data.redis.core.RedisTemplate&quot;&gt;
+          &lt;property name=&quot;connectionFactory&quot; ref=&quot;jedisConnectionFactory&quot;&gt;&lt;/property&gt;
+          &lt;property name=&quot;KeySerializer&quot;&gt;
+              &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;&gt;&lt;/bean&gt;
+          &lt;/property&gt;
+          &lt;property name=&quot;defaultSerializer&quot;&gt;
+              &lt;bean class=&quot;org.springframework.data.redis.serializer.StringRedisSerializer&quot;&gt;&lt;/bean&gt;
+          &lt;/property&gt;
+      &lt;/bean&gt;
+      &lt;bean id=&quot;rawValueOperations&quot; class=&quot;org.springframework.data.redis.core.DefaultValueOperations&quot;&gt;
+          &lt;constructor-arg name=&quot;template&quot; ref=&quot;rawRedisTemplate&quot;&gt;&lt;/constructor-arg&gt;
+      &lt;/bean&gt;
+  &lt;/beans&gt;
+</code></pre></li>
+<li>redis.properties<pre><code>  #redis
+  redis.host=192.168.31.168
+  redis.port=6379
+  redis.password=123456
+</code></pre><h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><code>`</code><br>@SpringBootApplication<br>@ImportResource({“classpath*:redis-client.xml”})<br>public class LiosBootApplication extends WebMvcConfigurerAdapter {<br>  public static void main(String[] args) {<pre><code>  SpringApplication.run(LiosBootApplication.class, args);
+</code></pre> }<br>}</li>
 </ul>
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">@ImportResource(&#123;&quot;classpath*:redis-client.xml&quot;&#125;)</span><br><span class="line">public class LiosBootApplication extends WebMvcConfigurerAdapter &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(LiosBootApplication.class, args);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    RedisClient redisClient;</span><br><span class="line">    @PostMapping(value = &quot;/lios/boot/ok&quot;,produces = &#123;&quot;application/json;charset=utf-8&quot;&#125;)</span><br><span class="line">    public void ok(UserParam param)&#123;</span><br><span class="line">        redisClient.set(&quot;xxxxx&quot;,&quot;lios&quot;);</span><br><span class="line">        String a = redisClient.get(&quot;xxxxx&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@RestController<br>public class HelloController {<br>    @Autowired<br>    RedisClient redisClient;<br>    @PostMapping(value = “/lios/boot/ok”,produces = {“application/json;charset=utf-8”})<br>    public void ok(UserParam param){<br>        redisClient.set(“xxxxx”,”lios”);<br>        String a = redisClient.get(“xxxxx”);<br>    }<br>}<br><code>`</code></p>
 
       
     </div>
@@ -603,8 +681,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="next" title="Spring源码之解析并注册BeanDefinition(一)">
-                <i class="fa fa-chevron-left"></i> Spring源码之解析并注册BeanDefinition(一)
+              <a href="/2019/02/16/clone/" rel="next" title="clone">
+                <i class="fa fa-chevron-left"></i> clone
               </a>
             
           </div>
@@ -613,8 +691,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/并行执行任务/" rel="prev" title="并行执行任务">
-                并行执行任务 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/javaConfig整合spring、redis/" rel="prev" title="javaConfig整合spring、redis">
+                javaConfig整合spring、redis <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

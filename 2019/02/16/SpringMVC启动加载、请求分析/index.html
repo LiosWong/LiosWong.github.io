@@ -103,20 +103,20 @@
 
 
 
-  <meta name="description" content="简介springmvc项目会在web.xml文件中配置servlet:123456789&amp;lt;servlet&amp;gt;    &amp;lt;servlet-name&amp;gt;dispatcher&amp;lt;/servlet-name&amp;gt;    &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet">
+  <meta name="description" content="简介springmvc项目会在web.xml文件中配置servlet: &amp;lt;servlet&amp;gt;     &amp;lt;servlet-name&amp;gt;dispatcher&amp;lt;/servlet-name&amp;gt;     &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet-class">
 <meta name="keywords" content="java,spring,springmvc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringMVC启动加载、请求分析">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/SpringMVC启动加载、请求分析/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="简介springmvc项目会在web.xml文件中配置servlet:123456789&amp;lt;servlet&amp;gt;    &amp;lt;servlet-name&amp;gt;dispatcher&amp;lt;/servlet-name&amp;gt;    &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet">
+<meta property="og:description" content="简介springmvc项目会在web.xml文件中配置servlet: &amp;lt;servlet&amp;gt;     &amp;lt;servlet-name&amp;gt;dispatcher&amp;lt;/servlet-name&amp;gt;     &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet-class">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBcbda6aa3e25fb29b50796b036cc5ebcf?method=download&shareKey=2cfc5655b93a037fea8311c54e4c6416">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa8f04859417bba9bd52131d2567d6b73?method=download&shareKey=c1c6ee425df9c89566c24d3546acacb7">
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringMVC启动加载、请求分析">
-<meta name="twitter:description" content="简介springmvc项目会在web.xml文件中配置servlet:123456789&amp;lt;servlet&amp;gt;    &amp;lt;servlet-name&amp;gt;dispatcher&amp;lt;/servlet-name&amp;gt;    &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet">
+<meta name="twitter:description" content="简介springmvc项目会在web.xml文件中配置servlet: &amp;lt;servlet&amp;gt;     &amp;lt;servlet-name&amp;gt;dispatcher&amp;lt;/servlet-name&amp;gt;     &amp;lt;servlet-class&amp;gt;org.springframework.web.servlet.DispatcherServlet&amp;lt;/servlet-class">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBcbda6aa3e25fb29b50796b036cc5ebcf?method=download&shareKey=2cfc5655b93a037fea8311c54e4c6416">
 
 
@@ -173,7 +173,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -508,23 +509,155 @@
       
 
       
-        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>springmvc项目会在web.xml文件中配置servlet:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</span><br><span class="line">        &lt;param-value&gt;classpath:dispatcher-servlet.xml&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br></pre></td></tr></table></figure></p>
-<p>下面看下DispatcherServlet的继承关系:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBcbda6aa3e25fb29b50796b036cc5ebcf?method=download&amp;shareKey=2cfc5655b93a037fea8311c54e4c6416" alt="https://note.youdao.com/yws/api/personal/file/WEBcbda6aa3e25fb29b50796b036cc5ebcf?method=download&amp;shareKey=2cfc5655b93a037fea8311c54e4c6416"><br>DispatcherServlet其实是一个Servlet,用于初始化各个功能的实现类,比如异常处理、视图处理、请求映射等;且继承了FrameworkServlet类,FrameworkServlet是Spring的基础Servlet,提供集成一个基于JavaBean的整体解决方案的Spring上下文;FrameworkServlet又继承了HttpServletBean,HttpServletBean主要做一些初始化的工作,如将web.xml中的配置参数设置到Servlet中.<br>再直观感受下DispatcherServlet上下文层次结构关系:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBa8f04859417bba9bd52131d2567d6b73?method=download&amp;shareKey=c1c6ee425df9c89566c24d3546acacb7" alt="https://note.youdao.com/yws/api/personal/file/WEBa8f04859417bba9bd52131d2567d6b73?method=download&amp;shareKey=c1c6ee425df9c89566c24d3546acacb7"><br>该图有助于下面分析启动、请求的分析理解,图片来自<a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc" target="_blank" rel="noopener">https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc</a></p>
-<h4 id="启动源码分析"><a href="#启动源码分析" class="headerlink" title="启动源码分析"></a>启动源码分析</h4><p>由于DispatcherServlet是一个Servlet,启动时初始化首先调用init方法,进入其父类的<code>org.springframework.web.servlet.HttpServletBean#init</code>方法中:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);</span><br></pre></td></tr></table></figure></p>
-<p>获取了配置文件dispatcher-servlet.xml,跟进<code>initServletBean()</code>方法,此处用了委派方式,具体实现交给子类FrameworkServlet去实现,主要看方法里这段代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.webApplicationContext = initWebApplicationContext();</span><br><span class="line">initFrameworkServlet();</span><br></pre></td></tr></table></figure></p>
-<p>跟进第一段代码,由于第一次启动,wac为nul,再进入初始化方法代码,<code>org.springframework.web.servlet.FrameworkServlet#createWebApplicationContext(org.springframework.web.context.WebApplicationContext)</code>,再进入<code>org.springframework.web.servlet.FrameworkServlet#createWebApplicationContext(org.springframework.context.ApplicationContext)</code>方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; contextClass = getContextClass();</span><br><span class="line">if (this.logger.isDebugEnabled()) &#123;</span><br><span class="line">    this.logger.debug(&quot;Servlet with name &apos;&quot; + getServletName() +</span><br><span class="line">            &quot;&apos; will try to create custom WebApplicationContext context of class &apos;&quot; +</span><br><span class="line">            contextClass.getName() + &quot;&apos;&quot; + &quot;, using parent context [&quot; + parent + &quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) &#123;</span><br><span class="line">    throw new ApplicationContextException(</span><br><span class="line">            &quot;Fatal initialization error in servlet with name &apos;&quot; + getServletName() +</span><br><span class="line">            &quot;&apos;: custom WebApplicationContext class [&quot; + contextClass.getName() +</span><br><span class="line">            &quot;] is not of type ConfigurableWebApplicationContext&quot;);</span><br><span class="line">&#125;</span><br><span class="line">ConfigurableWebApplicationContext wac =</span><br><span class="line">        (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);</span><br><span class="line">wac.setEnvironment(getEnvironment());</span><br><span class="line">wac.setParent(parent);</span><br><span class="line">wac.setConfigLocation(getContextConfigLocation());</span><br><span class="line">configureAndRefreshWebApplicationContext(wac);</span><br></pre></td></tr></table></figure></p>
-<p>上面主要创建了ConfigurableWebApplicationContext对象,然后调用了configureAndRefreshWebApplicationContext方法用来做初始化工作,再进入到<code>org.springframework.web.servlet.FrameworkServlet#configureAndRefreshWebApplicationContext</code>方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">if (ObjectUtils.identityToString(wac).equals(wac.getId())) &#123;</span><br><span class="line">    // The application context id is still set to its original default value</span><br><span class="line">    // -&gt; assign a more useful id based on available information</span><br><span class="line">    if (this.contextId != null) &#123;</span><br><span class="line">        wac.setId(this.contextId);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        // Generate default id...</span><br><span class="line">        wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX +</span><br><span class="line">                ObjectUtils.getDisplayString(getServletContext().getContextPath()) + &quot;/&quot; + getServletName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">wac.setServletContext(getServletContext());</span><br><span class="line">wac.setServletConfig(getServletConfig());</span><br><span class="line">wac.setNamespace(getNamespace());</span><br><span class="line">wac.addApplicationListener(new SourceFilteringListener(wac, new ContextRefreshListener()));</span><br><span class="line">// The wac environment&apos;s #initPropertySources will be called in any case when the context</span><br><span class="line">// is refreshed; do it eagerly here to ensure servlet property sources are in place for</span><br><span class="line">// use in any post-processing or initialization that occurs below prior to #refresh</span><br><span class="line">ConfigurableEnvironment env = wac.getEnvironment();</span><br><span class="line">if (env instanceof ConfigurableWebEnvironment) &#123;</span><br><span class="line">    ((ConfigurableWebEnvironment) env).initPropertySources(getServletContext(), getServletConfig());</span><br><span class="line">&#125;</span><br><span class="line">postProcessWebApplicationContext(wac);</span><br><span class="line">applyInitializers(wac);</span><br><span class="line">wac.refresh();</span><br></pre></td></tr></table></figure></p>
-<p>最后一句<code>wac.refresh()</code>代码,跟进去发现调用的是<code>org.springframework.context.support.AbstractApplicationContext#refresh</code>的方法,ConfigurableWebApplicationContext没有重写refresh方法,所以调用了父类的默认实现方法,进入这个方法,正是spring解析配置文件、加载bean的方法,这里不作分析,具体可参考之前的文章.</p>
-<h4 id="请求分析"><a href="#请求分析" class="headerlink" title="请求分析"></a>请求分析</h4><p>服务起来后,在浏览器中输入<code>http://localhost:8082/ok</code>,由于FrameworkServlet重写了Servlet的service方法,无疑会进入到该方法中:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">protected void service(HttpServletRequest request, HttpServletResponse response)</span><br><span class="line">    throws ServletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">if (HttpMethod.PATCH.matches(request.getMethod())) &#123;</span><br><span class="line">    processRequest(request, response);</span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">    super.service(request, response);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>该方法会判断请求的方式,无论哪种都会调用processRequest方法,进入该方法会看到这么一段代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doService(request, response);</span><br></pre></td></tr></table></figure></p>
-<p>直觉告诉我们,这个方法就是用来处理请求的,再跟进去,调用的是子类DispatcherServlet中的doService方法,该方法开始会设置请求头信息,下面有这么一段代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doDispatch(request, response);</span><br></pre></td></tr></table></figure></p>
-<p>同上,直接跟进去,摘取部分代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ModelAndView mv = null;</span><br><span class="line">Exception dispatchException = null;</span><br><span class="line">// Determine handler for the current request.</span><br><span class="line">//获取MappedHandler</span><br><span class="line">mappedHandler = getHandler(processedRequest);</span><br><span class="line">// Determine handler adapter for the current request.</span><br><span class="line">//获取HandlerAdapter</span><br><span class="line">HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());</span><br><span class="line">// Process last-modified header, if supported by the handler.</span><br><span class="line">// Actually invoke the handler.</span><br><span class="line">mv = ha.handle(processedRequest, response, mappedHandler.getHandler());</span><br><span class="line">mappedHandler.applyPostHandle(processedRequest, response, mv);</span><br><span class="line">processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);</span><br><span class="line">triggerAfterCompletion(processedRequest, response, mappedHandler, ex);</span><br></pre></td></tr></table></figure></p>
-<p>进入HandlerAdapter的处理方法,<code>ha.handle(processedRequest, response, mappedHandler.getHandler())</code>,发现这么一段代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invocableMethod.invokeAndHandle(webRequest, mavContainer);</span><br></pre></td></tr></table></figure></p>
-<p>进入<code>org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod#invokeAndHandle</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//根据HandlerMapping中请求路径使用反射调用Controller中的求方法</span><br><span class="line">Object returnValue = invokeForRequest(webRequest, mavContainer, providedArgs);</span><br><span class="line">setResponseStatus(webRequest);</span><br><span class="line">if (returnValue == null) &#123;</span><br><span class="line">    if (isRequestNotModified(webRequest) || hasResponseStatus() || mavContainer.isRequestHandled()) &#123;</span><br><span class="line">        mavContainer.setRequestHandled(true);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">else if (StringUtils.hasText(this.responseReason)) &#123;</span><br><span class="line">    mavContainer.setRequestHandled(true);</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line">mavContainer.setRequestHandled(false);</span><br><span class="line">try &#123;</span><br><span class="line">    //处理返回结果</span><br><span class="line">    this.returnValueHandlers.handleReturnValue(</span><br><span class="line">            returnValue, getReturnValueType(returnValue), mavContainer, webRequest);</span><br><span class="line">&#125;</span><br><span class="line">catch (Exception ex) &#123;</span><br><span class="line">    if (logger.isTraceEnabled()) &#123;</span><br><span class="line">        logger.trace(getReturnValueHandlingErrorMessage(&quot;Error handling return value&quot;, returnValue), ex);</span><br><span class="line">    &#125;</span><br><span class="line">    throw ex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>进入到<code>org.springframework.web.method.support.InvocableHandlerMethod#invokeForRequest</code>方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// </span><br><span class="line">Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);</span><br><span class="line">if (logger.isTraceEnabled()) &#123;</span><br><span class="line">    StringBuilder sb = new StringBuilder(&quot;Invoking [&quot;);</span><br><span class="line">    sb.append(getBeanType().getSimpleName()).append(&quot;.&quot;);</span><br><span class="line">    sb.append(getMethod().getName()).append(&quot;] method with arguments &quot;);</span><br><span class="line">    sb.append(Arrays.asList(args));</span><br><span class="line">    logger.trace(sb.toString());</span><br><span class="line">&#125;</span><br><span class="line">Object returnValue = doInvoke(args);</span><br><span class="line">if (logger.isTraceEnabled()) &#123;</span><br><span class="line">    logger.trace(&quot;Method [&quot; + getMethod().getName() + &quot;] returned [&quot; + returnValue + &quot;]&quot;);</span><br><span class="line">&#125;</span><br><span class="line">return returnValue;</span><br></pre></td></tr></table></figure></p>
-<p>getMethodArgumentValues方法用于获取请求时所带的参数,doInvoke方法使用反射调用Controller中的方法,所以当断点执行到该方法中时,会调用OkController类中的ok方法,returnValue是ok方法的返回值,此时请求已经完成,下面再看响应.再回到<code>org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod#invokeAndHandle</code>中,<code>this.returnValueHandlers.handleReturnValue(returnValue,getReturnValueType(returnValue),mavContainer,webRequest)</code>方法用于处理响应,进入该方法<code>org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite#handleReturnValue</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//根据returnValue、returnType获取不同的HandlerMethodReturnValueHandler</span><br><span class="line">HandlerMethodReturnValueHandler handler = selectHandler(returnValue, returnType);</span><br><span class="line">Assert.notNull(handler, &quot;Unknown return value type [&quot; + returnType.getParameterType().getName() + &quot;]&quot;);</span><br><span class="line">//handler有很多子类,会调用不同的实现类</span><br><span class="line">handler.handleReturnValue(returnValue, returnType, mavContainer, webRequest);</span><br></pre></td></tr></table></figure></p>
-<p>由于OkController中的ok方法返回的是一个对象,所以进入到的handler的子类是<code>org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor#handleReturnValue</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ModelAndViewContainer mavContainer, NativeWebRequest webRequest)</span><br><span class="line">    throws IOException, HttpMediaTypeNotAcceptableException, HttpMessageNotWritableException &#123;</span><br><span class="line">mavContainer.setRequestHandled(true);</span><br><span class="line">// Try even with null return value. ResponseBodyAdvice could get involved.</span><br><span class="line">writeWithMessageConverters(returnValue, returnType, webRequest);</span><br></pre></td></tr></table></figure></p>
-<p>继续跟进writeWithMessageConverters方法,继续跟进<code>org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor#writeWithMessageConverters(T, org.springframework.core.MethodParameter, org.springframework.http.server.ServletServerHttpRequest, org.springframework.http.server.ServletServerHttpResponse)</code>方法,在该方法中会把响应写入到流中返回给客户端.<br>至此服务端的响应也简单的介绍完毕.</p>
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>springmvc项目会在web.xml文件中配置servlet:</p>
+<pre><code>&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:dispatcher-servlet.xml&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+</code></pre><p>下面看下DispatcherServlet的继承关系:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBcbda6aa3e25fb29b50796b036cc5ebcf?method=download&amp;shareKey=2cfc5655b93a037fea8311c54e4c6416" alt="https://note.youdao.com/yws/api/personal/file/WEBcbda6aa3e25fb29b50796b036cc5ebcf?method=download&amp;shareKey=2cfc5655b93a037fea8311c54e4c6416"><br>DispatcherServlet其实是一个Servlet,用于初始化各个功能的实现类,比如异常处理、视图处理、请求映射等;且继承了FrameworkServlet类,FrameworkServlet是Spring的基础Servlet,提供集成一个基于JavaBean的整体解决方案的Spring上下文;FrameworkServlet又继承了HttpServletBean,HttpServletBean主要做一些初始化的工作,如将web.xml中的配置参数设置到Servlet中.<br>再直观感受下DispatcherServlet上下文层次结构关系:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBa8f04859417bba9bd52131d2567d6b73?method=download&amp;shareKey=c1c6ee425df9c89566c24d3546acacb7" alt="https://note.youdao.com/yws/api/personal/file/WEBa8f04859417bba9bd52131d2567d6b73?method=download&amp;shareKey=c1c6ee425df9c89566c24d3546acacb7"><br>该图有助于下面分析启动、请求的分析理解,图片来自<a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc" target="_blank" rel="noopener">https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc</a></p>
+<h4 id="启动源码分析"><a href="#启动源码分析" class="headerlink" title="启动源码分析"></a>启动源码分析</h4><p>由于DispatcherServlet是一个Servlet,启动时初始化首先调用init方法,进入其父类的<code>org.springframework.web.servlet.HttpServletBean#init</code>方法中:</p>
+<pre><code>PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
+</code></pre><p>获取了配置文件dispatcher-servlet.xml,跟进<code>initServletBean()</code>方法,此处用了委派方式,具体实现交给子类FrameworkServlet去实现,主要看方法里这段代码:</p>
+<pre><code>this.webApplicationContext = initWebApplicationContext();
+initFrameworkServlet();
+</code></pre><p>跟进第一段代码,由于第一次启动,wac为nul,再进入初始化方法代码,<code>org.springframework.web.servlet.FrameworkServlet#createWebApplicationContext(org.springframework.web.context.WebApplicationContext)</code>,再进入<code>org.springframework.web.servlet.FrameworkServlet#createWebApplicationContext(org.springframework.context.ApplicationContext)</code>方法:</p>
+<pre><code>Class&lt;?&gt; contextClass = getContextClass();
+if (this.logger.isDebugEnabled()) {
+    this.logger.debug(&quot;Servlet with name &#39;&quot; + getServletName() +
+            &quot;&#39; will try to create custom WebApplicationContext context of class &#39;&quot; +
+            contextClass.getName() + &quot;&#39;&quot; + &quot;, using parent context [&quot; + parent + &quot;]&quot;);
+}
+if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
+    throw new ApplicationContextException(
+            &quot;Fatal initialization error in servlet with name &#39;&quot; + getServletName() +
+            &quot;&#39;: custom WebApplicationContext class [&quot; + contextClass.getName() +
+            &quot;] is not of type ConfigurableWebApplicationContext&quot;);
+}
+ConfigurableWebApplicationContext wac =
+        (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
+wac.setEnvironment(getEnvironment());
+wac.setParent(parent);
+wac.setConfigLocation(getContextConfigLocation());
+configureAndRefreshWebApplicationContext(wac);
+</code></pre><p>上面主要创建了ConfigurableWebApplicationContext对象,然后调用了configureAndRefreshWebApplicationContext方法用来做初始化工作,再进入到<code>org.springframework.web.servlet.FrameworkServlet#configureAndRefreshWebApplicationContext</code>方法:</p>
+<pre><code>if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
+    // The application context id is still set to its original default value
+    // -&gt; assign a more useful id based on available information
+    if (this.contextId != null) {
+        wac.setId(this.contextId);
+    }
+    else {
+        // Generate default id...
+        wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX +
+                ObjectUtils.getDisplayString(getServletContext().getContextPath()) + &quot;/&quot; + getServletName());
+    }
+}
+wac.setServletContext(getServletContext());
+wac.setServletConfig(getServletConfig());
+wac.setNamespace(getNamespace());
+wac.addApplicationListener(new SourceFilteringListener(wac, new ContextRefreshListener()));
+// The wac environment&#39;s #initPropertySources will be called in any case when the context
+// is refreshed; do it eagerly here to ensure servlet property sources are in place for
+// use in any post-processing or initialization that occurs below prior to #refresh
+ConfigurableEnvironment env = wac.getEnvironment();
+if (env instanceof ConfigurableWebEnvironment) {
+    ((ConfigurableWebEnvironment) env).initPropertySources(getServletContext(), getServletConfig());
+}
+postProcessWebApplicationContext(wac);
+applyInitializers(wac);
+wac.refresh();
+</code></pre><p>最后一句<code>wac.refresh()</code>代码,跟进去发现调用的是<code>org.springframework.context.support.AbstractApplicationContext#refresh</code>的方法,ConfigurableWebApplicationContext没有重写refresh方法,所以调用了父类的默认实现方法,进入这个方法,正是spring解析配置文件、加载bean的方法,这里不作分析,具体可参考之前的文章.</p>
+<h4 id="请求分析"><a href="#请求分析" class="headerlink" title="请求分析"></a>请求分析</h4><p>服务起来后,在浏览器中输入<code>http://localhost:8082/ok</code>,由于FrameworkServlet重写了Servlet的service方法,无疑会进入到该方法中:</p>
+<pre><code>protected void service(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+
+if (HttpMethod.PATCH.matches(request.getMethod())) {
+    processRequest(request, response);
+}
+else {
+    super.service(request, response);
+}
+}
+</code></pre><p>该方法会判断请求的方式,无论哪种都会调用processRequest方法,进入该方法会看到这么一段代码:</p>
+<pre><code>doService(request, response);
+</code></pre><p>直觉告诉我们,这个方法就是用来处理请求的,再跟进去,调用的是子类DispatcherServlet中的doService方法,该方法开始会设置请求头信息,下面有这么一段代码:</p>
+<pre><code>doDispatch(request, response);
+</code></pre><p>同上,直接跟进去,摘取部分代码:</p>
+<pre><code>ModelAndView mv = null;
+Exception dispatchException = null;
+// Determine handler for the current request.
+//获取MappedHandler
+mappedHandler = getHandler(processedRequest);
+// Determine handler adapter for the current request.
+//获取HandlerAdapter
+HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
+// Process last-modified header, if supported by the handler.
+// Actually invoke the handler.
+mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
+mappedHandler.applyPostHandle(processedRequest, response, mv);
+processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
+triggerAfterCompletion(processedRequest, response, mappedHandler, ex);
+</code></pre><p>进入HandlerAdapter的处理方法,<code>ha.handle(processedRequest, response, mappedHandler.getHandler())</code>,发现这么一段代码:</p>
+<pre><code>invocableMethod.invokeAndHandle(webRequest, mavContainer);
+</code></pre><p>进入<code>org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod#invokeAndHandle</code>:</p>
+<pre><code>//根据HandlerMapping中请求路径使用反射调用Controller中的求方法
+Object returnValue = invokeForRequest(webRequest, mavContainer, providedArgs);
+setResponseStatus(webRequest);
+if (returnValue == null) {
+    if (isRequestNotModified(webRequest) || hasResponseStatus() || mavContainer.isRequestHandled()) {
+        mavContainer.setRequestHandled(true);
+        return;
+    }
+}
+else if (StringUtils.hasText(this.responseReason)) {
+    mavContainer.setRequestHandled(true);
+    return;
+}
+mavContainer.setRequestHandled(false);
+try {
+    //处理返回结果
+    this.returnValueHandlers.handleReturnValue(
+            returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
+}
+catch (Exception ex) {
+    if (logger.isTraceEnabled()) {
+        logger.trace(getReturnValueHandlingErrorMessage(&quot;Error handling return value&quot;, returnValue), ex);
+    }
+    throw ex;
+}
+</code></pre><p>进入到<code>org.springframework.web.method.support.InvocableHandlerMethod#invokeForRequest</code>方法:</p>
+<pre><code>// 
+Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
+if (logger.isTraceEnabled()) {
+    StringBuilder sb = new StringBuilder(&quot;Invoking [&quot;);
+    sb.append(getBeanType().getSimpleName()).append(&quot;.&quot;);
+    sb.append(getMethod().getName()).append(&quot;] method with arguments &quot;);
+    sb.append(Arrays.asList(args));
+    logger.trace(sb.toString());
+}
+Object returnValue = doInvoke(args);
+if (logger.isTraceEnabled()) {
+    logger.trace(&quot;Method [&quot; + getMethod().getName() + &quot;] returned [&quot; + returnValue + &quot;]&quot;);
+}
+return returnValue;
+</code></pre><p>getMethodArgumentValues方法用于获取请求时所带的参数,doInvoke方法使用反射调用Controller中的方法,所以当断点执行到该方法中时,会调用OkController类中的ok方法,returnValue是ok方法的返回值,此时请求已经完成,下面再看响应.再回到<code>org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod#invokeAndHandle</code>中,<code>this.returnValueHandlers.handleReturnValue(returnValue,getReturnValueType(returnValue),mavContainer,webRequest)</code>方法用于处理响应,进入该方法<code>org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite#handleReturnValue</code>:</p>
+<pre><code>//根据returnValue、returnType获取不同的HandlerMethodReturnValueHandler
+HandlerMethodReturnValueHandler handler = selectHandler(returnValue, returnType);
+Assert.notNull(handler, &quot;Unknown return value type [&quot; + returnType.getParameterType().getName() + &quot;]&quot;);
+//handler有很多子类,会调用不同的实现类
+handler.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
+</code></pre><p>由于OkController中的ok方法返回的是一个对象,所以进入到的handler的子类是<code>org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor#handleReturnValue</code>:</p>
+<pre><code>ModelAndViewContainer mavContainer, NativeWebRequest webRequest)
+    throws IOException, HttpMediaTypeNotAcceptableException, HttpMessageNotWritableException {
+mavContainer.setRequestHandled(true);
+// Try even with null return value. ResponseBodyAdvice could get involved.
+writeWithMessageConverters(returnValue, returnType, webRequest);
+</code></pre><p>继续跟进writeWithMessageConverters方法,继续跟进<code>org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor#writeWithMessageConverters(T, org.springframework.core.MethodParameter, org.springframework.http.server.ServletServerHttpRequest, org.springframework.http.server.ServletServerHttpResponse)</code>方法,在该方法中会把响应写入到流中返回给客户端.<br>至此服务端的响应也简单的介绍完毕.</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>实际的流程远比笔者介绍的复杂的太多,感兴趣的朋友可以打断点调试去探索,其中涉及到很多知识点都没有去过多的分析,后面的文章笔者会涉及;笔者非常想从tomcat容器启动,到Servlet的加载,再到Spring中bean初始化,然后tomcat容器处理请求,分配给Servlet去处理,再到DispatcherServlet前端控制器分发、处理,整个过程,限于笔者目前水平,没有把整个串联起来,形成一条完整的调用链,希望有朋友可以分享.</p>
 
       

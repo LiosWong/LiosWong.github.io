@@ -103,18 +103,18 @@
 
 
 
-  <meta name="description" content="步骤如下:1. post_asset_folder:true配置_config.yml里面的post_asset_folder:true2. 安装hexo-asset-image1npm install hexo-asset-image --save 3. 插入图片运行hexo new &amp;quot;Redis深度探险梳理&amp;quot;,来生成md博文时,/source/_posts文件夹内除了Red">
+  <meta name="description" content="步骤如下:1. post_asset_folder:true配置_config.yml里面的post_asset_folder:true2. 安装hexo-asset-image   npm install hexo-asset-image --save 3. 插入图片运行hexo new &amp;quot;Redis深度探险梳理&amp;quot;,来生成md博文时,/source/_posts文件夹内除了R">
 <meta name="keywords" content="hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo使用本地图片">
 <meta property="og:url" content="http://yoursite.com/2019/11/28/hexo使用本地图片/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="步骤如下:1. post_asset_folder:true配置_config.yml里面的post_asset_folder:true2. 安装hexo-asset-image1npm install hexo-asset-image --save 3. 插入图片运行hexo new &amp;quot;Redis深度探险梳理&amp;quot;,来生成md博文时,/source/_posts文件夹内除了Red">
+<meta property="og:description" content="步骤如下:1. post_asset_folder:true配置_config.yml里面的post_asset_folder:true2. 安装hexo-asset-image   npm install hexo-asset-image --save 3. 插入图片运行hexo new &amp;quot;Redis深度探险梳理&amp;quot;,来生成md博文时,/source/_posts文件夹内除了R">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-11-28T10:22:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo使用本地图片">
-<meta name="twitter:description" content="步骤如下:1. post_asset_folder:true配置_config.yml里面的post_asset_folder:true2. 安装hexo-asset-image1npm install hexo-asset-image --save 3. 插入图片运行hexo new &amp;quot;Redis深度探险梳理&amp;quot;,来生成md博文时,/source/_posts文件夹内除了Red">
+<meta name="twitter:description" content="步骤如下:1. post_asset_folder:true配置_config.yml里面的post_asset_folder:true2. 安装hexo-asset-image   npm install hexo-asset-image --save 3. 插入图片运行hexo new &amp;quot;Redis深度探险梳理&amp;quot;,来生成md博文时,/source/_posts文件夹内除了R">
 
 
 
@@ -170,7 +170,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -489,10 +490,13 @@
       
 
       
-        <p>步骤如下:<br><strong>1. post_asset_folder:true</strong><br>配置_config.yml里面的<code>post_asset_folder:true</code><br><strong>2. 安装hexo-asset-image</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure></p>
-<p><strong>3. 插入图片</strong><br>运行<code>hexo new &quot;Redis深度探险梳理&quot;</code>,<br>来生成md博文时,/source/_posts文件夹内除了<code>Redis深度探险梳理.md</code>文件还有一个同名的文件夹 <code>Redis深度探险梳理</code> ,把图片放入该文件夹,<br>然后在文章中引入:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![Redis](Redis深度探险梳理/Redis.png)</span><br></pre></td></tr></table></figure></p>
-<p>本地运行发现是OK的,但是deploy到github上,发现图片不能展示了,然后看html文件发现是文件路径问题,然后改成:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![Redis](Redis.png)</span><br></pre></td></tr></table></figure></p>
-<p>就好了.</p>
+        <p>步骤如下:<br><strong>1. post_asset_folder:true</strong><br>配置_config.yml里面的<code>post_asset_folder:true</code><br><strong>2. 安装hexo-asset-image</strong>  </p>
+<pre><code>npm install hexo-asset-image --save
+</code></pre><p><strong>3. 插入图片</strong><br>运行<code>hexo new &quot;Redis深度探险梳理&quot;</code>,<br>来生成md博文时,/source/_posts文件夹内除了<code>Redis深度探险梳理.md</code>文件还有一个同名的文件夹 <code>Redis深度探险梳理</code> ,把图片放入该文件夹,<br>然后在文章中引入:</p>
+<pre><code>![Redis](Redis深度探险梳理/Redis.png)
+</code></pre><p>本地运行发现是OK的,但是deploy到github上,发现图片不能展示了,然后看html文件发现是文件路径问题,然后改成:</p>
+<pre><code>![Redis](Redis.png)
+</code></pre><p>就好了.</p>
 
       
     </div>

@@ -103,13 +103,13 @@
 
 
 
-  <meta name="description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:12345•   512MB RAM•   20GB Disk•   500GB Bandwidth @ 1 Gbps•   Shared Intel HT CPU 2 Cores @ 1.5GHz•   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
+  <meta name="description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置: •   512MB RAM •   20GB Disk •   500GB Bandwidth @ 1 Gbps •   Shared Intel HT CPU 2 Cores @ 1.5GHz •   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
 <meta name="keywords" content="GCP,V2ray,科学上网">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GCP搭建V2ray服务">
 <meta property="og:url" content="http://yoursite.com/2019/03/06/GCP搭建V2ray服务/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:12345•   512MB RAM•   20GB Disk•   500GB Bandwidth @ 1 Gbps•   Shared Intel HT CPU 2 Cores @ 1.5GHz•   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
+<meta property="og:description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置: •   512MB RAM •   20GB Disk •   500GB Bandwidth @ 1 Gbps •   Shared Intel HT CPU 2 Cores @ 1.5GHz •   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&shareKey=fc85e82ea39869353c28aa058bd46e5c">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB165db1e068be8d3e88f7af199b3ff17b?method=download&shareKey=0206137fd63217f96266d1b42e839a72">
@@ -119,7 +119,7 @@
 <meta property="og:updated_time" content="2019-09-02T15:53:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCP搭建V2ray服务">
-<meta name="twitter:description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:12345•   512MB RAM•   20GB Disk•   500GB Bandwidth @ 1 Gbps•   Shared Intel HT CPU 2 Cores @ 1.5GHz•   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
+<meta name="twitter:description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置: •   512MB RAM •   20GB Disk •   500GB Bandwidth @ 1 Gbps •   Shared Intel HT CPU 2 Cores @ 1.5GHz •   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&shareKey=fc85e82ea39869353c28aa058bd46e5c">
 
 
@@ -176,7 +176,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -507,21 +508,35 @@
       
 
       
-        <p>由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">•   512MB RAM</span><br><span class="line">•   20GB Disk</span><br><span class="line">•   500GB Bandwidth @ 1 Gbps</span><br><span class="line">•   Shared Intel HT CPU 2 Cores @ 1.5GHz</span><br><span class="line">•   1x IPv4 Addresses</span><br></pre></td></tr></table></figure></p>
-<p>是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有google账号,然后在<a href="https://cloud.google.com/free/" target="_blank" rel="noopener">https://cloud.google.com/free/</a>注册,可以获得300美金赠金,12月内可畅享GCP,再到<a href="https://console.cloud.google.com" target="_blank" rel="noopener">https://console.cloud.google.com</a>新建<code>Project</code>并关联结算账户.由于我没有申请GCP服务,用的是同学的账号,省去了前面的一部分流程,下面简单介绍下配置、搭建流程.</p>
+        <p>由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:</p>
+<pre><code>•   512MB RAM
+•   20GB Disk
+•   500GB Bandwidth @ 1 Gbps
+•   Shared Intel HT CPU 2 Cores @ 1.5GHz
+•   1x IPv4 Addresses
+</code></pre><p>是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有google账号,然后在<a href="https://cloud.google.com/free/" target="_blank" rel="noopener">https://cloud.google.com/free/</a>注册,可以获得300美金赠金,12月内可畅享GCP,再到<a href="https://console.cloud.google.com" target="_blank" rel="noopener">https://console.cloud.google.com</a>新建<code>Project</code>并关联结算账户.由于我没有申请GCP服务,用的是同学的账号,省去了前面的一部分流程,下面简单介绍下配置、搭建流程.</p>
 <h4 id="创建VM实例"><a href="#创建VM实例" class="headerlink" title="创建VM实例"></a>创建VM实例</h4><p><img src="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&amp;shareKey=fc85e82ea39869353c28aa058bd46e5c" alt="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&amp;shareKey=fc85e82ea39869353c28aa058bd46e5c"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB165db1e068be8d3e88f7af199b3ff17b?method=download&amp;shareKey=0206137fd63217f96266d1b42e839a72" alt="https://note.youdao.com/yws/api/personal/file/WEB165db1e068be8d3e88f7af199b3ff17b?method=download&amp;shareKey=0206137fd63217f96266d1b42e839a72"><br>服务器最好选择香港、台湾或者日本,离大陆较近,TTL较小,速度更快,然后再防火墙处勾选HTTP流量.创建完之后,回到首页会看到Project、实例:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBbaabf5d35d7dbb7e9fc95cce701dc06a?method=download&amp;shareKey=8cf7ca4496a370c96524734a1fffe985" alt="https://note.youdao.com/yws/api/personal/file/WEBbaabf5d35d7dbb7e9fc95cce701dc06a?method=download&amp;shareKey=8cf7ca4496a370c96524734a1fffe985"></p>
 <h4 id="防火墙规则、外部IP地址"><a href="#防火墙规则、外部IP地址" class="headerlink" title="防火墙规则、外部IP地址"></a>防火墙规则、外部IP地址</h4><p><img src="https://note.youdao.com/yws/api/personal/file/WEBd0417df3e1a4d541e99717cbc41cb760?method=download&amp;shareKey=60cad63353b81075e15464104044f580" alt="https://note.youdao.com/yws/api/personal/file/WEBd0417df3e1a4d541e99717cbc41cb760?method=download&amp;shareKey=60cad63353b81075e15464104044f580"><br>注意在添加出站防火墙规则时,目标是所有实例<br><img src="https://note.youdao.com/yws/api/personal/file/WEB891d0bd5a2a5ba500ef54e0fb49c85ca?method=download&amp;shareKey=e9b9497f365c873baa1b577413d1a714" alt="https://note.youdao.com/yws/api/personal/file/WEB891d0bd5a2a5ba500ef54e0fb49c85ca?method=download&amp;shareKey=e9b9497f365c873baa1b577413d1a714"><br>在配置当前实例IP类型选择静态</p>
 <h4 id="配置服务器、一键安装V2ray"><a href="#配置服务器、一键安装V2ray" class="headerlink" title="配置服务器、一键安装V2ray"></a>配置服务器、一键安装V2ray</h4><ul>
-<li>配置<br>首先需要在网页打开SSH会话窗口,登录服务器后:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -i  #切换用户</span><br><span class="line">vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+<li><p>配置<br>首先需要在网页打开SSH会话窗口,登录服务器后:</p>
+<pre><code>sudo -i  #切换用户
+vi /etc/ssh/sshd_config
+</code></pre><p>修改sshd_config文件:</p>
+<pre><code># Authentication:
+PermitRootLogin yes //开启root用户访问
+# Change to no to disable tunnelled clear text passwords
+PasswordAuthentication yes //开启密码登陆
+</code></pre><p>修改后执行<code>passwd root</code>重置root密码,然后再重启ssh服务:<br><code>/etc/init.d/ssh restart</code><br>此时可以ssh在本地通过密码登录服务器<br>可以安装ufw(<code>apt-get install ufw`)关闭防火墙(</code>ufw disable<code></code>),实际没有多大意义</p>
+</li>
+<li><p>安装V2ray服务<br>执行<code></code>source &lt;(curl -sL <a href="https://git.io/fNgqx)`,可以一键安装V2ray,完成后在终端输入V2ray,可以通过界面化操作,使用起来很方便,V2ray安装路径信息" target="_blank" rel="noopener">https://git.io/fNgqx)`,可以一键安装V2ray,完成后在终端输入V2ray,可以通过界面化操作,使用起来很方便,V2ray安装路径信息</a>:</p>
+<pre><code>/usr/bin/v2ray/v2ray：V2Ray 程序
+/usr/bin/v2ray/v2ctl：V2Ray 工具
+/etc/v2ray/config.json：配置文件
+/usr/bin/v2ray/geoip.dat：IP 数据文件
+/usr/bin/v2ray/geosite.dat：域名数据文件
+</code></pre><p>其中<code>config.json</code>文件是服务配置文件,以上的一键化脚本来自<a href="https://github.com/Jrohy/multi-v2ray" target="_blank" rel="noopener">https://github.com/Jrohy/multi-v2ray</a>,当然网上还有很多配置脚本.配置完成之后,还可以通过该界面化生成客户端配置json,把客户端配置json copy到客户端配置condig.json中即可,手机V2ray客户端:<a href="https://github.com/2dust/v2rayNG" target="_blank" rel="noopener">v2rayNG</a>,mac客户端:<a href="https://github.com/v2ray/v2ray-core" target="_blank" rel="noopener">v2ray-core</a><br>V2ray服务完全可以根据官方文档完成,而且网上有丰富的v2ray配置模板,可搭建出更快、更稳定的V2ray服务!最后感谢磊哥提供强大的GCP云服务器,让速度更快更稳定!</p>
 </li>
 </ul>
-<p>修改sshd_config文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Authentication:</span><br><span class="line">PermitRootLogin yes //开启root用户访问</span><br><span class="line"># Change to no to disable tunnelled clear text passwords</span><br><span class="line">PasswordAuthentication yes //开启密码登陆</span><br></pre></td></tr></table></figure></p>
-<p>修改后执行<code>passwd root</code>重置root密码,然后再重启ssh服务:<br><code>/etc/init.d/ssh restart</code><br>此时可以ssh在本地通过密码登录服务器<br>可以安装ufw(<code>apt-get install ufw`)关闭防火墙(</code>ufw disable<code></code>),实际没有多大意义</p>
-<ul>
-<li>安装V2ray服务<br>执行<code></code>source &lt;(curl -sL <a href="https://git.io/fNgqx)`,可以一键安装V2ray,完成后在终端输入V2ray,可以通过界面化操作,使用起来很方便,V2ray安装路径信息" target="_blank" rel="noopener">https://git.io/fNgqx)`,可以一键安装V2ray,完成后在终端输入V2ray,可以通过界面化操作,使用起来很方便,V2ray安装路径信息</a>:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/v2ray/v2ray：V2Ray 程序</span><br><span class="line">/usr/bin/v2ray/v2ctl：V2Ray 工具</span><br><span class="line">/etc/v2ray/config.json：配置文件</span><br><span class="line">/usr/bin/v2ray/geoip.dat：IP 数据文件</span><br><span class="line">/usr/bin/v2ray/geosite.dat：域名数据文件</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>其中<code>config.json</code>文件是服务配置文件,以上的一键化脚本来自<a href="https://github.com/Jrohy/multi-v2ray" target="_blank" rel="noopener">https://github.com/Jrohy/multi-v2ray</a>,当然网上还有很多配置脚本.配置完成之后,还可以通过该界面化生成客户端配置json,把客户端配置json copy到客户端配置condig.json中即可,手机V2ray客户端:<a href="https://github.com/2dust/v2rayNG" target="_blank" rel="noopener">v2rayNG</a>,mac客户端:<a href="https://github.com/v2ray/v2ray-core" target="_blank" rel="noopener">v2ray-core</a><br>V2ray服务完全可以根据官方文档完成,而且网上有丰富的v2ray配置模板,可搭建出更快、更稳定的V2ray服务!最后感谢磊哥提供强大的GCP云服务器,让速度更快更稳定!</p>
 <blockquote>
 <p>参考资料</p>
 </blockquote>

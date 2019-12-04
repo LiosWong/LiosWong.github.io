@@ -172,7 +172,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -506,8 +507,57 @@
         <blockquote>
 <p><a href="https://baike.baidu.com/item/%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/7545973?fr=aladdin" target="_blank" rel="noopener">回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应</a> –摘自百度百科–  </p>
 </blockquote>
-<p>什么是回调函数,上面的问题说的是不是很空洞,不是太形象,下面是知乎上的一位网友给的答案:<br><a href="https://www.zhihu.com/question/19801131" target="_blank" rel="noopener"><img src="https://note.youdao.com/yws/api/personal/file/WEB9482fb6622b45a47425558c33394bfac?method=download&amp;shareKey=fe3423af3064a071b3c755ec509dc78b" alt></a><br>为了有更直观的体会,下面通过代码来实现上述过程,<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description 工具接口</span><br><span class="line"> * @date 2018/6/23 上午1:03</span><br><span class="line"> */</span><br><span class="line">public interface Tools &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 打电话</span><br><span class="line">     * @param msg</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    String getCallMsg(String msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description 顾客类</span><br><span class="line"> * @date 2018/6/23 上午1:01</span><br><span class="line"> */</span><br><span class="line">public class Customer implements Tools&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String getCallMsg(String msg) &#123;</span><br><span class="line">        if(StringUtils.isNotEmpty(msg))&#123;</span><br><span class="line">            System.out.println(msg);</span><br><span class="line">            return &quot;已收到电话&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Customer customer = new Customer();</span><br><span class="line">        SalesPerson salesPerson = new SalesPerson();</span><br><span class="line">        salesPerson.callCustomer(&quot;ok&quot;,customer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author LiosWong</span><br><span class="line"> * @description 售货员</span><br><span class="line"> * @date 2018/6/23 上午1:01</span><br><span class="line"> */</span><br><span class="line">public class SalesPerson &#123;</span><br><span class="line">    public void callCustomer(String msg,Tools tools)&#123;</span><br><span class="line">        if(&quot;ok&quot;.equals(msg))&#123;</span><br><span class="line">            String response = tools.getMsg(&quot;已经到货啦,请前来购买～&quot;);</span><br><span class="line">            System.out.println(response);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>首先新建一个抽象工具类,里面具体使用电话工具作为通讯方法(<strong><em>回调函数</em></strong>),然后顾客要有电话,所以实现了这个接口;售货员需要在有货时通知顾客,所以需要有个通知顾客的方法callCustomer,入参数中有Tools接口的引用(<strong><em>登记回调函数</em></strong>),然后在该方法中调用Tools的方法,通知顾客已经有货了(<strong><em>调用回调函数</em></strong>),顾客接受到电话通知(<strong><em>回调响应</em></strong>);然后在Customer类的main方法中,  callCustomer方法的入参,传入了Customer的实例.</p>
+<p>什么是回调函数,上面的问题说的是不是很空洞,不是太形象,下面是知乎上的一位网友给的答案:<br><a href="https://www.zhihu.com/question/19801131" target="_blank" rel="noopener"><img src="https://note.youdao.com/yws/api/personal/file/WEB9482fb6622b45a47425558c33394bfac?method=download&amp;shareKey=fe3423af3064a071b3c755ec509dc78b" alt></a><br>为了有更直观的体会,下面通过代码来实现上述过程,</p>
+<pre><code>/**
+ * @author LiosWong
+ * @description 工具接口
+ * @date 2018/6/23 上午1:03
+ */
+public interface Tools {
+    /**
+     * 打电话
+     * @param msg
+     * @return
+     */
+    String getCallMsg(String msg);
+}
+
+/**
+ * @author LiosWong
+ * @description 顾客类
+ * @date 2018/6/23 上午1:01
+ */
+public class Customer implements Tools{
+    @Override
+    public String getCallMsg(String msg) {
+        if(StringUtils.isNotEmpty(msg)){
+            System.out.println(msg);
+            return &quot;已收到电话&quot;;
+        }
+        return &quot;&quot;;
+    }
+    public static void main(String[] args) {
+        Customer customer = new Customer();
+        SalesPerson salesPerson = new SalesPerson();
+        salesPerson.callCustomer(&quot;ok&quot;,customer);
+    }
+}
+
+/**
+ * @author LiosWong
+ * @description 售货员
+ * @date 2018/6/23 上午1:01
+ */
+public class SalesPerson {
+    public void callCustomer(String msg,Tools tools){
+        if(&quot;ok&quot;.equals(msg)){
+            String response = tools.getMsg(&quot;已经到货啦,请前来购买～&quot;);
+            System.out.println(response);
+        }
+    }
+}
+
+</code></pre><p>首先新建一个抽象工具类,里面具体使用电话工具作为通讯方法(<strong><em>回调函数</em></strong>),然后顾客要有电话,所以实现了这个接口;售货员需要在有货时通知顾客,所以需要有个通知顾客的方法callCustomer,入参数中有Tools接口的引用(<strong><em>登记回调函数</em></strong>),然后在该方法中调用Tools的方法,通知顾客已经有货了(<strong><em>调用回调函数</em></strong>),顾客接受到电话通知(<strong><em>回调响应</em></strong>);然后在Customer类的main方法中,  callCustomer方法的入参,传入了Customer的实例.</p>
 
       
     </div>
@@ -583,8 +633,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/spring、mybatis整合源码简单分析/" rel="next" title="spring、mybatis整合源码简单分析">
-                <i class="fa fa-chevron-left"></i> spring、mybatis整合源码简单分析
+              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="next" title="Spring源码之解析并注册BeanDefinition(一)">
+                <i class="fa fa-chevron-left"></i> Spring源码之解析并注册BeanDefinition(一)
               </a>
             
           </div>
@@ -593,8 +643,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/史上最全国家统计局划分代码爬取/" rel="prev" title="史上最全国家统计局划分代码爬取">
-                史上最全国家统计局划分代码爬取 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/spring、mybatis整合源码简单分析/" rel="prev" title="spring、mybatis整合源码简单分析">
+                spring、mybatis整合源码简单分析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

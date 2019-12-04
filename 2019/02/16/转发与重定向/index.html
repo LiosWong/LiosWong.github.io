@@ -103,13 +103,13 @@
 
 
 
-  <meta name="description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向123456789101112131415@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET)@ResponseBodypublic String redirect(HttpServletRe">
+  <meta name="description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET) @ResponseBody public String redirect(HttpServletResponse response){">
 <meta name="keywords" content="java,重定向">
 <meta property="og:type" content="article">
 <meta property="og:title" content="转发与重定向">
 <meta property="og:url" content="http://yoursite.com/2019/02/16/转发与重定向/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向123456789101112131415@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET)@ResponseBodypublic String redirect(HttpServletRe">
+<meta property="og:description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET) @ResponseBody public String redirect(HttpServletResponse response){">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&shareKey=1f513ac73dc70b3fb7b8e09467f6cb01">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&shareKey=44f35b431fdf7057b8e43aa9effc3af3">
@@ -118,7 +118,7 @@
 <meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="转发与重定向">
-<meta name="twitter:description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向123456789101112131415@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET)@ResponseBodypublic String redirect(HttpServletRe">
+<meta name="twitter:description" content="平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。 重定向@RequestMapping(value = &amp;quot;/redirect&amp;quot;,method = RequestMethod.GET) @ResponseBody public String redirect(HttpServletResponse response){">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&shareKey=1f513ac73dc70b3fb7b8e09467f6cb01">
 
 
@@ -175,7 +175,8 @@
   </style>
 </noscript>
 
-</head>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -507,10 +508,40 @@
 
       
         <p><img src="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&amp;shareKey=1f513ac73dc70b3fb7b8e09467f6cb01" alt="https://note.youdao.com/yws/api/personal/file/WEB14fb30713392006f34c9cf828ec1e262?method=download&amp;shareKey=1f513ac73dc70b3fb7b8e09467f6cb01"><br>平常开发中时常用到重定向，正好借此总结一下，上面的图在开发中以及参考网上文章总结出来的(参考文章见文末)。</p>
-<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/redirect&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String redirect(HttpServletResponse response)&#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        response.sendRedirect(&quot;http://127.0.0.1:8080/api/redirect/test&quot;);</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return &quot;redirect&quot;;</span><br><span class="line">&#125;</span><br><span class="line">@RequestMapping(value = &quot;/redirect/test&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String redirectTest(HttpServletRequest request, HttpServletResponse response)&#123;</span><br><span class="line">    return &quot;redirect success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>项目启动成功后,在浏览器输入<code>http://127.0.0.1:8080/api/redirect</code>,在chrome检查Network栏目下，可以看到:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&amp;shareKey=44f35b431fdf7057b8e43aa9effc3af3" alt="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&amp;shareKey=44f35b431fdf7057b8e43aa9effc3af3"><br>客户端发生了两次接口请求,第一次是<code>http://127.0.0.1:8080/api/redirect</code>,第二次是<code>http://127.0.0.1:8080/api/redirect/test</code>;且第一次接口请求的响应状态码为302(重定向),从其请求、响应头中可以清晰交互流程：<br><img src="https://note.youdao.com/yws/api/personal/file/WEB44f6b42a07762f378110c0beea29d9ad?method=download&amp;shareKey=49a69ce218418fdf3daa423cf4ade336" alt="https://note.youdao.com/yws/api/personal/file/WEB44f6b42a07762f378110c0beea29d9ad?method=download&amp;shareKey=49a69ce218418fdf3daa423cf4ade336"><br>从上面分析，重定向时，进行了两次接口请求;过程简单理解为浏览器首先请求接口A,接口A进行了重定向到B,接口A给浏览器的响应状态码为302,并且返回了目的接口地址B，然后浏览器再次发起请求，请求接口地址B.</p>
-<h3 id="转发"><a href="#转发" class="headerlink" title="转发"></a>转发</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/forward&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String forward(HttpServletRequest request, HttpServletResponse response)&#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        request.getRequestDispatcher(&quot;/api/forward/test&quot;).forward(request,response);</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; catch (ServletException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return &quot;index&quot;;</span><br><span class="line">&#125;</span><br><span class="line">@RequestMapping(value = &quot;/forward/test&quot;,method = RequestMethod.GET)</span><br><span class="line">@ResponseBody</span><br><span class="line">public String forwardTest(HttpServletRequest request, HttpServletResponse response)&#123;</span><br><span class="line">    return &quot;forward success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在浏览器中访问<code>http://localhost:8080/api/forward</code>,会返回<code>forward success</code>,在chrome检查Network栏目下：<br><img src="https://note.youdao.com/yws/api/personal/file/WEB540a6c2c5faa49d3c420eb66ccdc250e?method=download&amp;shareKey=f6b2cbff4c4bba0ea214e9a02f9df38b" alt="https://note.youdao.com/yws/api/personal/file/WEB540a6c2c5faa49d3c420eb66ccdc250e?method=download&amp;shareKey=f6b2cbff4c4bba0ea214e9a02f9df38b"><br>浏览器只请求了一次接口,请求地址没有发生变化;而且只能转发给当前的WEB应用资源。</p>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><pre><code>@RequestMapping(value = &quot;/redirect&quot;,method = RequestMethod.GET)
+@ResponseBody
+public String redirect(HttpServletResponse response){
+    try {
+        response.sendRedirect(&quot;http://127.0.0.1:8080/api/redirect/test&quot;);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return &quot;redirect&quot;;
+}
+@RequestMapping(value = &quot;/redirect/test&quot;,method = RequestMethod.GET)
+@ResponseBody
+public String redirectTest(HttpServletRequest request, HttpServletResponse response){
+    return &quot;redirect success&quot;;
+}
+</code></pre><p>项目启动成功后,在浏览器输入<code>http://127.0.0.1:8080/api/redirect</code>,在chrome检查Network栏目下，可以看到:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&amp;shareKey=44f35b431fdf7057b8e43aa9effc3af3" alt="https://note.youdao.com/yws/api/personal/file/WEB243a1a711e77999f1a4e92885d4cc180?method=download&amp;shareKey=44f35b431fdf7057b8e43aa9effc3af3"><br>客户端发生了两次接口请求,第一次是<code>http://127.0.0.1:8080/api/redirect</code>,第二次是<code>http://127.0.0.1:8080/api/redirect/test</code>;且第一次接口请求的响应状态码为302(重定向),从其请求、响应头中可以清晰交互流程：<br><img src="https://note.youdao.com/yws/api/personal/file/WEB44f6b42a07762f378110c0beea29d9ad?method=download&amp;shareKey=49a69ce218418fdf3daa423cf4ade336" alt="https://note.youdao.com/yws/api/personal/file/WEB44f6b42a07762f378110c0beea29d9ad?method=download&amp;shareKey=49a69ce218418fdf3daa423cf4ade336"><br>从上面分析，重定向时，进行了两次接口请求;过程简单理解为浏览器首先请求接口A,接口A进行了重定向到B,接口A给浏览器的响应状态码为302,并且返回了目的接口地址B，然后浏览器再次发起请求，请求接口地址B.</p>
+<h3 id="转发"><a href="#转发" class="headerlink" title="转发"></a>转发</h3><pre><code>@RequestMapping(value = &quot;/forward&quot;,method = RequestMethod.GET)
+@ResponseBody
+public String forward(HttpServletRequest request, HttpServletResponse response){
+    try {
+        request.getRequestDispatcher(&quot;/api/forward/test&quot;).forward(request,response);
+    } catch (IOException e) {
+        e.printStackTrace();
+    } catch (ServletException e) {
+        e.printStackTrace();
+    }
+    return &quot;index&quot;;
+}
+@RequestMapping(value = &quot;/forward/test&quot;,method = RequestMethod.GET)
+@ResponseBody
+public String forwardTest(HttpServletRequest request, HttpServletResponse response){
+    return &quot;forward success&quot;;
+}
+</code></pre><p>在浏览器中访问<code>http://localhost:8080/api/forward</code>,会返回<code>forward success</code>,在chrome检查Network栏目下：<br><img src="https://note.youdao.com/yws/api/personal/file/WEB540a6c2c5faa49d3c420eb66ccdc250e?method=download&amp;shareKey=f6b2cbff4c4bba0ea214e9a02f9df38b" alt="https://note.youdao.com/yws/api/personal/file/WEB540a6c2c5faa49d3c420eb66ccdc250e?method=download&amp;shareKey=f6b2cbff4c4bba0ea214e9a02f9df38b"><br>浏览器只请求了一次接口,请求地址没有发生变化;而且只能转发给当前的WEB应用资源。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
 <li>重定向是客户端行为,转发是服务器行为</li>
 <li>转发只发生一次请求;且只能转发到当前应用资源;请求地址不会发生变化</li>
