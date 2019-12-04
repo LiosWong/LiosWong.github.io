@@ -19,5 +19,7 @@ Chrome XPath Helper插件安装地址:
 ```
 //td[@style='white-space: pre-wrap;'][2]
 ```
+上面表达式的意思是获取标签为td且style为``white-space: pre-wrap;``的所有元素,
 由于获取的是表格中第二列的数据,所以取数组中的第二个元素.结果如下:
 ![sim1.png](sim1.png)
+
