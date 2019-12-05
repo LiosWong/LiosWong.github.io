@@ -38,7 +38,7 @@
 			"file": "source/_posts/XPath-Helper插件使用.md",
 			"settings":
 			{
-				"buffer_size": 594,
+				"buffer_size": 651,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -483,23 +483,23 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 594,
+						"buffer_size": 651,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								593,
-								593
+								650,
+								650
 							]
 						],
 						"settings":
 						{
 							"WordCount":
 							{
-								"changes": 53,
-								"count": 31,
+								"changes": 10,
+								"count": 33,
 								"modified": false,
 								"selection": false,
 								"status": -1,
