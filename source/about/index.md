@@ -14,7 +14,9 @@ type: about
     "技术博客":"http://blog.csdn.net/bat_os"
 }
 ``` -->
-### <center>*** 路漫漫其修远兮 吾将上下而求索 ***</center>
+<!-- ### <center>*** 路漫漫其修远兮 吾将上下而求索 ***</center>
+ -->
+#### <center>*** 2017年毕业于重庆邮电大学,现就职于杭州某公司,热爱技术。 ***</center>
 <br/>
 <!-- ![https://note.youdao.com/yws/api/personal/file/WEB19a5523c45b5e5c374edc3b760128a0b?method=download&shareKey=043b87e09d23b8fc20a7ac356ba27ccf](https://note.youdao.com/yws/api/personal/file/WEB19a5523c45b5e5c374edc3b760128a0b?method=download&shareKey=043b87e09d23b8fc20a7ac356ba27ccf) -->
 <!-- #### 微信公众号 -->
