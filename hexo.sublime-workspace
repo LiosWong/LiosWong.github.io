@@ -5,9 +5,36 @@
 		[
 		]
 	},
+	"buffers":
+	[
+	],
 	"build_system": "",
 	"build_system_choices":
 	[
+		[
+			[
+				[
+					"Packages/Java/Ant.sublime-build",
+					""
+				],
+				[
+					"Packages/Java/JavaC.sublime-build",
+					""
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				],
+				[
+					"Packages/User/browse.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Java/JavaC.sublime-build",
+				""
+			]
+		]
 	],
 	"build_varint": "",
 	"command_palette":
@@ -17,16 +44,92 @@
 		"selected_items":
 		[
 			[
-				"ren",
-				"Rename File"
+				"dele",
+				"ANF: Delete Current File"
 			],
 			[
 				"side",
 				"View: Toggle Side Bar"
 			],
 			[
+				"vide",
+				"View: Toggle Side Bar"
+			],
+			[
+				"json",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"re",
+				"Rename File"
+			],
+			[
+				"de",
+				"ANF: Delete Current File"
+			],
+			[
+				"sid",
+				"View: Toggle Side Bar"
+			],
+			[
+				"file",
+				"Rename File"
+			],
+			[
+				"from",
+				"Eclipse: Format Java"
+			],
+			[
+				"rena",
+				"Rename File"
+			],
+			[
+				"delete",
+				"ANF: Delete Current File"
+			],
+			[
+				"si",
+				"View: Toggle Side Bar"
+			],
+			[
+				"siede",
+				"Side Bar: Enable Syncing"
+			],
+			[
+				"forma",
+				"CoolFormat: Quick Format"
+			],
+			[
+				"ren",
+				"Rename File"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"format",
+				"CoolFormat: Quick Format"
+			],
+			[
 				"file re",
 				"Rename File"
+			],
+			[
+				"rename",
+				"Rename File"
+			],
+			[
+				"coo",
+				"CoolFormat: Quick Format"
+			],
+			[
+				"cool",
+				"CoolFormat: Quick Format"
+			],
+			[
+				"j",
+				"Pretty JSON: Format (Pretty Print) JSON"
 			],
 			[
 				"remo",
@@ -35,14 +138,6 @@
 			[
 				"package",
 				"Package Control: List Packages"
-			],
-			[
-				"cool",
-				"CoolFormat: Quick Format"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
 			],
 			[
 				"codeformat",
@@ -55,14 +150,6 @@
 			[
 				"form",
 				"Eclipse: Format Java"
-			],
-			[
-				"sid",
-				"View: Toggle Side Bar"
-			],
-			[
-				"si",
-				"View: Toggle Side Bar"
 			],
 			[
 				"set",
@@ -79,10 +166,6 @@
 			[
 				"java",
 				"Set Syntax: Java"
-			],
-			[
-				"delete",
-				"ANF: Delete Current File"
 			],
 			[
 				"delte",
@@ -127,24 +210,98 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/Users/lioswong/LiosWong/hexo",
+		"/Users/lioswong/LiosWong/hexo/source",
+		"/Users/lioswong/LiosWong/hexo/source/_posts",
+		"/Users/lioswong/LiosWong/hexo/themes",
+		"/Users/lioswong/LiosWong/hexo/themes/next",
+		"/Users/lioswong/LiosWong/hexo/themes/next/layout",
+		"/Users/lioswong/LiosWong/hexo/themes/next/layout/_partials",
+		"/Users/lioswong/LiosWong/hexo/themes/next/layout/_partials/head"
+	],
 	"file_history":
 	[
-		"/Users/lioswong/LiosWong/hexo/source/_posts/Redis深度历险总结.md",
-		"/Users/lioswong/LiosWong/hexo/source/_posts/Dubbo服务引入.md",
-		"/Users/lioswong/LiosWong/hexo/source/_posts/charles踩坑记录.md",
-		"/Users/lioswong/LiosWong/hexo/source/_posts/Dubbo-SPI实现原理.md",
-		"/Users/lioswong/LiosWong/hexo/source/_posts/Dubbo服务暴露过程解析.md",
+		"/Users/lioswong/LiosWong/hexo/themes/next/layout/post.swig",
+		"/Users/lioswong/LiosWong/hexo/themes/next/layout/_partials/head/head.swig",
+		"/Users/lioswong/LiosWong/hexo/themes/next/layout/_layout.swig",
+		"/Users/lioswong/LiosWong/hexo/source/_posts/转-Java魔法类：Unsafe应用解析.md",
+		"/Users/lioswong/LiosWong/sublimetext/其他/draft.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/git/git小知识点.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo中telnet命令使用.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/dubbo/dubbo小知识点.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/dubbo/dubbo bug.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/git/pull_request.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/科学上网配置.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/E代驾.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/kibana使用的lucene查询语法.md",
+		"/Users/lioswong/Desktop/拉取失败.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/XPath Helper插件使用.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/(转)Java魔法类：Unsafe应用解析.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/技术栈.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/NoClassDefFoundError.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/linux/linux日志查看命令.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/maven/maven小知识点.md",
+		"/Users/lioswong/LiosWong/sublimetext/Lios/工作/工作中注意点.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/maven打包生成源码.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/业务梳理/曹操业务整理.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/elasticsearch(6.5.4)踩坑.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/业务梳理/曹操司机端接口整理.md",
+		"/Users/lioswong/LiosWong/sublimetext/Lios/规划/买房规划.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/并发包/java锁类型.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/charles踩坑记录.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo服务调用过程.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo服务引入.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/zookeeper/zookeeper总结.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/java/join|yield|sleep|wait|notify|notifyAll.md",
+		"/Users/lioswong/LiosWong/sublimetext/Lios/规划/工作规划.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo服务暴露过程解析.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo负载均衡策略.md",
+		"/Users/lioswong/LiosWong/sublimetext/Lios/个人学习/总结与学习规划.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/下探接单支持分时段配置和司机自选.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/钱粒科技/工作计划.md",
+		"/Users/lioswong/LiosWong/sublimetext/python/脚本/曹操业务处理脚本.py",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/众悦司机接电信虚拟号.md",
+		"/Users/lioswong/LiosWong/sublimetext/垃圾箱/test.java",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/mysql毫秒数丢失问题.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/sql/sql小知识点.md",
+		"/Users/lioswong/LiosWong/sublimetext/其他/草稿本.json",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/arthas简单使用.md",
+		"/Users/lioswong/LiosWong/sublimetext/其他/dubbo调试.md",
+		"/usr/local/lib/python3.7/site-packages/jwt/api_jwt.py",
+		"/Users/lioswong/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/lioswong/LiosWong/sublimetext/python/脚本/优借业务处理脚本.py",
+		"/Users/lioswong/Library/Application Support/Sublime Text 3/Packages/User/CTags.sublime-settings",
+		"/Users/lioswong/Library/Application Support/Sublime Text 3/Packages/CTags/Default.sublime-keymap",
+		"/Users/lioswong/Library/Application Support/Sublime Text 3/Packages/User/Anaconda.sublime-settings",
+		"/Users/lioswong/LiosWong/sublimetext/.vscode/launch.json",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/两车融合冲突规则开发.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/司机端 3.35需求.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/问题排查/疲劳驾驶排查开始计费.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/众悦司机接公务订单接入小号功能.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/工作账号环境信息.md",
+		"/Users/lioswong/LiosWong/sublimetext/其他/草稿本.md",
+		"/Users/lioswong/LiosWong/sublimetext/python/脚本/caoliu.py",
+		"/Users/lioswong/LiosWong/sublimetext/Lios/个人学习/孤尽diy.md",
+		"/Users/lioswong/LiosWong/sublimetext/Lios/薪资分配/分配计划.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/众悦下探接单支持分时段配置和司机自选.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo暴露服务过程解析.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/绿色公务取消开发.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/业务梳理/业务整理.md",
+		"/Users/lioswong/LiosWong/sublimetext/技术笔记/面试",
+		"/Users/lioswong/LiosWong/sublimetext/Lios/Career Planning/interview/面试题.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/偏航组件&偏航提醒需求.md",
+		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/需求/两车融合开发.md",
+		"/Users/lioswong/LiosWong/sublimetext/垃圾箱/Wrapper0.java",
+		"/Users/lioswong/LiosWong/sublimetext/垃圾箱/test.md",
 		"/Users/lioswong/Desktop/Wrapper.class",
 		"/Users/lioswong/Desktop/c.class",
-		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo暴露服务过程解析.md",
-		"/Users/lioswong/LiosWong/sublimetext/.vscode/launch.json",
 		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/偏航组件&偏航提醒需求.md",
 		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/两车融合开发.md",
-		"/Users/lioswong/LiosWong/sublimetext/其他/草稿本.md",
 		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/司乘场站引导.md",
 		"/Users/lioswong/LiosWong/sublimetext/垃圾箱/xxx.md",
 		"/Users/lioswong/LiosWong/sublimetext/技术文章/Dubbo SPI实现原理.md",
-		"/Users/lioswong/LiosWong/sublimetext/其他/dubbo调试.md",
 		"/Users/lioswong/LiosWong/sublimetext/Lios/个人学习/计算机小知识点.md",
 		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/专车众悦预约单开始服务前x min 弹窗提示.md",
 		"/Users/lioswong/LiosWong/sublimetext/工作笔记/曹操出行/业务整理.md",
@@ -169,7 +326,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 109.0,
+		"height": 134.0,
 		"where_history":
 		[
 		]
@@ -179,12 +336,6 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"- java\n- java8\n- Vavr\ncategories:\n- java   \ncopyright: true #版权声明开启    ",
-			"highlight_theme",
-			"post_asset_folder",
-			"tags:\n- java\n- dubbo\n- RPC\ncategories:\n- Dubbo   ",
-			":\n",
-			"- java\n- 数据结构\n- 链表长度\ncategories:\n- 数据结构   \ncopyright: true #版权声明开启    "
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -199,6 +350,14 @@
 		"whole_word": false,
 		"wrap": true
 	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
 	"incremental_find":
 	{
 		"height": 38.0
@@ -230,11 +389,16 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 361.0
+	},
 	"output.find_results":
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "",
+	"pinned_build_system": "Packages/User/python3配置.sublime-build",
+	"project": "hexo.sublime-project",
 	"replace":
 	{
 		"height": 72.0
@@ -247,72 +411,240 @@
 		"selected_items":
 		[
 			[
-				"",
-				"source/_posts/Kibana使用的Lucene查询语法.md"
+				"dr",
+				"其他/draft.md"
 			],
 			[
-				"ki",
-				"source/_posts/kibana使用的lucene查询语法.md"
+				"工作",
+				"Lios/规划/工作规划.md"
 			],
 			[
-				"x",
-				"source/_posts/XPath-Helper插件使用.md"
-			],
-			[
-				"java",
-				"source/_posts/java双重锁定检查.md"
-			],
-			[
-				"转",
-				"source/_posts/转-Java魔法类：Unsafe应用解析.md"
-			],
-			[
-				"R",
-				"source/_posts/Redis深度历险总结.md"
-			],
-			[
-				"线程",
-				"source/_posts/线程间传递值.md"
-			],
-			[
-				"maven",
-				"source/_posts/maven打包生成源码.md"
-			],
-			[
-				"踩坑",
-				"source/_posts/elasticsearch-6-5-4-踩坑.md"
-			],
-			[
-				"dub",
-				"source/_posts/Dubbo服务引入.md"
-			],
-			[
-				"char",
-				"source/_posts/charles踩坑记录.md"
+				"pu",
+				"技术笔记/git/pull_request.md"
 			],
 			[
 				"dubbo",
-				"source/_posts/Dubbo服务引入.md"
+				"技术笔记/dubbo/dubbo bug.md"
 			],
 			[
-				"mysql",
-				"source/_posts/mysql毫秒数丢失问题.md"
+				"git",
+				"技术笔记/git/git小知识点.md"
 			],
 			[
-				"ar",
-				"source/_posts/arthas简单使用.md"
+				"pul l",
+				"python/脚本/pullcitycode.py"
 			],
 			[
-				"草稿",
-				"其他/草稿本.md"
+				"dub",
+				"技术笔记/dubbo/dubbo bug.md"
+			],
+			[
+				"maven",
+				"技术笔记/maven/maven小知识点.md"
+			],
+			[
+				"3.39",
+				"工作笔记/曹操出行/需求/司机3.39需求.md"
+			],
+			[
+				"tel",
+				"技术文章/Dubbo中telnet命令使用.md"
+			],
+			[
+				"科学",
+				"技术笔记/科学上网配置.md"
+			],
+			[
+				"pul",
+				"技术笔记/git/pull_request.md"
+			],
+			[
+				"学习",
+				"技术笔记/python/python学习.py"
+			],
+			[
+				"3.38",
+				"技术笔记/maven/司机端3.38.md"
+			],
+			[
+				"linux",
+				"技术笔记/linux/linux日志查看命令.md"
+			],
+			[
+				"曹操业务",
+				"工作笔记/曹操出行/业务梳理/曹操业务整理.md"
+			],
+			[
+				"xpa",
+				"技术文章/XPath Helper插件使用.md"
+			],
+			[
+				"技术",
+				"工作笔记/曹操出行/技术栈.md"
+			],
+			[
+				"no",
+				"技术文章/NoClassDefFoundError.md"
+			],
+			[
+				"注意",
+				"Lios/工作/工作中注意点.md"
+			],
+			[
+				"曹操",
+				"工作笔记/曹操出行/技术栈.md"
+			],
+			[
+				"",
+				"技术笔记/maven/司机端3.38.md"
+			],
+			[
+				"众悦",
+				"工作笔记/曹操出行/需求/众悦司机接电信虚拟号.md"
+			],
+			[
+				"test",
+				"垃圾箱/test.java"
+			],
+			[
+				"业务",
+				"工作笔记/曹操出行/业务梳理/曹操业务整理.md"
 			],
 			[
 				"买房",
 				"Lios/规划/买房规划.md"
 			],
 			[
-				"dubb",
+				"wait",
+				"技术笔记/java/join|yield|sleep|wait|notify|notifyAll.md"
+			],
+			[
+				"java锁",
+				"技术笔记/并发包/java锁类型.md"
+			],
+			[
+				"曹操/需求",
+				"工作笔记/曹操出行/需求/专车众悦预约单开始服务前x min 弹窗提示.md"
+			],
+			[
+				"两车",
+				"工作笔记/曹操出行/需求/两车融合冲突规则开发.md"
+			],
+			[
+				"绿色",
+				"工作笔记/曹操出行/需求/绿色公务取消开发.md"
+			],
+			[
+				"场站",
+				"工作笔记/曹操出行/需求/司乘场站引导.md"
+			],
+			[
+				"曹操需求",
+				"工作笔记/曹操出行/需求/专车众悦预约单开始服务前x min 弹窗提示.md"
+			],
+			[
+				"曹操接口",
+				"工作笔记/曹操出行/业务梳理/曹操司机端接口整理.md"
+			],
+			[
+				"redis",
+				"技术文章/redis数据类型及命令.md"
+			],
+			[
+				"mav",
+				"技术笔记/maven/maven小知识点.md"
+			],
+			[
+				"工作计划",
+				"工作笔记/钱粒科技/工作计划.md"
+			],
+			[
+				"脚本",
+				"python/脚本/曹操业务处理脚本.py"
+			],
+			[
+				"虚拟号",
+				"工作笔记/曹操出行/需求/众悦司机接电信虚拟号.md"
+			],
+			[
+				"test.java",
+				"垃圾箱/test.java"
+			],
+			[
+				"du",
 				"其他/dubbo调试.md"
+			],
+			[
+				"草稿",
+				"其他/草稿本.json"
+			],
+			[
+				"ar",
+				"技术文章/arthas简单使用.md"
+			],
+			[
+				"d",
+				"其他/draft.md"
+			],
+			[
+				"优借",
+				"python/脚本/优借业务处理脚本.py"
+			],
+			[
+				"t",
+				"垃圾箱/test.java"
+			],
+			[
+				"te",
+				"垃圾箱/test.md"
+			],
+			[
+				"曹操小号",
+				"工作笔记/曹操出行/需求/众悦司机接公务订单接入小号功能.md"
+			],
+			[
+				"曹操司机",
+				"工作笔记/曹操出行/业务梳理/曹操司机端接口整理.md"
+			],
+			[
+				"曹操出行/需求",
+				"工作笔记/曹操出行/需求/两车融合开发.md"
+			],
+			[
+				"cao",
+				"python/脚本/caoliu.py"
+			],
+			[
+				"Dubbo",
+				"技术文章/Dubbo服务暴露过程解析.md"
+			],
+			[
+				"分配",
+				"Lios/薪资分配/分配计划.md"
+			],
+			[
+				"专有",
+				"技术笔记/专有名词解释.md"
+			],
+			[
+				"众",
+				"工作笔记/曹操出行/需求/众悦下探接单支持分时段配置和司机自选.md"
+			],
+			[
+				"面试",
+				"技术笔记/面试"
+			],
+			[
+				"dubb",
+				"技术文章/Dubbo SPI实现原理.md"
+			],
+			[
+				"偏航提醒",
+				"工作笔记/曹操出行/需求/偏航组件&偏航提醒需求.md"
+			],
+			[
+				"w",
+				"垃圾箱/Wrapper0.java"
 			],
 			[
 				"Du",
@@ -323,20 +655,8 @@
 				"工作笔记/曹操出行/需求/偏航组件&偏航提醒需求.md"
 			],
 			[
-				"两车",
-				"工作笔记/曹操出行/两车融合开发.md"
-			],
-			[
 				"问题",
 				"工作笔记/曹操出行/问题排查/客服运营问题记录.md"
-			],
-			[
-				"场站",
-				"工作笔记/曹操出行/司乘场站引导.md"
-			],
-			[
-				"du",
-				"技术文章/Dubbo SPI实现原理.md"
 			],
 			[
 				"数据",
@@ -349,10 +669,6 @@
 			[
 				"预约",
 				"工作笔记/曹操出行/专车、众悦预约单取消提醒.md"
-			],
-			[
-				"绿色",
-				"工作笔记/曹操出行/绿色公务取消开发.md"
 			],
 			[
 				"接口",
@@ -375,16 +691,8 @@
 				"技术文章/需要总结的点.md"
 			],
 			[
-				"曹操",
-				"工作笔记/曹操出行/曹操司机端流程整理.md"
-			],
-			[
 				"模块",
 				"工作笔记/钱粒科技/功能模块整理.md"
-			],
-			[
-				"曹操接口",
-				"工作笔记/曹操出行/曹操司机端接口整理.md"
 			],
 			[
 				"v",
@@ -415,6 +723,7 @@
 		],
 		"width": 0.0
 	},
+	"selected_group": 0,
 	"settings":
 	{
 	},
@@ -422,7 +731,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 310.0,
+	"side_bar_width": 220.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

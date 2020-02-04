@@ -554,15 +554,15 @@ valine:
 # Introduction: https://github.com/imsun/gitment
 gitment:
   enable: false
-  mint: true # RECOMMEND, A mint on Gitment, to support count, language and proxy_gateway
+  mint: false # RECOMMEND, A mint on Gitment, to support count, language and proxy_gateway
   count: true # Show comments count in post meta area
   lazy: false # Comments lazy loading with a button
   cleanly: false # Hide 'Powered by ...' on footer, and more
   language: # Force language, or auto switch by theme
   github_user: LiosWong # MUST HAVE, Your Github Username
-  github_repo: git@github.com:LiosWong/LiosWong.github.io.git # MUST HAVE, The name of the repo you use to store Gitment comments
-  client_id: 790486f22333c5a00f74 # MUST HAVE, Github client id for the Gitment
-  client_secret: 3fc0b329f2e8515590461cdb37fc9212f4d6a9c3 # EITHER this or proxy_gateway, Github access secret token for the Gitment
+  github_repo: gitment # MUST HAVE, The name of the repo you use to store Gitment comments
+  client_id: Iv1.654bd99c40fa6ec2 # MUST HAVE, Github client id for the Gitment
+  client_secret: f70215a48e5fd599ca81af86692ecd01e05f8960 # EITHER this or proxy_gateway, Github access secret token for the Gitment
   proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect
   redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled
 
@@ -570,11 +570,11 @@ gitment:
 # Demo: https://gitalk.github.io
 # Reference: https://asdfv1929.github.io/2018/01/20/gitalk/, https://liujunzhou.top/2018/8/10/gitalk-error/
 gitalk:
-  enable: false
+  enable: true
   github_id: LiosWong # Github repo owner
-  repo: LiosWong.github.io # Repository name to store issues.
-  client_id: 51cad8c149b151bf4584 # Github Application Client ID
-  client_secret: e03b230a4c7db34c7dcb054cf139b55aa65c73c6 # Github Application Client Secret
+  repo: gitalk # Repository name to store issues.
+  client_id: 790486f22333c5a00f74 # Github Application Client ID
+  client_secret: 3fc0b329f2e8515590461cdb37fc9212f4d6a9c3 # Github Application Client Secret
   admin_user: LiosWong # GitHub repo owner and collaborators, only these guys can initialize github issues
   distraction_free_mode: true # Facebook-like distraction free mode
 # gitalk:
