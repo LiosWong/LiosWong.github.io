@@ -738,8 +738,8 @@ return mapperMethod.execute(sqlSession, args);
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/springboot、redis整合/" rel="next" title="springboot、redis整合">
-                <i class="fa fa-chevron-left"></i> springboot、redis整合
+              <a href="/2019/02/16/史上最全国家统计局划分代码爬取/" rel="next" title="史上最全国家统计局划分代码爬取">
+                <i class="fa fa-chevron-left"></i> 史上最全国家统计局划分代码爬取
               </a>
             
           </div>
@@ -748,8 +748,8 @@ return mapperMethod.execute(sqlSession, args);
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/回调函数/" rel="prev" title="回调函数">
-                回调函数 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="prev" title="Spring源码之解析并注册BeanDefinition(一)">
+                Spring源码之解析并注册BeanDefinition(一) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -773,13 +773,9 @@ return mapperMethod.execute(sqlSession, args);
           
 
   
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
+    <div class="comments" id="gitalk-container">
     </div>
 
-  
 
         </div>
         
@@ -1262,42 +1258,30 @@ return mapperMethod.execute(sqlSession, args);
 
 
   
-    <!-- LOCAL: You can save these files to your site and update links -->
+    
 
-  
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
-<!-- END LOCAL -->
 
-<style>
-#gitment-container a {
-  border-bottom: none;
-}
 
-</style>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
 
 <script>
-  function renderGitment() {
-    var gitment = new Gitment({
-      id: decodeURI(window.location.pathname),
-      owner: 'LiosWong',
-      repo: 'gitment',
-      
-      oauth: {
-      
-      
-        client_secret: 'f70215a48e5fd599ca81af86692ecd01e05f8960',
-      
-        client_id: 'Iv1.654bd99c40fa6ec2'
-      }
-    });
-    gitment.render('gitment-container');
-  }
-
-  
-    renderGitment();
-  
+  var gitalk = new Gitalk({
+    clientID: 'Iv1.654bd99c40fa6ec2',
+    clientSecret: 'f70215a48e5fd599ca81af86692ecd01e05f8960',
+    repo: 'gitment',
+    owner: 'LiosWong',
+    admin: ['LiosWong'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
 </script>
 
   
