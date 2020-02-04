@@ -479,6 +479,19 @@
           
             
             
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2019/09/29/Dubbo服务暴露过程解析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/09/29/Dubbo服务暴露过程解析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -1675,6 +1688,13 @@ org.apache.dubbo.demo.DemoService=empty\://192.168.31.40\:20880/org.apache.dubbo
           
 
   
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
 
         </div>
         
@@ -2155,6 +2175,47 @@ org.apache.dubbo.demo.DemoService=empty\://192.168.31.40\:20880/org.apache.dubbo
 
   
 
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<style>
+#gitment-container a {
+  border-bottom: none;
+}
+
+</style>
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: decodeURI(window.location.pathname),
+      owner: 'LiosWong',
+      repo: 'gitment',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: 'f70215a48e5fd599ca81af86692ecd01e05f8960',
+      
+        client_id: 'Iv1.654bd99c40fa6ec2'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
 
   
 
