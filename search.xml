@@ -711,15 +711,16 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[回调函数]]></title>
-    <url>%2F2019%2F02%2F16%2F%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%2F</url>
-    <content type="text"><![CDATA[回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科– 什么是回调函数,上面的问题说的是不是很空洞,不是太形象,下面是知乎上的一位网友给的答案:为了有更直观的体会,下面通过代码来实现上述过程, /** * @author LiosWong * @description 工具接口 * @date 2018/6/23 上午1:03 */ public interface Tools { /** * 打电话 * @param msg * @return */ String getCallMsg(String msg); } /** * @author LiosWong * @description 顾客类 * @date 2018/6/23 上午1:01 */ public class Customer implements Tools{ @Override public String getCallMsg(String msg) { if(StringUtils.isNotEmpty(msg)){ System.out.println(msg); return &quot;已收到电话&quot;; } return &quot;&quot;; } public static void main(String[] args) { Customer customer = new Customer(); SalesPerson salesPerson = new SalesPerson(); salesPerson.callCustomer(&quot;ok&quot;,customer); } } /** * @author LiosWong * @description 售货员 * @date 2018/6/23 上午1:01 */ public class SalesPerson { public void callCustomer(String msg,Tools tools){ if(&quot;ok&quot;.equals(msg)){ String response = tools.getMsg(&quot;已经到货啦,请前来购买～&quot;); System.out.println(response); } } } 首先新建一个抽象工具类,里面具体使用电话工具作为通讯方法(回调函数),然后顾客要有电话,所以实现了这个接口;售货员需要在有货时通知顾客,所以需要有个通知顾客的方法callCustomer,入参数中有Tools接口的引用(登记回调函数),然后在该方法中调用Tools的方法,通知顾客已经有货了(调用回调函数),顾客接受到电话通知(回调响应);然后在Customer类的main方法中, callCustomer方法的入参,传入了Customer的实例.]]></content>
+    <title><![CDATA[Spring源码之解析并注册BeanDefinition(一)]]></title>
+    <url>%2F2019%2F02%2F16%2FSpring%E6%BA%90%E7%A0%81%E4%B9%8B%E8%A7%A3%E6%9E%90%E5%B9%B6%E6%B3%A8%E5%86%8CBeanDefinition-%E4%B8%80%2F</url>
+    <content type="text"><![CDATA[最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程: ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&quot;app.xml&quot;); ClassPathXmlApplicationContext的类图继承关系如下:类图可以方便的清楚该类的继承关系,利于阅读源码.一步步跟进去,AbstractApplicationContext中的refresh()方法,便是IOC容器初始化的入口,该方法中调用的obtainFreshBeanFactory()方法,是载入Bean定义的资源文件,该文是分析该类的调用流程,本文使用spring版本为==4.2.4.RELEASE==,obtainFreshBeanFactory()中调用了AbstractApplicationContext子类AbstractRefreshableApplicationContext#refreshBeanFactory中的refreshBeanFactory()方法,这是委派设计模式,具体实现由子类做.下面是整个调用层次关系图:在DefaultListableBeanFactory类中的registerBeanDefinition方法内,注册了BeanDefinition信息: this.beanDefinitionMap.put(beanName, beanDefinition); DefaultListableBeanFactory是Spring Bean加载中的核心类,现在不分析加载过程中细节,后面的章节会剖析.]]></content>
       <categories>
-        <category>设计模式</category>
+        <category>spring</category>
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>设计思想</tag>
+        <tag>spring</tag>
+        <tag>bean</tag>
       </tags>
   </entry>
   <entry>
@@ -786,29 +787,15 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Spring源码之解析并注册BeanDefinition(一)]]></title>
-    <url>%2F2019%2F02%2F16%2FSpring%E6%BA%90%E7%A0%81%E4%B9%8B%E8%A7%A3%E6%9E%90%E5%B9%B6%E6%B3%A8%E5%86%8CBeanDefinition-%E4%B8%80%2F</url>
-    <content type="text"><![CDATA[最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程: ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&quot;app.xml&quot;); ClassPathXmlApplicationContext的类图继承关系如下:类图可以方便的清楚该类的继承关系,利于阅读源码.一步步跟进去,AbstractApplicationContext中的refresh()方法,便是IOC容器初始化的入口,该方法中调用的obtainFreshBeanFactory()方法,是载入Bean定义的资源文件,该文是分析该类的调用流程,本文使用spring版本为==4.2.4.RELEASE==,obtainFreshBeanFactory()中调用了AbstractApplicationContext子类AbstractRefreshableApplicationContext#refreshBeanFactory中的refreshBeanFactory()方法,这是委派设计模式,具体实现由子类做.下面是整个调用层次关系图:在DefaultListableBeanFactory类中的registerBeanDefinition方法内,注册了BeanDefinition信息: this.beanDefinitionMap.put(beanName, beanDefinition); DefaultListableBeanFactory是Spring Bean加载中的核心类,现在不分析加载过程中细节,后面的章节会剖析.]]></content>
+    <title><![CDATA[回调函数]]></title>
+    <url>%2F2019%2F02%2F16%2F%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科– 什么是回调函数,上面的问题说的是不是很空洞,不是太形象,下面是知乎上的一位网友给的答案:为了有更直观的体会,下面通过代码来实现上述过程, /** * @author LiosWong * @description 工具接口 * @date 2018/6/23 上午1:03 */ public interface Tools { /** * 打电话 * @param msg * @return */ String getCallMsg(String msg); } /** * @author LiosWong * @description 顾客类 * @date 2018/6/23 上午1:01 */ public class Customer implements Tools{ @Override public String getCallMsg(String msg) { if(StringUtils.isNotEmpty(msg)){ System.out.println(msg); return &quot;已收到电话&quot;; } return &quot;&quot;; } public static void main(String[] args) { Customer customer = new Customer(); SalesPerson salesPerson = new SalesPerson(); salesPerson.callCustomer(&quot;ok&quot;,customer); } } /** * @author LiosWong * @description 售货员 * @date 2018/6/23 上午1:01 */ public class SalesPerson { public void callCustomer(String msg,Tools tools){ if(&quot;ok&quot;.equals(msg)){ String response = tools.getMsg(&quot;已经到货啦,请前来购买～&quot;); System.out.println(response); } } } 首先新建一个抽象工具类,里面具体使用电话工具作为通讯方法(回调函数),然后顾客要有电话,所以实现了这个接口;售货员需要在有货时通知顾客,所以需要有个通知顾客的方法callCustomer,入参数中有Tools接口的引用(登记回调函数),然后在该方法中调用Tools的方法,通知顾客已经有货了(调用回调函数),顾客接受到电话通知(回调响应);然后在Customer类的main方法中, callCustomer方法的入参,传入了Customer的实例.]]></content>
       <categories>
-        <category>spring</category>
+        <category>设计模式</category>
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>spring</tag>
-        <tag>bean</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[并行执行任务]]></title>
-    <url>%2F2019%2F02%2F16%2F%E5%B9%B6%E8%A1%8C%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1%2F</url>
-    <content type="text"><![CDATA[需求 在app列表首页,展示多个item,并有分页;而每个item里后台都会调用一个http请求,判断当前item的状态 分析 为了更好的用体验,无疑需要使用多线程并行处理http请求,而且还需要拿到每个线程的执行结果.上面的分析,有两个问题需要解决: 1. 如何创建线程池 2. 如何拿到所有线程的执行结果 对于第一个问题,还是很好解决的,使用并发包(java.util.concurrent)下面的ThreadPoolExecutor类创建线程池,阿里巴巴Java开发手册上推荐使用该类创建线程池:,根据统计,该首页的qps最大为3以及服务器的配置后,线程池创建如下: protected static class ThreadFactory { static ThreadPoolExecutor executor = new ThreadPoolExecutor(ThreadNumEnum.CORE_POOL_SIZE.getNum(), ThreadNumEnum.MAX_IMUM_POOL_SIZE.getNum(), TimeOutEnum.FiveSecond.getSeconds(), TimeUnit.MILLISECONDS, new LinkedBlockingDeque&lt;Runnable&gt;(),new ThreadPoolExecutor.DiscardPolicy()); private ThreadFactory() { } public static ExecutorService getThreadPool() { return executor; } } 如何能拿到线程的执行结果呢,传统的Thread无法拿到执行结果,由于run方法无返回值,通过ThreadPoolExecutor类图发现: 继承了AbstractExecutorService、ExecutorService,对ExecutorService中的invokeAll方法产生极大的兴趣,仔细阅读注释,其实这个方法用来并行执行任务: /** * Executes the given tasks, returning a list of Futures holding * their status and results * when all complete or the timeout expires, whichever happens first. * {@link Future#isDone} is {@code true} for each * element of the returned list. * Upon return, tasks that have not completed are cancelled. * Note that a &lt;em&gt;completed&lt;/em&gt; task could have * terminated either normally or by throwing an exception. * The results of this method are undefined if the given * collection is modified while this operation is in progress. * * @param tasks the collection of tasks * @param timeout the maximum time to wait * @param unit the time unit of the timeout argument * @param &lt;T&gt; the type of the values returned from the tasks * @return a list of Futures representing the tasks, in the same * sequential order as produced by the iterator for the * given task list. If the operation did not time out, * each task will have completed. If it did time out, some * of these tasks will not have completed. * @throws InterruptedException if interrupted while waiting, in * which case unfinished tasks are cancelled * @throws NullPointerException if tasks, any of its elements, or * unit are {@code null} * @throws RejectedExecutionException if any task cannot be scheduled * for execution */ &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks, long timeout, TimeUnit unit) throws InterruptedException; 到这里,第二个问题的解决思路已经有了. 编码实现 invokeAll方法的入参分别为任务列表list、超时时间、时间单位,所以首先我们需要创建任务列表: List&lt;BasicUserFilter&gt; list = new ArrayList&lt;&gt;(); 超时时间为每个FutureTask执行超时时间,这里设置成3s,这里的3s超时时间是针对的所有tasks，而不是单个task的超时时间,如果超时，会取消没有执行完的所有任务，并抛出超时异常,源码如下: for (int i = 0; i &lt; size; i++) { execute((Runnable)futures.get(i)); nanos = deadline - System.nanoTime(); if (nanos &lt;= 0L) return futures; } for (int i = 0; i &lt; size; i++) { Future&lt;T&gt; f = futures.get(i); if (!f.isDone()) { if (nanos &lt;= 0L) return futures; try { f.get(nanos, TimeUnit.NANOSECONDS); } catch (CancellationException ignore) { } catch (ExecutionException ignore) { } catch (TimeoutException toe) { return futures; } nanos = deadline - System.nanoTime(); } } BasicUserFilter需要实现Callable接口,因为在方法call里能拿到线程的执行结果,下面就是并行执行任务了: ExecutorService executor = ThreadFactory.getThreadPool(); List&lt;XXX&gt; userFilterDtoList = new ArrayList&lt;&gt;(); try { List&lt;Future&lt;XXX&gt;&gt; futureList = executor.invokeAll(list, TimeOutEnum.FourSecond.getSeconds(), TimeUnit.MILLISECONDS); futureList.stream().forEach(p -&gt; { try { Future&lt;XXX&gt; filterDtoFuture = p; //拿到线程执行结果 userFilterDtoList.add(filterDtoFuture.get()); } catch (InterruptedException e) { logger.error(e.getMessage(), e); } catch (ExecutionException e) { logger.error(e.getMessage(), e); } catch (Exception e) { logger.error(e.getMessage(), e); } }); } catch (InterruptedException e) { logger.error(e.getMessage(), e); } catch (Exception e) { logger.error(e.getMessage(), e); } 关于多线程笔者还有很多需要去学习,上面是一个工作笔记,关于invokeAll的执行流程、神奇的Future模式,感兴趣的可以阅读源码就能找到答案.]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>并行任务</tag>
-        <tag>多线程</tag>
+        <tag>设计思想</tag>
       </tags>
   </entry>
   <entry>
@@ -822,6 +809,19 @@
         <tag>java</tag>
         <tag>redis</tag>
         <tag>spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[并行执行任务]]></title>
+    <url>%2F2019%2F02%2F16%2F%E5%B9%B6%E8%A1%8C%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1%2F</url>
+    <content type="text"><![CDATA[需求 在app列表首页,展示多个item,并有分页;而每个item里后台都会调用一个http请求,判断当前item的状态 分析 为了更好的用体验,无疑需要使用多线程并行处理http请求,而且还需要拿到每个线程的执行结果.上面的分析,有两个问题需要解决: 1. 如何创建线程池 2. 如何拿到所有线程的执行结果 对于第一个问题,还是很好解决的,使用并发包(java.util.concurrent)下面的ThreadPoolExecutor类创建线程池,阿里巴巴Java开发手册上推荐使用该类创建线程池:,根据统计,该首页的qps最大为3以及服务器的配置后,线程池创建如下: protected static class ThreadFactory { static ThreadPoolExecutor executor = new ThreadPoolExecutor(ThreadNumEnum.CORE_POOL_SIZE.getNum(), ThreadNumEnum.MAX_IMUM_POOL_SIZE.getNum(), TimeOutEnum.FiveSecond.getSeconds(), TimeUnit.MILLISECONDS, new LinkedBlockingDeque&lt;Runnable&gt;(),new ThreadPoolExecutor.DiscardPolicy()); private ThreadFactory() { } public static ExecutorService getThreadPool() { return executor; } } 如何能拿到线程的执行结果呢,传统的Thread无法拿到执行结果,由于run方法无返回值,通过ThreadPoolExecutor类图发现: 继承了AbstractExecutorService、ExecutorService,对ExecutorService中的invokeAll方法产生极大的兴趣,仔细阅读注释,其实这个方法用来并行执行任务: /** * Executes the given tasks, returning a list of Futures holding * their status and results * when all complete or the timeout expires, whichever happens first. * {@link Future#isDone} is {@code true} for each * element of the returned list. * Upon return, tasks that have not completed are cancelled. * Note that a &lt;em&gt;completed&lt;/em&gt; task could have * terminated either normally or by throwing an exception. * The results of this method are undefined if the given * collection is modified while this operation is in progress. * * @param tasks the collection of tasks * @param timeout the maximum time to wait * @param unit the time unit of the timeout argument * @param &lt;T&gt; the type of the values returned from the tasks * @return a list of Futures representing the tasks, in the same * sequential order as produced by the iterator for the * given task list. If the operation did not time out, * each task will have completed. If it did time out, some * of these tasks will not have completed. * @throws InterruptedException if interrupted while waiting, in * which case unfinished tasks are cancelled * @throws NullPointerException if tasks, any of its elements, or * unit are {@code null} * @throws RejectedExecutionException if any task cannot be scheduled * for execution */ &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks, long timeout, TimeUnit unit) throws InterruptedException; 到这里,第二个问题的解决思路已经有了. 编码实现 invokeAll方法的入参分别为任务列表list、超时时间、时间单位,所以首先我们需要创建任务列表: List&lt;BasicUserFilter&gt; list = new ArrayList&lt;&gt;(); 超时时间为每个FutureTask执行超时时间,这里设置成3s,这里的3s超时时间是针对的所有tasks，而不是单个task的超时时间,如果超时，会取消没有执行完的所有任务，并抛出超时异常,源码如下: for (int i = 0; i &lt; size; i++) { execute((Runnable)futures.get(i)); nanos = deadline - System.nanoTime(); if (nanos &lt;= 0L) return futures; } for (int i = 0; i &lt; size; i++) { Future&lt;T&gt; f = futures.get(i); if (!f.isDone()) { if (nanos &lt;= 0L) return futures; try { f.get(nanos, TimeUnit.NANOSECONDS); } catch (CancellationException ignore) { } catch (ExecutionException ignore) { } catch (TimeoutException toe) { return futures; } nanos = deadline - System.nanoTime(); } } BasicUserFilter需要实现Callable接口,因为在方法call里能拿到线程的执行结果,下面就是并行执行任务了: ExecutorService executor = ThreadFactory.getThreadPool(); List&lt;XXX&gt; userFilterDtoList = new ArrayList&lt;&gt;(); try { List&lt;Future&lt;XXX&gt;&gt; futureList = executor.invokeAll(list, TimeOutEnum.FourSecond.getSeconds(), TimeUnit.MILLISECONDS); futureList.stream().forEach(p -&gt; { try { Future&lt;XXX&gt; filterDtoFuture = p; //拿到线程执行结果 userFilterDtoList.add(filterDtoFuture.get()); } catch (InterruptedException e) { logger.error(e.getMessage(), e); } catch (ExecutionException e) { logger.error(e.getMessage(), e); } catch (Exception e) { logger.error(e.getMessage(), e); } }); } catch (InterruptedException e) { logger.error(e.getMessage(), e); } catch (Exception e) { logger.error(e.getMessage(), e); } 关于多线程笔者还有很多需要去学习,上面是一个工作笔记,关于invokeAll的执行流程、神奇的Future模式,感兴趣的可以阅读源码就能找到答案.]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>并行任务</tag>
+        <tag>多线程</tag>
       </tags>
   </entry>
   <entry>
