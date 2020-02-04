@@ -479,19 +479,6 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/2019/02/16/bean懒加载/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/02/16/bean懒加载/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -642,8 +629,8 @@ that perform eager initialization of singletons. The default is
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="next" title="Spring源码之解析并注册BeanDefinition(一)">
-                <i class="fa fa-chevron-left"></i> Spring源码之解析并注册BeanDefinition(一)
+              <a href="/2019/02/16/clone/" rel="next" title="clone">
+                <i class="fa fa-chevron-left"></i> clone
               </a>
             
           </div>
@@ -652,8 +639,8 @@ that perform eager initialization of singletons. The default is
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/并行执行任务/" rel="prev" title="并行执行任务">
-                并行执行任务 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/python初试/" rel="prev" title="python初试">
+                python初试 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1169,7 +1156,7 @@ that perform eager initialization of singletons. The default is
     <!-- LOCAL: You can save these files to your site and update links -->
 
   
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
 <!-- END LOCAL -->
@@ -1183,12 +1170,10 @@ that perform eager initialization of singletons. The default is
 
 <script>
   function renderGitment() {
-    var gitment = new Gitmint({
+    var gitment = new Gitment({
       id: decodeURI(window.location.pathname),
       owner: 'LiosWong',
       repo: 'gitment',
-      
-        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
       
       oauth: {
       

@@ -482,19 +482,6 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/2019/02/16/基于mybatis拦截器分表实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/02/16/基于mybatis拦截器分表实现/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -1226,7 +1213,7 @@ public class UserInfoDaoImpl extends AbstractBaseMapper&lt;UserInfoEntity&gt; im
     <!-- LOCAL: You can save these files to your site and update links -->
 
   
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
 <!-- END LOCAL -->
@@ -1240,12 +1227,10 @@ public class UserInfoDaoImpl extends AbstractBaseMapper&lt;UserInfoEntity&gt; im
 
 <script>
   function renderGitment() {
-    var gitment = new Gitmint({
+    var gitment = new Gitment({
       id: decodeURI(window.location.pathname),
       owner: 'LiosWong',
       repo: 'gitment',
-      
-        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
       
       oauth: {
       

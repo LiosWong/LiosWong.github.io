@@ -481,19 +481,6 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/2019/09/01/Elasticsearch-API简单使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/09/01/Elasticsearch-API简单使用/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -1256,7 +1243,7 @@ protected String[] getIndices(long startDate, long endDate,String indiceName) {
     <!-- LOCAL: You can save these files to your site and update links -->
 
   
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
 <!-- END LOCAL -->
@@ -1270,12 +1257,10 @@ protected String[] getIndices(long startDate, long endDate,String indiceName) {
 
 <script>
   function renderGitment() {
-    var gitment = new Gitmint({
+    var gitment = new Gitment({
       id: decodeURI(window.location.pathname),
       owner: 'LiosWong',
       repo: 'gitment',
-      
-        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
       
       oauth: {
       
