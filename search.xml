@@ -711,15 +711,16 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[回调函数]]></title>
-    <url>%2F2019%2F02%2F16%2F%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%2F</url>
-    <content type="text"><![CDATA[回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科– 什么是回调函数,上面的问题说的是不是很空洞,不是太形象,下面是知乎上的一位网友给的答案:为了有更直观的体会,下面通过代码来实现上述过程, /** * @author LiosWong * @description 工具接口 * @date 2018/6/23 上午1:03 */ public interface Tools { /** * 打电话 * @param msg * @return */ String getCallMsg(String msg); } /** * @author LiosWong * @description 顾客类 * @date 2018/6/23 上午1:01 */ public class Customer implements Tools{ @Override public String getCallMsg(String msg) { if(StringUtils.isNotEmpty(msg)){ System.out.println(msg); return &quot;已收到电话&quot;; } return &quot;&quot;; } public static void main(String[] args) { Customer customer = new Customer(); SalesPerson salesPerson = new SalesPerson(); salesPerson.callCustomer(&quot;ok&quot;,customer); } } /** * @author LiosWong * @description 售货员 * @date 2018/6/23 上午1:01 */ public class SalesPerson { public void callCustomer(String msg,Tools tools){ if(&quot;ok&quot;.equals(msg)){ String response = tools.getMsg(&quot;已经到货啦,请前来购买～&quot;); System.out.println(response); } } } 首先新建一个抽象工具类,里面具体使用电话工具作为通讯方法(回调函数),然后顾客要有电话,所以实现了这个接口;售货员需要在有货时通知顾客,所以需要有个通知顾客的方法callCustomer,入参数中有Tools接口的引用(登记回调函数),然后在该方法中调用Tools的方法,通知顾客已经有货了(调用回调函数),顾客接受到电话通知(回调响应);然后在Customer类的main方法中, callCustomer方法的入参,传入了Customer的实例.]]></content>
+    <title><![CDATA[Spring源码之解析并注册BeanDefinition(一)]]></title>
+    <url>%2F2019%2F02%2F16%2FSpring%E6%BA%90%E7%A0%81%E4%B9%8B%E8%A7%A3%E6%9E%90%E5%B9%B6%E6%B3%A8%E5%86%8CBeanDefinition-%E4%B8%80%2F</url>
+    <content type="text"><![CDATA[最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程: ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&quot;app.xml&quot;); ClassPathXmlApplicationContext的类图继承关系如下:类图可以方便的清楚该类的继承关系,利于阅读源码.一步步跟进去,AbstractApplicationContext中的refresh()方法,便是IOC容器初始化的入口,该方法中调用的obtainFreshBeanFactory()方法,是载入Bean定义的资源文件,该文是分析该类的调用流程,本文使用spring版本为==4.2.4.RELEASE==,obtainFreshBeanFactory()中调用了AbstractApplicationContext子类AbstractRefreshableApplicationContext#refreshBeanFactory中的refreshBeanFactory()方法,这是委派设计模式,具体实现由子类做.下面是整个调用层次关系图:在DefaultListableBeanFactory类中的registerBeanDefinition方法内,注册了BeanDefinition信息: this.beanDefinitionMap.put(beanName, beanDefinition); DefaultListableBeanFactory是Spring Bean加载中的核心类,现在不分析加载过程中细节,后面的章节会剖析.]]></content>
       <categories>
-        <category>设计模式</category>
+        <category>spring</category>
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>设计思想</tag>
+        <tag>spring</tag>
+        <tag>bean</tag>
       </tags>
   </entry>
   <entry>
@@ -786,16 +787,15 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Spring源码之解析并注册BeanDefinition(一)]]></title>
-    <url>%2F2019%2F02%2F16%2FSpring%E6%BA%90%E7%A0%81%E4%B9%8B%E8%A7%A3%E6%9E%90%E5%B9%B6%E6%B3%A8%E5%86%8CBeanDefinition-%E4%B8%80%2F</url>
-    <content type="text"><![CDATA[最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程: ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&quot;app.xml&quot;); ClassPathXmlApplicationContext的类图继承关系如下:类图可以方便的清楚该类的继承关系,利于阅读源码.一步步跟进去,AbstractApplicationContext中的refresh()方法,便是IOC容器初始化的入口,该方法中调用的obtainFreshBeanFactory()方法,是载入Bean定义的资源文件,该文是分析该类的调用流程,本文使用spring版本为==4.2.4.RELEASE==,obtainFreshBeanFactory()中调用了AbstractApplicationContext子类AbstractRefreshableApplicationContext#refreshBeanFactory中的refreshBeanFactory()方法,这是委派设计模式,具体实现由子类做.下面是整个调用层次关系图:在DefaultListableBeanFactory类中的registerBeanDefinition方法内,注册了BeanDefinition信息: this.beanDefinitionMap.put(beanName, beanDefinition); DefaultListableBeanFactory是Spring Bean加载中的核心类,现在不分析加载过程中细节,后面的章节会剖析.]]></content>
+    <title><![CDATA[回调函数]]></title>
+    <url>%2F2019%2F02%2F16%2F%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科– 什么是回调函数,上面的问题说的是不是很空洞,不是太形象,下面是知乎上的一位网友给的答案:为了有更直观的体会,下面通过代码来实现上述过程, /** * @author LiosWong * @description 工具接口 * @date 2018/6/23 上午1:03 */ public interface Tools { /** * 打电话 * @param msg * @return */ String getCallMsg(String msg); } /** * @author LiosWong * @description 顾客类 * @date 2018/6/23 上午1:01 */ public class Customer implements Tools{ @Override public String getCallMsg(String msg) { if(StringUtils.isNotEmpty(msg)){ System.out.println(msg); return &quot;已收到电话&quot;; } return &quot;&quot;; } public static void main(String[] args) { Customer customer = new Customer(); SalesPerson salesPerson = new SalesPerson(); salesPerson.callCustomer(&quot;ok&quot;,customer); } } /** * @author LiosWong * @description 售货员 * @date 2018/6/23 上午1:01 */ public class SalesPerson { public void callCustomer(String msg,Tools tools){ if(&quot;ok&quot;.equals(msg)){ String response = tools.getMsg(&quot;已经到货啦,请前来购买～&quot;); System.out.println(response); } } } 首先新建一个抽象工具类,里面具体使用电话工具作为通讯方法(回调函数),然后顾客要有电话,所以实现了这个接口;售货员需要在有货时通知顾客,所以需要有个通知顾客的方法callCustomer,入参数中有Tools接口的引用(登记回调函数),然后在该方法中调用Tools的方法,通知顾客已经有货了(调用回调函数),顾客接受到电话通知(回调响应);然后在Customer类的main方法中, callCustomer方法的入参,传入了Customer的实例.]]></content>
       <categories>
-        <category>spring</category>
+        <category>设计模式</category>
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>spring</tag>
-        <tag>bean</tag>
+        <tag>设计思想</tag>
       </tags>
   </entry>
   <entry>
