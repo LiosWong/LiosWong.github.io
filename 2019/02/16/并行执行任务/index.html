@@ -692,8 +692,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/bean懒加载/" rel="next" title="bean懒加载">
-                <i class="fa fa-chevron-left"></i> bean懒加载
+              <a href="/2019/02/16/springboot、redis整合/" rel="next" title="springboot、redis整合">
+                <i class="fa fa-chevron-left"></i> springboot、redis整合
               </a>
             
           </div>
@@ -702,8 +702,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/python初试/" rel="prev" title="python初试">
-                python初试 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/javaConfig整合spring、redis/" rel="prev" title="javaConfig整合spring、redis">
+                javaConfig整合spring、redis <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1223,7 +1223,7 @@
           repo: 'LiosWong.github.io',
           owner: 'LiosWong',
           admin: ['LiosWong'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: ''
         })
         gitalk.render('gitalk-container')

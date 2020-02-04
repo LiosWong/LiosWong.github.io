@@ -1127,7 +1127,7 @@ CMD [&quot;sh&quot;,&quot;/usr/dev/tomcat8/bin/catalina.sh&quot;,&quot;run&quot;
           repo: 'LiosWong.github.io',
           owner: 'LiosWong',
           admin: ['LiosWong'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: ''
         })
         gitalk.render('gitalk-container')

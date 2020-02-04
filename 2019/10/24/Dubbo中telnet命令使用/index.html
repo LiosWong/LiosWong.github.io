@@ -1152,7 +1152,7 @@ shutdown -t 1000: 延迟 1000 毫秒关闭 dubbo 应用
           repo: 'LiosWong.github.io',
           owner: 'LiosWong',
           admin: ['LiosWong'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: ''
         })
         gitalk.render('gitalk-container')

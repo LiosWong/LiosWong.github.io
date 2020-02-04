@@ -1142,7 +1142,7 @@ com.xxxxxx.xx.base:xxxx-log:1.1.4.4-20191124.023005-49
           repo: 'LiosWong.github.io',
           owner: 'LiosWong',
           admin: ['LiosWong'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: ''
         })
         gitalk.render('gitalk-container')

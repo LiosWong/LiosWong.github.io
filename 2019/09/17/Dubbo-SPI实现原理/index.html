@@ -1639,7 +1639,7 @@ bumblebee -&gt; {Class@1569} &quot;class org.apache.dubbo.demo.provider.Bumblebe
           repo: 'LiosWong.github.io',
           owner: 'LiosWong',
           admin: ['LiosWong'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: ''
         })
         gitalk.render('gitalk-container')

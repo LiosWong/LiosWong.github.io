@@ -1146,7 +1146,7 @@ Untagged: hub.c.163.com/public/ubuntu@sha256:0fc4a48462a92b0a5a53b35540b8ca33a68
           repo: 'LiosWong.github.io',
           owner: 'LiosWong',
           admin: ['LiosWong'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: ''
         })
         gitalk.render('gitalk-container')
