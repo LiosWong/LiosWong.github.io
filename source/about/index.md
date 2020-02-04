@@ -2,6 +2,7 @@
 title: 关于
 date: 2019-02-15 20:26:12
 type: about
+comments: false
 ---
 <!-- ```
 {
