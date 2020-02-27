@@ -139,7 +139,7 @@ exturl: false
 menu:
   首页: / || home
   分类: /categories/ || th
-  标签: /tags/ || tags
+  # 标签: /tags/ || tags
   归档: /archives/ || archive
   关于: /about/ || user
   #schedule: /schedule/ || calendar
@@ -201,12 +201,12 @@ social_icons:
 #github_banner: https://github.com/yourname || Follow me on GitHub
 
 # Blog rolls
-links_icon: link
-links_title: 友情链接
-links_layout: block
+# links_icon: link
+# links_title: 友情链接
+# links_layout: block
 #links_layout: inline
-links:
-  磊哥: https://dongtshj.github.io
+# links:
+#   磊哥: https://dongtshj.github.io
 
 # Sidebar Avatar
 avatar:
@@ -247,17 +247,17 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
-  display: post
+  # display: post
   #display: always
-  #display: hide
-  #display: remove
+  # display: hide
+  display: remove
 
   # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
   offset: 12
   # Back to top in sidebar.
   b2t: false
   # Scroll percent label in b2t button.
-  scrollpercent: true
+  scrollpercent: false
   # Enable sidebar on narrow view (only for Muse | Mist).
   onmobile: false
 
@@ -570,7 +570,7 @@ gitment:
 # Demo: https://gitalk.github.io
 # Reference: https://asdfv1929.github.io/2018/01/20/gitalk/, https://liujunzhou.top/2018/8/10/gitalk-error/
 gitalk:
-  enable: true
+  enable: false
   github_id: LiosWong # Github repo owner
   repo: gitalk # Repository name to store issues.
   client_id: 790486f22333c5a00f74 # Github Application Client ID
