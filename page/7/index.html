@@ -529,7 +529,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/interface注入及报错分析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/回调函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -549,7 +549,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/interface注入及报错分析/" class="post-title-link" itemprop="url">interface注入及报错分析</a>
+                <a href="/2019/02/16/回调函数/" class="post-title-link" itemprop="url">回调函数</a>
               
             
           </h1>
@@ -608,7 +608,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
 
                 
                 
@@ -647,15 +647,15 @@
           
             <p>
               
-一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：
-@RestController
-public c
+回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科–  
+
+什么是回
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/interface注入及报错分析/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/回调函数/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1277,7 +1277,7 @@ ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/回调函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/bean懒加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -1297,7 +1297,7 @@ ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/回调函数/" class="post-title-link" itemprop="url">回调函数</a>
+                <a href="/2019/02/16/bean懒加载/" class="post-title-link" itemprop="url">bean懒加载</a>
               
             
           </h1>
@@ -1356,7 +1356,7 @@ ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
 
                 
                 
@@ -1394,16 +1394,15 @@ ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
         
           
             <p>
-              
-回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应 –摘自百度百科–  
-
-什么是回
+              Indicates whether or not this bean is to be lazily initialized.
+If false, it will be instantiated on startup by bean factories
+that perform eager init
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/回调函数/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/bean懒加载/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
