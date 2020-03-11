@@ -18,7 +18,6 @@ comments: false
 <!-- ### <center>*** 路漫漫其修远兮 吾将上下而求索 ***</center>
  -->
 <br/>
-<br/>
 #### <center>*** 邮箱: diy_os@163.com  ***</center>
 <br/>
 #### <center>*** 2017年毕业于重庆邮电大学,现就职于杭州某公司,热爱技术。 ***</center>
