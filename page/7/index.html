@@ -344,7 +344,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/并行执行任务/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/javaConfig整合spring、redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -364,7 +364,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/并行执行任务/" class="post-title-link" itemprop="url">并行执行任务</a>
+                <a href="/2019/02/16/javaConfig整合spring、redis/" class="post-title-link" itemprop="url">javaConfig整合spring、redis</a>
               
             
           </h1>
@@ -423,7 +423,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
 
                 
                 
@@ -461,20 +461,18 @@
         
           
             <p>
-              
-需求
-在app列表首页,展示多个item,并有分页;而每个item里后台都会调用一个http请求,判断当前item的状态
-
-分析
-为了更好的用体验,无疑需要使用多线程并行处理http请求,而且还需要拿到每个线程的执行结果.上面的分析,有两个问题需要解决:  
-1. 如何创建线程池  
-2. 如何拿
+              使用spring-data-redis的模版,客户端使用jedis,下面配置bean:
+@Configuration
+public class RedisConfig {
+    @Autowired
+    @Qualifier(&quot;jedisPoolConfig&quot;)
+    J
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/并行执行任务/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/javaConfig整合spring、redis/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1661,7 +1659,7 @@ import
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/bean懒加载/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/interface注入及报错分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -1681,7 +1679,7 @@ import
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/bean懒加载/" class="post-title-link" itemprop="url">bean懒加载</a>
+                <a href="/2019/02/16/interface注入及报错分析/" class="post-title-link" itemprop="url">interface注入及报错分析</a>
               
             
           </h1>
@@ -1778,15 +1776,16 @@ import
         
           
             <p>
-              Indicates whether or not this bean is to be lazily initialized.
-If false, it will be instantiated on startup by bean factories
-that perform eager init
+              
+一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：
+@RestController
+public c
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/bean懒加载/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/interface注入及报错分析/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -2034,7 +2033,7 @@ ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/javaConfig整合spring、redis/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/bean懒加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -2054,7 +2053,7 @@ ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/javaConfig整合spring、redis/" class="post-title-link" itemprop="url">javaConfig整合spring、redis</a>
+                <a href="/2019/02/16/bean懒加载/" class="post-title-link" itemprop="url">bean懒加载</a>
               
             
           </h1>
@@ -2151,18 +2150,15 @@ ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationCon
         
           
             <p>
-              使用spring-data-redis的模版,客户端使用jedis,下面配置bean:
-@Configuration
-public class RedisConfig {
-    @Autowired
-    @Qualifier(&quot;jedisPoolConfig&quot;)
-    J
+              Indicates whether or not this bean is to be lazily initialized.
+If false, it will be instantiated on startup by bean factories
+that perform eager init
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/javaConfig整合spring、redis/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/bean懒加载/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
