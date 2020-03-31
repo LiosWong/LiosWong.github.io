@@ -111,27 +111,27 @@
 
 
 
-  <meta name="description" content="ThreadLocal是什么* This class provides thread-local variables.  These variables differ from  * their normal counterparts in that each thread that accesses one (via its  * {@code get} or {@code set} metho">
-<meta name="keywords" content="java,ThreadLocal">
+  <meta name="description" content="环境    os: mac pro    jdk: 1.8    filebeat: 6.5.4-darwin-x86_64      elasticsearch: 6.5.4      logstash: 6.5.4      kibana: 6.5.4-darwin-x86_64 具体安装过程不做介绍，不过在下载具体的版本时，一定要保证版本号一致，否则会出现兼容性问题。  filebeat、">
+<meta name="keywords" content="Elasticsearch,elk,Logstash,Kibana,Filebeat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ThreadLocal">
-<meta property="og:url" content="http://yoursite.com/2019/02/16/ThreadLocal/index.html">
+<meta property="og:title" content="filebeat、ELK环境搭建">
+<meta property="og:url" content="http://yoursite.com/2020/03/31/filebeat、ELK环境搭建/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="ThreadLocal是什么* This class provides thread-local variables.  These variables differ from  * their normal counterparts in that each thread that accesses one (via its  * {@code get} or {@code set} metho">
+<meta property="og:description" content="环境    os: mac pro    jdk: 1.8    filebeat: 6.5.4-darwin-x86_64      elasticsearch: 6.5.4      logstash: 6.5.4      kibana: 6.5.4-darwin-x86_64 具体安装过程不做介绍，不过在下载具体的版本时，一定要保证版本号一致，否则会出现兼容性问题。  filebeat、">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&shareKey=aa0a0cee764a2090798d2bbffc76e2d1">
-<meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
+<meta property="og:image" content="http://yoursite.com/2020/03/31/filebeat、ELK环境搭建/filebeat、ELK环境搭建/one.jpg">
+<meta property="og:updated_time" content="2020-03-31T15:14:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ThreadLocal">
-<meta name="twitter:description" content="ThreadLocal是什么* This class provides thread-local variables.  These variables differ from  * their normal counterparts in that each thread that accesses one (via its  * {@code get} or {@code set} metho">
-<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&shareKey=aa0a0cee764a2090798d2bbffc76e2d1">
+<meta name="twitter:title" content="filebeat、ELK环境搭建">
+<meta name="twitter:description" content="环境    os: mac pro    jdk: 1.8    filebeat: 6.5.4-darwin-x86_64      elasticsearch: 6.5.4      logstash: 6.5.4      kibana: 6.5.4-darwin-x86_64 具体安装过程不做介绍，不过在下载具体的版本时，一定要保证版本号一致，否则会出现兼容性问题。  filebeat、">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/31/filebeat、ELK环境搭建/filebeat、ELK环境搭建/one.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/16/ThreadLocal/">
+  <link rel="canonical" href="http://yoursite.com/2020/03/31/filebeat、ELK环境搭建/">
 
 
 
@@ -141,7 +141,7 @@
   };
 </script>
 
-  <title>ThreadLocal | 后端沉思录</title>
+  <title>filebeat、ELK环境搭建 | 后端沉思录</title>
   
 
 
@@ -347,7 +347,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/ThreadLocal/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/31/filebeat、ELK环境搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -364,7 +364,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ThreadLocal
+          <h1 class="post-title" itemprop="name headline">filebeat、ELK环境搭建
 
               
             
@@ -390,24 +390,12 @@
                 
               
 
-              <time title="Created: 2019-02-16 01:42:27" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:27+08:00">2019-02-16</time>
+              <time title="Created: 2020-03-31 18:03:11 / Modified: 23:14:23" itemprop="dateCreated datePublished" datetime="2020-03-31T18:03:11+08:00">2020-03-31</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
               
             
           </span>
@@ -424,7 +412,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/elk/" itemprop="url" rel="index"><span itemprop="name">elk</span></a></span>
 
                 
                 
@@ -466,98 +454,170 @@
       
 
       
-        <h4 id="ThreadLocal是什么"><a href="#ThreadLocal是什么" class="headerlink" title="ThreadLocal是什么"></a>ThreadLocal是什么</h4><pre><code>* This class provides thread-local variables.  These variables differ from
- * their normal counterparts in that each thread that accesses one (via its
- * {@code get} or {@code set} method) has its own, independently initialized
- * copy of the variable.  {@code ThreadLocal} instances are typically private
- * static fields in classes that wish to associate state with a thread (e.g.,
- * a user ID or Transaction ID).
-</code></pre><p>简单的说ThreadLocal是本地线程副本变量工具类</p>
-<h4 id="ThreadLocal类图"><a href="#ThreadLocal类图" class="headerlink" title="ThreadLocal类图"></a>ThreadLocal类图</h4><p><img src="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&amp;shareKey=aa0a0cee764a2090798d2bbffc76e2d1" alt="https://note.youdao.com/yws/api/personal/file/WEB5ff6ccabc6d9ea2db3f3274a45e73eca?method=download&amp;shareKey=aa0a0cee764a2090798d2bbffc76e2d1"><br>上图可以看出ThreadLocal类中通过ThreadLocalMap去存储,ThreadLocalMap中的存储结构为Entry数组.</p>
-<h4 id="ThreadLocal核心方法"><a href="#ThreadLocal核心方法" class="headerlink" title="ThreadLocal核心方法"></a>ThreadLocal核心方法</h4><ol>
-<li><p>set(T value)</p>
-<pre><code>public void set(T value) {
-Thread t = Thread.currentThread();
-ThreadLocalMap map = getMap(t);
-if (map != null)
- map.set(this, value);
-else
- createMap(t, value);
+        <blockquote>
+<h5 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h5></blockquote>
+<pre><code>   os: mac pro
+   jdk: 1.8
+   filebeat: 6.5.4-darwin-x86_64  
+   elasticsearch: 6.5.4  
+   logstash: 6.5.4  
+   kibana: 6.5.4-darwin-x86_64
+</code></pre><p>具体安装过程不做介绍，不过在下载具体的版本时，一定要保证版本号一致，否则会出现兼容性问题。</p>
+<blockquote>
+<h5 id="filebeat、elk交互图"><a href="#filebeat、elk交互图" class="headerlink" title="filebeat、elk交互图"></a>filebeat、elk交互图</h5></blockquote>
+<p>关于filebeat、elk的系统交互如下图所示:<br><img src="filebeat、ELK环境搭建/one.jpg" alt="xxx"></p>
+<blockquote>
+<h5 id="filebeat配置"><a href="#filebeat配置" class="headerlink" title="filebeat配置"></a>filebeat配置</h5></blockquote>
+<p>创建文件filebeat-trace.yml:</p>
+<pre><code>filebeat.inputs:
+- type: log
+  paths:
+    - /logs/*/driver-trace.log
+  enabled: true
+  encoding: utf-8
+  document_type: driver_trace
+  close_renamed: true
+  close_removed: true
+  scan_frequency: 1s
+  max_bytes: 31457280
+  harvester_buffer_size: 409600
+  multiline:
+    pattern: &#39;^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&#39;
+    negate: true
+    match: after
+max_procs: 1
+output.logstash:
+  hosts: [&quot;localhost:5044&quot;] # 配置实际环境的logstash地址
+  #loadbalance: true (在配置时因为加了这个配置项导致filebeat一直不能向logstash输送日志,坑啊！)
+</code></pre><p>启动服务:</p>
+<pre><code>./filebeat -e -c filebeat-trace.yml
+</code></pre><blockquote>
+<h5 id="logstash配置"><a href="#logstash配置" class="headerlink" title="logstash配置"></a>logstash配置</h5></blockquote>
+<p>创建文件trace-pipeline.conf:</p>
+<pre><code>input {
+    beats {
+        port =&gt; &#39;5044&#39;
+        type =&gt; &quot;driver_trace&quot;
+        ssl =&gt; false
+    }
 }
-</code></pre><p>该方法用来保存当前线程的副本所对应的变量值;首先通过<code>Thread.currentThread()</code>获取当前线程,然后获取ThreadLocalMap,调用ThreadLocalMap的set方法,把值存进去,key为ThreadLocal,再看ThreadLocalMap的set方法的代码:</p>
-<pre><code>private void set(ThreadLocal&lt;?&gt; key, Object value) {
 
- // We don&#39;t use a fast path as with get() because it is at
- // least as common to use set() to create new entries as
- // it is to replace existing ones, in which case, a fast
- // path would fail more often than not.
+filter {
+    if [type] == &quot;driver_trace&quot; {
+        grok {
+            patterns_dir =&gt; [&quot;/Users/lioswong/dev/software/elk/6.5.4/logstash-6.5.4/config/patterns&quot;]
+            match =&gt; {&quot;message&quot; =&gt; [&quot;%{IP:client}\|%{NUMBER:actionTime:int}\|%{NUMBER:traceType:int}\|%{IDSTR:driverNo}\|%{NUMBER:action:int}\|%{NUMBER:actionScene:int}\|%{NUMBER:actionResult:int}\|%{GREEDYDATA:traceExtend}\|%{GREEDYDATA:traceId}\|%{GREEDYDATA:params}\|%{GREEDYDATA:results}\|%{NUMBER:headNode:int}&quot;,&quot;%{IP:client}\|%{NUMBER:actionTime:int}\|%{NUMBER:traceType:int}\|%{IDSTR:driverNo}\|%{NUMBER:action:int}\|%{NUMBER:actionScene:int}\|%{NUMBER:actionResult:int}\|%{GREEDYDATA:traceExtend}\|%{IDSTR:bizLine}\|%{IDSTR:orderNo}\|%{IDSTR:orderType}\|%{NUMBER:orderLabel:int}\|%{GREEDYDATA:traceId}\|%{GREEDYDATA:params}\|%{GREEDYDATA:results}\|%{NUMBER:headNode:int}&quot;]}
+        }
+        mutate {
+            remove_field =&gt; [&quot;message&quot;]
+        }
+    }  
+}
 
- Entry[] tab = table;
- int len = tab.length;
- int i = key.threadLocalHashCode &amp; (len-1);
+output {
+    if [type] == &quot;driver_trace&quot; {
+        elasticsearch {
+            hosts =&gt; [&quot;localhost:9200&quot;]
+            index =&gt; &quot;driver_trace_%{+YYYY.MM.dd}&quot;
+            manage_template =&gt; true
+            template_name =&gt; &quot;driver_trace&quot;
+            template_overwrite =&gt; true
+            document_type =&gt; &quot;driver_trace&quot;
+            template =&gt; &quot;/Users/lioswong/dev/software/elk/6.5.4/logstash-6.5.4/config/templates/trace.json&quot;
+        }
+        stdout {
+         codec =&gt; rubydebug
+        }
 
- for (Entry e = tab[i];
-      e != null;
-      e = tab[i = nextIndex(i, len)]) {
-     ThreadLocal&lt;?&gt; k = e.get();
-
-     if (k == key) {
-         e.value = value;
-         return;
-     }
-
-     if (k == null) {
-         replaceStaleEntry(key, value, i);
-         return;
-     }
- }
-
- tab[i] = new Entry(key, value);
- int sz = ++size;
- if (!cleanSomeSlots(i, sz) &amp;&amp; sz &gt;= threshold)
-     rehash();
+    }
 }
-</code></pre><p>通过传入的ThreadLocal获取hashCode,用作数组Entry的下标,<code>tab[i]!=null</code>时,则获取数组下一个位置也比较简单,就是下i+1:</p>
-<pre><code>private static int nextIndex(int i, int len) {
- return ((i + 1 &lt; len) ? i + 1 : 0);
+</code></pre><p><code>/Users/lioswong/dev/software/elk/6.5.4/logstash-6.5.4/config/templates/trace.json</code>文件如下:</p>
+<pre><code>{
+    &quot;template&quot;: &quot;driver_trace_*&quot;,
+    &quot;settings&quot;: {
+        &quot;index.refresh_interval&quot;: &quot;5s&quot;
+    },
+    &quot;mappings&quot;: {
+        &quot;driver_trace&quot;: {
+            &quot;properties&quot;: {
+                &quot;client&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;actionTime&quot;: {
+                    &quot;type&quot;: &quot;long&quot;
+                },
+                 &quot;traceType&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;driverNo&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                 &quot;action&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                 &quot;actionScene&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;actionResult&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;traceExtend&quot;: {
+                    &quot;type&quot;: &quot;text&quot;
+                },        
+                &quot;bizLine&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;orderNo&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },  
+                &quot;orderType&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;traceId&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;orderLabel&quot;: {
+                    &quot;type&quot;: &quot;keyword&quot;
+                },
+                &quot;params&quot;: {
+                    &quot;type&quot;: &quot;text&quot;
+                },
+                &quot;results&quot;: {
+                    &quot;type&quot;: &quot;text&quot;
+                },
+                &quot;headNode&quot;: {
+                    &quot;type&quot;:&quot;keyword&quot;
+                }            
+            }
+        }
+    }
 }
-</code></pre></li>
-<li>get()<pre><code>public T get() {
-Thread t = Thread.currentThread();
-ThreadLocalMap map = getMap(t);
-if (map != null) {
- ThreadLocalMap.Entry e = map.getEntry(this);
- if (e != null) {
-     @SuppressWarnings(&quot;unchecked&quot;)
-     T result = (T)e.value;
-     return result;
- }
-}
-return setInitialValue();
-}
-</code></pre>get方法获取比较简单,通过当前线程获取到ThreadLocalMap,然后再获取Entry,就可以获取到变量了.</li>
-<li>remove()<pre><code>public void remove() {
-ThreadLocalMap m = getMap(Thread.currentThread());
-if (m != null)
-  m.remove(this);
-}
-</code></pre>remove方法用于移除当前线程的副本所对应的变量值,remove方法源码:<pre><code>private void remove(ThreadLocal&lt;?&gt; key) {
- Entry[] tab = table;
- int len = tab.length;
- int i = key.threadLocalHashCode &amp; (len-1);
- for (Entry e = tab[i];
-      e != null;
-      e = tab[i = nextIndex(i, len)]) {
-     if (e.get() == key) {
-         e.clear();
-         expungeStaleEntry(i);
-         return;
-     }
- }
-}
-</code></pre>Entry调用了clear方法,用于清除该对象,继续跟进去,发现调用的clear方法是Reference的方法,Entry实现了WeakReference.关于ThreadLocal内存泄漏的问题指Entry是弱引用,当ThreadLocal没有被外部对象引用时,发生GC时会回收Entry,但是Entry中保存的值不会被回收,这个值随着该ThreadLocal线程一直存活着,占用内存,导致内存泄漏,解决的方法就是使用完ThreadLocal调用remove方法,清除变量值.</li>
-</ol>
-<p>参考:<br><a href="https://www.jianshu.com/p/98b68c97df9b" target="_blank" rel="noopener">https://www.jianshu.com/p/98b68c97df9b</a></p>
+</code></pre><p>/Users/lioswong/dev/software/elk/6.5.4/logstash-6.5.4/config/patterns下的patterns文件内容:</p>
+<pre><code>IDSTR [a-zA-Z0-9._-]*
+</code></pre><p>启动服务：</p>
+<pre><code>./logstash -f ../config/trace-pipeline.conf 
+</code></pre><blockquote>
+<h5 id="elasticsearch配置"><a href="#elasticsearch配置" class="headerlink" title="elasticsearch配置"></a>elasticsearch配置</h5></blockquote>
+<p>编辑elasticsearch.yml:</p>
+<pre><code>...
+...
+network.host: 127.0.0.1
+#
+# Set a custom port for HTTP:
+#
+http.port: 9200
+...
+...
+</code></pre><p>启动服务:</p>
+<pre><code>./elasticsearch  
+</code></pre><blockquote>
+<h5 id="配置k"><a href="#配置k" class="headerlink" title="配置k"></a>配置k</h5><p>编辑kibana.yml:</p>
+<pre><code>server.host: &quot;localhost&quot;
+elasticsearch.url: &quot;http://localhost:9200&quot;
+</code></pre><p>启动服务:ø</p>
+<pre><code>./kibana
+</code></pre><p>至此服务搭建完毕.</p>
+</blockquote>
 
       
     </div>
@@ -570,38 +630,6 @@ if (m != null)
 <div>
       
         
-<div class="my_post_copyright">
-  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
-
-  <!-- JS库 sweetalert 可修改路径 -->
-  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
-  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-
-  <p><span>本文标题:</span>ThreadLocal</p>
-  <p><span>文章作者:</span>LiosWong</p>
-  <p><span>发布时间:</span>2019年02月16日 - 01:42:27</p>
-  <p><span>最后更新:</span>2019年09月01日 - 16:38:57</p>
-  <p><span>原始链接:</span><a href="/2019/02/16/ThreadLocal/" title="ThreadLocal">http://yoursite.com/2019/02/16/ThreadLocal/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/02/16/ThreadLocal/" aria-label="复制成功！"></i></span>
-  </p>
-  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
-</div>
-<script>
-    var clipboard = new Clipboard('.fa-clipboard');
-    clipboard.on('success', $(function(){
-      $(".fa-clipboard").click(function(){
-        swal({
-          title: "",
-          text: '复制成功',
-          html: false,
-          timer: 500,
-          showConfirmButton: false
-        });
-      });
-    }));
-</script>
-
 
       
 </div>
@@ -618,9 +646,15 @@ if (m != null)
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+            <a href="/tags/Elasticsearch/" rel="tag"><i class="fa fa-tag"></i> Elasticsearch</a>
           
-            <a href="/tags/ThreadLocal/" rel="tag"><i class="fa fa-tag"></i> ThreadLocal</a>
+            <a href="/tags/elk/" rel="tag"><i class="fa fa-tag"></i> elk</a>
+          
+            <a href="/tags/Logstash/" rel="tag"><i class="fa fa-tag"></i> Logstash</a>
+          
+            <a href="/tags/Kibana/" rel="tag"><i class="fa fa-tag"></i> Kibana</a>
+          
+            <a href="/tags/Filebeat/" rel="tag"><i class="fa fa-tag"></i> Filebeat</a>
           
         </div>
       
@@ -633,8 +667,8 @@ if (m != null)
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/interface注入及报错分析/" rel="next" title="interface注入及报错分析">
-                <i class="fa fa-chevron-left"></i> interface注入及报错分析
+              <a href="/2020/03/11/idea-debug断点失效/" rel="next" title="idea debug断点失效">
+                <i class="fa fa-chevron-left"></i> idea debug断点失效
               </a>
             
           </div>
@@ -642,10 +676,6 @@ if (m != null)
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/16/转发与重定向/" rel="prev" title="转发与重定向">
-                转发与重定向 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
