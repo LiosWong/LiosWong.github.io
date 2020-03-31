@@ -2024,7 +2024,7 @@ publi
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/并行执行任务/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/interface注入及报错分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -2044,7 +2044,7 @@ publi
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/02/16/并行执行任务/" class="post-title-link" itemprop="url">并行执行任务</a>
+                <a href="/2019/02/16/interface注入及报错分析/" class="post-title-link" itemprop="url">interface注入及报错分析</a>
               
             
           </h1>
@@ -2103,7 +2103,7 @@ publi
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
 
                 
                 
@@ -2142,19 +2142,15 @@ publi
           
             <p>
               
-需求
-在app列表首页,展示多个item,并有分页;而每个item里后台都会调用一个http请求,判断当前item的状态
-
-分析
-为了更好的用体验,无疑需要使用多线程并行处理http请求,而且还需要拿到每个线程的执行结果.上面的分析,有两个问题需要解决:  
-1. 如何创建线程池  
-2. 如何拿
+一个小case上面错误原因我想大家开发中都遇到过,大致错误原因是注入bean时，spring找到2个实例userServiceImplTest、userServiceImpl，无法确认到底使用哪个。问题出在这，原因是什么呢，在说明前，看下面的代码：
+@RestController
+public c
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/02/16/并行执行任务/#more" rel="contents">
+              <a class="btn" href="/2019/02/16/interface注入及报错分析/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
