@@ -111,27 +111,25 @@
 
 
 
-  <meta name="description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码: # -*- coding: UTF-8 -*- import time import json import requests  def doIndexratePost(orderNo):   // body数">
-<meta name="keywords" content="python">
+  <meta name="description" content="使用xpath解析表格时，个别td标签内容为空，导致解析出来的数组列数有问题，进而在写入csv文件时，数据错位。解决的办法用占位符填补空白: text.replace(r&amp;#39;&amp;lt;td style=&amp;quot;white-space: pre-wrap;&amp;quot;&amp;gt;&amp;lt;/td&amp;gt;&amp;#39;,                                &amp;#39;&amp;lt;t">
+<meta name="keywords" content="xpath,爬虫">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python初试">
-<meta property="og:url" content="http://yoursite.com/2019/02/16/python初试/index.html">
+<meta property="og:title" content="记录xpath解析html的一个坑">
+<meta property="og:url" content="http://yoursite.com/2020/05/14/记录xpath解析html的一个坑/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码: # -*- coding: UTF-8 -*- import time import json import requests  def doIndexratePost(orderNo):   // body数">
+<meta property="og:description" content="使用xpath解析表格时，个别td标签内容为空，导致解析出来的数组列数有问题，进而在写入csv文件时，数据错位。解决的办法用占位符填补空白: text.replace(r&amp;#39;&amp;lt;td style=&amp;quot;white-space: pre-wrap;&amp;quot;&amp;gt;&amp;lt;/td&amp;gt;&amp;#39;,                                &amp;#39;&amp;lt;t">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d">
-<meta property="og:updated_time" content="2019-09-01T08:38:57.000Z">
+<meta property="og:updated_time" content="2020-05-14T02:12:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python初试">
-<meta name="twitter:description" content="最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。python代码: # -*- coding: UTF-8 -*- import time import json import requests  def doIndexratePost(orderNo):   // body数">
-<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d">
+<meta name="twitter:title" content="记录xpath解析html的一个坑">
+<meta name="twitter:description" content="使用xpath解析表格时，个别td标签内容为空，导致解析出来的数组列数有问题，进而在写入csv文件时，数据错位。解决的办法用占位符填补空白: text.replace(r&amp;#39;&amp;lt;td style=&amp;quot;white-space: pre-wrap;&amp;quot;&amp;gt;&amp;lt;/td&amp;gt;&amp;#39;,                                &amp;#39;&amp;lt;t">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/16/python初试/">
+  <link rel="canonical" href="http://yoursite.com/2020/05/14/记录xpath解析html的一个坑/">
 
 
 
@@ -141,7 +139,7 @@
   };
 </script>
 
-  <title>python初试 | 后端沉思录</title>
+  <title>记录xpath解析html的一个坑 | 后端沉思录</title>
   
 
 
@@ -347,7 +345,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/python初试/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/14/记录xpath解析html的一个坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -364,7 +362,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python初试
+          <h1 class="post-title" itemprop="name headline">记录xpath解析html的一个坑
 
               
             
@@ -390,24 +388,12 @@
                 
               
 
-              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
+              <time title="Created: 2020-05-14 10:07:23 / Modified: 10:12:26" itemprop="dateCreated datePublished" datetime="2020-05-14T10:07:23+08:00">2020-05-14</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-01 16:38:57" itemprop="dateModified" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
               
             
           </span>
@@ -424,7 +410,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/xpath/" itemprop="url" rel="index"><span itemprop="name">xpath</span></a></span>
 
                 
                 
@@ -466,36 +452,12 @@
       
 
       
-        <p>最近使用python批量处理业务需求,大概是读取本地文件中的每一行订单号,然后发起http请求接口,处理具体的业务,由于实现起来很简单,所以使用python最适当不过了。<br>python代码:</p>
-<pre><code># -*- coding: UTF-8 -*-
-import time
-import json
-import requests
-
-def doIndexratePost(orderNo):
-  // body数据
-  data = {&#39;orderNo&#39;:orderNo,&#39;type&#39;:&#39;3&#39;}
-  # 设置请求头token
-  headers = {&#39;token&#39;:&#39;3eb44d33fdf59677fa97557c0e636463&#39;,&#39;Content-Type&#39;:&#39;application/json&#39;}
-  requestUrl = &quot;请求的URL&quot;
-  // 使用requests库发起post请求
-  r = requests.post(requestUrl, data=json.dumps(data), headers=headers)
-  res = r.json()
-  // 打印响应
-  print(res)
-  # 休眠1s
-  time.sleep(1);
-
-# 批量读取文件
-f = open(&#39;/Users/wenchao.wang/LiosWang/sublimetext/dodataone.txt&#39;);
-num = 0;
-for i in f.readlines():
-  orderNo = i.strip(&#39;\n&#39;)
-  // 调用函数doIndexratePost处理业务
-  doIndexratePost(orderNo);
-  num = num + 1;
-  print (num,&quot;已执行完&quot;)
-</code></pre><p>在sublimetext3中执行如下:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&amp;shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d" alt="https://note.youdao.com/yws/api/personal/file/WEB502765ba8f341236c351995291594655?method=download&amp;shareKey=6aefeeac4d18ea83d1e5ef974a66fb1d"><br>上面简短的代码就实现批量处理业务需求,确实简单方便。我用的mac,用的brew安装python3.7,比自己下载源代码编译安装方便的多，而且很可能会在安装三方库时遇到一些蛋痛的问题,编辑器用的sublimetext3,集成插件用起来十分轻量快捷。</p>
+        <p>使用xpath解析表格时，个别<code>td</code>标签内容为空，导致解析出来的数组列数有问题，进而在写入csv文件时，数据错位。<br>解决的办法用占位符填补空白:</p>
+<pre><code>text.replace(r&#39;&lt;td style=&quot;white-space: pre-wrap;&quot;&gt;&lt;/td&gt;&#39;,
+                               &#39;&lt;td style=&quot;white-space: pre-wrap;&quot;&gt;None&lt;/td&gt;&#39;)
+</code></pre><blockquote>
+<p><a href="https://lioswong.github.io/2020/05/10/%E8%A7%A3%E6%9E%90html%E9%A1%B5%E9%9D%A2%E5%AF%BC%E5%87%BAcsv%E6%96%87%E4%BB%B6%E8%84%9A%E6%9C%AC/" target="_blank" rel="noopener">https://lioswong.github.io/2020/05/10/%E8%A7%A3%E6%9E%90html%E9%A1%B5%E9%9D%A2%E5%AF%BC%E5%87%BAcsv%E6%96%87%E4%BB%B6%E8%84%9A%E6%9C%AC/</a></p>
+</blockquote>
 
       
     </div>
@@ -508,38 +470,6 @@ for i in f.readlines():
 <div>
       
         
-<div class="my_post_copyright">
-  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
-
-  <!-- JS库 sweetalert 可修改路径 -->
-  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
-  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-
-  <p><span>本文标题:</span>python初试</p>
-  <p><span>文章作者:</span>LiosWong</p>
-  <p><span>发布时间:</span>2019年02月16日 - 01:42:16</p>
-  <p><span>最后更新:</span>2019年09月01日 - 16:38:57</p>
-  <p><span>原始链接:</span><a href="/2019/02/16/python初试/" title="python初试">http://yoursite.com/2019/02/16/python初试/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/02/16/python初试/" aria-label="复制成功！"></i></span>
-  </p>
-  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
-</div>
-<script>
-    var clipboard = new Clipboard('.fa-clipboard');
-    clipboard.on('success', $(function(){
-      $(".fa-clipboard").click(function(){
-        swal({
-          title: "",
-          text: '复制成功',
-          html: false,
-          timer: 500,
-          showConfirmButton: false
-        });
-      });
-    }));
-</script>
-
 
       
 </div>
@@ -556,7 +486,9 @@ for i in f.readlines():
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+            <a href="/tags/xpath/" rel="tag"><i class="fa fa-tag"></i> xpath</a>
+          
+            <a href="/tags/爬虫/" rel="tag"><i class="fa fa-tag"></i> 爬虫</a>
           
         </div>
       
@@ -569,8 +501,8 @@ for i in f.readlines():
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="next" title="Spring源码之解析并注册BeanDefinition(一)">
-                <i class="fa fa-chevron-left"></i> Spring源码之解析并注册BeanDefinition(一)
+              <a href="/2020/05/10/解析html页面导出csv文件脚本/" rel="next" title="解析html页面导出csv文件脚本">
+                <i class="fa fa-chevron-left"></i> 解析html页面导出csv文件脚本
               </a>
             
           </div>
@@ -578,10 +510,6 @@ for i in f.readlines():
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/16/interface注入及报错分析/" rel="prev" title="interface注入及报错分析">
-                interface注入及报错分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
