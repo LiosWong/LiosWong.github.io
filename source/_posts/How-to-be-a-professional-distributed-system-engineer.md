@@ -46,33 +46,78 @@ The following readings are my preferred references, please feel free to sink in 
 [Pattern-Oriented Software Architecture](https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=Pattern-Oriented+Software+Architecture)  
 [Patterns of Enterprise Application Architecture](https://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420/ref=sr_1_6?ie=UTF8&qid=1474952693&sr=8-6&keywords=Pattern-Oriented+Software+Architecture)  
 [Applying UML and Patterns : An Introduction to Object-Oriented Analysis and Design and Iterative Development](https://www.amazon.com/Applying-UML-Patterns-Introduction-Object-Oriented/dp/0131489062/ref=sr_1_1?ie=UTF8&qid=1474952990&sr=8-1&keywords=Applying+UML+and+Patterns)
+
 <!--
-1. 
+1. CleanCode-代码整洁之道
+2. 重构：改善既有代码的设计
+3. Head First 设计模式
+4. 设计原本
+5. 面向模式的软件架构
+6. 企业应用架构模式
+7. Applying UML and Patterns : An Introduction to Object-Oriented Analysis and Design and Iterative Development
 -->
+
 ##### Software management & Agile practice
 [The Pragmatic Programmer: From Journeyman to Master](https://www.amazon.com/Pragmatic-Programmer-Journeyman-Master/dp/020161622X/ref=pd_sim_14_7?ie=UTF8&pd_rd_i=020161622X&pd_rd_r=SPRXGS2PZVAYA6XYPH7D&pd_rd_w=2Hl6x&pd_rd_wg=os22k&psc=1&refRID=SPRXGS2PZVAYA6XYPH7D)  
 [The Mythical Man-Month: Essays on Software Engineering,Anniversary Edition](https://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959/ref=sr_1_1?ie=UTF8&qid=1474952367&sr=8-1&keywords=The+Mythical+Man-Month%3A+Essays+on+Software+Engineering%2CAnniversary+Edition)  
 [Peopleware: Productive Projects and Teams](https://www.amazon.com/Peopleware-Productive-Projects-Teams-3rd/dp/0321934113/ref=sr_1_1?ie=UTF8&qid=1474952492&sr=8-1&keywords=Peopleware%3A+Productive+Projects+and+Teams)
+
+<!--
+1. 程序员修炼之道：从小工到专家
+2. 人月神话
+3. 人件（第3版）
+-->
+
 ##### Linux internal
 [The Linux Programming Interface: A Linux and UNIX System Programming Handbook](https://www.amazon.com/Linux-Programming-Interface-System-Handbook/dp/1593272200/ref=sr_1_4?s=books&ie=UTF8&qid=1474871802&sr=1-4&keywords=linux&refinements=p_72%3A1250221011)  
 [Internetworking with TCP/IP](https://www.amazon.com/Internetworking-TCP-Vol-1-Principles-Architecture/dp/0130183806/ref=pd_sim_14_2?ie=UTF8&pd_rd_i=0130183806&pd_rd_r=R1SH3SQ0SYVFPJQXPNE5&pd_rd_w=5p0ox&pd_rd_wg=knykx&psc=1&refRID=R1SH3SQ0SYVFPJQXPNE5)  
 [Unix Network Programming](https://www.amazon.com/Unix-Network-Programming-Sockets-Networking/dp/0131411551/ref=sr_1_1?s=books&ie=UTF8&qid=1474872220&sr=1-1&keywords=Unix+Network+Programming)
+
+<!--
+1. linux/unix系统编程手册
+2. TCP/IP详解,
+3. unix 网络编程
+-->
+
 ##### Computer science
 [The Art of Computer Programming](https://www.amazon.com/Art-Computer-Programming-Vol-Fundamental/dp/0201896834/ref=sr_1_2?ie=UTF8&qid=1474952215&sr=8-2&keywords=The+Art+of+Computer+Programming)  
 [Introduction to Algorithms](https://www.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844/ref=sr_1_1?ie=UTF8&qid=1475060034&sr=8-1&keywords=algorithm)
+
+<!--
+1.  计算机程序设计艺术
+2. 算法导论)
+-->
+
 ##### Effective
 [The Seven Habits of Highly Effective People](https://www.amazon.com/Habits-Highly-Effective-People-Powerful/dp/1451639619/ref=sr_1_1?s=books&ie=UTF8&qid=1476079772&sr=1-1&keywords=The+Seven+Habits+of+Highly+Effective+People)  
 [Pomodoro Technique Illustrated](https://www.amazon.com/Pomodoro-Technique-Illustrated-Pragmatic-Life/dp/1934356506/ref=sr_1_1?s=books&ie=UTF8&qid=1476080242&sr=1-1&keywords=Pomodoro+Technique+Illustrated)
+
+<!--
+1. 成功人士的七个习惯
+2. 番茄工作法图解:简单易行的时间管理方法
+-->
+
 ### Advanced
 ---
 ##### Performance
 [Systems Performance: Enterprise and the Cloud](https://www.amazon.com/Systems-Performance-Enterprise-Brendan-Gregg/dp/0133390098/ref=sr_1_1?ie=UTF8&qid=1474953097&sr=8-1&keywords=systems+performance)  
 [High performance browser networking](https://www.amazon.com/High-Performance-Browser-Networking-performance/dp/1449344763/ref=sr_1_1?ie=UTF8&qid=1474953244&sr=8-1&keywords=High+performance+browser+networking)  
 [Computer Systems: A Programmer's Perspective](https://www.amazon.com/Computer-Systems-Programmers-Perspective-3rd/dp/013409266X/ref=sr_1_1?ie=UTF8&qid=1474953535&sr=8-1&keywords=Computer+Systems%3A+A+Programmer%27s+Perspective)
+
+<!--
+1. 系统性能：企业与云
+2. web性能权威指南
+3. 深入理解计算机系统
+-->
+
 ##### Distributed Related
 [Programming Distributed Computing Systems: A Foundational Approach](https://www.amazon.com/Programming-Distributed-Computing-Systems-Foundational/dp/0262018985/ref=sr_1_7?s=books&ie=UTF8&qid=1539845327&sr=1-7&keywords=distributed+system)  
 [Distributed Systems: Concepts and Design (5th Edition)](https://www.amazon.com/Distributed-Systems-Concepts-Design-5th/dp/0132143011/ref=sr_1_6?s=books&ie=UTF8&qid=1539845327&sr=1-6&keywords=distributed+system)
 
+<!--
+1. 分布式计算系统编程：一种基本方法
+2. 分布式系统：概念与设计（第5版）
+-->
 
 > #### 原文
 
