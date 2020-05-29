@@ -111,6 +111,15 @@
 			}
 		},
 		{
+			"file": "source/_posts/dubbo-telnet自动化测试脚本.md",
+			"settings":
+			{
+				"buffer_size": 6775,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "source/_posts/ELK、Filebeat环境搭建.md",
 			"settings":
 			{
@@ -505,7 +514,7 @@
 	],
 	"find":
 	{
-		"height": 38.0
+		"height": 50.0
 	},
 	"find_in_files":
 	{
@@ -519,6 +528,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Dubbo",
 			"sj",
 			"dsj",
 			"traceid",
@@ -546,7 +556,7 @@
 	"groups":
 	[
 		{
-			"selected": 10,
+			"selected": 11,
 			"sheets":
 			[
 				{
@@ -568,6 +578,15 @@
 						],
 						"settings":
 						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 2008,
+								"modified": false,
+								"selection": false,
+								"status": -1,
+								"syntax": "plain text"
+							},
 							"origin_encoding": "UTF-8",
 							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
 							"tab_size": 4,
@@ -577,7 +596,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -608,7 +627,7 @@
 						"translation.y": 1018.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -637,7 +656,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -659,6 +678,15 @@
 						],
 						"settings":
 						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 68,
+								"modified": false,
+								"selection": false,
+								"status": -1,
+								"syntax": "plain text"
+							},
 							"origin_encoding": "UTF-8",
 							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
 							"tab_size": 2,
@@ -668,7 +696,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -699,7 +727,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -728,7 +756,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -759,7 +787,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -788,7 +816,7 @@
 						"translation.y": 885.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -817,7 +845,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -846,7 +874,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
@@ -884,17 +912,55 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "source/_posts/dubbo-telnet自动化测试脚本.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6775,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6335,
+								6335
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 107,
+								"count": 204,
+								"modified": false,
+								"selection": false,
+								"status": -1,
+								"syntax": "plain text"
+							},
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 3361.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"file": "source/_posts/filebeat、ELK环境搭建/one.jpg",
 					"semi_transient": true,
-					"stack_index": 18,
+					"stack_index": 19,
 					"type": "image"
 				},
 				{
-					"buffer": 11,
+					"buffer": 12,
 					"file": "source/_posts/ELK、Filebeat环境搭建.md",
 					"semi_transient": false,
 					"settings":
@@ -921,11 +987,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 13,
 					"file": "source/_posts/idea-debug断点失效.md",
 					"semi_transient": false,
 					"settings":
@@ -950,11 +1016,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 14,
 					"file": "source/categories/index.md",
 					"semi_transient": false,
 					"settings":
@@ -972,6 +1038,14 @@
 						],
 						"settings":
 						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "plain text"
+							},
 							"in_converting": true,
 							"origin_encoding": "GBK",
 							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
@@ -981,11 +1055,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 15,
 					"file": "source/tags/index.md",
 					"semi_transient": false,
 					"settings":
@@ -1010,11 +1084,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 16,
 					"file": "themes/next/layout/_third-party/comments/gitalk.swig",
 					"semi_transient": false,
 					"settings":
@@ -1041,11 +1115,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 17,
 					"file": "themes/next/source/css/_common/components/third-party/third-party.styl",
 					"semi_transient": false,
 					"settings":
@@ -1070,11 +1144,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 18,
 					"file": "themes/next/layout/_third-party/comments/gitment.swig",
 					"semi_transient": false,
 					"settings":
@@ -1110,7 +1184,7 @@
 						"translation.y": 206.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 18,
 					"type": "text"
 				}
 			]
@@ -1170,7 +1244,15 @@
 		[
 			[
 				"",
-				"source/_posts/java锁类型.md"
+				"source/_posts/dubbo-telnet自动化测试脚本.md"
+			],
+			[
+				"脚本",
+				"source/_posts/生成海量csv文件数据脚本.md"
+			],
+			[
+				"dubbo",
+				"source/_posts/dubbo-telnet自动化测试脚本.md"
 			],
 			[
 				"java",
@@ -1195,10 +1277,6 @@
 			[
 				"pu",
 				"技术笔记/git/pull_request.md"
-			],
-			[
-				"dubbo",
-				"技术笔记/dubbo/dubbo bug.md"
 			],
 			[
 				"git",
@@ -1327,10 +1405,6 @@
 			[
 				"工作计划",
 				"工作笔记/钱粒科技/工作计划.md"
-			],
-			[
-				"脚本",
-				"python/脚本/曹操业务处理脚本.py"
 			],
 			[
 				"虚拟号",
@@ -1500,7 +1574,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 461.0,
 	"status_bar_visible": true,
 	"template_settings":
