@@ -20,9 +20,12 @@ comments: false
 <br/>
 #### <center>*** 邮箱: diy_os@163.com  ***</center>
 <br/>
-#### <center>*** 2017年毕业于重庆邮电大学,现就职于杭州某公司,热爱技术。 ***</center>
+#### <center>*** 2017年毕业于重庆邮电大学,工作在杭州,后端程序员,热爱技术。 ***</center>
 <br/>
-<!-- ![https://note.youdao.com/yws/api/personal/file/WEB19a5523c45b5e5c374edc3b760128a0b?method=download&shareKey=043b87e09d23b8fc20a7ac356ba27ccf](https://note.youdao.com/yws/api/personal/file/WEB19a5523c45b5e5c374edc3b760128a0b?method=download&shareKey=043b87e09d23b8fc20a7ac356ba27ccf) -->
+
+<center>** 微信公众号 **</center>
+<center>![https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28](https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28)</center>
 <!-- #### 微信公众号 -->
-<!-- #### wechat
-![https://note.youdao.com/yws/api/personal/file/WEB7c594c5a343b10a8819b3fe6798b4aa7?method=download&shareKey=58a73be3d7c2fa42e49f2aa1ded2a800](https://note.youdao.com/yws/api/personal/file/WEB7c594c5a343b10a8819b3fe6798b4aa7?method=download&shareKey=58a73be3d7c2fa42e49f2aa1ded2a800)-->
+<!-- #### wechat -->
+<center>** 微信 **</center>
+<center>![https://note.youdao.com/yws/api/personal/file/WEB02a9b072cdc33cd8c498dcbd7d06b314?method=download&shareKey=8837fb5da5a7a388dec3d28462bae987](https://note.youdao.com/yws/api/personal/file/WEB02a9b072cdc33cd8c498dcbd7d06b314?method=download&shareKey=8837fb5da5a7a388dec3d28462bae987)</center>
