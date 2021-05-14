@@ -119,7 +119,7 @@
 <meta property="og:site_name" content="后端沉思录">
 <meta property="og:description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-05-14T02:41:24.000Z">
+<meta property="og:updated_time" content="2021-05-14T02:43:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="生产-消费模型实现实现">
 <meta name="twitter:description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
@@ -376,6 +376,10 @@
             
             
             
+            <i class="fa fa-thumb-tack"></i>
+            <font color="7D26CD">置顶</font>
+            <span class="post-meta-divider">|</span>
+          
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -388,7 +392,7 @@
                 
               
 
-              <time title="Created: 2021-05-14 10:15:26 / Modified: 10:41:24" itemprop="dateCreated datePublished" datetime="2021-05-14T10:15:26+08:00">2021-05-14</time>
+              <time title="Created: 2021-05-14 10:15:26 / Modified: 10:43:25" itemprop="dateCreated datePublished" datetime="2021-05-14T10:15:26+08:00">2021-05-14</time>
             
 
             
