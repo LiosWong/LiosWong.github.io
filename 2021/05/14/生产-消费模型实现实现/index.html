@@ -111,28 +111,25 @@
 
 
 
-  <meta name="description" content="最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程: ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&amp;quot;app.xml&amp;quot;); ClassPathXmlApplication">
-<meta name="keywords" content="java,spring,bean">
+  <meta name="description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
+<meta name="keywords" content="java,组件,生产-消费">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring源码之解析并注册BeanDefinition(一)">
-<meta property="og:url" content="http://yoursite.com/2019/02/16/Spring源码之解析并注册BeanDefinition-一/index.html">
+<meta property="og:title" content="生产-消费模型实现实现">
+<meta property="og:url" content="http://yoursite.com/2021/05/14/生产-消费模型实现实现/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程: ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&amp;quot;app.xml&amp;quot;); ClassPathXmlApplication">
+<meta property="og:description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB951df51be30c58c70a1d159bdfd9e037?method=download&shareKey=9fb6c37f10d34fb28acf1a1313a4cf8c">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB3e9cb9f135000bc7dacc228a2197389b?method=download&shareKey=9211e80a040a597bb89758af17de2f55">
-<meta property="og:updated_time" content="2019-09-07T15:55:05.000Z">
+<meta property="og:updated_time" content="2021-05-14T02:41:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring源码之解析并注册BeanDefinition(一)">
-<meta name="twitter:description" content="最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程: ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&amp;quot;app.xml&amp;quot;); ClassPathXmlApplication">
-<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB951df51be30c58c70a1d159bdfd9e037?method=download&shareKey=9fb6c37f10d34fb28acf1a1313a4cf8c">
+<meta name="twitter:title" content="生产-消费模型实现实现">
+<meta name="twitter:description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/16/Spring源码之解析并注册BeanDefinition-一/">
+  <link rel="canonical" href="http://yoursite.com/2021/05/14/生产-消费模型实现实现/">
 
 
 
@@ -142,7 +139,7 @@
   };
 </script>
 
-  <title>Spring源码之解析并注册BeanDefinition(一) | 后端沉思录</title>
+  <title>生产-消费模型实现实现 | 后端沉思录</title>
   
 
 
@@ -348,7 +345,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/Spring源码之解析并注册BeanDefinition-一/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/14/生产-消费模型实现实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiosWong">
@@ -365,7 +362,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring源码之解析并注册BeanDefinition(一)
+          <h1 class="post-title" itemprop="name headline">生产-消费模型实现实现
 
               
             
@@ -391,24 +388,12 @@
                 
               
 
-              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
+              <time title="Created: 2021-05-14 10:15:26 / Modified: 10:41:24" itemprop="dateCreated datePublished" datetime="2021-05-14T10:15:26+08:00">2021-05-14</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-09-07 23:55:05" itemprop="dateModified" datetime="2019-09-07T23:55:05+08:00">2019-09-07</time>
               
             
           </span>
@@ -425,7 +410,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
 
                 
                 
@@ -467,11 +452,164 @@
       
 
       
-        <p>最近有空把Spring加载bean流程复习了一下,也乘机可以做个整理.首先还是看下入口代码,本文主要讲解析及注册BeanDefinition整体加载流程:</p>
-<pre><code>ClassPathXmlApplicationContext resource = new ClassPathXmlApplicationContext(&quot;app.xml&quot;);
-</code></pre><p>ClassPathXmlApplicationContext的类图继承关系如下:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB951df51be30c58c70a1d159bdfd9e037?method=download&amp;shareKey=9fb6c37f10d34fb28acf1a1313a4cf8c" alt="https://note.youdao.com/yws/api/personal/file/WEB951df51be30c58c70a1d159bdfd9e037?method=download&amp;shareKey=9fb6c37f10d34fb28acf1a1313a4cf8c"><br>类图可以方便的清楚该类的继承关系,利于阅读源码.<br>一步步跟进去,AbstractApplicationContext中的refresh()方法,便是IOC容器初始化的入口,该方法中调用的obtainFreshBeanFactory()方法,是载入Bean定义的资源文件,该文是分析该类的调用流程,本文使用spring版本为==4.2.4.RELEASE==,obtainFreshBeanFactory()中调用了AbstractApplicationContext子类AbstractRefreshableApplicationContext#refreshBeanFactory中的refreshBeanFactory()方法,这是<br>委派设计模式,具体实现由子类做.下面是整个调用层次关系图:<br><img src="https://note.youdao.com/yws/api/personal/file/WEB3e9cb9f135000bc7dacc228a2197389b?method=download&amp;shareKey=9211e80a040a597bb89758af17de2f55" alt="https://note.youdao.com/yws/api/personal/file/WEB3e9cb9f135000bc7dacc228a2197389b?method=download&amp;shareKey=9211e80a040a597bb89758af17de2f55"><br>在DefaultListableBeanFactory类中的registerBeanDefinition方法内,注册了BeanDefinition信息:</p>
-<pre><code>this.beanDefinitionMap.put(beanName, beanDefinition);
-</code></pre><p>DefaultListableBeanFactory是Spring Bean加载中的核心类,现在不分析加载过程中细节,后面的章节会剖析.</p>
+        <p>最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型<br>抽成公共组件。</p>
+<h5 id="组件设计细节"><a href="#组件设计细节" class="headerlink" title="组件设计细节"></a>组件设计细节</h5><ul>
+<li>使用方自定义业务属性；</li>
+<li>使用方自定义写入阈值</li>
+<li>自定义线程池</li>
+<li>业务方实现具体消费接口</li>
+<li>程序退出最大保证任务不丢失(钩子函数)</li>
+</ul>
+<p>该组件实现具体功能可以概括为：任务不断的被放入阻塞队列中，线程池会不断轮训队列，当任务数达到阈值时，会批量实现具体业务需求，并在程序退出时，最大化保证任务不丢失。</p>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><p>阻塞队列集合：</p>
+<pre><code>public interface BlockQueue {
+
+    /**
+     * taskName : BlockingQueue
+     */
+    Map&lt;String, LinkedBlockingQueue&lt;QueueTask&gt;&gt; BLOCK_MSG_QUEUE_TASK_MAP = Maps.newConcurrentMap();
+
+}
+</code></pre><p>任务QueueTask：</p>
+<pre><code>public interface QueueTask{
+}
+
+</code></pre><p>消费接口，使用方实现：</p>
+<pre><code>public interface BlockQueueConsumer&lt;R&gt; {
+    void accept(R queueTasks);
+}
+</code></pre><p>任务添加、处理类：</p>
+<pre><code>@Slf4j
+public class QueueTaskExecutor {
+
+    private static final AtomicBoolean SHUTDOWN_HOOK_FLAG = new AtomicBoolean(true);
+
+    /**
+     * thread pool
+     */
+    private ExecutorService executorService;
+
+    /**
+     * max task count
+     */
+    private Integer maxElements;
+
+    /**
+     * consumer interface
+     */
+    private BlockQueueConsumer blockQueueConsumer;
+
+    /**
+     * task unique name
+     */
+    private String taskName;
+
+    @PostConstruct
+    private void init() {
+        // create block queue
+        BlockQueue.BLOCK_MSG_QUEUE_TASK_MAP.putIfAbsent(taskName, new LinkedBlockingQueue&lt;QueueTask&gt;());
+        // shutdown hook
+        addShutdownHook(executorService);
+        executorService.execute(() -&gt; {
+            while (true) {
+                try {
+                    if (SHUTDOWN_HOOK_FLAG.get()) {
+                        if (BlockQueue.BLOCK_MSG_QUEUE_TASK_MAP.get(taskName).size() &lt; maxElements) {
+                            Thread.sleep(100);
+                            continue;
+                        }
+                    } else { // task exit
+                        if (BlockQueue.BLOCK_MSG_QUEUE_TASK_MAP.get(taskName).size() &lt;= 0) {
+                            log.warn(&quot;QueueExecutor shutdown executing,but the BLOCK_MSG_QUEUE empty. The task exit now.&quot;);
+                            Thread.sleep(100);
+                            // double check
+                            if (BlockQueue.BLOCK_MSG_QUEUE_TASK_MAP.get(taskName).size() &lt;= 0) {
+                                return;
+                            }
+                        }
+                    }
+                    List&lt;QueueTask&gt; queueTasks = Lists.newArrayList();
+                    // get tasks in batch
+                    BlockQueue.BLOCK_MSG_QUEUE_TASK_MAP.get(taskName).drainTo(queueTasks, maxElements);
+                    if (CollectionUtils.isEmpty(queueTasks)) {
+                        log.warn(&quot;QueueExecutor BLOCK_MSG_QUEUE empty.&quot;);
+                        continue;
+                    }
+                    blockQueueConsumer.accept(queueTasks);
+                } catch (Exception e) {
+                    log.warn(&quot;QueueExecutor execute error.&quot;, e);
+                }
+            }
+        });
+    }
+
+    /**
+     * add task to Queue
+     *
+     * @param taskName unique task name
+     * @param t        element
+     * @param &lt;T&gt;
+     */
+    public static &lt;T extends QueueTask&gt; void add2Queue(String taskName, T t) {
+        LinkedBlockingQueue&lt;QueueTask&gt; blockingQueue = BlockQueue.BLOCK_MSG_QUEUE_TASK_MAP.get(taskName);
+        Assert.notNull(blockingQueue, &quot;QueueTaskExecutor blockingQueue taskName not exist！&quot;);
+        blockingQueue.add(t);
+    }
+
+    public static void addShutdownHook(ExecutorService executorService) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -&gt; {
+            try {
+                SHUTDOWN_HOOK_FLAG.set(false);
+                Shutdown.shutdown(executorService, 100);
+            } catch (Exception e) {
+                log.error(&quot;QueueTaskExecutor shutdown fail.&quot;, e);
+            }
+        }));
+    }
+
+    public QueueTaskExecutor setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
+        return this;
+    }
+
+    public QueueTaskExecutor setMaxElements(Integer maxElements) {
+        this.maxElements = maxElements;
+        return this;
+    }
+
+    public QueueTaskExecutor setBlockQueueConsumer(BlockQueueConsumer blockQueueConsumer) {
+        this.blockQueueConsumer = blockQueueConsumer;
+        return this;
+    }
+
+    public QueueTaskExecutor setTaskName(String taskName) {
+        this.taskName = taskName;
+        return this;
+    }
+
+}
+</code></pre><p>具体代码实现也不复杂，使用无界阻塞队列<code>LinkedBlockingQueue</code>，保证高并发下放任务、批量获取任务的线程安全，具体不作多述。</p>
+<h5 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h5><pre><code>@Configuration
+public class QueueTaskConfig {
+
+    @Value(&quot;${traceMsgBulkSize}&quot;)
+    private Integer traceMsgBulkSize;
+
+    @Bean
+    public QueueTaskExecutor queueTaskExecutor() {
+        return new QueueTaskExecutor()
+                .setBlockQueueConsumer(blockQueueConsumer())
+                .setExecutorService(ThreadPoolUtil.ES_BULK_EXECUTOR)
+                .setMaxElements(traceMsgBulkSize)
+                .setTaskName(DRIVER_TRACE_QUEUE_TASK_NAME);
+    }
+
+    @Bean(name = &quot;kafkaMsgBlockQueueConsumer&quot;)
+    public BlockQueueConsumer blockQueueConsumer() {
+        return new KafkaMsgBlockQueueConsumer();
+    }
+}
+</code></pre><p>业务上使用比较简单，也较为灵活，支持多业务的生产消费，使用方可指定具体的消费阈值，实现具体的业务需求。</p>
 
       
     </div>
@@ -484,38 +622,6 @@
 <div>
       
         
-<div class="my_post_copyright">
-  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
-
-  <!-- JS库 sweetalert 可修改路径 -->
-  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
-  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-
-  <p><span>本文标题:</span>Spring源码之解析并注册BeanDefinition(一)</p>
-  <p><span>文章作者:</span>LiosWong</p>
-  <p><span>发布时间:</span>2019年02月16日 - 01:42:16</p>
-  <p><span>最后更新:</span>2019年09月07日 - 23:55:05</p>
-  <p><span>原始链接:</span><a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" title="Spring源码之解析并注册BeanDefinition(一)">http://yoursite.com/2019/02/16/Spring源码之解析并注册BeanDefinition-一/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" aria-label="复制成功！"></i></span>
-  </p>
-  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
-</div>
-<script>
-    var clipboard = new Clipboard('.fa-clipboard');
-    clipboard.on('success', $(function(){
-      $(".fa-clipboard").click(function(){
-        swal({
-          title: "",
-          text: '复制成功',
-          html: false,
-          timer: 500,
-          showConfirmButton: false
-        });
-      });
-    }));
-</script>
-
 
       
 </div>
@@ -534,9 +640,9 @@
           
             <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
           
-            <a href="/tags/spring/" rel="tag"><i class="fa fa-tag"></i> spring</a>
+            <a href="/tags/组件/" rel="tag"><i class="fa fa-tag"></i> 组件</a>
           
-            <a href="/tags/bean/" rel="tag"><i class="fa fa-tag"></i> bean</a>
+            <a href="/tags/生产-消费/" rel="tag"><i class="fa fa-tag"></i> 生产-消费</a>
           
         </div>
       
@@ -549,8 +655,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/python初试/" rel="next" title="python初试">
-                <i class="fa fa-chevron-left"></i> python初试
+              <a href="/2020/08/27/Metaspace内存不足导致FGC问题排查/" rel="next" title="Metaspace内存不足导致FGC问题排查">
+                <i class="fa fa-chevron-left"></i> Metaspace内存不足导致FGC问题排查
               </a>
             
           </div>
@@ -558,10 +664,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/16/史上最全国家统计局划分代码爬取/" rel="prev" title="史上最全国家统计局划分代码爬取">
-                史上最全国家统计局划分代码爬取 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
