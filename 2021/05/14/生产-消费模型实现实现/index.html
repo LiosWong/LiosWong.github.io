@@ -111,18 +111,18 @@
 
 
 
-  <meta name="description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
+  <meta name="description" content="原来各个应用某些业务节点的日志通过filebeat+elk收集，供各个业务方使用，线上发现filebeat消耗非常大的硬件资源，而且应用集群较大，每次新增日志类型时需要新增filebeat配置并启动新的应用进程，较为繁琐和耗服务器资源；优化成通过kafka收集日志，consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该">
 <meta name="keywords" content="java,组件,生产-消费">
 <meta property="og:type" content="article">
 <meta property="og:title" content="生产-消费模型组件实现">
 <meta property="og:url" content="http://yoursite.com/2021/05/14/生产-消费模型实现实现/index.html">
 <meta property="og:site_name" content="后端沉思录">
-<meta property="og:description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
+<meta property="og:description" content="原来各个应用某些业务节点的日志通过filebeat+elk收集，供各个业务方使用，线上发现filebeat消耗非常大的硬件资源，而且应用集群较大，每次新增日志类型时需要新增filebeat配置并启动新的应用进程，较为繁琐和耗服务器资源；优化成通过kafka收集日志，consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-05-14T02:44:22.000Z">
+<meta property="og:updated_time" content="2021-05-14T03:01:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="生产-消费模型组件实现">
-<meta name="twitter:description" content="最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型抽成公共组件。 组件设计细节 使用方自定义业务属性； 使用方自定义写入阈值 自定义线程池 业务方实现具体消费接口 程序退出最大保证任务不丢失(钩子函数)  该组件实现具体功能可以概括为：任务不断的被放">
+<meta name="twitter:description" content="原来各个应用某些业务节点的日志通过filebeat+elk收集，供各个业务方使用，线上发现filebeat消耗非常大的硬件资源，而且应用集群较大，每次新增日志类型时需要新增filebeat配置并启动新的应用进程，较为繁琐和耗服务器资源；优化成通过kafka收集日志，consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该">
 
 
 
@@ -392,7 +392,7 @@
                 
               
 
-              <time title="Created: 2021-05-14 10:15:26 / Modified: 10:44:22" itemprop="dateCreated datePublished" datetime="2021-05-14T10:15:26+08:00">2021-05-14</time>
+              <time title="Created: 2021-05-14 10:15:26 / Modified: 11:01:10" itemprop="dateCreated datePublished" datetime="2021-05-14T10:15:26+08:00">2021-05-14</time>
             
 
             
@@ -456,7 +456,7 @@
       
 
       
-        <p>最近在做把各个应用某些业务节点的日志通过kafka consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型<br>抽成公共组件。</p>
+        <p>原来各个应用某些业务节点的日志通过<code>filebeat+elk</code>收集，供各个业务方使用，线上发现filebeat消耗非常大的硬件资源，而且应用集群较大，每次新增日志类型时需要新增filebeat配置并启动新的应用进程，较为繁琐和耗服务器资源；<br>优化成通过kafka收集日志，consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该生产-消费模型<br>抽成公共组件。</p>
 <h5 id="组件设计细节"><a href="#组件设计细节" class="headerlink" title="组件设计细节"></a>组件设计细节</h5><ul>
 <li>使用方自定义业务属性；</li>
 <li>使用方自定义写入阈值</li>
