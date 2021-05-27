@@ -119,7 +119,7 @@
 <meta property="og:site_name" content="后端沉思录">
 <meta property="og:description" content="原来各个应用某些业务节点的日志通过filebeat+elk收集，供各个业务方使用，线上发现filebeat消耗非常大的硬件资源，而且应用集群较大，每次新增日志类型时需要新增filebeat配置并启动新的应用进程，较为繁琐和耗服务器资源；优化成通过kafka收集日志，consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-05-14T03:06:39.000Z">
+<meta property="og:updated_time" content="2021-05-27T08:27:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="生产-消费模型组件实现">
 <meta name="twitter:description" content="原来各个应用某些业务节点的日志通过filebeat+elk收集，供各个业务方使用，线上发现filebeat消耗非常大的硬件资源，而且应用集群较大，每次新增日志类型时需要新增filebeat配置并启动新的应用进程，较为繁琐和耗服务器资源；优化成通过kafka收集日志，consumer消费并写入es，考虑到频繁的写入es会造成应用资源、网络开销的浪费，设计上为批量写入es。该应用场景比较通用，考虑把该">
@@ -392,12 +392,24 @@
                 
               
 
-              <time title="Created: 2021-05-14 10:15:26 / Modified: 11:06:39" itemprop="dateCreated datePublished" datetime="2021-05-14T10:15:26+08:00">2021-05-14</time>
+              <time title="Created: 2021-05-14 10:15:26" itemprop="dateCreated datePublished" datetime="2021-05-14T10:15:26+08:00">2021-05-14</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-05-27 16:27:02" itemprop="dateModified" datetime="2021-05-27T16:27:02+08:00">2021-05-27</time>
               
             
           </span>
@@ -460,8 +472,7 @@
 <h5 id="组件设计细节"><a href="#组件设计细节" class="headerlink" title="组件设计细节"></a>组件设计细节</h5><ul>
 <li>使用方自定义业务属性；</li>
 <li>使用方自定义写入阈值</li>
-<li>自定义线程池</li>
-<li>业务方实现具体消费接口</li>
+<li>业务方实现具体消费接口，建议使用线程池消费</li>
 <li>程序退出最大保证任务不丢失(钩子函数)</li>
 </ul>
 <p>本着易用、可扩展性原则，使用方不关心内部实现，只需要关心消费策略和业务实现即可。该组件实现具体功能可以概括为：任务不断的被放入阻塞队列中，线程池会不断轮训队列，当任务数达到阈值时，会批量实现具体业务需求，并在程序退出时，最大化保证任务不丢失。</p>
@@ -488,10 +499,7 @@ public class QueueTaskExecutor {
 
     private static final AtomicBoolean SHUTDOWN_HOOK_FLAG = new AtomicBoolean(true);
 
-    /**
-     * thread pool
-     */
-    private ExecutorService executorService;
+    private static final ExecutorService QUEUE_TASK_EXECUTOR = Executors.newSingleThreadExecutor();
 
     /**
      * max task count
@@ -513,8 +521,8 @@ public class QueueTaskExecutor {
         // create block queue
         BlockQueue.BLOCK_MSG_QUEUE_TASK_MAP.putIfAbsent(taskName, new LinkedBlockingQueue&lt;QueueTask&gt;());
         // shutdown hook
-        addShutdownHook(executorService);
-        executorService.execute(() -&gt; {
+        addShutdownHook(QUEUE_TASK_EXECUTOR);
+        QUEUE_TASK_EXECUTOR.execute(() -&gt; {
             while (true) {
                 try {
                     if (SHUTDOWN_HOOK_FLAG.get()) {
@@ -571,11 +579,6 @@ public class QueueTaskExecutor {
         }));
     }
 
-    public QueueTaskExecutor setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
-        return this;
-    }
-
     public QueueTaskExecutor setMaxElements(Integer maxElements) {
         this.maxElements = maxElements;
         return this;
@@ -603,14 +606,54 @@ public class QueueTaskConfig {
     public QueueTaskExecutor queueTaskExecutor() {
         return new QueueTaskExecutor()
                 .setBlockQueueConsumer(blockQueueConsumer())
-                .setExecutorService(ThreadPoolUtil.ES_BULK_EXECUTOR)
                 .setMaxElements(traceMsgBulkSize)
-                .setTaskName(DRIVER_TRACE_QUEUE_TASK_NAME);
+                .setTaskName(XXXX_QUEUE_TASK_NAME);
     }
 
     @Bean(name = &quot;kafkaMsgBlockQueueConsumer&quot;)
     public BlockQueueConsumer blockQueueConsumer() {
         return new KafkaMsgBlockQueueConsumer();
+    }
+}
+</code></pre><p>BlockQueueConsumer实现类：</p>
+<pre><code>public class XXXXBlockQueueConsumer implements BlockQueueConsumer&lt;List&lt;EsMsgDto&gt;&gt; {
+
+    private Client client;
+
+    public XXXXBlockQueueConsumer(Client client) {
+        this.client = client;
+    }
+
+
+    @Override
+    public void accept(List&lt;EsMsgDto&gt; task) {
+        // 线程池处理消费
+        ES_EXECUTOR.execute(() -&gt; {
+            writer2Es(task.getT());
+        });
+    }
+
+    private void writer2Es(List&lt;EsMsgDto&gt; queueTasks) {
+        // 构建BulkRequest
+        BulkRequest bulkRequest = new BulkRequest();
+        Option.of(queueTasks)
+                .getOrElse(ArrayList::new)
+                .stream()
+                .map(EsCommand::buildIndexRequest)
+                .collect(Collectors.toList())
+                .forEach(bulkRequest::add);
+        // 批量写入es
+        EsCommand.addBulk(client, bulkRequest, new ActionListener&lt;BulkResponse&gt;() {
+            @Override
+            public void onResponse(BulkResponse bulkItemResponses) {
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                log.error(&quot;XXXXBlockQueueConsumer bulk onFailure.&quot;, e);
+            }
+        });
     }
 }
 </code></pre><p>业务上使用比较简单，也较为灵活，支持多业务的生产消费，使用方可指定具体的消费阈值，实现具体的业务需求。</p>
