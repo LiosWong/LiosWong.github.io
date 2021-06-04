@@ -176,8 +176,7 @@
   </style>
 </noscript>
 
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
@@ -344,6 +343,191 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/17/mysql毫秒数丢失问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong">
+      <meta itemprop="description" content="Less is more">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/10/17/mysql毫秒数丢失问题/" class="post-title-link" itemprop="url">mysql毫秒数丢失问题</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-10-17 11:10:07" itemprop="dateCreated datePublished" datetime="2019-10-17T11:10:07+08:00">2019-10-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-06-03 16:06:00" itemprop="dateModified" datetime="2021-06-03T16:06:00+08:00">2021-06-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              开发过程中,前端传入时间’2019-10-10 23:59:59.600’入库后变成’2019-10-11 00:00:00’,通过查询网上资料可知,mysql在5.6.4之前是不保存毫秒数的,在5.6.4之后的版本中毫秒数在低于500的时候会舍弃掉,大于等于500会进位,类似四舍五入.通过查当前的
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/10/17/mysql毫秒数丢失问题/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/15/arthas简单使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -389,12 +573,24 @@
                 
               
 
-              <time title="Created: 2019-10-15 15:29:00 / Modified: 15:41:58" itemprop="dateCreated datePublished" datetime="2019-10-15T15:29:00+08:00">2019-10-15</time>
+              <time title="Created: 2019-10-15 15:29:00" itemprop="dateCreated datePublished" datetime="2019-10-15T15:29:00+08:00">2019-10-15</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-06-03 16:06:00" itemprop="dateModified" datetime="2021-06-03T16:06:00+08:00">2021-06-03</time>
               
             
           </span>
@@ -582,7 +778,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-10-30 15:57:11" itemprop="dateModified" datetime="2019-10-30T15:57:11+08:00">2019-10-30</time>
+                <time title="Modified: 2021-06-03 16:06:00" itemprop="dateModified" datetime="2021-06-03T16:06:00+08:00">2021-06-03</time>
               
             
           </span>
@@ -767,7 +963,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-30 09:31:53" itemprop="dateModified" datetime="2019-09-30T09:31:53+08:00">2019-09-30</time>
+                <time title="Modified: 2021-06-03 16:06:00" itemprop="dateModified" datetime="2021-06-03T16:06:00+08:00">2021-06-03</time>
               
             
           </span>
@@ -952,7 +1148,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-23 19:39:40" itemprop="dateModified" datetime="2019-09-23T19:39:40+08:00">2019-09-23</time>
+                <time title="Modified: 2021-06-03 16:06:00" itemprop="dateModified" datetime="2021-06-03T16:06:00+08:00">2021-06-03</time>
               
             
           </span>
@@ -1120,12 +1316,24 @@
                 
               
 
-              <time title="Created: 2019-09-10 20:28:24 / Modified: 20:33:12" itemprop="dateCreated datePublished" datetime="2019-09-10T20:28:24+08:00">2019-09-10</time>
+              <time title="Created: 2019-09-10 20:28:24" itemprop="dateCreated datePublished" datetime="2019-09-10T20:28:24+08:00">2019-09-10</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-06-03 16:06:01" itemprop="dateModified" datetime="2021-06-03T16:06:01+08:00">2021-06-03</time>
               
             
           </span>
@@ -1298,12 +1506,24 @@ public enum OrderStatusEnum {
                 
               
 
-              <time title="Created: 2019-09-07 23:43:20 / Modified: 23:52:03" itemprop="dateCreated datePublished" datetime="2019-09-07T23:43:20+08:00">2019-09-07</time>
+              <time title="Created: 2019-09-07 23:43:20" itemprop="dateCreated datePublished" datetime="2019-09-07T23:43:20+08:00">2019-09-07</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-06-03 16:06:01" itemprop="dateModified" datetime="2021-06-03T16:06:01+08:00">2021-06-03</time>
               
             
           </span>
@@ -1491,7 +1711,7 @@ public enum OrderStatusEnum {
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-07 23:49:21" itemprop="dateModified" datetime="2019-09-07T23:49:21+08:00">2019-09-07</time>
+                <time title="Modified: 2021-06-03 16:06:01" itemprop="dateModified" datetime="2021-06-03T16:06:01+08:00">2021-06-03</time>
               
             
           </span>
@@ -1664,12 +1884,24 @@ Error response from daemon: conflict:
                 
               
 
-              <time title="Created: 2019-09-02 19:39:28 / Modified: 19:40:25" itemprop="dateCreated datePublished" datetime="2019-09-02T19:39:28+08:00">2019-09-02</time>
+              <time title="Created: 2019-09-02 19:39:28" itemprop="dateCreated datePublished" datetime="2019-09-02T19:39:28+08:00">2019-09-02</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-06-03 16:06:00" itemprop="dateModified" datetime="2021-06-03T16:06:00+08:00">2021-06-03</time>
               
             
           </span>
@@ -1840,12 +2072,24 @@ flatMap: 如果一个值存在，应
                 
               
 
-              <time title="Created: 2019-09-01 23:07:54 / Modified: 23:13:11" itemprop="dateCreated datePublished" datetime="2019-09-01T23:07:54+08:00">2019-09-01</time>
+              <time title="Created: 2019-09-01 23:07:54" itemprop="dateCreated datePublished" datetime="2019-09-01T23:07:54+08:00">2019-09-01</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-06-03 16:06:00" itemprop="dateModified" datetime="2021-06-03T16:06:00+08:00">2021-06-03</time>
               
             
           </span>
@@ -1911,194 +2155,6 @@ flatMap: 如果一个值存在，应
           
             <div class="post-button text-center">
               <a class="btn" href="/2019/09/01/Vavr学习/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-<div>
-      
-</div>
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/01/Elasticsearch-API简单使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LiosWong">
-      <meta itemprop="description" content="Less is more">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="后端沉思录">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/01/Elasticsearch-API简单使用/" class="post-title-link" itemprop="url">Elasticsearch API简单使用</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-            
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-09-01 16:38:57" itemprop="dateCreated datePublished" datetime="2019-09-01T16:38:57+08:00">2019-09-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-11-13 13:42:19" itemprop="dateModified" datetime="2019-11-13T13:42:19+08:00">2019-11-13</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/elk/" itemprop="url" rel="index"><span itemprop="name">elk</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              笔者喜欢做一些小工具，给PM或者组内同学使用，不仅仅可以提高工作效率，而且也可以学一些前端方面的知识。之前使用Elasticsearch API做过管理后台的小工具，一直没有总结，最近给PM哥们又做了一个小工具，而且也使用到了Elasticsearch API，正好做个简单分享。
-
-需求
-PM最近经
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/01/Elasticsearch-API简单使用/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
