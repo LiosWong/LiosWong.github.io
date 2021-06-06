@@ -568,8 +568,8 @@ for i in f.readlines():
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/简话bean加载/" rel="next" title="简话bean加载">
-                <i class="fa fa-chevron-left"></i> 简话bean加载
+              <a href="/2019/02/16/javaConfig整合spring、redis/" rel="next" title="javaConfig整合spring、redis">
+                <i class="fa fa-chevron-left"></i> javaConfig整合spring、redis
               </a>
             
           </div>
@@ -578,8 +578,8 @@ for i in f.readlines():
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/回调函数/" rel="prev" title="回调函数">
-                回调函数 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/ThreadLocal/" rel="prev" title="ThreadLocal">
+                ThreadLocal <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -601,6 +601,13 @@ for i in f.readlines():
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -725,6 +732,45 @@ for i in f.readlines():
 
   
 
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<style>
+#gitment-container a {
+  border-bottom: none;
+}
+
+</style>
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'LiosWong',
+      repo: 'gitment',
+      
+      oauth: {
+      
+      
+        client_secret: '685337239b8cc8aeec7547ad7ec072e12a2fb8a4',
+      
+        client_id: '5e4dcd138a2d76c2fc53'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
 
   
 

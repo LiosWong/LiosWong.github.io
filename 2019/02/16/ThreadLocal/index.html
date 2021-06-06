@@ -632,8 +632,8 @@ if (m != null)
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/springboot、redis整合/" rel="next" title="springboot、redis整合">
-                <i class="fa fa-chevron-left"></i> springboot、redis整合
+              <a href="/2019/02/16/python初试/" rel="next" title="python初试">
+                <i class="fa fa-chevron-left"></i> python初试
               </a>
             
           </div>
@@ -665,6 +665,13 @@ if (m != null)
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -789,6 +796,45 @@ if (m != null)
 
   
 
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<style>
+#gitment-container a {
+  border-bottom: none;
+}
+
+</style>
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'LiosWong',
+      repo: 'gitment',
+      
+      oauth: {
+      
+      
+        client_secret: '685337239b8cc8aeec7547ad7ec072e12a2fb8a4',
+      
+        client_id: '5e4dcd138a2d76c2fc53'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
 
   
 

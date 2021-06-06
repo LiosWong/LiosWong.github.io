@@ -657,8 +657,8 @@ for item in townList:
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/16/bean懒加载/" rel="next" title="bean懒加载">
-                <i class="fa fa-chevron-left"></i> bean懒加载
+              <a href="/2019/02/16/Spring源码之解析并注册BeanDefinition-一/" rel="next" title="Spring源码之解析并注册BeanDefinition(一)">
+                <i class="fa fa-chevron-left"></i> Spring源码之解析并注册BeanDefinition(一)
               </a>
             
           </div>
@@ -667,8 +667,8 @@ for item in townList:
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/16/javaConfig整合spring、redis/" rel="prev" title="javaConfig整合spring、redis">
-                javaConfig整合spring、redis <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/16/interface注入及报错分析/" rel="prev" title="interface注入及报错分析">
+                interface注入及报错分析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -690,6 +690,13 @@ for item in townList:
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -814,6 +821,45 @@ for item in townList:
 
   
 
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<style>
+#gitment-container a {
+  border-bottom: none;
+}
+
+</style>
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'LiosWong',
+      repo: 'gitment',
+      
+      oauth: {
+      
+      
+        client_secret: '685337239b8cc8aeec7547ad7ec072e12a2fb8a4',
+      
+        client_id: '5e4dcd138a2d76c2fc53'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
 
   
 
