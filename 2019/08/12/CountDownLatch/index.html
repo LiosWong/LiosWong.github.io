@@ -662,13 +662,9 @@ long getCount()
           
 
   
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
+    <div class="comments" id="gitalk-container">
     </div>
 
-  
 
         </div>
         
@@ -793,43 +789,23 @@ long getCount()
 
 
   
-    <!-- LOCAL: You can save these files to your site and update links -->
+    
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 
-  
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '64045b5fb4d2bdbcba96',
+          clientSecret: '972fdd3477bea45d24f5ccc7f9dd87ea5e7b1059',
+          repo: 'gitalks',
+          owner: 'LiosWong',
+          admin: ['LiosWong'],
+          id: decodeURI(location.pathname),
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')
+       </script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
-<!-- END LOCAL -->
-
-<style>
-#gitment-container a {
-  border-bottom: none;
-}
-
-</style>
-
-<script>
-  function renderGitment() {
-    var gitment = new Gitment({
-      id: window.location.pathname,
-      owner: 'LiosWong',
-      repo: 'LiosWong/gitments',
-      
-      oauth: {
-      
-      
-        client_secret: '972fdd3477bea45d24f5ccc7f9dd87ea5e7b1059',
-      
-        client_id: '64045b5fb4d2bdbcba96'
-      }
-    });
-    gitment.render('gitment-container');
-  }
-
-  
-    renderGitment();
-  
-</script>
 
   
 
