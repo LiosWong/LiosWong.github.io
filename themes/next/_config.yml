@@ -560,9 +560,9 @@ gitment:
   cleanly: false # Hide 'Powered by ...' on footer, and more
   language: # Force language, or auto switch by theme
   github_user: LiosWong # MUST HAVE, Your Github Username
-  github_repo: gitment # MUST HAVE, The name of the repo you use to store Gitment comments
-  client_id: Iv1.654bd99c40fa6ec2 # MUST HAVE, Github client id for the Gitment
-  client_secret: f70215a48e5fd599ca81af86692ecd01e05f8960 # EITHER this or proxy_gateway, Github access secret token for the Gitment
+  github_repo: LiosWong/gitments # MUST HAVE, The name of the repo you use to store Gitment comments
+  client_id: 64045b5fb4d2bdbcba96 # MUST HAVE, Github client id for the Gitment
+  client_secret: 972fdd3477bea45d24f5ccc7f9dd87ea5e7b1059 # EITHER this or proxy_gateway, Github access secret token for the Gitment
   proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect
   redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled
 
@@ -572,9 +572,9 @@ gitment:
 gitalk:
   enable: false
   github_id: LiosWong # Github repo owner
-  repo: gitalk # Repository name to store issues.
-  client_id: 790486f22333c5a00f74 # Github Application Client ID
-  client_secret: 3fc0b329f2e8515590461cdb37fc9212f4d6a9c3 # Github Application Client Secret
+  repo: gitalks # Repository name to store issues.
+  client_id: 64045b5fb4d2bdbcba96 # Github Application Client ID
+  client_secret: 972fdd3477bea45d24f5ccc7f9dd87ea5e7b1059 # Github Application Client Secret
   admin_user: LiosWong # GitHub repo owner and collaborators, only these guys can initialize github issues
   distraction_free_mode: true # Facebook-like distraction free mode
 # gitalk:

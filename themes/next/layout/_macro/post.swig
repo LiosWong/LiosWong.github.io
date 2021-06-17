@@ -460,6 +460,13 @@
         <div class="post-eof"></div>
       {% endif %}
     </footer>
+
+
+<!-- Insert google ad blocks -->
+        {% include '../_custom/google_adsense.swig' %}
+
+
+
   </div>
   {######################}
   {### END POST BLOCK ###}
