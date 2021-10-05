@@ -462,9 +462,6 @@
     </footer>
 
 
-<!-- Insert google ad blocks -->
-        {% include '../_custom/google_adsense.swig' %}
-
 
 
   </div>
