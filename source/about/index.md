@@ -33,5 +33,3 @@ comments: false
 #### 微信
 <!-- <center>** WeChat Official Accounts  **</center> -->
 <center>![https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28](https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28)</center>
-
-"批量处理工具类"

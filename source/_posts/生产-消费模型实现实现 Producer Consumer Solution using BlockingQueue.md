@@ -183,17 +183,6 @@ public class QueueTaskExecutor {
 }
 ```
 具体代码实现也不复杂，有个细节的点，可能队列中任务一直没达到阈值，会导致任务一直驻留在队列中，所以在设计时，考虑到了不能让任务一直驻留，所以设计了超过驻留最大时间，会自动执行任务。使用无界阻塞队列``LinkedBlockingQueue``，保证高并发下放任务、批量获取任务的线程安全，具体不作多述。
-```
-阻塞队列：
-public interface BlockQueue {
-
-    /**
-     * taskName : BlockingQueue
-     */
-    Map<String, LinkedBlockingQueue<QueueTask>> BLOCK_MSG_QUEUE_TASK_MAP = Maps.newConcurrentMap();
-
-}
-```
 
 ##### 使用
 
