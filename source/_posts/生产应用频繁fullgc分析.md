@@ -1,6 +1,6 @@
 ---
 title: 生产应用频繁fullgc分析
-date: 2021-10-14 22:54:00
+date: 2021-06-14 22:54:00
 tags:
 - java
 - jvm
