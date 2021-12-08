@@ -4,7 +4,7 @@ date: 2019-02-15 20:26:12
 type: about
 comments: false
 --- -->
-```
+<!-- ```
 {
     "名字":"LiosWong",
     "大学":"重庆邮电大学",
@@ -15,12 +15,12 @@ comments: false
     "邮箱":"diy_os@163.com"
     "技术博客":"http://blog.csdn.net/bat_os"
 }
-```
-<!-- ### <center>*** 路漫漫其修远兮 吾将上下而求索 ***</center>
+``` -->
+### <center>*** 路漫漫其修远兮 吾将上下而求索 ***</center>
  -->
-<!-- <br/> -->
-<!-- #### <center>*** email: diy_os@163.com  ***</center> -->
-<!-- <br/>
+<br/>
+#### <center>*** email: diy_os@163.com  ***</center> -->
+<br/>
 #### <center>*** Graduated from Chongqing University of Posts and Telecommunications in 2017, working in Hangzhou. ***</center>
 <br/> -->
 
