@@ -18,18 +18,19 @@ comments: false
 ``` -->
 ### <center>*** 路漫漫其修远兮 吾将上下而求索 ***</center>
  <!-- --> 
+ <br/>
+ #### <center>*** 后端开发程序员，有想法靠谱代码搬运工 ***</center> 
 <br/>
-#### <center>*** email: diy_os@163.com  ***</center> -->
-<br/>
-#### <center>*** Graduated from Chongqing University of Posts and Telecommunications in 2017, working in Hangzhou. ***</center>
+#### <center>*** 毕业于重庆邮电大学，现生活在杭州 ***</center>
 <br/> 
+#### <center>*** email: diy_os@163.com  ***</center>
 
-#### 技术公众号
+<!-- #### 技术公众号 -->
 <!-- #### wechat -->
 <!-- <center>** WeChat **</center>-->
 
-<center>![https://note.youdao.com/yws/api/personal/file/WEB02a9b072cdc33cd8c498dcbd7d06b314?method=download&shareKey=8837fb5da5a7a388dec3d28462bae987](https://note.youdao.com/yws/api/personal/file/WEB02a9b072cdc33cd8c498dcbd7d06b314?method=download&shareKey=8837fb5da5a7a388dec3d28462bae987)</center> 
+<!-- <center>![https://note.youdao.com/yws/api/personal/file/WEB02a9b072cdc33cd8c498dcbd7d06b314?method=download&shareKey=8837fb5da5a7a388dec3d28462bae987](https://note.youdao.com/yws/api/personal/file/WEB02a9b072cdc33cd8c498dcbd7d06b314?method=download&shareKey=8837fb5da5a7a388dec3d28462bae987)</center>  -->
 
-#### 微信
+<!-- #### 微信 -->
 <!-- <center>** WeChat Official Accounts  **</center> -->
-<center>![https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28](https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28)</center>
+<!-- <center>![https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28](https://note.youdao.com/yws/api/personal/file/WEB33a5671f67776f10dd606606d47ce9dc?method=download&shareKey=23b54c7e01ea78d238a321b552e34c28)</center> -->
