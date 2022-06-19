@@ -92,3 +92,6 @@ search:
     format: html
     limit: 10000
 # 测试
+
+tag_plantuml: 
+	type: static
