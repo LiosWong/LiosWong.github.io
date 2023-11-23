@@ -6961,8 +6961,8 @@ public class ReferenceCountingGC &#123;
         <tag>spring</tag>
         <tag>springmvc</tag>
         <tag>mysql</tag>
-        <tag>zookeeper</tag>
         <tag>mybatis</tag>
+        <tag>zookeeper</tag>
         <tag>springboot</tag>
         <tag>springcloud</tag>
         <tag>tomcat</tag>
@@ -10621,8 +10621,8 @@ public class SalesPerson &#123;
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>并行任务</tag>
         <tag>多线程</tag>
+        <tag>并行任务</tag>
       </tags>
   </entry>
   <entry>
