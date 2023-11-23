@@ -580,6 +580,76 @@ public class DelayQueueConfig &#123;
       </tags>
   </entry>
   <entry>
+    <title>强弱依赖&amp;监控&amp;预案&amp;演练</title>
+    <url>/2023/11/23/%E5%BC%BA%E5%BC%B1%E4%BE%9D%E8%B5%96-%E7%9B%91%E6%8E%A7-%E9%A2%84%E6%A1%88-%E6%BC%94%E7%BB%83/</url>
+    <content><![CDATA[<p>#SRE</p>
+<ul>
+<li style="list-style: none"><input type="checkbox"></input> 链路梳理<ul>
+<li style="list-style: none"><input type="checkbox"></input> 工具(在线化)</li>
+</ul>
+</li>
+<li style="list-style: none"><input type="checkbox"></input> 强弱依赖<ul>
+<li style="list-style: none"><input type="checkbox"></input> 强依赖<ul>
+<li style="list-style: none"><input type="checkbox"></input> 容灾</li>
+<li style="list-style: none"><input type="checkbox"></input> 业务布控</li>
+</ul>
+</li>
+<li style="list-style: none"><input type="checkbox"></input> 弱依赖<ul>
+<li style="list-style: none"><input type="checkbox"></input> 自动降级</li>
+<li style="list-style: none"><input type="checkbox"></input> 预案</li>
+</ul>
+</li>
+</ul>
+</li>
+<li style="list-style: none"><input type="checkbox"></input> 监控&amp;预案<ul>
+<li style="list-style: none"><input type="checkbox"></input> 监控<ul>
+<li style="list-style: none"><input type="checkbox"></input> 分类<ul>
+<li style="list-style: none"><input type="checkbox"></input> 系统监控</li>
+<li style="list-style: none"><input type="checkbox"></input> 业务监控 (对业务量监控, 例如正常的搜索为空, 可能代码改造, 导致bug, 告不出来)</li>
+</ul>
+</li>
+<li style="list-style: none"><input type="checkbox"></input> 监控指标<ul>
+<li style="list-style: none"><input type="checkbox"></input> 总量</li>
+<li style="list-style: none"><input type="checkbox"></input> 成功率</li>
+<li style="list-style: none"><input type="checkbox"></input> rt</li>
+<li style="list-style: none"><input type="checkbox"></input> 单机、集群 (避免单机抖动误告) 例如单机5分钟成功率持续小于xxx; 集群 10%的机器2分钟持续成功率小于xxx</li>
+</ul>
+</li>
+</ul>
+</li>
+<li style="list-style: none"><input type="checkbox"></input> 预案<ul>
+<li style="list-style: none"><input type="checkbox"></input> 五要素<ul>
+<li style="list-style: none"><input type="checkbox"></input> 执行时机</li>
+<li style="list-style: none"><input type="checkbox"></input> 执行动作</li>
+<li style="list-style: none"><input type="checkbox"></input> 执行影响</li>
+<li style="list-style: none"><input type="checkbox"></input> 恢复时机</li>
+<li style="list-style: none"><input type="checkbox"></input> 客服口径</li>
+</ul>
+</li>
+<li style="list-style: none"><input type="checkbox"></input> 保鲜</li>
+</ul>
+</li>
+<li style="list-style: none"><input type="checkbox"></input> 演练<ul>
+<li style="list-style: none"><input type="checkbox"></input> 破坏</li>
+<li style="list-style: none"><input type="checkbox"></input> 验证</li>
+<li style="list-style: none"><input type="checkbox"></input> 恢复</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>SRE</category>
+      </categories>
+      <tags>
+        <tag>强弱依赖</tag>
+        <tag>监控</tag>
+        <tag>预案</tag>
+        <tag>演练</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Elasticsearch API简单使用</title>
     <url>/2023/11/23/Elasticsearch-API%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>笔者喜欢做一些小工具，给PM或者组内同学使用，不仅仅可以提高工作效率，而且也可以学一些前端方面的知识。之前使用Elasticsearch API做过管理后台的小工具，一直没有总结，最近给PM哥们又做了一个小工具，而且也使用到了Elasticsearch API，正好做个简单分享。</p>
