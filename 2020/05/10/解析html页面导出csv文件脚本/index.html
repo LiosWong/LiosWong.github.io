@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="某些时候，需要从前端页面中批量获取数据，但是没有导出功能，可以通过脚本的方式处理即可。下面是一种情况，后端接口返回了html文件，但是该页面并不支持表格导出功能，如果需要获取数据，需要解析该html文件。根据实际情况灵活处理。 #!&#x2F;usr&#x2F;bin&#x2F;python # -*- coding:utf-8 -*- import json import logging import math import">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解析html页面导出csv文件脚本">
+<meta property="og:url" content="http://yoursite.com/2020/05/10/%E8%A7%A3%E6%9E%90html%E9%A1%B5%E9%9D%A2%E5%AF%BC%E5%87%BAcsv%E6%96%87%E4%BB%B6%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="某些时候，需要从前端页面中批量获取数据，但是没有导出功能，可以通过脚本的方式处理即可。下面是一种情况，后端接口返回了html文件，但是该页面并不支持表格导出功能，如果需要获取数据，需要解析该html文件。根据实际情况灵活处理。 #!&#x2F;usr&#x2F;bin&#x2F;python # -*- coding:utf-8 -*- import json import logging import math import">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-05-10T15:07:21.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:30.141Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="html">
+<meta property="article:tag" content="csv">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/10/解析html页面导出csv文件脚本/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>解析html页面导出csv文件脚本 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/10/%E8%A7%A3%E6%9E%90html%E9%A1%B5%E9%9D%A2%E5%AF%BC%E5%87%BAcsv%E6%96%87%E4%BB%B6%E8%84%9A%E6%9C%AC/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">解析html页面导出csv文件脚本
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-05-10 23:07:21" itemprop="dateCreated datePublished" datetime="2020-05-10T23:07:21+08:00">2020-05-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:30" itemprop="dateModified" datetime="2023-11-23T21:01:30+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/useful-scripts/" itemprop="url" rel="index"><span itemprop="name">useful-scripts</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>某些时候，需要从前端页面中批量获取数据，但是没有导出功能，可以通过脚本的方式处理即可。下面是一种情况，后端接口返回了html文件，但是该页面并不支持表格导出功能，如果需要获取数据，需要解析该html文件。根据实际情况灵活处理。</p>
+<pre><code>#!/usr/bin/python
+# -*- coding:utf-8 -*-
+import json
+import logging
+import math
+import time
+import re
+import requests
+import sys
+import csv
+from lxml import etree
+
+
+def exec(csrf_token, sql_content, dbase, dbconfig):
+    headers = &#123;
+        &quot;cookie&quot;: &quot;U8c4-4c6d-8ddd-e66171c338b6; remember_token=300|a7ec4cfa4d27ad8cc523de4a2e0aaf389c4995a1df6&quot;,
+        &quot;user-agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&quot;,
+    &#125;
+
+    url = &quot;https://10.32.48.102/query/mysql&quot;
+
+    data = &#123;&#39;csrf_token&#39;: csrf_token, &#39;sql_content&#39;: sql_content,
+            &#39;dbase&#39;: dbase, &#39;dbconfig&#39;: dbconfig&#125;
+
+    re = requests.post(url, data=data, headers=headers)
+
+    # 深坑,可能td节点数据为空,需要特殊处理
+    new_text = re.text.replace(r&#39;&lt;td style=&quot;white-space: pre-wrap;&quot;&gt;&lt;/td&gt;&#39;,
+                               &#39;&lt;td style=&quot;white-space: pre-wrap;&quot;&gt;None&lt;/td&gt;&#39;)
+    html = etree.HTML(new_text)
+
+    thead = html.xpath(&quot;//div[@class=&#39;x_content sql_result&#39;]/table/thead&quot;)[0]
+
+    th = thead.xpath(&quot;//tr/th/text()&quot;)
+
+    filterStr = [&#39;数据库信息&#39;, &#39;名称&#39;, &#39;内容预览&#39;, &#39;是否开放&#39;, &#39;备注&#39;, &#39;操作&#39;]
+    fileHeader = []
+
+    for x in th:
+        if x not in filterStr:
+            fileHeader.append(x)
+        pass
+    writerToCSV(fileHeader, html)
+
+def writerToCSV(fileHeader, html):
+    csvFile = open(
+        &quot;/Users/lioswong/LiosWong/sublimetext/python/脚本/draft/cc_sql_to_file.csv&quot;, &quot;w&quot;, encoding=&#39;utf-8-sig&#39;)
+    writer = csv.writer(csvFile)
+    writer.writerow(fileHeader)
+
+    hLen = len(fileHeader)
+    tdData = html.xpath(
+        &quot;//div[@class=&#39;x_content sql_result&#39;]/table/tbody/tr/td/text()&quot;)
+    col = 0
+    d1 = []
+    for i in tdData:
+        if col == 0:
+            d1 = [0 for i in range(hLen)]
+        if col + 1 == hLen:
+            d1[col] = i
+            writer.writerow(d1)
+            col = 0
+            pass
+        else:
+            d1[col] = i
+            col += 1
+    csvFile.close()
+
+exec(&#39;52afaftqywtqsga.EZf8Gw.UF4MSicxUuqJUKjhZ0ORBNMDSF8&#39;,
+     &#39;SELECT phone from test_info where status=12 and type=1 order by id desc limit 100;&#39;,  &#39;test_center&#39;, &#39;生产主库只读&#39;)
+</code></pre>
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>解析html页面导出csv文件脚本</a></p>
+  <p><span>文章作者:</span></a></p>
+  <p><span>发布时间:</span>2020年05月10日 - 23:07:21</p>
+  <p><span>最后更新:</span>2023年11月23日 - 21:01:30</p>
+  <p><span>原始链接:</span><a href="/2020/05/10/%E8%A7%A3%E6%9E%90html%E9%A1%B5%E9%9D%A2%E5%AF%BC%E5%87%BAcsv%E6%96%87%E4%BB%B6%E8%84%9A%E6%9C%AC/" title="解析html页面导出csv文件脚本">http://yoursite.com/2020/05/10/%E8%A7%A3%E6%9E%90html%E9%A1%B5%E9%9D%A2%E5%AF%BC%E5%87%BAcsv%E6%96%87%E4%BB%B6%E8%84%9A%E6%9C%AC/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/05/10/%E8%A7%A3%E6%9E%90html%E9%A1%B5%E9%9D%A2%E5%AF%BC%E5%87%BAcsv%E6%96%87%E4%BB%B6%E8%84%9A%E6%9C%AC/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          html: false,
+          timer: 500,
+          showConfirmButton: false
+        });
+      });
+    }));
+</script>
+
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
+            <a href="/tags/html/" rel="tag"><i class="fa fa-tag"></i> html</a>
+          
+            <a href="/tags/csv/" rel="tag"><i class="fa fa-tag"></i> csv</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/10/kafka-producer/" rel="next" title="kafka producer">
+                <i class="fa fa-chevron-left"></i> kafka producer
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/14/%E8%AE%B0%E5%BD%95xpath%E8%A7%A3%E6%9E%90html%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/" rel="prev" title="记录xpath解析html的一个坑">
+                记录xpath解析html的一个坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>

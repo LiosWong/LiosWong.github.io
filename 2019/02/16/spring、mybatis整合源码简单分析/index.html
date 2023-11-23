@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="配置&lt;bean id&#x3D;&quot;localDataSource&quot; class&#x3D;&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method&#x3D;&quot;init&quot; destroy-method&#x3D;&quot;close&quot;&gt;         &lt;property name&#x3D;&quot;url">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring、mybatis整合源码简单分析">
+<meta property="og:url" content="http://yoursite.com/2019/02/16/spring%E3%80%81mybatis%E6%95%B4%E5%90%88%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="配置&lt;bean id&#x3D;&quot;localDataSource&quot; class&#x3D;&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method&#x3D;&quot;init&quot; destroy-method&#x3D;&quot;close&quot;&gt;         &lt;property name&#x3D;&quot;url">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-02-15T17:42:16.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:30.002Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="spring">
+<meta property="article:tag" content="mybatis">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/16/spring、mybatis整合源码简单分析/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>spring、mybatis整合源码简单分析 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/spring%E3%80%81mybatis%E6%95%B4%E5%90%88%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring、mybatis整合源码简单分析
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-16 01:42:16" itemprop="dateCreated datePublished" datetime="2019-02-16T01:42:16+08:00">2019-02-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:30" itemprop="dateModified" datetime="2023-11-23T21:01:30+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mybatis/" itemprop="url" rel="index"><span itemprop="name">mybatis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>&lt;bean id=&quot;localDataSource&quot; class=&quot;com.alibaba.druid.pool.DruidDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;close&quot;&gt;
+        &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://192.168.31.14:3366/lios?characterEncoding=utf8&quot;/&gt;
+        &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;123456&quot;/&gt;
+        ...
+    &lt;/bean&gt;
+    &lt;!-- 创建SqlSessionFactory，同时指定数据源--&gt;
+    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;localDataSource&quot;/&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:sqlmap-config.xml&quot;/&gt;
+        &lt;property name=&quot;mapperLocations&quot;&gt;
+            &lt;list&gt;
+               &lt;value&gt;classpath*:com/lios/mybatis/mapper/*.xml&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
+        &lt;property name=&quot;basePackage&quot; value=&quot;com.lios.mybatis.dao&quot;/&gt;
+        &lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot;/&gt;
+    &lt;/bean&gt;
+</code></pre><p><code>MapperScannerConfigurer</code>这个bean有什么作用呢,MapperScannerConfigurer实现了BeanDefinitionRegistryPostProcessor接口，该接口可以让我们实现自定义并注册bean，具体可以参考关于BeanDefinitionRegistryPostProcessor接口<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIxNDE2MTE3MA==&amp;mid=2247483817&amp;idx=1&amp;sn=fd2be09dfaada65270ccb143bc0e491a&amp;chksm=97aa83d4a0dd0ac2cfa5981685998c7557b9c0d4318c7c612f7602da26aac20bdf139e8fab6c&amp;token=260922015&amp;lang=zh_CN#rd">使用的文章</a>,无疑分析入口还是从<code>org.springframework.context.support.AbstractApplicationContext#refresh</code>方法开始.</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><blockquote>
+<h5 id="扫描basePackages-封装MapperFactoryBean-注册到spring容器"><a href="#扫描basePackages-封装MapperFactoryBean-注册到spring容器" class="headerlink" title="扫描basePackages,封装MapperFactoryBean,注册到spring容器"></a>扫描basePackages,封装MapperFactoryBean,注册到spring容器</h5></blockquote>
+<p>在<code>AbstractApplicationContext</code>类的<code>refresh</code>方法里,会调用：</p>
+<pre><code>invokeBeanFactoryPostProcessors(beanFactory);
+</code></pre><p>调用BeanFactory的后置处理器，向容器中注册自定义Bean,一直跟到<code>PostProcessorRegistrationDelegate</code>类的<code>invokeBeanFactoryPostProcessors</code>方法中这段代码:</p>
+<pre><code>// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
+boolean reiterate = true;
+while (reiterate) &#123;
+    reiterate = false;
+    postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
+    for (String ppName : postProcessorNames) &#123;
+        if (!processedBeans.contains(ppName)) &#123;
+            //getBean方法会初始化MapperScannerConfigurer
+            BeanDefinitionRegistryPostProcessor pp = beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class);
+            registryPostProcessors.add(pp);
+            processedBeans.add(ppName);
+            // 调用MapperScannerConfigurer的postProcessBeanDefinitionRegistry方法
+            pp.postProcessBeanDefinitionRegistry(registry);
+            reiterate = true;
+        &#125;
+    &#125;
+&#125;
+</code></pre><p>跟到MapperScannerConfigurer的postProcessBeanDefinitionRegistry方法中,关键代码:</p>
+<pre><code>...
+scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
+</code></pre><p>这段代码用于扫描MapperScannerConfigurer中配置的basePackage路径下的文件.继续根进<code>ClassPathBeanDefinitionScanner</code>类的<code>scan</code>方法:</p>
+<pre><code>// Register annotation config processors, if necessary.
+if (this.includeAnnotationConfig) &#123;
+    AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
+&#125;
+return (this.registry.getBeanDefinitionCount() - beanCountAtScanStart);
+</code></pre><p><code>doScan</code>方法会调用<code>ClassPathMapperScanner#doScan</code>类中的doScan方法:</p>
+<pre><code>// 调用父类doScan方法,扫描basePackage下的mapper的接口文件,封装成Set&lt;BeanDefinitionHolder&gt;
+doScan(basePackages);
+Set&lt;BeanDefinitionHolder&gt; beanDefinitions = super.doScan(basePackages);
+if (beanDefinitions.isEmpty()) &#123;
+  logger.warn(&quot;No MyBatis mapper was found in &#39;&quot; + Arrays.toString(basePackages) + &quot;&#39; package. Please check your configuration.&quot;);
+&#125; else &#123;
+  processBeanDefinitions(beanDefinitions);
+&#125;
+return beanDefinitions;
+</code></pre><p><code>processBeanDefinitions</code>方法很重要:</p>
+<pre><code>GenericBeanDefinition definition;
+for (BeanDefinitionHolder holder : beanDefinitions) &#123;
+  definition = (GenericBeanDefinition) holder.getBeanDefinition();
+  // the mapper interface is the original class of the bean
+  // but, the actual class of the bean is MapperFactoryBean
+  definition.getConstructorArgumentValues().addGenericArgumentValue(definition.getBeanClassName()); // issue #59
+  // 上面的注释其实说的很清楚了,mapper接口实际的实体为MapperFactoryBean
+  definition.setBeanClass(this.mapperFactoryBean.getClass());
+  // 设置MapperFactoryBean属性addToConfig元素
+  definition.getPropertyValues().add(&quot;addToConfig&quot;, this.addToConfig);
+  ...
+  // 设置MapperFactoryBean属性sqlSessionTemplate元素
+  definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, this.sqlSessionTemplate);
+&#125;
+</code></pre><p>经过上面的流程，basePackages下的mapper接口已经注册到容器中.</p>
+<h5 id="实例化MapperFactoryBean中SqlSessionFactory-解析xml配置文件"><a href="#实例化MapperFactoryBean中SqlSessionFactory-解析xml配置文件" class="headerlink" title="实例化MapperFactoryBean中SqlSessionFactory,解析xml配置文件"></a>实例化MapperFactoryBean中SqlSessionFactory,解析xml配置文件</h5><p>继续回到<code>AbstractApplicationContext</code>类中的<code>refresh</code>中,会在该方法中初始化所有单例且是懒加载的bean,如果在应用中注入使用mapper接口时:</p>
+<pre><code>@Autowired
+UserInfoDao userInfoDao;
+</code></pre><p>就会初始化该mapper实例，其实就是初始化<code>MapperFactoryBean</code>,spring会检查该bean的属性是否为对象,依次初始化,由于<br>MapperFactoryBean中的属性SqlSessionTemplate、addToConfig，由于SqlSessionTemplate已经在配置文件配置,继而又会去初始化SqlSessionTemplate的属性<code>org.mybatis.spring.SqlSessionFactoryBean</code>,因为SqlSessionFactoryBean实现了<code>InitializingBean</code>接口，所以在初始化时会调用其<code>afterPropertiesSet</code>方法:</p>
+<pre><code>@Override
+public void afterPropertiesSet() throws Exception &#123;
+notNull(dataSource, &quot;Property &#39;dataSource&#39; is required&quot;);
+notNull(sqlSessionFactoryBuilder, &quot;Property &#39;sqlSessionFactoryBuilder&#39; is required&quot;);
+state((configuration == null &amp;&amp; configLocation == null) || !(configuration != null &amp;&amp; configLocation != null),
+          &quot;Property &#39;configuration&#39; and &#39;configLocation&#39; can not specified with together&quot;);
+this.sqlSessionFactory = buildSqlSessionFactory();
+&#125;
+</code></pre><p><code>buildSqlSessionFactory</code>方法非常关键,用来解析mppaer xml文件,关键代码:</p>
+<pre><code>XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),
+configuration, mapperLocation.toString(), configuration.getSqlFragments());
+xmlMapperBuilder.parse();
+</code></pre><p>这里不作具体分析。</p>
+<blockquote>
+<h5 id="生成mapper接口动态代理类"><a href="#生成mapper接口动态代理类" class="headerlink" title="生成mapper接口动态代理类"></a>生成mapper接口动态代理类</h5></blockquote>
+<p>当MapperFactoryBean中的属性初始化完后,则继续执行MapperFactoryBean的初始化流程,在<code>AbstractBeanFactory</code>类的<code>doGetBean</code>方法中：</p>
+<pre><code>bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+</code></pre><p>调用了<code>AbstractBeanFactory</code>类的getObjectForBeanInstance方法：</p>
+<pre><code>object = getObjectFromFactoryBean(factory, beanName, !synthetic);
+</code></pre><p>因为MapperFactoryBean实现了FactoryBean接口，所以才可以向下执行代码,<br>继续调用了<code>FactoryBeanRegistrySupport</code>类的getObjectFromFactoryBean方法:</p>
+<pre><code>Object object = doGetObjectFromFactoryBean(factory, beanName);
+</code></pre><p>继续调用<code>FactoryBeanRegistrySupport</code>类中的doGetObjectFromFactoryBean方法:</p>
+<pre><code>...
+object = factory.getObject();
+...
+</code></pre><p>原来调用了FactoryBean的getObject方法,这时则断点执行到了<br><code>MapperFactoryBean</code>的getObject方法中:</p>
+<pre><code>return getSqlSession().getMapper(this.mapperInterface);
+</code></pre><p>继续执行到<code>org.apache.ibatis.session.Configuration</code>的getMapper方法：</p>
+<pre><code>final MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);
+if (mapperProxyFactory == null) &#123;
+  throw new BindingException(&quot;Type &quot; + type + &quot; is not known to the MapperRegistry.&quot;);
+&#125;
+try &#123;
+  return mapperProxyFactory.newInstance(sqlSession);
+&#125; catch (Exception e) &#123;
+  throw new BindingException(&quot;Error getting mapper instance. Cause: &quot; + e, e);
+&#125;
+</code></pre><p>上面代码是不是很熟悉，原来为mapper 接口创建了代理类<code>MapperProxy&lt;T&gt;</code>,当调用mapper接口中具体的方法操作数据库时，其实执行的的是<code>MapperProxy&lt;T&gt;</code>中的invoke方法:</p>
+<pre><code>try &#123;
+  if (Object.class.equals(method.getDeclaringClass())) &#123;
+    return method.invoke(this, args);
+  &#125; else if (isDefaultMethod(method)) &#123;
+    return invokeDefaultMethod(proxy, method, args);
+  &#125;
+&#125; catch (Throwable t) &#123;
+  throw ExceptionUtil.unwrapThrowable(t);
+&#125;
+final MapperMethod mapperMethod = cachedMapperMethod(method);
+return mapperMethod.execute(sqlSession, args);
+</code></pre><p>上面还有一个关键点就是，xml中解析的配置如何与spring容器中mapper bean相关联呢,其实通过<code>DaoSupport</code>类中的<code>checkDaoConfig</code>方法,在<code>DaoSupport</code>类的<code>afterPropertiesSet</code>方法中调用,具体看MapperFactoryBean中的checkDaoConfig实现:</p>
+<pre><code>@Override
+  protected void checkDaoConfig() &#123;
+    super.checkDaoConfig();
+    notNull(this.mapperInterface, &quot;Property &#39;mapperInterface&#39; is required&quot;);
+    // mybatis中配置类
+    Configuration configuration = getSqlSession().getConfiguration();
+    if (this.addToConfig &amp;&amp; !configuration.hasMapper(this.mapperInterface)) &#123;
+      try &#123;
+        // 添加mapper关联
+        configuration.addMapper(this.mapperInterface);
+      &#125; catch (Exception e) &#123;
+        logger.error(&quot;Error while adding the mapper &#39;&quot; + this.mapperInterface + &quot;&#39; to configuration.&quot;, e);
+        throw new IllegalArgumentException(e);
+      &#125; finally &#123;
+        ErrorContext.instance().reset();
+      &#125;
+    &#125;
+  &#125;
+</code></pre><p>到此为止，已经分析完了mybatis与spring结合的源码简单说明，省略了大量的细节，以及mapper xml文件解析、sql执行流程没有分析，后续文章会做分析。由于作者水平有限，文章存在错误之处，肯请斧正，谢谢！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>spring、mybatis整合源码简单分析</a></p>
+  <p><span>文章作者:</span></a></p>
+  <p><span>发布时间:</span>2019年02月16日 - 01:42:16</p>
+  <p><span>最后更新:</span>2023年11月23日 - 21:01:30</p>
+  <p><span>原始链接:</span><a href="/2019/02/16/spring%E3%80%81mybatis%E6%95%B4%E5%90%88%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90/" title="spring、mybatis整合源码简单分析">http://yoursite.com/2019/02/16/spring%E3%80%81mybatis%E6%95%B4%E5%90%88%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/02/16/spring%E3%80%81mybatis%E6%95%B4%E5%90%88%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          html: false,
+          timer: 500,
+          showConfirmButton: false
+        });
+      });
+    }));
+</script>
+
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+            <a href="/tags/spring/" rel="tag"><i class="fa fa-tag"></i> spring</a>
+          
+            <a href="/tags/mybatis/" rel="tag"><i class="fa fa-tag"></i> mybatis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/16/%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%85%A8%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%E5%88%92%E5%88%86%E4%BB%A3%E7%A0%81%E7%88%AC%E5%8F%96/" rel="next" title="史上最全国家统计局划分代码爬取">
+                <i class="fa fa-chevron-left"></i> 史上最全国家统计局划分代码爬取
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/16/springboot%E3%80%81redis%E6%95%B4%E5%90%88/" rel="prev" title="springboot、redis整合">
+                springboot、redis整合 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>

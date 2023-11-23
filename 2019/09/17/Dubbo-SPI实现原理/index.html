@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Dubbo 并未使用 Java 原生的 SPI 机制,而是对其进行了增强,使其能够更好的满足需求,在 Dubbo 中，SPI 是一个非常重要的模块。基于 SPI,我们可以很容易的对 Dubbo 进行拓展.本篇文章通过示例说明,先 download 代码，然后在 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 下新建类: @SPI(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dubbo SPI实现原理">
+<meta property="og:url" content="http://yoursite.com/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="Dubbo 并未使用 Java 原生的 SPI 机制,而是对其进行了增强,使其能够更好的满足需求,在 Dubbo 中，SPI 是一个非常重要的模块。基于 SPI,我们可以很容易的对 Dubbo 进行拓展.本篇文章通过示例说明,先 download 代码，然后在 demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider 下新建类: @SPI(">
+<meta property="og:locale">
+<meta property="og:image" content="http://ww1.sinaimg.cn/thumbnail/ed2b6246ly1g72g7qib07j224w0se49f.jpg">
+<meta property="article:published_time" content="2019-09-17T06:07:56.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:29.970Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="dubbo">
+<meta property="article:tag" content="RPC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/thumbnail/ed2b6246ly1g72g7qib07j224w0se49f.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/17/Dubbo-SPI实现原理/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Dubbo SPI实现原理 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dubbo SPI实现原理
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-09-17 14:07:56" itemprop="dateCreated datePublished" datetime="2019-09-17T14:07:56+08:00">2019-09-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:29" itemprop="dateModified" datetime="2023-11-23T21:01:29+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Dubbo/" itemprop="url" rel="index"><span itemprop="name">Dubbo</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Dubbo 并未使用 Java 原生的 SPI 机制,而是对其进行了增强,使其能够更好的满足需求,在 Dubbo 中，SPI 是一个非常重要的模块。基于 SPI,我们可以很容易的对 Dubbo 进行拓展.<br>本篇文章通过示例说明,先 <a target="_blank" rel="noopener" href="https://github.com/apache/dubbo">download</a> 代码，然后在 <code>demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider</code> 下新建类:</p>
+<pre><code>@SPI(&quot;robot&quot;)
+public interface Robot &#123;
+    @Adaptive
+    void sayHello();
+&#125;
+
+public class Bumblebee implements Robot&#123;
+    @Override
+    public void sayHello() &#123;
+        System.out.println(&quot;Hello, I am Bumblebee.&quot;);
+    &#125;
+&#125;
+
+public class OptimusPrime implements Robot&#123;
+    @Override
+    public void sayHello() &#123;
+        System.out.println(&quot;Hello, I am Optimus Prime.&quot;);
+    &#125;
+&#125;
+</code></pre><p>然后在 <code>resources</code> 文件夹下创建 <code>META-INF/dubbo/internal</code> ,再在该文件夹下创建文件 <code>org.apache.dubbo.demo.provider.Robot</code>,并写入:</p>
+<pre><code>optimusPrime = org.apache.dubbo.demo.provider.OptimusPrime
+bumblebee = org.apache.dubbo.demo.provider.Bumblebee
+</code></pre><p>测试方法如下:</p>
+<pre><code>public class Test &#123;
+    public static void main(String[] args) throws Exception &#123;
+        ExtensionLoader&lt;Robot&gt; extensionLoader =
+                ExtensionLoader.getExtensionLoader(Robot.class);
+        Robot optimusPrime = extensionLoader.getExtension(&quot;optimusPrime&quot;);
+        optimusPrime.sayHello();
+        Robot bumblebee = extensionLoader.getExtension(&quot;bumblebee&quot;);
+        bumblebee.sayHello();
+    &#125;
+&#125;
+</code></pre><h4 id="ExtensionLoader-getExtensionLoader-实现原理"><a href="#ExtensionLoader-getExtensionLoader-实现原理" class="headerlink" title="ExtensionLoader#getExtensionLoader 实现原理"></a>ExtensionLoader#getExtensionLoader 实现原理</h4><p>然后运行该 <code>Test</code> 类的main方法,从断点进入 <code>org.apache.dubbo.common.extension.ExtensionLoader#getExtensionLoader</code> 方法,用于获取 <code>ExtensionLoader</code> 实例:</p>
+<pre><code>public static &lt;T&gt; ExtensionLoader&lt;T&gt; getExtensionLoader(Class&lt;T&gt; type) &#123;
+        // type为空抛出异常
+        if (type == null) &#123;
+            throw new IllegalArgumentException(&quot;Extension type == null&quot;);
+        &#125;
+        // 不是接口抛出异常
+        if (!type.isInterface()) &#123;
+            throw new IllegalArgumentException(&quot;Extension type (&quot; + type + &quot;) is not an interface!&quot;);
+        &#125;
+        // 若没有SPI注解抛出异常
+        if (!withExtensionAnnotation(type)) &#123;
+            throw new IllegalArgumentException(&quot;Extension type (&quot; + type +
+                    &quot;) is not an extension, because it is NOT annotated with @&quot; + SPI.class.getSimpleName() + &quot;!&quot;);
+        &#125;
+        // 从缓存EXTENSION_LOADERS获取
+        ExtensionLoader&lt;T&gt; loader = (ExtensionLoader&lt;T&gt;) EXTENSION_LOADERS.get(type);
+        if (loader == null) &#123;
+            EXTENSION_LOADERS.putIfAbsent(type, new ExtensionLoader&lt;T&gt;(type));
+            loader = (ExtensionLoader&lt;T&gt;) EXTENSION_LOADERS.get(type);
+        &#125;
+        return loader;
+    &#125;
+</code></pre><p>首选会检查type是否为空、type是否为接口、type是否有SPI注解(Robot必须有SPI注解,否则会报错),再从缓存中获取 <code>ExtensionLoader</code>,如果为空,从新创建ExtensionLoader实例,断点进入 <code>ExtensionLoader</code> 构造函数:</p>
+<pre><code>  private ExtensionLoader(Class&lt;?&gt; type) &#123;
+        this.type = type;
+        objectFactory = (type == ExtensionFactory.class ? null : ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension());
+    &#125;
+</code></pre><p>如果type是 <code>ExtensionFactory.class</code> 时,objectFactory初始化为null,否则执行 <code>ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension()</code> ,断点继续进入,还是会进入 <code>org.apache.dubbo.common.extension.ExtensionLoader#getExtensionLoader</code> 方法,这里就不做分析,由于此时type为 <code>ExtensionFactory.class</code> ,所以objectFactory为null,这里分析<code>org.apache.dubbo.common.extension.ExtensionLoader#getAdaptiveExtension</code> ,断点进入:</p>
+<pre><code>        // cachedAdaptiveInstance
+        Object instance = cachedAdaptiveInstance.get();
+        if (instance == null) &#123;
+            // createAdaptiveInstanceError不为null则报错
+            if (createAdaptiveInstanceError != null) &#123;
+                throw new IllegalStateException(&quot;Failed to create adaptive instance: &quot; +
+                        createAdaptiveInstanceError.toString(),
+                        createAdaptiveInstanceError);
+            &#125;
+            // dubbo里常出现的双重检查
+            synchronized (cachedAdaptiveInstance) &#123;
+                instance = cachedAdaptiveInstance.get();
+                if (instance == null) &#123;
+                    try &#123;
+                        // instance为空,则创建
+                        instance = createAdaptiveExtension();
+                        cachedAdaptiveInstance.set(instance);
+                    &#125; catch (Throwable t) &#123;
+                        createAdaptiveInstanceError = t;
+                        throw new IllegalStateException(&quot;Failed to create adaptive instance: &quot; + t.toString(), t);
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+
+        return (T) instance;
+</code></pre><p>断点进入 <code>org.apache.dubbo.common.extension.ExtensionLoader#createAdaptiveExtension</code>:</p>
+<pre><code> private T createAdaptiveExtension() &#123;
+        try &#123;
+            return injectExtension((T) getAdaptiveExtensionClass().newInstance());
+        &#125; catch (Exception e) &#123;
+            throw new IllegalStateException(&quot;Can&#39;t create adaptive extension &quot; + type + &quot;, cause: &quot; + e.getMessage(), e);
+        &#125;
+    &#125;
+</code></pre><p><code>injectExtension</code> 负责扩展点的依赖注入，<code>getAdaptiveExtensionClass</code> 方法为了获取自适应扩展类,断点进入<code>org.apache.dubbo.common.extension.ExtensionLoader#getAdaptiveExtensionClass</code> :</p>
+<pre><code>  private Class&lt;?&gt; getAdaptiveExtensionClass() &#123;
+        getExtensionClasses();
+        if (cachedAdaptiveClass != null) &#123;
+            return cachedAdaptiveClass;
+        &#125;
+        return cachedAdaptiveClass = createAdaptiveExtensionClass();
+    &#125;
+</code></pre><p>无疑继续进入方法 <code>getExtensionClasses</code> ,获取扩展类:</p>
+<pre><code>private Map&lt;String, Class&lt;?&gt;&gt; getExtensionClasses() &#123;
+        Map&lt;String, Class&lt;?&gt;&gt; classes = cachedClasses.get();
+        if (classes == null) &#123;
+            synchronized (cachedClasses) &#123;
+                classes = cachedClasses.get();
+                if (classes == null) &#123;
+                    classes = loadExtensionClasses();
+                    cachedClasses.set(classes);
+                &#125;
+            &#125;
+        &#125;
+        return classes;
+    &#125;
+</code></pre><p>这里也没什么好说的,首先从缓存里获取,缓存里没有则调用 <code>loadExtensionClasses</code> 加载,断点进入:</p>
+<pre><code>private Map&lt;String, Class&lt;?&gt;&gt; loadExtensionClasses() &#123;
+        cacheDefaultExtensionName();
+
+        Map&lt;String, Class&lt;?&gt;&gt; extensionClasses = new HashMap&lt;&gt;();
+        loadDirectory(extensionClasses, DUBBO_INTERNAL_DIRECTORY, type.getName());
+        loadDirectory(extensionClasses, DUBBO_INTERNAL_DIRECTORY, type.getName().replace(&quot;org.apache&quot;, &quot;com.alibaba&quot;));
+        loadDirectory(extensionClasses, DUBBO_DIRECTORY, type.getName());
+        loadDirectory(extensionClasses, DUBBO_DIRECTORY, type.getName().replace(&quot;org.apache&quot;, &quot;com.alibaba&quot;));
+        loadDirectory(extensionClasses, SERVICES_DIRECTORY, type.getName());
+        loadDirectory(extensionClasses, SERVICES_DIRECTORY, type.getName().replace(&quot;org.apache&quot;, &quot;com.alibaba&quot;));
+        return extensionClasses;
+    &#125;
+</code></pre><p>会从目录</p>
+<pre><code>META-INF/dubbo/internal/
+META-INF/dubbo/
+META-INF/services/
+</code></pre><p>中根据type名称加载文件,此时type.getName为 <code>org.apache.dubbo.common.extension.ExtensionFactory</code> ,继续进入 <code>loadDirectory</code> :</p>
+<pre><code>private void loadDirectory(Map&lt;String, Class&lt;?&gt;&gt; extensionClasses, String dir, String type) &#123;
+        String fileName = dir + type;
+        try &#123;
+            Enumeration&lt;java.net.URL&gt; urls;
+            ClassLoader classLoader = findClassLoader();
+            if (classLoader != null) &#123;
+                urls = classLoader.getResources(fileName);
+            &#125; else &#123;
+                urls = ClassLoader.getSystemResources(fileName);
+            &#125;
+            if (urls != null) &#123;
+                while (urls.hasMoreElements()) &#123;
+                    java.net.URL resourceURL = urls.nextElement();
+                    loadResource(extensionClasses, classLoader, resourceURL);
+                &#125;
+            &#125;
+        &#125; catch (Throwable t) &#123;
+            logger.error(&quot;Exception occurred when loading extension class (interface: &quot; +
+                    type + &quot;, description file: &quot; + fileName + &quot;).&quot;, t);
+        &#125;
+    &#125;
+</code></pre><p>和上面所说一样,根据名称获取资源文件,然后调用 <code>loadResource</code> 加载,进入该方法:</p>
+<pre><code>private void loadResource(Map&lt;String, Class&lt;?&gt;&gt; extensionClasses, ClassLoader classLoader, java.net.URL resourceURL) &#123;
+        try &#123;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceURL.openStream(), StandardCharsets.UTF_8))) &#123;
+                String line;
+                while ((line = reader.readLine()) != null) &#123;
+                    final int ci = line.indexOf(&#39;#&#39;);
+                    if (ci &gt;= 0) &#123;
+                        line = line.substring(0, ci);
+                    &#125;
+                    line = line.trim();
+                    if (line.length() &gt; 0) &#123;
+                        try &#123;
+                            String name = null;
+                            int i = line.indexOf(&#39;=&#39;);
+                            if (i &gt; 0) &#123;
+                                name = line.substring(0, i).trim();
+                                line = line.substring(i + 1).trim();
+                            &#125;
+                            if (line.length() &gt; 0) &#123;
+                                loadClass(extensionClasses, resourceURL, Class.forName(line, true, classLoader), name);
+                            &#125;
+                        &#125; catch (Throwable t) &#123;
+                            IllegalStateException e = new IllegalStateException(&quot;Failed to load extension class (interface: &quot; + type + &quot;, class line: &quot; + line + &quot;) in &quot; + resourceURL + &quot;, cause: &quot; + t.getMessage(), t);
+                            exceptions.put(line, e);
+                        &#125;
+                    &#125;
+                &#125;
+            &#125;
+        &#125; catch (Throwable t) &#123;
+            logger.error(&quot;Exception occurred when loading extension class (interface: &quot; +
+                    type + &quot;, class file: &quot; + resourceURL + &quot;) in &quot; + resourceURL, t);
+        &#125;
+    &#125;
+</code></pre><p>上面代码获取到文件流后,然后读取解析得到key、value值,继续调用 <code>loadClass</code> 方法,断点进入:  </p>
+<pre><code> private void loadClass(Map&lt;String, Class&lt;?&gt;&gt; extensionClasses, java.net.URL resourceURL, Class&lt;?&gt; clazz, String name) throws NoSuchMethodException &#123;
+        if (!type.isAssignableFrom(clazz)) &#123;
+            throw new IllegalStateException(&quot;Error occurred when loading extension class (interface: &quot; +
+                    type + &quot;, class line: &quot; + clazz.getName() + &quot;), class &quot;
+                    + clazz.getName() + &quot; is not subtype of interface.&quot;);
+        &#125;
+        // 判断类上是否带Adaptive注解,如果带的话,把clazz赋值给cachedAdaptiveClass
+        if (clazz.isAnnotationPresent(Adaptive.class)) &#123;
+            cacheAdaptiveClass(clazz);
+        &#125; else if (isWrapperClass(clazz)) &#123;
+            // cache wrapper class
+            cacheWrapperClass(clazz);
+        &#125; else &#123;
+            clazz.getConstructor();
+            if (StringUtils.isEmpty(name)) &#123;
+                name = findAnnotationName(clazz);
+                if (name.length() == 0) &#123;
+                    throw new IllegalStateException(&quot;No such extension name for the class &quot; + clazz.getName() + &quot; in the config &quot; + resourceURL);
+                &#125;
+            &#125;
+
+            String[] names = NAME_SEPARATOR.split(name);
+            if (ArrayUtils.isNotEmpty(names)) &#123;
+                // 如果类带有Activate注解,则缓存
+                cacheActivateClass(clazz, names[0]);
+                for (String n : names) &#123;
+                    cacheName(clazz, n);
+                    // 保存扩展类
+                    saveInExtensionClass(extensionClasses, clazz, n);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+</code></pre><p>上面注意 <code>org.apache.dubbo.common.extension.ExtensionLoader#isWrapperClass</code> 方法,判断是否为包装类,是的话就缓存,判断依据就是扩展接口为该类的构造器参数,例如 <code>Protocol</code> 的两个子类 <code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper</code> 、<code>org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper</code> ,它们的构造函数都有以 <code>Protocol</code> 为参数,所以为包装类,在 <code>org.apache.dubbo.common.extension.ExtensionLoader#createExtension</code> 中会判断是否有包装类,有的的话会循环注入,例如在获取对象 <code>org.apache.dubbo.rpc.Protocol</code> 时,通过自适应扩展获取到的对象会被包装类包裹,例如:</p>
+<pre><code>org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper
+     org.apache.dubbo.rpc.protocol.ProtocolListenerWrapper
+          org.apache.dubbo.registry.integration.RegistryProtocol
+
+</code></pre><p>这样的好处就是在调用前可以添加额外的处理逻辑.<br>到这里扩展类已经加载完了,并且保存,回到 <code>org.apache.dubbo.common.extension.ExtensionLoader#getAdaptiveExtensionClass</code>方法中,调用完 <code>getExtensionClasses</code> 后，会判断 <code>cachedAdaptiveClass</code> 是否为空,如果不为空直接返回,也就是如果类上有 <code>Adaptive</code>注解,此时会直接返回,注意结合 <code>org.apache.dubbo.common.extension.ExtensionLoader#loadClass</code> 方法中的判断分析,否则继续执行调用 <code>createAdaptiveExtensionClass</code> ,但是此时 <code>cachedAdaptiveClass</code> 是不为空的,所以直接返回.为什么不为空呢,由于 <code>ExtensionFactory</code> 的实现类 <code>org.apache.dubbo.common.extension.factory.AdaptiveExtensionFactory</code> 加上了 <code>Adaptive</code> 注解,在 <code>org.apache.dubbo.common.extension.ExtensionLoader#loadClass</code> 方法中,初始化了 <code>cachedAdaptiveClass</code> ,dubbo中的类上被 <code>Adaptive</code> 修饰的非常少,仅有两个: <code>AdaptiveCompiler</code> 、<code>AdaptiveExtensionFactory</code>.<br>回到 <code>org.apache.dubbo.common.extension.ExtensionLoader#createAdaptiveExtension</code> 方法中, <code>getAdaptiveExtensionClass</code> 获取到扩展类后,通过反射创建对象,然后再调用 <code>injectExtension</code> ,断点进入:  </p>
+<pre><code>private T injectExtension(T instance) &#123;
+        // 若objectFactory为null,直接返回instance
+        if (objectFactory == null) &#123;
+            return instance;
+        &#125;
+        try &#123;
+            for (Method method : instance.getClass().getMethods()) &#123;
+                if (!isSetter(method)) &#123;
+                    continue;
+                &#125;
+                /**
+                 * Check &#123;@link DisableInject&#125; to see if we need auto injection for this property
+                 */
+                if (method.getAnnotation(DisableInject.class) != null) &#123;
+                    continue;
+                &#125;
+                Class&lt;?&gt; pt = method.getParameterTypes()[0];
+                if (ReflectUtils.isPrimitives(pt)) &#123;
+                    continue;
+                &#125;
+                try &#123;
+                    String property = getSetterProperty(method);
+                    Object object = objectFactory.getExtension(pt, property);
+                    if (object != null) &#123;
+                        method.invoke(instance, object);
+                    &#125;
+                &#125; catch (Exception e) &#123;
+                    logger.error(&quot;Failed to inject via method &quot; + method.getName()
+                            + &quot; of interface &quot; + type.getName() + &quot;: &quot; + e.getMessage(), e);
+                &#125;
+            &#125;
+        &#125; catch (Exception e) &#123;
+            logger.error(e.getMessage(), e);
+        &#125;
+        return instance;
+    &#125;
+</code></pre><p>首先判断 objectFactory 是否为空，为空则直接返回，前面分析的 ExtensionLoader 构造方法的时若扩展点类型是 ExtensionFactory ,则 objectFactory 为null，否则为 objectFactory 的自适应扩展,如果 objectFactory 不为空,则遍历所有的 <code>setter</code> 方法，如果方法上有 <code>@DisableInject</code> 则直接跳过，否则通过 objectFactory 获取对应的属性,不为空则调用 <code>setter</code> 方法，如果为 SPI 扩展点注入属性值.<br>回到 <code>org.apache.dubbo.common.extension.ExtensionLoader#getExtensionLoader</code> 方法中, <code>ExtensionLoader</code> 实例已创建完成,并放入<br> <code>EXTENSION_LOADERS</code>  中,key是 <code>interface org.apache.dubbo.demo.provider.Robot.class</code> ,value是 <code>ExtensionLoader</code> 对象.  </p>
+<h4 id="ExtensionLoader-getExtension实现"><a href="#ExtensionLoader-getExtension实现" class="headerlink" title="ExtensionLoader#getExtension实现"></a>ExtensionLoader#getExtension实现</h4><p>回到 <code>org.apache.dubbo.demo.provider.Test#main</code> 中,即 <code>ExtensionLoader</code> 对象已经创建成功,下一步获取扩展对象:  </p>
+<pre><code>Robot optimusPrime = extensionLoader.getExtension(&quot;optimusPrime&quot;);
+</code></pre><p>断点进入 <code>org.apache.dubbo.common.extension.ExtensionLoader#getExtension</code> 中:  </p>
+<pre><code>public T getExtension(String name) &#123;
+        // 若扩展名称为空,则抛出异常
+        if (StringUtils.isEmpty(name)) &#123;
+            throw new IllegalArgumentException(&quot;Extension name == null&quot;);
+        &#125;
+        // 若扩展名为true,返回默认扩展对象
+        if (&quot;true&quot;.equals(name)) &#123;
+            return getDefaultExtension();
+        &#125;
+        // 获取Holder对象,如果从缓存获取为空,则重新创建
+        final Holder&lt;Object&gt; holder = getOrCreateHolder(name);
+        Object instance = holder.get();
+        if (instance == null) &#123;
+            synchronized (holder) &#123;
+                instance = holder.get();
+                if (instance == null) &#123;
+                    instance = createExtension(name);
+                    holder.set(instance);
+                &#125;
+            &#125;
+        &#125;
+        return (T) instance;
+    &#125;
+</code></pre><p>上面代码主要看 <code>org.apache.dubbo.common.extension.ExtensionLoader#createExtension</code> 方法,断点进入:  </p>
+<pre><code>private T createExtension(String name) &#123;
+        Class&lt;?&gt; clazz = getExtensionClasses().get(name);
+        if (clazz == null) &#123;
+            throw findException(name);
+        &#125;
+        try &#123;
+            T instance = (T) EXTENSION_INSTANCES.get(clazz);
+            if (instance == null) &#123;
+                EXTENSION_INSTANCES.putIfAbsent(clazz, clazz.newInstance());
+                instance = (T) EXTENSION_INSTANCES.get(clazz);
+            &#125;
+            // 依赖注入属性
+            injectExtension(instance);
+            Set&lt;Class&lt;?&gt;&gt; wrapperClasses = cachedWrapperClasses;
+            // Wrapper包装
+            if (CollectionUtils.isNotEmpty(wrapperClasses)) &#123;
+                for (Class&lt;?&gt; wrapperClass : wrapperClasses) &#123;
+                    instance = injectExtension((T) wrapperClass.getConstructor(type).newInstance(instance));
+                &#125;
+            &#125;
+            return instance;
+        &#125; catch (Throwable t) &#123;
+            throw new IllegalStateException(&quot;Extension instance (name: &quot; + name + &quot;, class: &quot; +
+                    type + &quot;) couldn&#39;t be instantiated: &quot; + t.getMessage(), t);
+        &#125;
+    &#125;
+</code></pre><p>明显继续进入 <code>org.apache.dubbo.common.extension.ExtensionLoader#getExtensionClasses</code> 方法:</p>
+<pre><code>private Map&lt;String, Class&lt;?&gt;&gt; getExtensionClasses() &#123;
+        Map&lt;String, Class&lt;?&gt;&gt; classes = cachedClasses.get();
+        if (classes == null) &#123;
+            synchronized (cachedClasses) &#123;
+                classes = cachedClasses.get();
+                if (classes == null) &#123;
+                    classes = loadExtensionClasses();
+                    cachedClasses.set(classes);
+                &#125;
+            &#125;
+        &#125;
+        return classes;
+    &#125;
+</code></pre><p>双重检查判断,继续断点进入 <code>org.apache.dubbo.common.extension.ExtensionLoader#loadExtensionClasses</code> :</p>
+<pre><code>private Map&lt;String, Class&lt;?&gt;&gt; loadExtensionClasses() &#123;
+        cacheDefaultExtensionName();
+
+        Map&lt;String, Class&lt;?&gt;&gt; extensionClasses = new HashMap&lt;&gt;();
+        loadDirectory(extensionClasses, DUBBO_INTERNAL_DIRECTORY, type.getName());
+        loadDirectory(extensionClasses, DUBBO_INTERNAL_DIRECTORY, type.getName().replace(&quot;org.apache&quot;, &quot;com.alibaba&quot;));
+        loadDirectory(extensionClasses, DUBBO_DIRECTORY, type.getName());
+        loadDirectory(extensionClasses, DUBBO_DIRECTORY, type.getName().replace(&quot;org.apache&quot;, &quot;com.alibaba&quot;));
+        loadDirectory(extensionClasses, SERVICES_DIRECTORY, type.getName());
+        loadDirectory(extensionClasses, SERVICES_DIRECTORY, type.getName().replace(&quot;org.apache&quot;, &quot;com.alibaba&quot;));
+        return extensionClasses;
+    &#125;
+</code></pre><p>这段代码是不是似曾相识,不错,就是上面创建 <code>ExtensionLoader</code> 时加载自适应扩展类时调用的方法,思路和上面的一样,就不再次分析了,解析完得到<br>的 Map 里存放的是:</p>
+<pre><code>optimusPrime -&gt; &#123;Class@1527&#125; &quot;class org.apache.dubbo.demo.provider.OptimusPrime&quot;
+bumblebee -&gt; &#123;Class@1569&#125; &quot;class org.apache.dubbo.demo.provider.Bumblebee&quot;
+</code></pre><p>回到 <code>org.apache.dubbo.common.extension.ExtensionLoader#createExtension</code>方法内,此时根据 <code>optimusPrime</code> 就可以从 Map 中获取到 <code>org.apache.dubbo.demo.provider.OptimusPrime.class</code>,判断 <code>EXTENSION_INSTANCES</code> 中是否有缓存,没有的话会根据反射创建该类对象,并放入到 <code>EXTENSION_INSTANCES</code> ,然后调用方法<code>org.apache.dubbo.common.extension.ExtensionLoader#injectExtension</code>,依赖注入属性,这个不作分析,与上文一致.至此对象 <code>OptimusPrime</code> 已生成了,然后返回到 <code>Test</code> 类测试方法中,可调用具体的方法了.<br>通过<code>ExtensionLoader#getExtension</code>获取扩展点的实现,并不能体现自适应特性,和java SPI 并没有多大的差别,下面介绍<code>ExtensionLoader#getAdaptiveExtension</code> 的实现.</p>
+<h4 id="ExtensionLoader-getAdaptiveExtension的实现"><a href="#ExtensionLoader-getAdaptiveExtension的实现" class="headerlink" title="ExtensionLoader#getAdaptiveExtension的实现"></a>ExtensionLoader#getAdaptiveExtension的实现</h4><p>下面的分析需要注册中心 <code>zookeeper</code> ,关于安装和配置就不多分析.首先在 <code></code>org.apache.dubbo.config.ServiceConfig#protocol` 处打上断点:</p>
+<pre><code>private static final Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
+</code></pre><p>在加载类 <code>ServiceConfig</code> 时,会先初始化静态变量 <code>protocol</code> , 而此时会获取自适应扩展类.到模块 <code>demo-dubbo --》 dubbo-demo-api --》 dubbo-demo-api-provider</code> 中运行 <code>Application</code> 类的main方法:</p>
+<pre><code>public class Application &#123;
+    public static void main(String[] args) throws Exception &#123;
+        ServiceConfig&lt;DemoServiceImpl&gt; service = new ServiceConfig&lt;&gt;();
+        service.setApplication(new ApplicationConfig(&quot;dubbo-demo-api-provider&quot;));
+        service.setRegistry(new RegistryConfig(&quot;zookeeper://127.0.0.1:2181&quot;));
+        service.setInterface(DemoService.class);
+        service.setRef(new DemoServiceImpl());
+        service.export();
+        System.in.read();
+    &#125;
+&#125;
+</code></pre><p>从断点进入,关于 <code>ExtensionLoader#getExtensionLoader</code> 的实现上文已经分析,这里不多作分析,断点直接进入 <code>org.apache.dubbo.common.extension.ExtensionLoader#getAdaptiveExtensionClass</code> 方法内: </p>
+<pre><code>private Class&lt;?&gt; getAdaptiveExtensionClass() &#123;
+        getExtensionClasses();
+        if (cachedAdaptiveClass != null) &#123;
+            return cachedAdaptiveClass;
+        &#125;
+        return cachedAdaptiveClass = createAdaptiveExtensionClass();
+    &#125;
+</code></pre><p>由上文分析可知,由于 <code>Protocol</code> 的实现类上都没有注解 <code>Adaptive</code> ,所以 <code>cachedAdaptiveClass</code> 为空,此时会调用方法 <code>org.apache.dubbo.common.extension.ExtensionLoader#createAdaptiveExtensionClass</code> ,断点进入: </p>
+<pre><code> private Class&lt;?&gt; createAdaptiveExtensionClass() &#123;
+        // 获取扩展类字符串
+        String code = new AdaptiveClassCodeGenerator(type, cachedDefaultName).generate();
+        ClassLoader classLoader = findClassLoader();
+        org.apache.dubbo.common.compiler.Compiler compiler = ExtensionLoader.getExtensionLoader(org.apache.dubbo.common.compiler.Compiler.class).getAdaptiveExtension();
+        return compiler.compile(code, classLoader);
+    &#125;
+</code></pre><p>断点进入 <code>org.apache.dubbo.common.extension.AdaptiveClassCodeGenerator#generate</code>  :</p>
+<pre><code>public String generate() &#123;
+        // no need to generate adaptive class since there&#39;s no adaptive method found.
+        // type中至少一个方法被注解Adaptive修饰
+        if (!hasAdaptiveMethod()) &#123;
+            throw new IllegalStateException(&quot;No adaptive method exist on extension &quot; + type.getName() + &quot;, refuse to create the adaptive class!&quot;);
+        &#125;
+
+        StringBuilder code = new StringBuilder();
+        // 拼接包名
+        code.append(generatePackageInfo());
+        // 拼接依赖包
+        code.append(generateImports());
+        // 拼接类名
+        code.append(generateClassDeclaration());
+
+        Method[] methods = type.getMethods();
+        // 拼接方法
+        for (Method method : methods) &#123;
+            code.append(generateMethod(method));
+        &#125;
+        code.append(&quot;&#125;&quot;);
+
+        if (logger.isDebugEnabled()) &#123;
+            logger.debug(code.toString());
+        &#125;
+        return code.toString();
+    &#125;
+</code></pre><p>首先会校验 扩展类的接口中至少有一个方法被 <code>Adaptive</code> 注解修饰,具体代码不作分析了,看生成的类字符串信息:  </p>
+<pre><code>    package org.apache.dubbo.rpc;
+    import org.apache.dubbo.common.extension.ExtensionLoader;
+    public class Protocol$Adaptive implements org.apache.dubbo.rpc.Protocol &#123;
+        public void destroy() &#123;
+            throw new UnsupportedOperationException(&quot;The method public abstract void org.apache.dubbo.rpc.Protocol.destroy() of interface org.apache.dubbo.rpc.Protocol is not adaptive method!&quot;);
+        &#125;
+
+        public int getDefaultPort() &#123;
+            throw new UnsupportedOperationException(&quot;The method public abstract int org.apache.dubbo.rpc.Protocol.getDefaultPort() of interface org.apache.dubbo.rpc.Protocol is not adaptive method!&quot;);
+        &#125;
+
+        public org.apache.dubbo.rpc.Invoker refer(java.lang.Class arg0, org.apache.dubbo.common.URL arg1) throws org.apache.dubbo.rpc.RpcException &#123;
+            if (arg1 == null) &#123;
+                throw new IllegalArgumentException(&quot;url == null&quot;);
+            &#125;
+            org.apache.dubbo.common.URL url = arg1;
+            String extName = (url.getProtocol() == null ? &quot;dubbo&quot; : url.getProtocol());
+            if (extName == null) &#123;
+                throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.Protocol) name from url (&quot; + url.toString() + &quot;) use keys([protocol])&quot;);
+            &#125;
+            org.apache.dubbo.rpc.Protocol extension = (org.apache.dubbo.rpc.Protocol) ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.Protocol.class).getExtension(extName);
+            return extension.refer(arg0, arg1);
+        &#125;
+
+        public org.apache.dubbo.rpc.Exporter export(org.apache.dubbo.rpc.Invoker arg0) throws org.apache.dubbo.rpc.RpcException &#123;
+            if (arg0 == null) &#123;
+                throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument == null&quot;);
+            &#125;
+            if (arg0.getUrl() == null) &#123;
+                throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument getUrl() == null&quot;);
+            &#125;
+            org.apache.dubbo.common.URL url = arg0.getUrl();
+            String extName = (url.getProtocol() == null ? &quot;dubbo&quot; : url.getProtocol());
+            if (extName == null) &#123;
+                throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.Protocol) name from url (&quot; + url.toString() + &quot;) use keys([protocol])&quot;);
+            &#125;
+            org.apache.dubbo.rpc.Protocol extension = (org.apache.dubbo.rpc.Protocol) ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.Protocol.class).getExtension(extName);
+            return extension.export(arg0);
+        &#125;
+    &#125;
+</code></pre><p>上面生成了类Protocol的子类 <code>Protocol$Adaptive</code> ,仔细观察发发现, <code>export</code> 、<code>refer</code> 方法都被注解  <code>Adaptive</code> 修饰,生成的 <code>Protocol$Adaptive</code> 中这两个方法都有具体的实现,而 <code>destroy</code> 、<code>getDefaultPort</code> 没有被注解修饰,生成的类中直接抛出 <code>UnsupportedOperationException</code> 异常.<br>回到  <code>org.apache.dubbo.common.extension.ExtensionLoader#createAdaptiveExtensionClass</code> 方法中,<br>由于 <code>org.apache.dubbo.common.compiler.Compiler</code> 的子类 <code>org.apache.dubbo.common.compiler.support.AdaptiveCompiler</code> 被 注解  <code>Adaptive</code> 修饰,所以变量 <code>compiler</code> 的值是 <code>AdaptiveCompiler</code> 实例,断点进入 <code>org.apache.dubbo.common.compiler.support.AdaptiveCompiler#compile</code>: </p>
+<pre><code>    public Class&lt;?&gt; compile(String code, ClassLoader classLoader) &#123;
+        Compiler compiler;
+        // 获取ExtensionLoader
+        ExtensionLoader&lt;Compiler&gt; loader = ExtensionLoader.getExtensionLoader(Compiler.class);
+        String name = DEFAULT_COMPILER; // copy reference
+        if (name != null &amp;&amp; name.length() &gt; 0) &#123;
+            compiler = loader.getExtension(name);
+        &#125; else &#123;
+            compiler = loader.getDefaultExtension();
+        &#125;
+        return compiler.compile(code, classLoader);
+    &#125;
+</code></pre><p>上面首先或获取 <code>ExtensionLoader</code>, 根据 <code>name</code> 判断去加载具体的扩展实现,这里由于name为空,所以会调用 <code>org.apache.dubbo.common.extension.ExtensionLoader#getDefaultExtension</code>,断点进入:  </p>
+<pre><code> public T getDefaultExtension() &#123;
+        // 获取扩展类
+        // 上一步已经获取到并且放入缓存,如下:
+        // jdk -&gt; &#123;Class@1244&#125; &quot;class org.apache.dubbo.common.compiler.support.JdkCompiler&quot;
+        // javassist -&gt; &#123;Class@1245&#125; &quot;class org.apache.dubbo.common.compiler.support.JavassistCompiler&quot;
+        // 
+        getExtensionClasses();
+        if (StringUtils.isBlank(cachedDefaultName) || &quot;true&quot;.equals(cachedDefaultName)) &#123;
+            return null;
+        &#125;
+        // 默认获取 javassist
+        return getExtension(cachedDefaultName);
+    &#125;
+</code></pre><p><code>org.apache.dubbo.common.extension.ExtensionLoader#getExtension</code> 的具体实现不作分析,上文已经分析过,经过该方法后,可以得到<br><code>org.apache.dubbo.common.compiler.support.JavassistCompiler</code> 实例.<br>然后回到  <code>org.apache.dubbo.common.compiler.support.AdaptiveCompiler#compile</code> 方法内,执行 <code>org.apache.dubbo.common.compiler.support.AbstractCompiler#compile</code> 方法,该方法是父类方法,做一些检验处理,然后再调用模版方法 <code>doCompile</code> 由子类  <code>AdaptiveCompiler#doCompile</code> 去处理,底层由 <code>Javassist</code> 生成类 <code>Protocol$Adaptive</code>,到此自适应扩展类的生成已分析完毕.但是生成完如何使用呢?  </p>
+<h4 id="自适应扩展按需加载"><a href="#自适应扩展按需加载" class="headerlink" title="自适应扩展按需加载"></a>自适应扩展按需加载</h4><p>回到<code>org.apache.dubbo.config.ServiceConfig</code>中,在此处打上断点:  </p>
+<pre><code>Exporter&lt;?&gt; exporter = protocol.export(wrapperInvoker);
+</code></pre><p>wrapperInvoker对象包装着invoker,具体可以看截图:  </p>
+<p><center> <img src="http://ww1.sinaimg.cn/thumbnail/ed2b6246ly1g72g7qib07j224w0se49f.jpg" alt="http://ww1.sinaimg.cn/thumbnail/ed2b6246ly1g72g7qib07j224w0se49f.jpg"></center><br>我们主要关注URL对象里的 <code>string</code> :</p>
+<pre><code>registry://127.0.0.1:2181/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-api-provider&amp;dubbo=2.0.2&amp;export=dubbo%3A%2F%2F10.200.190.156%3A20880%2Forg.apache.dubbo.demo.DemoService%3Fanyhost%3Dtrue%26application%3Ddubbo-demo-api-provider%26bind.ip%3D10.200.190.156%26bind.port%3D20880%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dorg.apache.dubbo.demo.DemoService%26methods%3DsayHello%26pid%3D21663%26release%3D%26side%3Dprovider%26timestamp%3D1568697592181&amp;pid=21663&amp;registry=zookeeper&amp;timestamp=1568697592172
+</code></pre><p>很明显使用的协议: <code>registry</code>,回到生成的自适应扩展类 <code>Protocol$Adaptive</code> 中的 <code>export</code> 方法:</p>
+<pre><code>public org.apache.dubbo.rpc.Exporter export(org.apache.dubbo.rpc.Invoker arg0) throws org.apache.dubbo.rpc.RpcException &#123;
+            if (arg0 == null) &#123;
+                throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument == null&quot;);
+            &#125;
+            if (arg0.getUrl() == null) &#123;
+                throw new IllegalArgumentException(&quot;org.apache.dubbo.rpc.Invoker argument getUrl() == null&quot;);
+            &#125;
+            org.apache.dubbo.common.URL url = arg0.getUrl();
+            String extName = (url.getProtocol() == null ? &quot;dubbo&quot; : url.getProtocol());
+            if (extName == null) &#123;
+                throw new IllegalStateException(&quot;Failed to get extension (org.apache.dubbo.rpc.Protocol) name from url (&quot; + url.toString() + &quot;) use keys([protocol])&quot;);
+            &#125;
+            org.apache.dubbo.rpc.Protocol extension = (org.apache.dubbo.rpc.Protocol) ExtensionLoader.getExtensionLoader(org.apache.dubbo.rpc.Protocol.class).getExtension(extName);
+            return extension.export(arg0);
+        &#125;
+</code></pre><p>首先会判断传入参数是否为空,然后再判断 <code>org.apache.dubbo.common.URL</code> 是否为空, 然后获取协议, 所以这里<code>extName</code> 为 <code>registry</code>,后面就是根据  <code>extName</code> 获取具体的自适应扩展类,很明显 <code>extension</code> 会被 <code>org.apache.dubbo.registry.integration.RegistryProtocol</code> 初始化.</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>DUBBO SPI解决了什么问题呢,官方文档给出了解释:  </p>
+<ul>
+<li>JDK 标准的 SPI 会一次性实例化扩展点所有实现，如果有扩展实现初始化很耗时，但如果没用上也加载，会很浪费资源</li>
+<li>如果扩展点加载失败，连扩展点的名称都拿不到了。比如：JDK 标准的 ScriptEngine，通过 getName() 获取脚本类型的名称，但如果 RubyScriptEngine 因为所依赖的 jruby.jar 不存在，导致 RubyScriptEngine 类加载失败，这个失败原因被吃掉了，和 ruby 对应不起来，当用户执行 ruby 脚本时，会报不支持 ruby，而不是真正失败的原因</li>
+<li>增加了对扩展点 IoC 和 AOP 的支持，一个扩展点可以直接 setter 注入其它扩展点</li>
+</ul>
+<blockquote>
+<p>参考文章  </p>
+</blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/source_code_guide/dubbo-spi.html">http://dubbo.apache.org/zh-cn/docs/source_code_guide/dubbo-spi.html</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/source_code_guide/adaptive-extension.html">http://dubbo.apache.org/zh-cn/docs/source_code_guide/adaptive-extension.html</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/dev/SPI.html">http://dubbo.apache.org/zh-cn/docs/dev/SPI.html</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://dubbo.apache.org/zh-cn/docs/source_code_guide/adaptive-extension.html">http://dubbo.apache.org/zh-cn/docs/source_code_guide/adaptive-extension.html</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://cxis.me/2017/02/18/Dubbo%E4%B8%ADSPI%E6%89%A9%E5%B1%95%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3/">https://cxis.me/2017/02/18/Dubbo%E4%B8%ADSPI%E6%89%A9%E5%B1%95%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3/</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://kexianjun.github.io/2019/08/19/spi/#more">https://kexianjun.github.io/2019/08/19/spi/#more</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>Dubbo SPI实现原理</a></p>
+  <p><span>文章作者:</span></a></p>
+  <p><span>发布时间:</span>2019年09月17日 - 14:07:56</p>
+  <p><span>最后更新:</span>2023年11月23日 - 21:01:29</p>
+  <p><span>原始链接:</span><a href="/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" title="Dubbo SPI实现原理">http://yoursite.com/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/09/17/Dubbo-SPI%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          html: false,
+          timer: 500,
+          showConfirmButton: false
+        });
+      });
+    }));
+</script>
+
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+            <a href="/tags/dubbo/" rel="tag"><i class="fa fa-tag"></i> dubbo</a>
+          
+            <a href="/tags/RPC/" rel="tag"><i class="fa fa-tag"></i> RPC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/10/%E5%85%83%E7%B4%A0%E6%9E%9A%E4%B8%BE%E5%88%A4%E6%96%AD%E6%80%9D%E8%80%83/" rel="next" title="元素枚举判断思考">
+                <i class="fa fa-chevron-left"></i> 元素枚举判断思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/29/Dubbo%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90/" rel="prev" title="Dubbo服务暴露过程解析">
+                Dubbo服务暴露过程解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>

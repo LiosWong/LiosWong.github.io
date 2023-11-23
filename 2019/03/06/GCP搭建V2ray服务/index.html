@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置: •   512MB RAM •   20GB Disk •   500GB Bandwidth @ 1 Gbps •   Shared Intel HT CPU 2 Cores @ 1.5GHz •   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GCP搭建V2ray服务">
+<meta property="og:url" content="http://yoursite.com/2019/03/06/GCP%E6%90%AD%E5%BB%BAV2ray%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置: •   512MB RAM •   20GB Disk •   500GB Bandwidth @ 1 Gbps •   Shared Intel HT CPU 2 Cores @ 1.5GHz •   1x IPv4 Addresses 是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有goo">
+<meta property="og:locale">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&amp;shareKey=fc85e82ea39869353c28aa058bd46e5c">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB165db1e068be8d3e88f7af199b3ff17b?method=download&amp;shareKey=0206137fd63217f96266d1b42e839a72">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBbaabf5d35d7dbb7e9fc95cce701dc06a?method=download&amp;shareKey=8cf7ca4496a370c96524734a1fffe985">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBd0417df3e1a4d541e99717cbc41cb760?method=download&amp;shareKey=60cad63353b81075e15464104044f580">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB891d0bd5a2a5ba500ef54e0fb49c85ca?method=download&amp;shareKey=e9b9497f365c873baa1b577413d1a714">
+<meta property="article:published_time" content="2019-03-05T17:24:09.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:29.970Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="GCP">
+<meta property="article:tag" content="V2ray">
+<meta property="article:tag" content="科学上网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&amp;shareKey=fc85e82ea39869353c28aa058bd46e5c">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/06/GCP搭建V2ray服务/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>GCP搭建V2ray服务 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/06/GCP%E6%90%AD%E5%BB%BAV2ray%E6%9C%8D%E5%8A%A1/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GCP搭建V2ray服务
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-06 01:24:09" itemprop="dateCreated datePublished" datetime="2019-03-06T01:24:09+08:00">2019-03-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:29" itemprop="dateModified" datetime="2023-11-23T21:01:29+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于之前使用的virmach vps,搭建的v2ray服务,首先来看下配置:</p>
+<pre><code>•   512MB RAM
+•   20GB Disk
+•   500GB Bandwidth @ 1 Gbps
+•   Shared Intel HT CPU 2 Cores @ 1.5GHz
+•   1x IPv4 Addresses
+</code></pre><p>是最低配版的服务器,而且不够稳定,这次通过GCP搭建V2ray服务,首先得有google账号,然后在<a target="_blank" rel="noopener" href="https://cloud.google.com/free/">https://cloud.google.com/free/</a>注册,可以获得300美金赠金,12月内可畅享GCP,再到<a target="_blank" rel="noopener" href="https://console.cloud.google.com">https://console.cloud.google.com</a>新建<code>Project</code>并关联结算账户.由于我没有申请GCP服务,用的是同学的账号,省去了前面的一部分流程,下面简单介绍下配置、搭建流程.</p>
+<h4 id="创建VM实例"><a href="#创建VM实例" class="headerlink" title="创建VM实例"></a>创建VM实例</h4><p><img src="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&amp;shareKey=fc85e82ea39869353c28aa058bd46e5c" alt="https://note.youdao.com/yws/api/personal/file/WEB7368471975985095dcd0b25b92a94bb6?method=download&amp;shareKey=fc85e82ea39869353c28aa058bd46e5c"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB165db1e068be8d3e88f7af199b3ff17b?method=download&amp;shareKey=0206137fd63217f96266d1b42e839a72" alt="https://note.youdao.com/yws/api/personal/file/WEB165db1e068be8d3e88f7af199b3ff17b?method=download&amp;shareKey=0206137fd63217f96266d1b42e839a72"><br>服务器最好选择香港、台湾或者日本,离大陆较近,TTL较小,速度更快,然后再防火墙处勾选HTTP流量.创建完之后,回到首页会看到Project、实例:<br><img src="https://note.youdao.com/yws/api/personal/file/WEBbaabf5d35d7dbb7e9fc95cce701dc06a?method=download&amp;shareKey=8cf7ca4496a370c96524734a1fffe985" alt="https://note.youdao.com/yws/api/personal/file/WEBbaabf5d35d7dbb7e9fc95cce701dc06a?method=download&amp;shareKey=8cf7ca4496a370c96524734a1fffe985"></p>
+<h4 id="防火墙规则、外部IP地址"><a href="#防火墙规则、外部IP地址" class="headerlink" title="防火墙规则、外部IP地址"></a>防火墙规则、外部IP地址</h4><p><img src="https://note.youdao.com/yws/api/personal/file/WEBd0417df3e1a4d541e99717cbc41cb760?method=download&amp;shareKey=60cad63353b81075e15464104044f580" alt="https://note.youdao.com/yws/api/personal/file/WEBd0417df3e1a4d541e99717cbc41cb760?method=download&amp;shareKey=60cad63353b81075e15464104044f580"><br>注意在添加出站防火墙规则时,目标是所有实例<br><img src="https://note.youdao.com/yws/api/personal/file/WEB891d0bd5a2a5ba500ef54e0fb49c85ca?method=download&amp;shareKey=e9b9497f365c873baa1b577413d1a714" alt="https://note.youdao.com/yws/api/personal/file/WEB891d0bd5a2a5ba500ef54e0fb49c85ca?method=download&amp;shareKey=e9b9497f365c873baa1b577413d1a714"><br>在配置当前实例IP类型选择静态</p>
+<h4 id="配置服务器、一键安装V2ray"><a href="#配置服务器、一键安装V2ray" class="headerlink" title="配置服务器、一键安装V2ray"></a>配置服务器、一键安装V2ray</h4><ul>
+<li><p>配置<br>首先需要在网页打开SSH会话窗口,登录服务器后:</p>
+<pre><code>sudo -i  #切换用户
+vi /etc/ssh/sshd_config
+</code></pre><p>修改sshd_config文件:</p>
+<pre><code># Authentication:
+PermitRootLogin yes //开启root用户访问
+# Change to no to disable tunnelled clear text passwords
+PasswordAuthentication yes //开启密码登陆
+</code></pre><p>修改后执行<code>passwd root</code>重置root密码,然后再重启ssh服务:<br><code>/etc/init.d/ssh restart</code><br>此时可以ssh在本地通过密码登录服务器<br>可以安装ufw(<code>apt-get install ufw`)关闭防火墙(</code>ufw disable<code></code>),实际没有多大意义</p>
+</li>
+<li><p>安装V2ray服务<br>执行<code></code>source &lt;(curl -sL <a target="_blank" rel="noopener" href="https://git.io/fNgqx)`,可以一键安装V2ray,完成后在终端输入V2ray,可以通过界面化操作,使用起来很方便,V2ray安装路径信息">https://git.io/fNgqx)`,可以一键安装V2ray,完成后在终端输入V2ray,可以通过界面化操作,使用起来很方便,V2ray安装路径信息</a>:</p>
+<pre><code>/usr/bin/v2ray/v2ray：V2Ray 程序
+/usr/bin/v2ray/v2ctl：V2Ray 工具
+/etc/v2ray/config.json：配置文件
+/usr/bin/v2ray/geoip.dat：IP 数据文件
+/usr/bin/v2ray/geosite.dat：域名数据文件
+</code></pre><p>其中<code>config.json</code>文件是服务配置文件,以上的一键化脚本来自<a target="_blank" rel="noopener" href="https://github.com/Jrohy/multi-v2ray">https://github.com/Jrohy/multi-v2ray</a>,当然网上还有很多配置脚本.配置完成之后,还可以通过该界面化生成客户端配置json,把客户端配置json copy到客户端配置condig.json中即可,手机V2ray客户端:<a target="_blank" rel="noopener" href="https://github.com/2dust/v2rayNG">v2rayNG</a>,mac客户端:<a target="_blank" rel="noopener" href="https://github.com/v2ray/v2ray-core">v2ray-core</a><br>V2ray服务完全可以根据官方文档完成,而且网上有丰富的v2ray配置模板,可搭建出更快、更稳定的V2ray服务!最后感谢磊哥提供强大的GCP云服务器,让速度更快更稳定!</p>
+</li>
+</ul>
+<blockquote>
+<p>参考资料</p>
+</blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/vpc/docs/">https://cloud.google.com/vpc/docs/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.flyzy2005.com/v2ray/how-to-build-v2ray/">https://www.flyzy2005.com/v2ray/how-to-build-v2ray/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/KiriKira/vTemplate">https://github.com/KiriKira/vTemplate</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.v2ray.com/">https://www.v2ray.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://toutyrater.github.io/">https://toutyrater.github.io/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/2dust/v2rayNG/releases">https://github.com/2dust/v2rayNG/releases</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Jrohy/multi-v2ray">https://github.com/Jrohy/multi-v2ray</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog1.jyzzj.online/?p=2000">https://blog1.jyzzj.online/?p=2000</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>GCP搭建V2ray服务</a></p>
+  <p><span>文章作者:</span></a></p>
+  <p><span>发布时间:</span>2019年03月06日 - 01:24:09</p>
+  <p><span>最后更新:</span>2023年11月23日 - 21:01:29</p>
+  <p><span>原始链接:</span><a href="/2019/03/06/GCP%E6%90%AD%E5%BB%BAV2ray%E6%9C%8D%E5%8A%A1/" title="GCP搭建V2ray服务">http://yoursite.com/2019/03/06/GCP%E6%90%AD%E5%BB%BAV2ray%E6%9C%8D%E5%8A%A1/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/03/06/GCP%E6%90%AD%E5%BB%BAV2ray%E6%9C%8D%E5%8A%A1/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          html: false,
+          timer: 500,
+          showConfirmButton: false
+        });
+      });
+    }));
+</script>
+
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GCP/" rel="tag"><i class="fa fa-tag"></i> GCP</a>
+          
+            <a href="/tags/V2ray/" rel="tag"><i class="fa fa-tag"></i> V2ray</a>
+          
+            <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag"><i class="fa fa-tag"></i> 科学上网</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/04/%E6%A8%A1%E7%89%88%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/" rel="next" title="模版方法模式">
+                <i class="fa fa-chevron-left"></i> 模版方法模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/12/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" rel="prev" title="观察者模式">
+                观察者模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>

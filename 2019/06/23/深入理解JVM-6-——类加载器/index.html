@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文转自 https:&#x2F;&#x2F;crowhawk.github.io&#x2F;2017&#x2F;08&#x2F;21&#x2F;jvm_6&#x2F;  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名来获取描述此类的二进制字节流(即字节码)”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”。 一般来说，Java 虚拟机使用 Java 类的方式如下：  Java 源程序（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JVM(6)——类加载器">
+<meta property="og:url" content="http://yoursite.com/2019/06/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JVM-6-%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="本文转自 https:&#x2F;&#x2F;crowhawk.github.io&#x2F;2017&#x2F;08&#x2F;21&#x2F;jvm_6&#x2F;  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名来获取描述此类的二进制字节流(即字节码)”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”。 一般来说，Java 虚拟机使用 Java 类的方式如下：  Java 源程序（">
+<meta property="og:locale">
+<meta property="og:image" content="https://pic.yupoo.com/crowhawk/188f5d64/26536d6a.png">
+<meta property="og:image" content="https://pic.yupoo.com/crowhawk/6c13f82d/1b25cd13.png">
+<meta property="og:image" content="https://pic.yupoo.com/crowhawk/1f37efef/99e7eaa6.png">
+<meta property="article:published_time" content="2019-06-23T14:13:31.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:30.137Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.yupoo.com/crowhawk/188f5d64/26536d6a.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/23/深入理解JVM-6-——类加载器/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>深入理解JVM(6)——类加载器 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JVM-6-%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解JVM(6)——类加载器
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-06-23 22:13:31" itemprop="dateCreated datePublished" datetime="2019-06-23T22:13:31+08:00">2019-06-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:30" itemprop="dateModified" datetime="2023-11-23T21:01:30+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文转自 <a target="_blank" rel="noopener" href="https://crowhawk.github.io/2017/08/21/jvm_6/">https://crowhawk.github.io/2017/08/21/jvm_6/</a></p>
+</blockquote>
+<p>虚拟机设计团队把类加载阶段中的<strong>“通过一个类的全限定名来获取描述此类的二进制字节流(即字节码)”</strong>这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为<strong>“类加载器”</strong>。</p>
+<p>一般来说，Java 虚拟机使用 Java 类的方式如下：</p>
+<ol>
+<li><strong>Java 源程序（.java 文件）</strong>在经过 Java 编译器<strong>编译</strong>之后就被转换成<strong>字节码（.class 文件）</strong>。</li>
+<li>类加载器负责读取 Java 字节代码，并转换成 <code>java.lang.Class</code>类的一个实例。每个这样的实例用来表示一个 Java 类。通过此实例的 <code>newInstance()</code>方法就可以创建出该类的一个对象。</li>
+</ol>
+<p>实际的情况可能更加复杂，比如 Java 字节代码可能是通过工具动态生成的，也可能是通过网络下载的。更详细的内容可以参考上一篇文章中讲类加载过程中的加载阶段时介绍的几个例子（JAR包、Applet、动态代理、JSP等）。</p>
+<h1 id="类与类加载器"><a href="#类与类加载器" class="headerlink" title="类与类加载器"></a>类与类加载器</h1><p>类加载器虽然只用于实现类的加载动作，但它在Java程序起到的作用却远大于类加载阶段。对于任意一个类，都需要由<strong>加载它的类加载器和这个类本身</strong>一同确立<strong>其在Java虚拟机中的唯一性</strong>，每一个类加载器，都拥有一个独立的类名称空间。通俗而言：比较两个类是否“相等”（这里所指的“相等”，包括类的Class对象的equals()方法、isAssignableFrom()方法、isInstance()方法的返回结果，也包括使用instanceof()关键字对做对象所属关系判定等情况），只有在这两个类时由同一个类加载器加载的前提下才有意义，否则，即使这两个类来源于同一个Class文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。</p>
+<h1 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h1><p>从jvm的角度来讲，只存在以下两种不同的类加载器：</p>
+<ul>
+<li><strong>启动类加载器（Bootstrap ClassLoader）</strong>，这个类加载器用C++实现，是虚拟机自身的一部分；</li>
+<li><strong>所有其他类的加载器</strong>，这些类由Java实现，独立于虚拟机外部，并且全都继承自抽象类<code>java.lang.ClassLoader</code>。</li>
+</ul>
+<p>从Java开发人员的角度看，类加载器可以划分得更细致一些：</p>
+<ul>
+<li><strong>启动类加载器（Bootstrap ClassLoader）</strong> 此类加载器负责将存放在 <code>&lt;JAVA_HOME&gt;\lib</code> 目录中的，或者被 -Xbootclasspath 参数所指定的路径中的，并且是虚拟机识别的（仅按照文件名识别，如 rt.jar，名字不符合的类库即使放在lib 目录中也不会被加载）类库加载到虚拟机内存中。 启动类加载器无法被 Java 程序直接引用，用户在编写自定义类加载器时，如果需要把加载请求委派给引导类加载器，直接使用null代替即可。</li>
+<li><strong>扩展类加载器（Extension ClassLoader）</strong> 这个类加载器是由<code>ExtClassLoader（sun.misc.Launcher$ExtClassLoader）</code>实现的。它负责将<code>&lt;Java_Home&gt;/lib/ext</code>或者被 <code>java.ext.dir</code>系统变量所指定路径中的所有类库加载到内存中，开发者可以直接使用扩展类加载器。</li>
+<li><strong>应用程序类加载器（Application ClassLoader）</strong> 这个类加载器是由 <code>AppClassLoader（sun.misc.Launcher$AppClassLoader）</code>实现的。由于这个类加载器是<code>ClassLoader</code>中的<code>getSystemClassLoader()</code>方法的返回值，因此一般称为<strong>系统类加载器</strong>。它负责加载<strong>用户类路径（ClassPath）</strong>上所指定的类库，开发者可以直接使用这个类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</li>
+</ul>
+<p>由开发人员开发的应用程序都是由这三种类加载器相互配合进行加载的，如果有必要，还可以加入自己定义的类加载器。这些类加载器的关系一般如下图所示：</p>
+<p><img src="https://pic.yupoo.com/crowhawk/188f5d64/26536d6a.png" alt=""></p>
+<p>上图展示的类加载器之间的层次关系，称为类加载器的<strong>双亲委派模型（Parents Delegation Model）</strong>。该模型要求除了顶层的启动类加载器外，其余的类加载器都应有自己的父类加载器，这里类加载器之间的父子关系一般通过<strong>组合（Composition）</strong>关系来实现，而不是通过继承（Inheritance）的关系实现。</p>
+<p><strong>工作过程</strong></p>
+<p>如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载，而是把这个请求委派给父类加载器，每一个层次的加载器都是如此，依次递归，因此所有的加载请求<strong>最终都应该传送到顶层的启动类加载器中</strong>，只有当父加载器反馈自己无法完成此加载请求（它搜索范围中没有找到所需类）时，子加载器才会尝试自己加载。</p>
+<p><strong>优点</strong></p>
+<p>使用双亲委派模型来组织类加载器之间的关系，使得Java类随着它的类加载器一起具备了一种<strong>带有优先级的层次关系</strong>。例如类<code>java.lang.Object</code>，它存放再<code>rt.jar</code>中，无论哪个类加载器要加载这个类，最终都是委派给处于模型最顶端的启动类加载器进行加载，因此Object类在程序的各种类加载器环境中都是同一个类。</p>
+<p>相反，如果没有双亲委派模型，由各个类加载器自行加载的话，如果用户编写了一个称为｀<code>java.lang.Object</code>的类，并放在程序的ClassPath中，那系统中将会出现多个不同的Object类，程序将变得一片混乱。如果开发者尝试编写一个与<code>rt.jar</code>类库中已有类重名的Java类，将会发现可以正常编译，但是永远无法被加载运行。</p>
+<p>双亲委派模型的实现如下：</p>
+<pre><code>protected synchronized Class&lt;?&gt; loadClass(String name,boolean resolve)throws ClassNotFoundException&#123;
+    //check the class has been loaded or not
+    Class c = findLoadedClass(name);
+    if(c == null)&#123;
+        try&#123;
+            if(parent != null)&#123;
+                c = parent.loadClass(name,false);
+            &#125;else&#123;
+                c = findBootstrapClassOrNull(name);
+            &#125;
+        &#125;catch(ClassNotFoundException e)&#123;
+            //if throws the exception ,the father can not complete the load
+        &#125;
+        if(c == null)&#123;
+            c = findClass(name);
+        &#125;
+    &#125;
+    if(resolve)&#123;
+        resolveClass(c);
+    &#125;
+    return c;
+&#125;
+</code></pre><h1 id="破坏双亲委派模型"><a href="#破坏双亲委派模型" class="headerlink" title="破坏双亲委派模型"></a>破坏双亲委派模型</h1><h3 id="线程上下文类加载器"><a href="#线程上下文类加载器" class="headerlink" title="线程上下文类加载器"></a>线程上下文类加载器</h3><p>双亲委派模型并不能解决 Java 应用开发中会遇到的类加载器的全部问题。Java 提供了很多<strong>服务提供者接口（Service Provider Interface，SPI）</strong>，允许第三方为这些接口提供实现。常见的 SPI 有 <strong>JDBC、JCE、JNDI、JAXP 和 JBI</strong> 等。这些 <strong>SPI 的接口由 Java 核心库来提供</strong>，如 JAXP 的 SPI 接口定义包含在 <code>javax.xml.parsers</code>包中。这些 SPI 的实现代码很可能是作为 Java 应用所依赖的 <strong>jar 包</strong>被包含进来，可以通过类路径（ClassPath）来找到，如实现了 JAXP SPI 的 Apache Xerces所包含的 jar 包。<strong>SPI 接口中的代码经常需要加载具体的实现类。</strong>如 JAXP 中的 <code>javax.xml.parsers.DocumentBuilderFactory</code>类中的 <code>newInstance()</code> 方法用来生成一个新的 <code>DocumentBuilderFactory</code> 的实例。这里的实例的真正的类是继承自 <code>javax.xml.parsers.DocumentBuilderFactory</code>，由 SPI 的实现所提供的。如在 Apache Xerces 中，实现的类是 org.apache.xerces.jaxp.DocumentBuilderFactoryImpl。而问题在于，<strong>SPI 的接口</strong>是<strong>Java 核心库</strong>的一部分，是<strong>由引导类加载器加载</strong>的，而<strong>SPI 实现的 Java 类</strong>一般是<strong>由系统类加载器加载</strong>的。引导类加载器是无法找到 SPI 的实现类的，因为它只加载 Java 的核心库。它也不能委派给系统类加载器，因为它是系统类加载器的祖先类加载器。也就是说，类加载器的双亲委派模型无法解决这个问题。</p>
+<p>为了解决这个问题，Java设计团队只好引入了一个不太优雅的设计：<strong>线程上下文类加载器（Thread Context ClassLoader）</strong>。线程上下文类加载器是从 JDK 1.2 开始引入的。类 <code>java.lang.Thread</code>中的方法 <code>getContextClassLoader()</code>和 <code>setContextClassLoader(ClassLoader cl)</code>用来获取和设置线程的上下文类加载器。如果没有通过 <code>setContextClassLoader(ClassLoader cl)</code>方法进行设置的话，线程将继承其父线程的上下文类加载器。Java 应用运行的初始线程的上下文类加载器是应用程序类加载器。在线程中运行的代码可以通过此类加载器来加载类和资源。</p>
+<p>有了线程上下文类加载器，就可以做一些“舞弊”的事情了，JNDI服务使用这个线程上下文类加载器去加载所需要的SPI代码，也就是父类加载器请求子类加载器去完成类加载器的动作，这种行为实际上就是<strong>打通了双亲委派模型的层次结构来逆向使用类加载器</strong>，已经违背了双亲委派模型的一般性原则。</p>
+<h3 id="追求程序动态性"><a href="#追求程序动态性" class="headerlink" title="追求程序动态性"></a>追求程序动态性</h3><p>这里所说的“动态性”指的是当前一些非常热门的名词：<strong>代码热替换（HotSwap）</strong>、<strong>模块热部署(Hot Deployment)</strong>等。即希望应用程序能像计算机的外设一样，接上鼠标、键盘，不用重启就能立即使用，鼠标出了问题或需要升级就换个鼠标，不用停机或重启。</p>
+<p>当前业界“事实上”的Java模块化标准是OSGi，而OSGi实现代码热部署的关键则是它自定义的类机载器的实现。关于OSGi的细节将在稍后的案例分析中详细讲解。</p>
+<h1 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h1><p><strong>API</strong></p>
+<p><img src="https://pic.yupoo.com/crowhawk/6c13f82d/1b25cd13.png" alt=""></p>
+<p>其中有如下三个比较重要的方法</p>
+<p>方法</p>
+<p>说明</p>
+<p><strong>defineClass(String name, byte[] b, int off, int len)</strong></p>
+<p>把字节数组 b中的内容转换成 Java 类，该字节数组可以看成是二进制流字节组成的文件，返回的结果是<code>java.lang.Class</code>类的实例。这个方法被声明为 final的。</p>
+<p><strong>loadClass(String name)</strong></p>
+<p>上文中已贴出源码，实现了双亲委派模型，调用<code>findClass()</code>执行类加载动作,返回的是<code>java.lang.Class</code>类的实例。</p>
+<p><strong>findClass(String name)</strong></p>
+<p>通过传入的类全限定名name来获取对应的类，返回的是<code>java.lang.Class</code>类的实例，该类没有提供具体的实现，开发者在自定义类加载器时需重用此方法，在实现此方法时需调用<code>defineClass(String name, byte[] b, int off, int len)</code>方法。</p>
+<p>在了解完上述内容后，我们可以容易地意识到自定义类加载器有以下两种方式：</p>
+<ul>
+<li><strong>采用双亲委派模型</strong>：继承ClassLoader类，只需重写其的<code>findClass(String name)</code>方法，而不需重写<code>loadClass(String name)</code>方法。</li>
+<li><strong>破坏双亲委派模型</strong>：继承ClassLoader类，需要整个重写实现了双亲委派模型逻辑的<code>loadClass(String name)</code>方法。</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>下面我们来实现一个自定义类加载器，用来加载存储在文件系统上的 Java 字节代码。</p>
+<pre><code>public class FileSystemClassLoader extends ClassLoader &#123; 
+
+   private String rootDir; 
+
+   public FileSystemClassLoader(String rootDir) &#123; 
+       this.rootDir = rootDir; 
+   &#125; 
+
+   @Override
+   protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123; 
+       byte[] classData = getClassData(name); 
+       if (classData == null) &#123; 
+           throw new ClassNotFoundException(); 
+       &#125; 
+       else &#123; 
+           return defineClass(name, classData, 0, classData.length); 
+       &#125; 
+   &#125; 
+
+   private byte[] getClassData(String className) &#123; 
+       String path = classNameToPath(className); 
+       try &#123; 
+           InputStream ins = new FileInputStream(path); 
+           ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+           int bufferSize = 4096; 
+           byte[] buffer = new byte[bufferSize]; 
+           int bytesNumRead = 0; 
+           while ((bytesNumRead = ins.read(buffer)) != -1) &#123; 
+               baos.write(buffer, 0, bytesNumRead); 
+           &#125; 
+           return baos.toByteArray(); 
+       &#125; catch (IOException e) &#123; 
+           e.printStackTrace(); 
+       &#125; 
+       return null; 
+   &#125; 
+
+   private String classNameToPath(String className) &#123; 
+       return rootDir + File.separatorChar 
+               + className.replace(&#39;.&#39;, File.separatorChar) + &quot;.class&quot;; 
+   &#125; 
+&#125;
+</code></pre><p>类 FileSystemClassLoader的 <code>findClass()</code>方法首先根据类的全名在硬盘上查找类的字节代码文件（.class 文件），然后读取该文件内容，最后通过 defineClass()方法来把这些字节代码转换成 <code>java.lang.Class</code>类的实例。</p>
+<h1 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h1><h3 id="Tomcat：正统的类加载器架构"><a href="#Tomcat：正统的类加载器架构" class="headerlink" title="Tomcat：正统的类加载器架构"></a>Tomcat：正统的类加载器架构</h3><p>主流的Java Web服务器如Tomcat、Jetty、WebLogic、WebSphere等等，都实现了自己定义的类加载器（一般都不止一个）。因为一个功能健全的Web服务器，要解决以下问题：</p>
+<ul>
+<li><strong>部署在同一个服务器上的两个Web应用程序所使用的Java类库可以实现相互隔离。</strong> 两个不同的应用程序可能会依赖同一个第三方类库的不同版本，不能要求一个类库在一个服务器中只有一份，服务器应当保证两个应用程序的类库可以互相独立使用。</li>
+<li><strong>部署在同一个服务器上的两个Web应用程序所使用的Java类库可以相互共享。</strong> 例如，用户可能有5个使用Spring组织的应用程序部署在同一台服务器上，如果把5份Spring分别放在各个应用程序的隔离目录中，库在使用时都要被加载到服务器内存中，JVM的方法区就会有过度膨胀的风险。</li>
+<li><strong>服务器需要尽可能保证自身安全不受部署的Web应用程序影响。</strong> 很多Web服务器本身是用Java实现的，服务器使用的类库应该与应用程序的类库相互独立。</li>
+<li><strong>支持JSP应用的服务器，大多数需要支持代码热替换（HotSwap）功能。</strong> JSP文件由于其纯文本存储的特性，运行时修改的概率远大于第三方类库或程序自身的Class文件，因此需要做到修改后无须重启。</li>
+</ul>
+<p>鉴于上述问题，各种Web服务器都不约而同地提供了数个ClassPath路径供用户存放第三方类库，这些路径一般以“lib”或“classes”命名。以Tomcat为例，有3组目录（“<strong>/common/<em> ”、“/server/</em> ”和“/shared/* ”</strong>）可以存放Java类库，另外还可以加上Web应用程序自身的目录<strong>“/WEB-INF/* ”</strong>，一共4组，把Java类库放置在这些目录中的含义分别如下：</p>
+<ul>
+<li><strong>/common</strong>目录：类库可被Tomcat和所有的Web应用程序共同使用。</li>
+<li><strong>/server</strong>目录：类库可被Tomcat使用，对所有的Web应用程序都不可见。</li>
+<li><strong>/shared</strong>目录：类库可被所有的Web应用程序共同使用，但对Tomcat自己不可见。</li>
+<li><strong>/WebApp/WEB-INF</strong>目录：类库仅仅可以被此Web应用程序使用，对Tomcat和其他Web应用程序都不可见。</li>
+</ul>
+<p>为了支持这套目录结构，并对目录里的类库进行加载和隔离，Tomcat采用如下经典的双亲委派模型来实现了多个类加载器：</p>
+<p><img src="https://pic.yupoo.com/crowhawk/1f37efef/99e7eaa6.png" alt=""></p>
+<p><strong>CommonClassLoader</strong>、<strong>CatalinaClassLoader</strong>、<strong>SharedClassLoader</strong>和<strong>WebappClassLoader</strong>是Tomcat自己定义的类加载器，它们分别加载<strong>/common/<em> 、/server/</em>、/shared/</strong>和/WebApp/WEB-INF/***中的Java类库。其中WebApp类加载器和JSP类加载器通常会存在多个实例，每一个Web应用程序对应一个WebApp类加载器，每一个JSP文件对应一个JSP类加载器。</p>
+<p><strong>CommonClassLoader</strong>能加载的类都可以被<strong>CatalinaClassLoader</strong>和<strong>SharedClassLoader</strong>使用，而<strong>CatalinaClassLoader</strong>和<strong>SharedClassLoader</strong>自己能加载的类则与对方相互隔离。<strong>WebAppClassLoader</strong>可以使用<strong>SharedClassLoader</strong>加载到的类，但各个<strong>WebAppClassLoader</strong>实例之间相互隔离。而<strong>JasperLoader</strong>的加载范围仅是这个JSP文件编译出来的那一个Class，它出现的目的就是被丢弃。当服务器检测到JSP文件被修改时，会替换掉目前的<strong>JasperLoader</strong>的实例，并通过再建立一个新的JSP类加载器来实现JSP文件的HotSwap功能。</p>
+<p><strong>特殊场景</strong></p>
+<p>前文提到过一个场景，如果有5个Web应用程序都是用Spring来进行组织和管理的话，可以把Spring放到<strong>Common</strong>或<strong>Shared</strong>目录下让这些程序共享。Spring要对用户程序的类进行管理，自然要能访问到用户程序的类，而用户程序放在<strong>/WebApp/WEB-INF</strong>目录中，这时就需要破坏双亲委派模型，使用线程上下文类加载器来完成这一工作了。</p>
+<h3 id="OSGi：类加载器的灵活运用"><a href="#OSGi：类加载器的灵活运用" class="headerlink" title="OSGi：类加载器的灵活运用"></a>OSGi：类加载器的灵活运用</h3><p><strong>OSGi（Open Service Gateway Initiative）</strong>是OSGi联盟制定的一个基于Java语言的动态模块化规范，现在成为了Java“事实上”的<strong>模块化标准</strong>。它为开发人员提供了面向服务和基于组件的运行环境，并提供标准的方式用来管理软件的生命周期。OSGi 已经被实现和部署在很多产品上，在开源社区也得到了广泛的支持，其中最为著名的应用莫过于大家都很熟悉的Eclipse IDE。</p>
+<p>OSGi 中的每个<strong>模块（bundle）</strong>都包含 <strong>Java Package和Class</strong>。模块可以声明它所依赖的需要<strong>导入（import）</strong>的其它模块的 Java 包和类（通过 <strong>Import-Package</strong>），也可以声明<strong>导出（export）</strong>自己的包和类，供其它模块使用（通过 <strong>Export-Package</strong>）。也就是说需要能够隐藏和共享一个模块中的某些 Java 包和类。这是通过 OSGi 特有的类加载器机制来实现的。</p>
+<p><strong>OSGi 中的每个模块都有对应的一个类加载器</strong>，它负责加载模块自己包含的 Java 包和类。当它需要加载 Java 核心库的类时（以 java开头的包和类），它会代理给父类加载器（通常是启动类加载器）来完成。<strong>当它需要加载所导入的 Java 类时，它会代理给导出此 Java 类的模块来完成加载。</strong>模块也可以显式的声明某些 Java 包和类，必须由父类加载器来加载。只需要设置系统属性 <code>org.osgi.framework.bootdelegation</code>的值即可。</p>
+<p>假设有两个模块 bundleA 和 bundleB，它们都有自己对应的类加载器 ClassLoaderA 和 ClassLoaderB。在 bundleA 中包含类 com.bundleA.Sample，并且该类被声明为导出的，也就是说可以被其它模块所使用的。bundleB 声明了导入 bundleA 提供的类 <code>com.bundleA.Sample</code>，并包含一个类 <code>com.bundleB.NewSample</code>继承自 <code>com.bundleA.Sample</code>。在 bundleB 启动的时候，其类加载器 classLoaderB 需要加载类 <code>com.bundleB.NewSample</code>，进而需要加载类 <code>com.bundleA.Sample</code>。由于 bundleB 声明了类 <code>com.bundleA.Sample</code>是导入的，classLoaderB 把加载类 <code>com.bundleA.Sample</code>的工作代理给导出该类的 bundleA 的类加载器 ClassLoaderA。ClassLoaderA 在其模块内部查找类 <code>com.bundleA.Sample</code>并定义它，所得到的类 <code>com.bundleA.Sample</code>实例就可以被所有声明导入了此类的模块使用。对于以 java开头的类，都是由父类加载器来加载的。如果声明了系统属性 <code>org.osgi.framework.bootdelegation=com.example.core.*</code>，那么对于包 <code>com.example.core</code>中的类，都是由父类加载器来完成的。 OSGi 模块的这种类加载器结构，使得一个类的不同版本可以共存在 Java 虚拟机中，带来了很大的灵活性。不过它的这种不同，也会给开发人员带来一些麻烦，尤其当模块需要使用第三方提供的库的时候。下面提供几条比较好的建议：</p>
+<ul>
+<li>如果一个类库只有一个模块使用，把该类库的 jar 包放在模块中，在 Bundle-ClassPath中指明即可。</li>
+<li>如果一个类库被多个模块共用，可以为这个类库单独的创建一个模块，把其它模块需要用到的 Java 包声明为导出的。其它模块声明导入这些类。</li>
+<li>如果类库提供了 SPI 接口，并且利用线程上下文类加载器来加载 SPI 实现的 Java 类，有可能会找不到 Java 类。如果出现了 NoClassDefFoundError异常，首先检查当前线程的上下文类加载器是否正确。通过 <code>Thread.currentThread().getContextClassLoader()</code>就可以得到该类加载器。该类加载器应该是该模块对应的类加载器。如果不是的话，可以首先通过 <code>class.getClassLoader()</code>来得到模块对应的类加载器，再通过 <code>Thread.currentThread().setContextClassLoader()</code>来设置当前线程的上下文类加载器。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/24722612/">《深入理解Java虚拟机——JVM高级特性与最佳实践》－周志明</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html#code6">深入探讨 Java 类加载器－成富</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JVM-5-%E2%80%94%E2%80%94%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" rel="next" title="深入理解JVM(5)——虚拟机类加载机制">
+                <i class="fa fa-chevron-left"></i> 深入理解JVM(5)——虚拟机类加载机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/12/CountDownLatch/" rel="prev" title="CountDownLatch">
+                CountDownLatch <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>

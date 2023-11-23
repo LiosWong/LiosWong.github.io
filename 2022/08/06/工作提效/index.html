@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="MAC工具clipy剪贴板工具 Alfred设置禁用Spotlight, 让command+空格键为Alfred的hotkey偏好设置&#x3D;&#x3D;》键盘 &#x3D;&#x3D;》快捷键&#x3D;&#x3D;》聚焦 &#x3D;&#x3D;》显示“聚焦”搜索  去掉了显示聚焦小√，那么Spotlight就禁止了Alfred 中设置 command+空格键 为hotkey  Clipboard History设置的快捷键为 control + command +">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工作提效">
+<meta property="og:url" content="http://yoursite.com/2022/08/06/%E5%B7%A5%E4%BD%9C%E6%8F%90%E6%95%88/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="MAC工具clipy剪贴板工具 Alfred设置禁用Spotlight, 让command+空格键为Alfred的hotkey偏好设置&#x3D;&#x3D;》键盘 &#x3D;&#x3D;》快捷键&#x3D;&#x3D;》聚焦 &#x3D;&#x3D;》显示“聚焦”搜索  去掉了显示聚焦小√，那么Spotlight就禁止了Alfred 中设置 command+空格键 为hotkey  Clipboard History设置的快捷键为 control + command +">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-08-05T17:12:39.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:30.065Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="插件">
+<meta property="article:tag" content="提效">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/08/06/工作提效/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>工作提效 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/06/%E5%B7%A5%E4%BD%9C%E6%8F%90%E6%95%88/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">工作提效
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2022-08-06 01:12:39" itemprop="dateCreated datePublished" datetime="2022-08-06T01:12:39+08:00">2022-08-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:30" itemprop="dateModified" datetime="2023-11-23T21:01:30+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="MAC工具"><a href="#MAC工具" class="headerlink" title="MAC工具"></a>MAC工具</h2><h3 id="clipy"><a href="#clipy" class="headerlink" title="clipy"></a>clipy</h3><p>剪贴板工具</p>
+<h3 id="Alfred"><a href="#Alfred" class="headerlink" title="Alfred"></a>Alfred</h3><h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><h5 id="禁用Spotlight-让command-空格键为Alfred的hotkey"><a href="#禁用Spotlight-让command-空格键为Alfred的hotkey" class="headerlink" title="禁用Spotlight, 让command+空格键为Alfred的hotkey"></a>禁用Spotlight, 让command+空格键为Alfred的hotkey</h5><p>偏好设置==》键盘 ==》快捷键==》聚焦 ==》显示“聚焦”搜索  去掉了显示聚焦小√，那么Spotlight就禁止了<br>Alfred 中设置 command+空格键 为hotkey </p>
+<h5 id="Clipboard-History"><a href="#Clipboard-History" class="headerlink" title="Clipboard History"></a>Clipboard History</h5><p>设置的快捷键为 control + command + x<br>Alfred无法自动粘贴问题: 虽然在“Advanced” 中勾选了 Pasting: Auto-paste on return<br>还需要添加辅助功能的权限, 系统偏好设置 ==》 安全性与隐私 ==》 辅助功能  给Alfred勾选添加权限才行</p>
+<h5 id="alfred-集成idea"><a href="#alfred-集成idea" class="headerlink" title="alfred 集成idea"></a>alfred 集成idea</h5><ul>
+<li><code>npm install -g --loglevel verbose @bchatard/alfred-jetbrains</code> 安装idea插件</li>
+<li>初始化idea的脚本, idea ==》Tools ==》Create Command-line Launcher </li>
+<li>回到Alfred, 点击到Workflows可以看到已经有了, 输入 idea + project 就可以愉快玩耍了</li>
+</ul>
+<h3 id="charles"><a href="#charles" class="headerlink" title="charles"></a>charles</h3><p>抓包工具</p>
+<h3 id="omnigraffle"><a href="#omnigraffle" class="headerlink" title="omnigraffle"></a>omnigraffle</h3><p>画图工具,自由度很大, 架构图、流程图、时序图等等, 个人感觉比processon灵活度更高</p>
+<h3 id="keynote"><a href="#keynote" class="headerlink" title="keynote"></a>keynote</h3><p>不错的工具, 可以用来画各种图, 很不错的工具</p>
+<h3 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h3><p>编辑器, 关于vscode配置已通过sync插件同步到github</p>
+<h5 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h5><ul>
+<li>common + shift + p 查找、运行命令</li>
+<li>批量选择所有首列或者最后一列<br>shift + alt(optionl) + command + 左右指向键</li>
+<li>批量选择，每行末尾出现光标<br>shift + alt + i ==》 改成command + shift + l 同sublimetext</li>
+<li>批量选择相同字符<br>fn + f2 + common ==》command + control + g 同sublimetext</li>
+<li>分屏<br>common + \ 分一个屏，common + \ + 3 分三个屏</li>
+<li>关闭左侧活动栏<br>scp中，sidebar 关闭</li>
+<li>common + p 搜索文件</li>
+<li>运行快捷键，改成了 command + b，运行python、js等，同sublimetext,</li>
+<li>control + R ==》改成了 comman + control + p   切换workspace，同sublimetext</li>
+<li>control + w 选择切换窗口</li>
+<li>control + U撤销操作</li>
+<li>control + z 回退</li>
+<li>alt + shift + f 格式化代码</li>
+<li>shift + command + e 展示explorer</li>
+<li></li>
+<li>command + control + t 在终端打开当前文件夹</li>
+<li>command + shift +n 打开新窗口</li>
+<li>删除重复的行, <code>common + shift + p</code> ==》 <code>&gt;Delete Duplicate Lines</code> 很好用的命令</li>
+</ul>
+<h5 id="工作区快捷键"><a href="#工作区快捷键" class="headerlink" title="工作区快捷键"></a>工作区快捷键</h5><ul>
+<li>显示/隐藏控制台 ，也可通过scp，输入panel<br>command + j </li>
+<li>创建多个窗口<br>command + \ + fn ==》alt + command + 2 同sublimetext</li>
+<li>聚焦到第 1、第 2 个窗口<br>command + 1、2</li>
+<li>重新新建一个文件<br>command + n </li>
+<li>关闭当前文件<br>command + w</li>
+</ul>
+<h5 id="写代码快捷键"><a href="#写代码快捷键" class="headerlink" title="写代码快捷键"></a>写代码快捷键</h5><ul>
+<li>fn + f5 调试代码</li>
+<li>fn + f12 查看方法在哪里被调用</li>
+<li>control + +/-回到鼠标上次的位置</li>
+<li>Command+ Option + [   折叠代码</li>
+<li>Command + d 单词选中</li>
+<li>Command + Shift+ o  文件中符号跳转(变量、方法等等)</li>
+<li>Command + Alt + Up / Down  </li>
+<li>F2 + fn 重命名</li>
+<li>Shift + Option  块选择</li>
+<li>Shift + Option  你可以按住上面的快捷键，然后拖动鼠标，选择一个文本块，光标会被添加到选中的每一行中。</li>
+</ul>
+<h5 id="自定义快捷键"><a href="#自定义快捷键" class="headerlink" title="自定义快捷键"></a>自定义快捷键</h5><h5 id="跳转操作快捷键"><a href="#跳转操作快捷键" class="headerlink" title="跳转操作快捷键"></a>跳转操作快捷键</h5><h5 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h5><h5 id="编辑操作"><a href="#编辑操作" class="headerlink" title="编辑操作"></a>编辑操作</h5><h5 id="多光标编辑"><a href="#多光标编辑" class="headerlink" title="多光标编辑"></a>多光标编辑</h5><h5 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h5><h5 id="搜索操作"><a href="#搜索操作" class="headerlink" title="搜索操作"></a>搜索操作</h5><blockquote>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/LOfzmZffc6B1xh7JxKtroA">https://mp.weixin.qq.com/s/LOfzmZffc6B1xh7JxKtroA</a></p>
+</blockquote>
+<h3 id="sublimetext"><a href="#sublimetext" class="headerlink" title="sublimetext"></a>sublimetext</h3><p>编辑器  </p>
+<h3 id="omnigraffle-1"><a href="#omnigraffle-1" class="headerlink" title="omnigraffle"></a>omnigraffle</h3><p>绘图软件</p>
+<h3 id="xmind"><a href="#xmind" class="headerlink" title="xmind"></a>xmind</h3><p>思维导图</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+          
+            <a href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> 插件</a>
+          
+            <a href="/tags/%E6%8F%90%E6%95%88/" rel="tag"><i class="fa fa-tag"></i> 提效</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/07/21/%E5%85%B3%E4%BA%8E%E8%BF%91%E4%B8%A4%E6%AC%A1%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83/" rel="next" title="关于近两次生产问题思考">
+                <i class="fa fa-chevron-left"></i> 关于近两次生产问题思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/08/07/Linux%E5%91%BD%E4%BB%A4/" rel="prev" title="Linux命令">
+                Linux命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>

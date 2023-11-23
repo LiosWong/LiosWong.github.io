@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="该脚本使用dubbo telnet方式（dubbo官网提供的dubbo python client目前只支持jsonrpc协议，目前环境不支持）,可以根据该脚本实现dev、test环境的接口自动化、压力测试，根据具体需求填补脚本即可。 #!&#x2F;usr&#x2F;bin&#x2F;python # -*- coding:utf-8 -*- import json import telnetlib import unitt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dubbo_telnet自动化测试脚本">
+<meta property="og:url" content="http://yoursite.com/2020/05/28/dubbo-telnet%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="该脚本使用dubbo telnet方式（dubbo官网提供的dubbo python client目前只支持jsonrpc协议，目前环境不支持）,可以根据该脚本实现dev、test环境的接口自动化、压力测试，根据具体需求填补脚本即可。 #!&#x2F;usr&#x2F;bin&#x2F;python # -*- coding:utf-8 -*- import json import telnetlib import unitt">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-05-28T08:53:17.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:29.994Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="dubbo">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/28/dubbo-telnet自动化测试脚本/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>dubbo_telnet自动化测试脚本 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/dubbo-telnet%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">dubbo_telnet自动化测试脚本
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-05-28 16:53:17" itemprop="dateCreated datePublished" datetime="2020-05-28T16:53:17+08:00">2020-05-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:29" itemprop="dateModified" datetime="2023-11-23T21:01:29+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/useful-scripts/" itemprop="url" rel="index"><span itemprop="name">useful-scripts</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>该脚本使用dubbo telnet方式（dubbo官网提供的dubbo python client目前只支持jsonrpc协议，目前环境不支持）,可以根据该脚本实现dev、test环境的接口自动化、压力测试，根据具体需求填补脚本即可。</p>
+<pre><code>#!/usr/bin/python
+# -*- coding:utf-8 -*-
+import json
+import telnetlib
+import unittest
+import time
+import re
+
+
+class Dubbo(telnetlib.Telnet):
+
+    prompt = &#39;dubbo&gt;&#39;
+    coding = &#39;utf-8&#39;
+
+    def __init__(self, host=None, port=0):
+        super().__init__(host, port)
+        self.write(b&#39;\n&#39;)
+
+    def command(self, flag, str_=&quot;&quot;):
+        data = self.read_until(flag.encode())
+        self.write(str_.encode() + b&quot;\n&quot;)
+        return data
+
+    def invoke(self, service_name, method_name, args):
+        command_str = &quot;invoke &#123;0&#125;.&#123;1&#125;(&#123;2&#125;)&quot;.format(
+            service_name, method_name, args)
+        self.command(Dubbo.prompt, command_str)
+        data = self.command(Dubbo.prompt, &quot;&quot;)
+        data = json.loads(data.decode(
+            Dubbo.coding, errors=&#39;ignore&#39;).split(&#39;\n&#39;)[0].strip())
+        return data
+
+
+class DcTest(unittest.TestCase):
+    #setUp 用于设置初始化的部分，在测试用例执行前，这个方法中的函数将先被调用 #
+    def setUp(self):
+        &#39;&#39;&#39;
+        33: Dubbo(&#39;301.57.79.01&#39;, 27075)
+        44: Dubbo(&#39;106.12.59.915&#39;, 7075)
+        dev: Dubbo(&#39;121.36.108.215&#39;, 6666)
+        &#39;&#39;&#39;
+        self.dubbo_conn = Dubbo(&#39;127.0.0.1&#39;, 6666)
+        self.verificationErrors = []  # 脚本运行时，错误的信息将被打印到这个列表中#
+        self.accept_next_alert = True  # 是否继续接受下一个警告#
+    # 更改司机状态
+    def test_update_driver_status(self):
+        data = &#123;&quot;class&quot;:&quot;com.caocao.dc.api.dto.input.DriverStatusDTO&quot;,&quot;driverNo&quot;:1003019,&quot;status&quot;:1&#125;
+        result = self.dubbo_conn.invoke(
+            &quot;com.caocao.dc.api.app.DriverCenterApi&quot;, &quot;updateDriverStatus&quot;, data)
+        print(result)
+        time.sleep(2)
+    # 司机开始服务
+    def test_start_service(self):
+        data = &#123;&quot;class&quot;: &quot;com.caocao.dc.api.dto.input.DriverStartServiceParam&quot;, &quot;driverNo&quot;: 1003019,&quot;lat&quot;: 30.206907552083333, &quot;lng&quot;: 120.22090521918403, &quot;orderLabel&quot;: 128, &quot;orderNo&quot;: 74602113541, &quot;bizType&quot;: 1&#125;
+        result = self.dubbo_conn.invoke(
+            &quot;com.caocao.dc.api.app.response.DriverOrderResponseApi&quot;, &quot;startService&quot;, data)
+        print(result)
+        time.sleep(2)
+    def tearDown(self):
+        &#39;&#39;&#39;
+        tearDown 方法在每个测试方法执行后调用，这个地方做所有清理工作，如退出浏览器等。
+        self.assertEqual([], self.verificationErrors) 是个难点，
+        对前面verificationErrors方法获得的列表进行比较；如查verificationErrors的列表不为空，输出列表中的报错信息。
+        &#39;&#39;&#39;
+        self.assertEqual([], self.verificationErrors)
+
+class DriverSupportTest(unittest.TestCase):
+    #setUp 用于设置初始化的部分，在测试用例执行前，这个方法中的函数将先被调用 #
+    def setUp(self):
+        &#39;&#39;&#39;
+        33: Dubbo(&#39;17.46.148.208&#39;, 7071)
+        44: Dubbo(&#39;19.22.19.25&#39;, 7075)
+        &#39;&#39;&#39;
+        self.dubbo_conn = Dubbo(&#39;97.92.238.218&#39;, 7071)
+        self.verificationErrors = []  # 脚本运行时，错误的信息将被打印到这个列表中#
+        self.accept_next_alert = True  # 是否继续接受下一个警告#
+
+    # 虚拟号AX预绑定
+    def test_pre_bind_phone(self):
+        data = &#123;&quot;class&quot;:&quot;com.caocao.driver.support.dto.phone.BindPhoneAxPreParam&quot;,&quot;customerPhone&quot;:&quot;4141241&quot;,&quot;orderNo&quot;:4141241,&quot;bizType&quot;:80,&quot;expireTime&quot;:1,&quot;areaCode&quot;:&quot;0571&quot;&#125;
+        result = self.dubbo_conn.invoke(
+            &quot;com.caocao.driver.support.api.VirPhoneAxApi&quot;, &quot;preBindPhone&quot;, data)
+        print(result)
+        time.sleep(2)
+    def tearDown(self):
+        &#39;&#39;&#39;
+        tearDown 方法在每个测试方法执行后调用，这个地方做所有清理工作，如退出浏览器等。
+        self.assertEqual([], self.verificationErrors) 是个难点，
+        对前面verificationErrors方法获得的列表进行比较；如查verificationErrors的列表不为空，输出列表中的报错信息。
+        &#39;&#39;&#39;
+        self.assertEqual([], self.verificationErrors)
+
+&#39;&#39;&#39;
+driver-order
+&#39;&#39;&#39;
+class DriverOrderTest(unittest.TestCase):
+    #setUp 用于设置初始化的部分，在测试用例执行前，这个方法中的函数将先被调用 #
+    def setUp(self):
+        &#39;&#39;&#39;
+        33: Dubbo(&#39;101.159.59.142&#39;, 7071)
+        44: Dubbo(&#39;106.2.9.25&#39;, 7071)
+        &#39;&#39;&#39;
+        self.dubbo_conn = Dubbo(&#39;111.32.49.515&#39;, 7071)
+        self.verificationErrors = []  # 脚本运行时，错误的信息将被打印到这个列表中#
+        self.accept_next_alert = True  # 是否继续接受下一个警告#
+    # 订单流程校验
+    def test_check_serve_flow(self):
+        data = &#123;&quot;class&quot;: &quot;com.caocao.driver.order.param.ServeFlowCheckParam&quot;, &quot;bizType&quot;: 1, &quot;cityCode&quot;: &quot;0571&quot;,
+                &quot;driverNo&quot;: 3500035951, &quot;driverType&quot;: 1, &quot;orderLabel&quot;: 0, &quot;orderNo&quot;: 8361805001163, &quot;orderType&quot;: 1, &quot;serveFlow&quot;: 1&#125;
+        result = self.dubbo_conn.invoke(
+            &quot;com.caocao.driver.order.api.DriverServeActionSupportApi&quot;, &quot;checkServeFlow&quot;, data)
+        print(result)
+        time.sleep(2)
+    # 司机开始服务订单(实时单确认接单/预约单开始服务)
+    def test_start_service(self):
+        print(self.dubbo_conn)
+
+    def tearDown(self):
+        &#39;&#39;&#39;
+        tearDown 方法在每个测试方法执行后调用，这个地方做所有清理工作，如退出浏览器等。
+        self.assertEqual([], self.verificationErrors) 是个难点，
+        对前面verificationErrors方法获得的列表进行比较；如查verificationErrors的列表不为空，输出列表中的报错信息。
+        &#39;&#39;&#39;
+        self.assertEqual([], self.verificationErrors)
+
+&#39;&#39;&#39;
+local
+&#39;&#39;&#39;
+class LocalTest(unittest.TestCase):
+    #setUp 用于设置初始化的部分，在测试用例执行前，这个方法中的函数将先被调用 #
+    def setUp(self):
+        &#39;&#39;&#39;
+        local1: Dubbo(&#39;127.0.0.1&#39;, 20880)
+        &#39;&#39;&#39;
+        self.dubbo_conn = Dubbo(&#39;127.0.0.1&#39;, 20880)
+        self.verificationErrors = []  # 脚本运行时，错误的信息将被打印到这个列表中#
+        self.accept_next_alert = True  # 是否继续接受下一个警告#
+    # 测试sayHello
+    def test_say_hello(self):
+        for x in range(0,1):
+            data = &#123;&quot;class&quot;:&quot;com.alibaba.dubbo.demo.BeanParam&quot;,&quot;name&quot;:&quot;lios&quot;,&quot;age&quot;:25+x&#125;
+            result = self.dubbo_conn.invoke(
+            &quot;com.alibaba.dubbo.demo.DemoService&quot;, &quot;hello&quot;, data)
+            print(result)
+            pass
+        time.sleep(2)
+
+    def test_2(self):
+        print(self.dubbo_conn)
+
+    def tearDown(self):
+        &#39;&#39;&#39;
+        tearDown 方法在每个测试方法执行后调用，这个地方做所有清理工作，如退出浏览器等。
+        self.assertEqual([], self.verificationErrors) 是个难点，
+        对前面verificationErrors方法获得的列表进行比较；如查verificationErrors的列表不为空，输出列表中的报错信息。
+        &#39;&#39;&#39;
+        self.assertEqual([], self.verificationErrors)
+
+
+&#39;&#39;&#39;
+dc suite
+&#39;&#39;&#39;
+def dc_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(DcTest(&quot;test_update_driver_status&quot;))
+    suite.addTest(DcTest(&quot;test_start_service&quot;))
+    return suite
+    pass
+
+&#39;&#39;&#39;
+driver-support suite
+&#39;&#39;&#39;
+def driver_support_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(DriverSupportTest(&quot;test_pre_bind_phone&quot;))
+    return suite
+    pass
+
+&#39;&#39;&#39;
+driver-order suite
+&#39;&#39;&#39;
+def driver_order_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(DriverOrderTest(&quot;test_check_serve_flow&quot;))
+    suite.addTest(DriverOrderTest(&quot;test_start_service&quot;))
+    return suite
+    pass
+&#39;&#39;&#39;
+local suite
+&#39;&#39;&#39;
+def local_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(LocalTest(&quot;test_say_hello&quot;))
+    return suite
+    pass
+
+if __name__ == &quot;__main__&quot;:
+    ## 指定suite套件
+    unittest.main(defaultTest=&#39;dc_suite&#39;)
+
+</code></pre>
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>dubbo_telnet自动化测试脚本</a></p>
+  <p><span>文章作者:</span></a></p>
+  <p><span>发布时间:</span>2020年05月28日 - 16:53:17</p>
+  <p><span>最后更新:</span>2023年11月23日 - 21:01:29</p>
+  <p><span>原始链接:</span><a href="/2020/05/28/dubbo-telnet%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC/" title="dubbo_telnet自动化测试脚本">http://yoursite.com/2020/05/28/dubbo-telnet%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/05/28/dubbo-telnet%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          html: false,
+          timer: 500,
+          showConfirmButton: false
+        });
+      });
+    }));
+</script>
+
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/dubbo/" rel="tag"><i class="fa fa-tag"></i> dubbo</a>
+          
+            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/22/java%E9%94%81%E7%B1%BB%E5%9E%8B/" rel="next" title="java锁类型">
+                <i class="fa fa-chevron-left"></i> java锁类型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/28/%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%B9%B6%E5%8F%91/" rel="prev" title="并行与并发">
+                并行与并发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/psb.jpeg?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"remove","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性（英语：Durability_(database_systems)）的键值对存储数据库（英语：Key-value database） 数据类型 strings(字符串)字符串是一种最基本的Redis值类型。Redis字符串是二进制安全的，这意味着一个Redis字符串能包含任意类型的数据，例如： 一张JPEG格式的图片或者一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis数据类型及命令">
+<meta property="og:url" content="http://yoursite.com/2019/02/24/redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="后端沉思录">
+<meta property="og:description" content="Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性（英语：Durability_(database_systems)）的键值对存储数据库（英语：Key-value database） 数据类型 strings(字符串)字符串是一种最基本的Redis值类型。Redis字符串是二进制安全的，这意味着一个Redis字符串能包含任意类型的数据，例如： 一张JPEG格式的图片或者一个">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-02-24T14:29:09.000Z">
+<meta property="article:modified_time" content="2023-11-23T13:01:30.002Z">
+<meta property="article:author" content="LiosWong">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/24/redis数据类型及命令/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>redis数据类型及命令 | 后端沉思录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+    <!--   <a target="_blank" rel="noopener" href="https://github.com/LiosWong"><img width="10" height="20" style="absolute;top:0;left:0;border:0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a> -->
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">后端沉思录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Stay Hungry. Stay Foolish.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/24/redis%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E5%91%BD%E4%BB%A4/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiosWong"/>
+      <meta itemprop="description" content="Less is more"/>
+      <meta itemprop="image" content="/images/touxiang.jpeg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="后端沉思录"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">redis数据类型及命令
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+            
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-24 22:29:09" itemprop="dateCreated datePublished" datetime="2019-02-24T22:29:09+08:00">2019-02-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2023-11-23 21:01:30" itemprop="dateModified" datetime="2023-11-23T21:01:30+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性（英语：Durability_(database_systems)）的键值对存储数据库（英语：Key-value database）</p>
+<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><ul>
+<li>strings(字符串)<br>字符串是一种最基本的Redis值类型。Redis字符串是二进制安全的，这意味着一个Redis字符串能包含任意类型的数据，例如： 一张JPEG格式的图片或者一个序列化的Ruby对象。一个字符串类型的值最多能存储512M字节的内容。  </li>
+<li>hashes(哈希)<br>Redis Hashes是字符串字段和字符串值之间的映射，所以它们是完美的表示对象（eg:一个有名，姓，年龄等属性的用户）的数据类型。  </li>
+<li>lists(列表)<br>Redis列表是简单的字符串列表，按照插入顺序排序。 你可以添加一个元素到列表的头部（左边）或者尾部（右边）。LPUSH 命令插入一个新元素到列表头部，而RPUSH命令 插入一个新元素到列表的尾部。当 对一个空key执行其中某个命令时，将会创建一个新表。 类似的，如果一个操作要清空列表，那么key会从对应的key空间删除。这是个非常便利的语义，因为如果使用一个不存在的key作为参数，所有的列表命令都会像在对一个空表操作一样。  </li>
+<li>sets(集合)<br>Redis集合是一个无序的字符串合集。你可以以O(1) 的时间复杂度（无论集合中有多少元素时间复杂度都为常量）完成 添加，删除以及测试元素是否存在的操作。<br>Redis集合有着不允许相同成员存在的优秀特性。向集合中多次添加同一元素，在集合中最终只会存在一个此元素。实际上这就意味着，在添加元素前，你并不需要事先进行检验此元素是否已经存在的操作。  </li>
+<li>zset(有序集合)<br>Redis集合是一个无序的字符串合集。你可以以O(1) 的时间复杂度（无论集合中有多少元素时间复杂度都为常量）完成 添加，删除以及测试元素是否存在的操作。<br>Redis集合有着不允许相同成员存在的优秀特性。向集合中多次添加同一元素，在集合中最终只会存在一个此元素。实际上这就意味着，在添加元素前，你并不需要事先进行检验此元素是否已经存在的操作。  </li>
+</ul>
+<h5 id="命令-参考http-redis-cn-commands-html-string"><a href="#命令-参考http-redis-cn-commands-html-string" class="headerlink" title="命令(参考http://redis.cn/commands.html#string)"></a>命令(参考<a target="_blank" rel="noopener" href="http://redis.cn/commands.html#string">http://redis.cn/commands.html#string</a>)</h5><ul>
+<li>strings</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>APPEND key value</td>
+<td>APPEND key value</td>
+</tr>
+<tr>
+<td>BITCOUNT key [start end]</td>
+<td>统计字符串指定起始位置的字节数</td>
+</tr>
+<tr>
+<td>BITFIELD key[GET type offset][SET type offset value][INCRBY type offset increment][OVERFLOW WRAP、SAT、FAIL]</td>
+<td>Perform arbitrary bitfield integer operations on strings</td>
+</tr>
+<tr>
+<td>BITOP operation destkey key [key …]</td>
+<td>Perform bitwise operations between strings</td>
+</tr>
+<tr>
+<td>BITPOS key bit [start] [end]</td>
+<td>Find first bit set or clear in a string</td>
+</tr>
+<tr>
+<td>DECR key</td>
+<td>整数原子减1</td>
+</tr>
+<tr>
+<td>DECRBY key decrement</td>
+<td>原子减指定的整数</td>
+</tr>
+<tr>
+<td>GET key</td>
+<td>返回key的value</td>
+</tr>
+<tr>
+<td>GETBIT key offset</td>
+<td>返回位的值存储在关键的字符串值的偏移量。</td>
+</tr>
+<tr>
+<td>GETRANGE key start end</td>
+<td>获取存储在key上的值的一个子字符串</td>
+</tr>
+<tr>
+<td>GETSET key value</td>
+<td>设置一个key的value，并获取设置前的值</td>
+</tr>
+<tr>
+<td>INCR key</td>
+<td>执行原子加1操作</td>
+</tr>
+<tr>
+<td>INCRBY key increment</td>
+<td>执行原子增加一个整数</td>
+</tr>
+<tr>
+<td>INCRBYFLOAT key increment</td>
+<td>执行原子增加一个浮点数</td>
+</tr>
+<tr>
+<td>MGET key [key …]</td>
+<td>获得所有key的值</td>
+</tr>
+<tr>
+<td>MSET key value [key value …]</td>
+<td>设置多个key value</td>
+</tr>
+<tr>
+<td>MSETNX key value [key value …]</td>
+<td>设置多个key value,仅当key存在时</td>
+</tr>
+<tr>
+<td>PSETEX key milliseconds value</td>
+<td>Set the value and expiration in milliseconds of a key</td>
+</tr>
+<tr>
+<td>SET key value [EX seconds] [PX milliseconds] [NX</td>
+<td>XX]</td>
+<td>设置一个key的value值</td>
+</tr>
+<tr>
+<td>SETBIT key offset value</td>
+<td>Sets or clears the bit at offset in the string value stored at key</td>
+</tr>
+<tr>
+<td>SETEX key seconds value</td>
+<td>设置key-value并设置过期时间（单位：秒）</td>
+</tr>
+<tr>
+<td>SETNX key value</td>
+<td>设置的一个关键的价值，只有当该键不存在</td>
+</tr>
+<tr>
+<td>SETRANGE key offset value</td>
+<td>Overwrite part of a string at key starting at the specified offset</td>
+</tr>
+<tr>
+<td>STRLEN key</td>
+<td>获取指定key值的长度</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>hashes</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HDEL key field [field …]</td>
+<td>删除一个或多个Hash的field</td>
+</tr>
+<tr>
+<td>HEXISTS key field</td>
+<td>判断field是否存在于hash中</td>
+</tr>
+<tr>
+<td>HGET key field</td>
+<td>获取hash中field的值</td>
+</tr>
+<tr>
+<td>HGETALL key</td>
+<td>从hash中读取全部的域和值</td>
+</tr>
+<tr>
+<td>HINCRBY key field increment</td>
+<td>将hash中指定域的值增加给定的数字</td>
+</tr>
+<tr>
+<td>HINCRBYFLOAT key field increment</td>
+<td>将hash中指定域的值增加给定的浮点数</td>
+</tr>
+<tr>
+<td>HKEYS key</td>
+<td>获取hash的所有字段</td>
+</tr>
+<tr>
+<td>HLEN key</td>
+<td>获取hash里所有字段的数量</td>
+</tr>
+<tr>
+<td>HMGET key field [field …]</td>
+<td>获取hash里面指定字段的值</td>
+</tr>
+<tr>
+<td>HMSET key field value [field value …]</td>
+<td>设置hash字段值</td>
+</tr>
+<tr>
+<td>HSET key field value</td>
+<td>设置hash里面一个字段的值</td>
+</tr>
+<tr>
+<td>HSETNX key field value</td>
+<td>设置hash的一个字段，只有当这个字段不存在时有效</td>
+</tr>
+<tr>
+<td>HSTRLEN key field</td>
+<td>获取hash里面指定field的长度</td>
+</tr>
+<tr>
+<td>HVALS key</td>
+<td>获得hash的所有值</td>
+</tr>
+<tr>
+<td>HSCAN key cursor [MATCH pattern] [COUNT count]</td>
+<td>迭代hash里面的元素</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>sets</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SADD key member [member …]</td>
+<td>添加一个或者多个元素到集合(set)里</td>
+</tr>
+<tr>
+<td>SCARD key</td>
+<td>获取集合里面的元素数量</td>
+</tr>
+<tr>
+<td>SDIFF key [key …]</td>
+<td>获得队列不存在的元素</td>
+</tr>
+<tr>
+<td>SDIFFSTORE destination key [key …]</td>
+<td>获得队列不存在的元素，并存储在一个关键的结果集</td>
+</tr>
+<tr>
+<td>SINTER key [key …]</td>
+<td>获得两个集合的交集</td>
+</tr>
+<tr>
+<td>SINTERSTORE destination key [key …]</td>
+<td>获得两个集合的交集，并存储在一个关键的结果集</td>
+</tr>
+<tr>
+<td>SISMEMBER key member</td>
+<td>确定一个给定的值是一个集合的成员</td>
+</tr>
+<tr>
+<td>SMEMBERS key</td>
+<td>获取集合里面的所有元素</td>
+</tr>
+<tr>
+<td>SMOVE source destination member</td>
+<td>移动集合里面的一个元素到另一个集合</td>
+</tr>
+<tr>
+<td>SPOP key [count]</td>
+<td>删除并获取一个集合里面的元素</td>
+</tr>
+<tr>
+<td>SRANDMEMBER key [count]</td>
+<td>从集合里面随机获取一个元素</td>
+</tr>
+<tr>
+<td>SREM key member [member …]</td>
+<td>从集合里删除一个或多个元素</td>
+</tr>
+<tr>
+<td>SUNION key [key …]</td>
+<td>添加多个set元素</td>
+</tr>
+<tr>
+<td>SUNIONSTORE destination key [key …]</td>
+<td>合并set元素，并将结果存入新的set里面</td>
+</tr>
+<tr>
+<td>SSCAN key cursor [MATCH pattern] [COUNT count]</td>
+<td>迭代set里面的元素</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>zset</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZADD key [NX</td>
+<td>XX] [CH] [INCR] score member [score member …]</td>
+<td>添加到有序set的一个或多个成员，或更新的分数，如果它已经存在</td>
+</tr>
+<tr>
+<td>ZCARD key</td>
+<td>获取一个排序的集合中的成员数量</td>
+</tr>
+<tr>
+<td>ZCOUNT key min max</td>
+<td>返回分数范围内的成员数量</td>
+</tr>
+<tr>
+<td>ZINCRBY key increment member</td>
+<td>增量的一名成员在排序设置的评分</td>
+</tr>
+<tr>
+<td>ZINTERSTORE destination numkeys key [key …] [WEIGHTS weight [weight …]] [AGGREGATE SUM、MIN、MAX]</td>
+<td>相交多个排序集，导致排序的设置存储在一个新的关键</td>
+</tr>
+<tr>
+<td>ZLEXCOUNT key min max</td>
+<td>返回成员之间的成员数量</td>
+</tr>
+<tr>
+<td>ZPOPMAX key [count]</td>
+<td>Remove and return members with the highest scores in a sorted set</td>
+</tr>
+<tr>
+<td>ZPOPMIN key [count]</td>
+<td>Remove and return members with the lowest scores in a sorted set</td>
+</tr>
+<tr>
+<td>ZRANGE key start stop [WITHSCORES]</td>
+<td>根据指定的index返回，返回sorted set的成员列表</td>
+</tr>
+<tr>
+<td>ZRANGEBYLEX key min max [LIMIT offset count]</td>
+<td>返回指定成员区间内的成员，按字典正序排列, 分数必须相同。</td>
+</tr>
+<tr>
+<td>ZREVRANGEBYLEX key max min [LIMIT offset count]</td>
+<td>返回指定成员区间内的成员，按字典倒序排列, 分数必须相同</td>
+</tr>
+<tr>
+<td>ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]</td>
+<td>返回有序集合中指定分数区间内的成员，分数由低到高排序。</td>
+</tr>
+<tr>
+<td>ZRANK key member</td>
+<td>确定在排序集合成员的索引</td>
+</tr>
+<tr>
+<td>ZREM key member [member …]</td>
+<td>从排序的集合中删除一个或多个成员</td>
+</tr>
+<tr>
+<td>ZREMRANGEBYLEX key min max</td>
+<td>删除名称按字典由低到高排序成员之间所有成员。</td>
+</tr>
+<tr>
+<td>ZREMRANGEBYRANK key start stop</td>
+<td>在排序设置的所有成员在给定的索引中删除</td>
+</tr>
+<tr>
+<td>ZREMRANGEBYSCORE key min max</td>
+<td>删除一个排序的设置在给定的分数所有成员</td>
+</tr>
+<tr>
+<td>ZREVRANGE key start stop [WITHSCORES]</td>
+<td>在排序的设置返回的成员范围，通过索引，下令从分数高到低</td>
+</tr>
+<tr>
+<td>ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]</td>
+<td>返回有序集合中指定分数区间内的成员，分数由高到低排序。</td>
+</tr>
+<tr>
+<td>ZREVRANK key member</td>
+<td>确定指数在排序集的成员，下令从分数高到低</td>
+</tr>
+<tr>
+<td>ZSCORE key member</td>
+<td>获取成员在排序设置相关的比分</td>
+</tr>
+<tr>
+<td>ZUNIONSTORE destination numkeys key [key …] [WEIGHTS weight [weight …]] [AGGREGATE SUM、MIN、MAX]</td>
+<td>添加多个排序集和导致排序的设置存储在一个新的关键</td>
+</tr>
+<tr>
+<td>ZSCAN key cursor [MATCH pattern] [COUNT count]</td>
+<td>迭代sorted sets里面的元素</td>
+</tr>
+</tbody>
+</table>
+<p>除了以上5种命令外,还有Cluster、Connection、Geo、HyperLogLog、Keys、Pub/Sub、Scripting、Server、Streams、Transactions等命令,具体参考<a target="_blank" rel="noopener" href="https://redis.io/commands">https://redis.io/commands</a>.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+<div>
+      
+        
+
+      
+</div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/17/scrapy%E7%88%AC%E5%8F%961024%E7%A7%8D%E5%AD%90/" rel="next" title="scrapy爬取1024种子">
+                <i class="fa fa-chevron-left"></i> scrapy爬取1024种子
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/28/Mac-Sublime-Text3-Nodejs%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="Mac Sublime Text3 Nodejs环境搭建">
+                Mac Sublime Text3 Nodejs环境搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+
+
+
+
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+        </div>
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+</body>
+</html>
