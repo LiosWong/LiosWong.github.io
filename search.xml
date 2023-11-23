@@ -6961,8 +6961,8 @@ public class ReferenceCountingGC &#123;
         <tag>spring</tag>
         <tag>springmvc</tag>
         <tag>mysql</tag>
-        <tag>mybatis</tag>
         <tag>zookeeper</tag>
+        <tag>mybatis</tag>
         <tag>springboot</tag>
         <tag>springcloud</tag>
         <tag>tomcat</tag>
